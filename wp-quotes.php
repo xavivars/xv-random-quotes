@@ -1,15 +1,19 @@
 <?php
 /*
 Plugin Name: Random Quotes
-Plugin URI: http://www.blogmotron.com/
+Plugin URI: http://www.zombierobot.com/wp-quotes/
 Description: This plugin allows you to embed random quotes into your pages. It also has a spiffy management tool in the administrative console.
 Author: Dustin Barnes
-Author URI: http://www.blogmotron.com
-Version: 1.0
+Author URI: http://www.zombierobot.com/
+Version: 1.1
 */
 
 // Quotes table. I suppose you could change this.
 define('WP_QUOTES_TABLE', $table_prefix . 'quotes');
+
+// Quotes Page Delimiter. I suppose you could change this too...
+define('WP_QUOTES_PAGE', '<!--wp_quotes_page-->');
+
 
 /*
  * Puts the Quotes manager thingie under the "manage" tab. 
@@ -56,16 +60,16 @@ function wp_quotes($id)
 /*
  * Actually spews a quote
  */
-function wp_quotes_spew($quote)
+function wp_quotes_spew($quote, $encloseDiv='id=\"wp_quotes\"', $quoteDiv='wp_quotes_quote', $authorDiv='wp_quotes_author')
 {
 	?>
-	<div id="wp_quotes">
-		<div class="wp_quotes_quote"><?php echo nl2br($quote->quote); ?></div>
+	<div "<?php echo $encloseDiv?>">
+		<div class="<?php echo $quoteDiv?>"><?php echo nl2br($quote->quote); ?></div>
 		<?php
 		if ( !empty($quote->author) )
 		{
 			?>
-			<div class="wp_quotes_author"><?php echo $quote->author;?></div>
+			<div class="<?php echo $authorDiv?>"><?php echo $quote->author;?></div>
 			<?php
 		}
 		?>
@@ -73,4 +77,46 @@ function wp_quotes_spew($quote)
 	<?php
 }
 
+
+/**
+ * Spews all the quotes onto a page
+ */
+function wp_quotes_page($data)
+{
+	$start = strpos($data, WP_QUOTES_PAGE);
+	
+	if ( $start !== false )
+	{
+		ob_start();
+		
+		global $wpdb;
+		
+		$sql = "select * from " . WP_QUOTES_TABLE;
+		
+		$result = $wpdb->get_results($sql);
+		
+		if ( !empty($result) )
+		{
+			$count = 0;
+			foreach ( $result as $row )
+			{
+				if ( $count++ > 0 )
+					echo "<hr class=\"wp_quotepage_hr\">\n";
+					
+				wp_quotes_spew($row, 'class="wp_quotepage"', 'wp_quotepage_quote', 'wp_quotepage_author');
+				
+			}
+		}
+
+		echo "<div class=\"wpquotes_poweredby\">Powered by <a href=\"http://www.zombierobot.com/\">Zombie Robot wp-quotes plugin</a>.</div>\n";
+		
+		$contents = ob_get_contents();
+		ob_end_clean();
+		
+		$data = substr_replace($data, $contents, $start, strlen(WP_QUOTES_PAGE));
+	}
+	
+	return $data;
+}
+add_filter('the_content', 'wp_quotes_page', 10);
 ?>

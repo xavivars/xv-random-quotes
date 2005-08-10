@@ -72,8 +72,14 @@ if ( !$tableExists )
 				PRIMARY KEY ( `quoteID` )
 			)";
 	$wpdb->get_results($sql);
+	
+	$sql = "INSERT INTO `" . WP_QUOTES_TABLE . "` (quote, author, visible) values "
+	     . "('Each place has its own advantages - heaven for the climate, and hell for the society.', 'Mark Twain', 'yes'), "
+	     . "('An invasion of armies can be resisted, but not an idea whose time has come.', '', 'yes'), "
+	     . "('Love is a snowmobile racing across the tundra and then suddenly it flips over, pinning you underneath. At night, the ice weasels come.', 'Matt Groening', 'yes')";
+	$wpdb->get_results($sql);
 
-	echo "<div class=\"updated\"><p><strong>Hola, bitchola</strong><br /><br />This seems to be your first time visiting this page. I've created a database table for you (" . WP_QUOTES_TABLE . "). All your quotes will be stored there. If you want to remove the data, make sure to delete that table after deactivating the plugin. This plugin's website is at <a href=\"http://www.blogmotron.com/\">http://www.blogmotron.com/</a></p></div>";
+	echo "<div class=\"updated\"><p><strong>Hola, bitchola</strong><br /><br />This seems to be your first time visiting this page. I've created a database table for you (" . WP_QUOTES_TABLE . "), and put a few quotes in there to start you off. Feel free to delete them. If you want to remove the data, make sure to delete that table after deactivating the plugin. This plugin's website is at <a href=\"http://www.zombierobot.com/\">http://www.zombierobot.com/</a></p></div>";
 }
 ///////////////      End first run      ///////////////
 
