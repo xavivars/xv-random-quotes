@@ -5,7 +5,7 @@ Plugin URI: http://www.zombierobot.com/wp-quotes/
 Description: This plugin allows you to embed random quotes into your pages. It also has a spiffy management tool in the administrative console.
 Author: Dustin Barnes
 Author URI: http://www.zombierobot.com/
-Version: 1.1
+Version: 1.2
 */
 
 // Quotes table. I suppose you could change this.
@@ -60,7 +60,7 @@ function wp_quotes($id)
 /*
  * Actually spews a quote
  */
-function wp_quotes_spew($quote, $encloseDiv='id=\"wp_quotes\"', $quoteDiv='wp_quotes_quote', $authorDiv='wp_quotes_author')
+function wp_quotes_spew($quote, $encloseDiv='id="wp_quotes"', $quoteDiv='wp_quotes_quote', $authorDiv='wp_quotes_author')
 {
 	?>
 	<div "<?php echo $encloseDiv?>">
