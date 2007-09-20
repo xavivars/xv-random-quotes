@@ -4,10 +4,28 @@ Plugin Name: Stray Quotes
 Plugin URI: http://www.italyisfalling.com/stray-quotes/
 Description: This plugin allows you to embed random quotes into your pages. It comes with a management tool and a option page in the administrative console - and it is widget compatible.
 Author: Corpodibacco
-Author URI: http://www.italyisfalling.com/category/wordpress-things
+Author URI: http://www.italyisfalling.com/coding/
 Version: 1.48
 License: GPL compatible
 */
+
+/*  Copyright 2007  italyisfalling.com  (email : corpodibacco@gmail.com)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
 /*
 * IMPORTANT ACKNOWLEDGMENTS *
 This plugin is a spin-off of version 1.3 of the wordpress plugin 'Random Quotes' by Dustin Barnes (http://www.zombierobot.com/wp-quotes/). 
