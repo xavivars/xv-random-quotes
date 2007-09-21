@@ -1,13 +1,5 @@
 <?php
-/*
-Plugin Name: Stray Quotes
-Plugin URI: http://www.italyisfalling.com/stray-quotes/
-Description: This plugin allows you to embed random quotes into your pages. It comes with a management tool and a option page in the administrative console - and it is widget compatible.
-Author: Corpodibacco
-Author URI: http://www.italyisfalling.com/category/wordpress-things
-Version: 1.48
-License: GPL compatible
-*/
+
 //options page
 function stray_quotes_options () {
 
