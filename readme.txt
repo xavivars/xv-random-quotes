@@ -25,6 +25,7 @@ Stray Quotes is a plugin for Wordpress that collects and displays random quotes 
 
 1. Upload the content of stray-quotes.zip to your `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. If you use widgets in your theme, you can enable Stray Quotes' from the widget page. You will be given the option to add a title to the sidebar element. If you don't use the widget function, just add this to your sidebar: `&lt;?php if (function_exists('wp_quotes_random')) wp_quotes_random(); ?&gt;`. 
-4. To add a given quote to the sidebar use the following: `&lt;?php if (function_exists('wp_quotes')) wp_quotes(id);?&gt;`, where `id` is the id number of the quote as it appears on the management page. More options on how to customize the sidebar appearance are on the Stray Quotes option page. 
-5. To spew a list of all the quotes, just add the following to a page or post (you can past this directly in the post editor) `&lt;!--wp_quotes_page--&gt;`
+3. If you use widgets in your theme, you can enable Stray Quotes' from the widget page. You will be given the option to add a title to the sidebar element. If you don't use the widget function, just add this to your sidebar: `<?php if (function_exists('wp_quotes_random')) wp_quotes_random(); ?>`. 
+4. To add a given quote to the sidebar use the following: `<?php if (function_exists('wp_quotes')) wp_quotes(id);?>`, where `id` is the id number of the quote as it appears on the management page. More options on how to customize the sidebar appearance are on the Stray Quotes option page. 
+5. To spew a list of all the quotes, just add the following to a page or post (you can past this directly in the post editor) `<!--wp_quotes_page-->`
+
