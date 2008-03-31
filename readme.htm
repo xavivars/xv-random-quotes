@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Stray Quotes readme file</title>
+</head>
+
+<body>
+<p align="center">&sect;</p>
+<h1 align="center">Stray Quotes - Read Me file</h1>
+<p align="center">&sect;</p>
+<p>&nbsp;</p>
+<h2>About the plugin</h2>
+<blockquote>
+<p>Stray Quotes is a plugin for Wordpress that collects and displays random quotes on your blog. It is widget compatible, and the appearance of the quotes can be highly customized. It comes with a easy to use management tool and a option page. It is based on the old <a href="http://www.zombierobot.com/wp-quotes/">"Random Quotes" plugin by Dustin Barnes</a>, and in fact the two plugins are compatible so that one can replace the other without problems , since they use the same kind of table. I've been using "Random Quotes" since forever and I put my hands on it because I just needed to fix a couple of its bugs and make it more flexible. Eventually I manipulated such a large part of its code that a new plugin came out. And here it is.</p></blockquote>
+
+<blockquote>
+<p>&nbsp;</p>
+</blockquote>
+
+<h2>The changelog</h2>
+<blockquote>
+<ul>
+<li><strong>1.50 </strong>Stray Quotes refurbished in order to work under Wordpress 2.5. Apparently it now does.</li>
+<li><strong>1.48 </strong>Corrected a typo that caused the plugin to throw a fatal error when activated. Usual messing up, no comment. While I was there I adjusted the way the plugin updates and creates the new table. It should work more cleverly now (nothing noticeable though).</li>
+<li><strong>1.47</strong> This is a minor update to the general layout of the option and management pages. Hoping everything is more readable and usable now. Also I corrected the function where the "add new" form would display the content of the last inserted quote. Now the form does not display anything. Let me know if you don't think this way it is better. Few minor potential bugs hopefully corrected as well. Please be aware that the plugin now comes with five files (three .php, one .css and one .htm) instead than a single .php (which was getting too big and cumbersome to edit). So after you upload the folder with the new files, remember to delete the single file leftover by the old version.</li>
+<li><strong>1.46</strong>  I am really but once again I must update this plugin. Few slipping lines and a inattentive copy and paste caused an atrocious bug in the last version. Instead of editing old quotes it added them as new ones. Should be fixed now. It won't happen again for at least... a while now -- I promise.</li>
+<li><strong>1.45</strong>  Sorry for the many updates. It's because now I have the time. Anyway this version fixes the general functionality of the plugin where it would do certain crucial things (like updating the table to a new version) only if the management page was opened. Now it does what it has to do no matter what page is opened or not opened. I can't believe it I haven't solved this before, but this is how it goes.</li>
+<li><strong>1.44</strong> As requested, a new field has been added to management page. It is now possible to specify the source of the quote and, in the option page, the relative optional formatting elements. Few potential bugs fixed.</li>
+<li><strong>1.43</strong> Added a new option to set the default visibility for new quotes. In the options page.</li>
+<li><strong>1.42</strong> with this update Stray Quotes should discriminate more intelligently the elements that can be added to both the sidebar and the quotes page, so that the page isn't filled with non pertinent formatting. More details on the options page itself.</li>
+<li><strong>1.41 </strong>corrected a general malfunction in the widget title, where it didn't handle unicode characters and disappeared from the sidebar or the options unexpectedly. Now everything should work. Thanks to tiosolid who addressed the bug. This is a fix version with no new features, but updating is strongly recommended.</li>
+<li><strong>1.4 </strong>first release. Numbering follows version number of the "Random Quotes" plugin from which my plugin takes its first steps.</li>
+</ul>
+</blockquote>
+
+<blockquote>
+<p>&nbsp;</p>
+</blockquote>
+
+<h2>The features</h2>
+<blockquote>
+<ul>
+<li>collects quotes</li>
+<li>displays random or given quotes everywhere on your blog</li>
+<li>it's widget compatible</li>
+<li>displays a page with all the quotes collected so far</li>
+<li>adds optional Google links to the quotes...</li>
+</ul></blockquote>
+
+<blockquote>
+<p>&nbsp;</p>
+</blockquote>
+
+<h2>Installation</h2>
+<blockquote>
+<ul>
+<li>FTP the content of stray_quotes.zip to your wp-content/plugins folder</li>
+<li>activate the plugin</li>
+<li>check the example quote in the management page</li>
+<li>consider the options in the option page</li>
+</ul></blockquote>
+
+<blockquote>
+<p>&nbsp;</p>
+</blockquote>
+
+<h2>Usage</h2>
+<blockquote><ul><li> Sidebar: If your wordpress installation is widget comaptible, you can enable the Stray Quotes widget from the widget page. You will be given the option to add a title to the sidebar element. If you don't use the widget function, just add this to your sidebar: <code><font color="#0000bb"> &lt;?php if (function_exists('wp_quotes_random')) wp_quotes_random(); ?&gt;</font></code>. To add a given quote to the sidebar use the following: <code><font color="#0000bb"> &lt;?php if (function_exists('wp_quotes')) wp_quotes(id);?&gt;</font></code>, where 'id' is the id number of the quote as it appears on the management page. More options on how to customize the sidebar appearance are on the Stray Quotes option page.</li>
+<li>Quotes list: To spew a list of all the quotes, just add the following to a page or post (you can past this directly in the post editor) <code><font color="#0000bb">&lt;!--wp_quotes_page--&gt;</font></code></li></ul></blockquote>
+
+<blockquote>
+<p>&nbsp;</p>
+<p align="center">&sect;</p>
+<p align="center">&#8220;it&#8217;s all in a day&#8217;s work&#8221; for <a href="mailto:corpodibacco@italyisfalling.com">corpodibacco</a>.</p>
+<p align="center">&sect;</p>
+</blockquote>
+
+</body>
+</html>
