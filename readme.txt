@@ -11,13 +11,13 @@ Display random quotes on your blog. Easy to custom and manage. Compatible with W
 
 == Description ==
 
-Stray Quotes is a plugin for Wordpress that collects and displays random quotes on your blog. They can be shown one by one or as a whole in a page. The plugin is widget compatible, and the appearance of the quotes can be highly customized. It comes with a easy to use management tool and a option page.
+Stray Quotes is a plugin for Wordpress that collects and displays random quotes on your blog. The plugin is widget compatible, and the appearance of the quotes can be highly customized. It comes with a easy to use management tool and a option page.
 
 == Screenshots ==
 
 1. Your quotes are displayed in a management page, where from they can be edited or deleted, and where new quotes can be added.
 
-2. The option page offers many option to customize the apperance of the quotes.
+2. The option page offers many ways to customize the apperance of the quotes.
 
 3. A random quote appears in the sidebar as one of the widgets.
 
