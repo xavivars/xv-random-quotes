@@ -5,7 +5,7 @@ Tags: quotes, random, widget
 Requires at least: 2.0.2
 Tested up to: 2.5
 Stable tag: 1.51
-url http://www.italyisfalling.com/stray-quotes/
+Url: http://www.italyisfalling.com/stray-quotes/
 
 Display random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5.
 
