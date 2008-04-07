@@ -1,5 +1,4 @@
 === Stray Quotes ===
-Plugin Name: Stray Quotes
 Contributors: corpodibacco
 Tags: quotes, random, widget
 Requires at least: 2.0.2
