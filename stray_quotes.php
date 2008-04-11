@@ -58,7 +58,7 @@ add_option('stray_quotes_put_quotes_first','Y');
 add_option('stray_quotes_use_google_links','');
 add_option('stray_quotes_default_visible','');
 
-//check if table exists and alter it if necessary <=not working anymore in WP 2.5 or PHP 5.25	
+//check if table exists and alter it if necessary	
 $tableExists = false;
 $tables = $wpdb->get_results("SHOW TABLES");
 foreach ( $tables as $table ){	
