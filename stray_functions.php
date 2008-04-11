@@ -241,17 +241,4 @@ function stray_quotes_widget_init() {
 	register_widget_control(array('Stray Quotes', 'widgets'), 'stray_quotes_widget_control', 200, 100);	
 }
 
-//paypal and stuff
-function donate_block() {
-	
-	echo '<div class="wrap" style="margin-top:15px; padding:12px; margin:auto; text-align:center; >
-            <ul>
-            <li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;"><a href="http://www.italyisfalling.com/stray-quotes">Plugin\'s Homepage</a> | </li>
-            <!--<li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;">Donate | </li>-->
-            <li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;"><a href="http://www.italyisfalling.com/coding">Other plugins</a></li>
-            </ul><br />
-    </div>';
-}
-
-
 ?>
