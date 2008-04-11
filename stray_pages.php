@@ -174,7 +174,7 @@ function stray_quotes_manage() {
 		I just created the database table "' . WP_STRAY_QUOTES_TABLE . '" to store your quotes, 
 		and added one to start you off.<br />
 		Check out the <a href="' . get_settings('siteurl') . 
-		'/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Good quoting.</div>';
+		'/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Have a good quoting.</div>';
 		
 		update_option('stray_quotes_first_time', 3);
 	}
