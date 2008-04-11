@@ -509,36 +509,36 @@ function stray_quotes_manage() {
 				
 					$alt = ($i % 2 == 0) ? ' class="alternate"' : '';
 			
-					echo '<tr ' . $alt); ?>>
+					?> <tr <?php echo ( $alt); ?>>
 						
 						<th scope="row"><?php echo ( $quote->quoteID); ?></th>
-						<td>' .  nl2br($quote->quote) . '</td>
-						<td>' .  $quote->author . '</td>
-						<td>' .  $quote->source . '</td>
-						<td>' .  $quote->visible . '</td>
+						<td><?php echo (nl2br($quote->quote)); ?></td>
+						<td><?php echo ($quote->author); ?></td>
+						<td><?php echo ($quote->source); ?></td>
+						<td><?php echo ($quote->visible); ?></td>
 											
 						<td align="center"><form name="quotes" method="post"><input type="hidden" name="page" value="<?php echo (WP_STRAY_QUOTES_PATH); ?>">
-						<input type="hidden" name="quoteID" value="'.$quote->quoteID.'" />					
+						<input type="hidden" name="quoteID" value="<?php echo ($quote->quoteID); ?>" />					
 						<input type="hidden" name="action" value="edit"><input type="button" class="edit" value="Edit" 
 						onClick="mTsetAction(this.form, 'edit');" /></form></td>
 		
 						<td align="center"><form name="quotes" method="post"><input type="hidden" name="page" value="<?php echo (WP_STRAY_QUOTES_PATH); ?>">
-						<input type="hidden" name="quoteID" value="'.$quote->quoteID.'" />
+						<input type="hidden" name="quoteID" value="<?php echo ($quote->quoteID); ?>" />
 						<input type="hidden" name="action" value="delete"><input type="button" class="delete" value="Delete" 
 						onClick="if( confirm('Are you sure you wish to delete this quote permanently?')) mTsetAction(this.form, 'delete');" />
 						</form></td>			
-					</tr>';
-					$i++;
-				}
-				echo '</table></div>';			
-			}
-			else { 		
-				echo '<p> You haven't entered any quotes yet. </p>';			
-			}
-	}
-	echo '</div></div>';
-	//paypal and stuff
-	donate_block();	
+					</tr>
+					<?php $i++; 
+				} ?>
+				</table></div>			
+			<?php } else { echo '<p> You haven\'t entered any quotes yet. </p>';	}
+	} ?>
+	</div><div class="wrap" style="margin-top:15px; padding:12px; margin:auto; text-align:center;"><ul>
+    <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">Plugin's Homepage</a> | </li>
+    <!--<li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;">Donate | </li>-->
+    <li style="display:inline;list-style:none;"><a href="http://www.italyisfalling.com/coding">Other plugins</a></li>
+    </ul>
+    </div></div> <?php
 }
 
 ?>
