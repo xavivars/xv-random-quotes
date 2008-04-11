@@ -61,7 +61,7 @@ function stray_quotes_options () {
         <p><strong>Widget</strong>
         <input type="text" size="50" name="widget_title" value="<?php echo ($widgetTitle); ?>" class="stray_text" /><br />
         <div class="stray_desc">This is valid for the widget functionality only. Leave empty for no title.
-        It can also be changed from the <a href="' . get_settings('siteurl'). '/wp-admin/widgets.php' . '">widget page</a>. 
+        It can also be changed from the <a href="<?php get_settings('siteurl'); ?>/wp-admin/widgets.php">widget page</a>. 
 		Formatting of this element is pre-determined by 
         the template and shouldn't be inserted here. If you want to use a title with customized formatting elements, 
         leave this empty and use the option below instead.</div></p>
@@ -175,24 +175,23 @@ function stray_quotes_manage() {
 	
 		$wpdb->query( "INSERT INTO `" . WP_STRAY_QUOTES_TABLE . "` (quote, author, source, visible) values ('And strange it is / That nature must compel us to lament / Our most persisted deeds.', 'William Shakespeare', 'Antony and Cleopatra', 'yes') ");
 		
-		echo '<div class="updated"><p>Hey. Welcome to <strong>Stray Quotes.</strong><br />
+		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Quotes.</strong><br />
 		This seems to be your first time visiting this page. 
-		I just created the database table "' . WP_STRAY_QUOTES_TABLE . '" to store your quotes, 
+		I just created the database table "<?php echo WP_STRAY_QUOTES_TABLE; ?>" to store your quotes, 
 		and added one to start you off.<br />
-		Check out the <a href="' . get_settings('siteurl') . 
-		'/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Have a good quoting.</div>';
+		Check out the 
+        <a href="<?php get_settings('siteurl') ?>/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Happy quoting!</div><?php
 		
 		update_option('stray_quotes_first_time', 3);
 	}
 	
 	else if ($first_time == 2) {
 	
-		echo '<div class="updated"><p>Hey. Welcome to <strong>Stray Quotes.</strong><br />
-		I just renamed the old tables of quotes "' . WP_QUOTES_TABLE . '" as "' . WP_STRAY_QUOTES_TABLE . '".<br />
+		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Quotes.</strong><br />
+		I just renamed the old tables of quotes "<?php echo WP_QUOTES_TABLE; ?>" as "<?php echo WP_STRAY_QUOTES_TABLE; ?>".<br />
 		All your quotes are still there. As you can see the new table comes with all your old quotes and a new optional field, "source". <br />
-		Check out the <a href="' . get_settings('siteurl') . 
-		'/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Good quoting.</div>';	
-	}
+		Check out the <a href="<?php get_settings('siteurl')?>/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Happy quoting!</div>';	
+	<?php }
 
 	//decode and intercept
 	foreach($_POST as $key => $val) {
@@ -238,12 +237,12 @@ function stray_quotes_manage() {
 		
 		if ( empty($result) || empty($result[0]->quoteID) )	{
 		
-				echo '<div class="error"><p><strong>Failure:</strong> 
-				Something went wrong when trying to insert the quote. Try again? </p></div>';				
+				?><div class="error"><p><strong>Failure:</strong> 
+				Something went wrong when trying to insert the quote. Try again? </p></div><?php				
 		}
 			
 		else {
-			echo '<div class="updated"><p>Quote id ' . $result[0]->quoteID . ' successfully added to the database.</p></div>';
+			?><div class="updated"><p>Quote id <?php echo ($result[0]->quoteID); ?> successfully added to the database.</p></div><?php
 			
 		}
 	}
@@ -264,7 +263,7 @@ function stray_quotes_manage() {
 		}
 		
 		if ( empty($quoteID) )	{
-			echo '<div class="error"><p><strong>Failure:</strong> No quote ID given.</p></div>';
+			?><div class="error"><p><strong>Failure:</strong> No quote ID given.</p></div><?php
 		}
 		
 		else {		
@@ -280,11 +279,11 @@ function stray_quotes_manage() {
 			$result = $wpdb->get_results($sql);
 			
 			if ( empty($result) || empty($result[0]->quoteID) )	{			
-				echo '<div class="error"><p><strong>Failure:</strong> Something went wrong. Try again? </p></div>';
+				?><div class="error"><p><strong>Failure:</strong> Something went wrong. Try again?<?php
 				
 			}
 			else {			
-				echo '<div class="updated"><p>Quote ' . $quoteID . ' updated successfully</p></div>';
+				?><div class="updated"><p>Quote <?php echo $quoteID ?> updated successfully.<?php
 			}		
 		}
 	}
@@ -293,7 +292,7 @@ function stray_quotes_manage() {
 	
 		if ( empty($quoteID) ) {
 		
-			echo '<div class="error"><p><strong>Failure:</strong> No quote ID given. Nothing deleted.</p></div>';			
+			?><div class="error"><p><strong>Failure:</strong> No quote ID given. Nothing deleted.</p></div><?php		
 		}
 			
 		else {
@@ -306,7 +305,7 @@ function stray_quotes_manage() {
 			
 			if ( empty($result) || empty($result[0]->quoteID) )	{
 			
-				echo '<div class="updated"><p>Quote ' . $quoteID . ' deleted successfully</p></div>';
+				echo '<div class="updated"><p>Quote <?php echo $quoteID ?> deleted successfully</p></div>';
 			}
 			
 			else {
@@ -318,18 +317,17 @@ function stray_quotes_manage() {
 	}
 	
 	//edit form
-	echo '<div style="width:100%; margin:auto"><div class="wrap">';
+	?><div style="width:100%; margin:auto"><div class="wrap"><?php
 		
 	//if the page is opened after a edit action, shows only the form
 	if ( $action == 'edit' ) {
 	
 		//edit form
-		echo'<h2><br/>
-		Edit Quote</h2>';		
+		?><h2><br/>Edit Quote</h2><?php		
 		
-		//chek if something went wrong with quote id
+		//check if something went wrong with quote id
 		if ( empty($quoteID) ) {
-			echo "<div class=\"error\"><p>I didn't get a quote identifier from the query string.</p></div>";
+			?><div class="error"><p>Something is wrong. I don't get a quote ID from the query string.</p></div><?php
 		}
 		
 		else {			
@@ -337,7 +335,7 @@ function stray_quotes_manage() {
 			//query
 			$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "' limit 1");
 			if ( empty($data) ) {
-				echo "<div class=\"error\"><p>I couldn't find a quote linked up with that identifier.</p></div>";
+				?><div class="error"><p>Something is wrong. I can't find a quote linked up with that ID.</p></div><?php
 				return;
 			}
 			$data = $data[0];
@@ -371,32 +369,33 @@ function stray_quotes_manage() {
 			}			
 			
 			//make the edit form
-			echo '<div class="stray_form"><form name="quoteform" id="quoteform" method="post" action="' . $_SERVER['REQUEST_URI'] . '">
+			?><div class="stray_form"><form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
 				<input type="hidden" name="action" value="edit_save">
-				<input type="hidden" name="quoteID" value="' .  $quoteID . '">
+				<input type="hidden" name="quoteID" value="<?php echo $quoteID; ?>">
 			
 				<fieldset class="small"><legend>Quote: </legend>
-					<textarea name="quote_quote" class="stray_textarea" cols=78 rows=7>'
-					 . $quote . '</textarea>
+					<textarea name="quote_quote" class="stray_textarea" cols=78 rows=7><?php echo $quote; ?></textarea>
 				</fieldset>
 				
 				<fieldset class="small"><legend>Author: </legend>
 					<input type="text" name="quote_author" class="stray_textedit" size=80
-					value="'  . $author . '" />
+					value="<?php echo $author ?>" />
 				</fieldset>
 
 				<fieldset class="small"><legend>Source: </legend>
 					<input type="text" name="quote_source" class="stray_textedit" size=80
-					value="'  . $source . '" />
+					value="<?php echo $source ?>" />
 				</fieldset>
 				
 				<fieldset class="small"><legend>Visible: </legend>
-					<input type="radio" name="quote_visible" class="input" value="yes"' . $visible_yes. ' /> Yes					
-					<input type="radio" name="quote_visible" class="input" value="no"' . $visible_no. ' /> No
+					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> Yes					
+					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> No
 				</fieldset>
-				<p align="right"><input type="submit" name="save" class="button bold" value="Save quote &raquo;" /></p>
+				<p align="right"><a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php">&laquo; go back to the list of quotes</a>&nbsp;
+                <input type="submit" name="save" class="button bold" value="Save quote &raquo;" />
+                </p>
 				</div>
-			</form>';
+			</form><?php 
 	
 		}	
 	}	
@@ -405,21 +404,20 @@ function stray_quotes_manage() {
 	//it is debatable whether this form should show empty fields or values from the last insert
 	else {
 	
-		echo '<h2><br/>
-		Stray Quotes -  Add new</h2>'; 		
+		?><h2><br/>Stray Quotes -  Add new</h2><?php 	
 		    
 			$quoteID=false;
 			$data = false;	
 			if ( $quoteID !== false ) {
 		
 				if ( intval($quoteID) != $quoteID ) {		
-					echo "<div class=\"error\"><p>The Quote ID seems to be invalid.</p></div>";
+					?><div class="error"><p>The Quote ID seems to be invalid.</p></div><?php
 					return;
 				}
 				else {
 					$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "' limit 1");
 					if ( empty($data) ) {
-						echo "<div class=\"error\"><p>I couldn't find a quote linked up with that identifier.</p></div>";
+						?><div class="error"><p>Something is wrong. I can't find a quote linked up with that ID.</p></div><?php
 						return;
 					}
 					$data = $data[0];
@@ -452,7 +450,7 @@ function stray_quotes_manage() {
 			}			
 			
 			//make the edit form
-			echo '<div class="stray_form"><form name="quoteform" id="quoteform" method="post" action="' . $_SERVER['REQUEST_URI'] . '">
+			?><div class="stray_form"><form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
 				<input type="hidden" name="action" value="add">
 				<input type="hidden" name="quoteID" value="">
 			
@@ -471,21 +469,22 @@ function stray_quotes_manage() {
 				</fieldset>
 				
 				<fieldset class="small"><legend>Visible: </legend>
-					<input type="radio" name="quote_visible" class="input" value="yes"' . $visible_yes. ' /> Yes					
-					<input type="radio" name="quote_visible" class="input" value="no"' . $visible_no. ' /> No
+					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> Yes					
+					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> No
 				</fieldset>
 				<p align="right"><input type="submit" name="save" class="button bold" value="Save quote &raquo;" /></p>
 				</div>
-			</form>';
+			</form><?php
 			
 			
-			$orderBY = 'quoteID';
-			//list of existing quotes	
-			echo '<div class="wrap"><br/><h2>
-			Stray Quotes - Manage</h2>';
+			
+			//list of existing quotes			
+			
+			$orderBY = 'quoteID';			
+			?><div class="wrap"><br/><h2>Stray Quotes - Manage</h2><?php
 			$quotes = $wpdb->get_results("SELECT * FROM " . WP_STRAY_QUOTES_TABLE . " order by ". $orderBY);
 			if ( !empty($quotes) ) {
-				echo '<script language="JavaScript"><!--
+				?><script language="JavaScript"><!--
 					function mTsetAction(obj, action) {
 					obj.action.value = action;
 					obj.submit();
@@ -493,52 +492,51 @@ function stray_quotes_manage() {
 					//--></script>
 					
 					<div class="stray_list">
-				<table width="100%" cellpadding="3" cellspacing="3">
-					<tr>
-						<th scope="col"> ID </th>
-						<th scope="col"> Quote </th>
-						<th scope="col"> Author </th>
-						<th scope="col"> Source </th>
-						<th scope="col"> Visible </th>
-						<th scope="col"> Edit </th>
-						<th scope="col"> Delete </th>
-					</tr>';
+                    <table width="100%" cellpadding="3" cellspacing="3">
+                        <tr>
+                            <th scope="col"> ID </th>
+                            <th scope="col"> Quote </th>
+                            <th scope="col"> Author </th>
+                            <th scope="col"> Source </th>
+                            <th scope="col"> Visible </th>
+                            <th scope="col">&nbsp;</th>
+                            <th scope="col">&nbsp;</th>
+                        </tr><?php
 				
 				$i = 0;	
 				foreach ( $quotes as $quote ) {
 				
 					$alt = ($i % 2 == 0) ? ' class="alternate"' : '';
 			
-					?> <tr <?php echo ( $alt); ?>>
+					?> <tr <?php echo($alt); ?>>
 						
-						<th scope="row"><?php echo ( $quote->quoteID); ?></th>
-						<td><?php echo (nl2br($quote->quote)); ?></td>
-						<td><?php echo ($quote->author); ?></td>
-						<td><?php echo ($quote->source); ?></td>
-						<td><?php echo ($quote->visible); ?></td>
+						<th scope="row"><?php echo ($quote->quoteID); ?></th>
+						<td><?php echo(nl2br($quote->quote)); ?></td>
+						<td><?php echo($quote->author); ?></td>
+						<td><?php echo($quote->source); ?></td>
+						<td align="center"><?php echo($quote->visible); ?></td>
 											
-						<td align="center"><form name="quotes" method="post"><input type="hidden" name="page" value="<?php echo (WP_STRAY_QUOTES_PATH); ?>">
-						<input type="hidden" name="quoteID" value="<?php echo ($quote->quoteID); ?>" />					
-						<input type="hidden" name="action" value="edit"><input type="button" class="edit" value="Edit" 
-						onClick="mTsetAction(this.form, 'edit');" /></form></td>
+						<td align="center">
+                        <a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=edit&quoteID=<?php echo($quote->quoteID); ?>">
+                        Edit</a></td>
 		
-						<td align="center"><form name="quotes" method="post"><input type="hidden" name="page" value="<?php echo (WP_STRAY_QUOTES_PATH); ?>">
-						<input type="hidden" name="quoteID" value="<?php echo ($quote->quoteID); ?>" />
-						<input type="hidden" name="action" value="delete"><input type="button" class="delete" value="Delete" 
-						onClick="if( confirm('Are you sure you wish to delete this quote permanently?')) mTsetAction(this.form, 'delete');" />
+						<td align="center">
+                           <a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=delete&quoteID=<?php echo($quote->quoteID); ?>"
+                        onclick="if ( confirm('You are about to delete this quote\n  \'Cancel\' to stop, \'OK\' to delete.') ) { return true;}return false;">
+                        Delete</a>
 						</form></td>			
 					</tr>
 					<?php $i++; 
 				} ?>
 				</table></div>			
-			<?php } else { echo '<p> You haven\'t entered any quotes yet. </p>';	}
+			<?php } else { ?><p> You haven't entered any quotes yet. </p><?php	}
 	} ?>
-	</div><div class="wrap" style="margin-top:15px; padding:12px; margin:auto; text-align:center;"><ul>
+	<div style="margin-top:15px; padding:12px; border-top:#CCCCCC 1px solid; margin:auto; text-align:center;"><ul>
     <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">Plugin's Homepage</a> | </li>
     <!--<li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;">Donate | </li>-->
     <li style="display:inline;list-style:none;"><a href="http://www.italyisfalling.com/coding">Other plugins</a></li>
     </ul>
-    </div></div> <?php
+    </div></div></div> <?php
 }
 
 ?>
