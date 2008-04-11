@@ -523,8 +523,7 @@ function stray_quotes_manage() {
 						<td align="center">
                            <a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=delete&quoteID=<?php echo($quote->quoteID); ?>"
                         onclick="if ( confirm('You are about to delete this quote\n  \'Cancel\' to stop, \'OK\' to delete.') ) { return true;}return false;">
-                        Delete</a>
-						</form></td>			
+                        Delete</a></td>			
 					</tr>
 					<?php $i++; 
 				} ?>
