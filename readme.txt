@@ -29,7 +29,7 @@ Stray Random Quotes is a plugin for Wordpress that collects and displays random 
 
 == Changelog ==
 
-* 1.53 Hopefully fixed a little mishap with the code that caused the "updated table" message to persist. Also a link that didn't work should be fixed. Thanks to c for pointing this bugs out.
+* 1.53 Hopefully fixed a little mishap with the code that caused the "updated table" message to persist. Also a link that didn't work should be fixed. Thanks to c for pointing these bugs out.
 * 1.52 Finally managed to use "edit" and "delete" links instead of buttons in the list of quotes. Great personal achievement since I was never able to make this simple thing work. More minor fixes. Also I changed the name of the plugin to make it more to the point.
 * 1.51 Minor fixes.
 * 1.50 Stray Quotes refurbished in order to work under Wordpress 2.5. Apparently it now does.
