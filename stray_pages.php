@@ -51,7 +51,7 @@ function stray_quotes_options () {
 	//build the option form
 	?>    
     <div style="width:100%; margin:auto">	
-	<div class="wrap"><br/><h2>Stray Quotes - Options</h2><div id="stray_quotes_options">
+	<div class="wrap"><br/><h2>Stray Random Quotes - Options</h2><div id="stray_quotes_options">
 	These options can be used to customize the appearance of the quotes.<br/><br/>
 
 	<form name="frm_options" method="post" action="<?php echo ($_SERVER['REQUEST_URI']); ?>">
@@ -175,7 +175,7 @@ function stray_quotes_manage() {
 	
 		$wpdb->query( "INSERT INTO `" . WP_STRAY_QUOTES_TABLE . "` (quote, author, source, visible) values ('And strange it is / That nature must compel us to lament / Our most persisted deeds.', 'William Shakespeare', 'Antony and Cleopatra', 'yes') ");
 		
-		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Quotes.</strong><br />
+		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Random Quotes.</strong><br />
 		This seems to be your first time visiting this page. 
 		I just created the database table "<?php echo WP_STRAY_QUOTES_TABLE; ?>" to store your quotes, 
 		and added one to start you off.<br />
@@ -187,10 +187,10 @@ function stray_quotes_manage() {
 	
 	else if ($first_time == 2) {
 	
-		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Quotes.</strong><br />
+		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Random Quotes.</strong><br />
 		I just renamed the old tables of quotes "<?php echo WP_QUOTES_TABLE; ?>" as "<?php echo WP_STRAY_QUOTES_TABLE; ?>".<br />
 		All your quotes are still there. As you can see the new table comes with all your old quotes and a new optional field, "source". <br />
-		Check out the <a href="<?php echo get_settings('siteurl')?>/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Happy quoting!</div<?php
+		Check out the <a href="<?php echo get_settings('siteurl')?>/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Happy quoting!</div><?php
 		
 		update_option('stray_quotes_first_time', 3);
         	
@@ -407,7 +407,7 @@ function stray_quotes_manage() {
 	//it is debatable whether this form should show empty fields or values from the last insert
 	else {
 	
-		?><h2><br/>Stray Quotes -  Add new</h2><?php 	
+		?><h2><br/>Stray Random Quotes -  Add new</h2><?php 	
 		    
 			$quoteID=false;
 			$data = false;	
@@ -484,7 +484,7 @@ function stray_quotes_manage() {
 			//list of existing quotes			
 			
 			$orderBY = 'quoteID';			
-			?><div class="wrap"><br/><h2>Stray Quotes - Manage</h2><?php
+			?><div class="wrap"><br/><h2>Stray Random Quotes - Manage</h2><?php
 			$quotes = $wpdb->get_results("SELECT * FROM " . WP_STRAY_QUOTES_TABLE . " order by ". $orderBY);
 			if ( !empty($quotes) ) {
 				?><script language="JavaScript"><!--

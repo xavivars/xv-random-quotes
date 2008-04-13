@@ -9,29 +9,6 @@ Version: 1.53
 License: GPL compatible
 */
 
-/*  Copyright 2008  italyisfalling.com  (email : corpodibacco@italyisfalling.com)
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
-/*
-* IMPORTANT ACKNOWLEDGMENTS *
-This plugin is a spin-off of version 1.3 of the wordpress plugin 'Random Quotes' by Dustin Barnes (http://www.zombierobot.com/wp-quotes/). 
-I've been using 'Random Quotes' for a long time... I wanted to ask mr. Barnes permission to take his project in my hands but I couldn't find his email address on his blog. His blog hasn't been updated for over a year,  and his plugin hasn't been updated for over two years, and I really wanted to solve a couple of bugs and limitations of this great plugin. So, here it is, Stray Quotes. I am going to take this plugin to another level. (Ok, sorry, bragging again).
-*/
-
 global $wpdb;
 
 //few definitions
@@ -111,8 +88,8 @@ function stray_quotes_header() {
 //build sumenu entries
 function stray_quotes_add_pages() {
 
-	add_options_page('Stray Quotes', 'Stray Quotes', 9, basename(__FILE__), 'stray_quotes_options');
-	add_management_page('Stray Quotes', 'Stray Quotes', 9, basename(__FILE__), 'stray_quotes_manage');		
+	add_options_page('Stray Quotes', 'Stray Random Quotes', 9, basename(__FILE__), 'stray_quotes_options');
+	add_management_page('Stray Quotes', 'Stray Random Quotes', 9, basename(__FILE__), 'stray_quotes_manage');		
 }
 
 //add actions to wordpress
