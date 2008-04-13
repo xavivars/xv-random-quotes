@@ -192,9 +192,9 @@ function stray_quotes_manage() {
 		All your quotes are still there. As you can see the new table comes with all your old quotes and a new optional field, "source". <br />
 		Check out the <a href="<?php echo get_settings('siteurl')?>/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Happy quoting!</div>';
         
-        update_option('stray_quotes_first_time', 3);
+        <?php update_option('stray_quotes_first_time', 3);
         	
-	<?php }
+	}
 
 	//decode and intercept
 	foreach($_POST as $key => $val) {
