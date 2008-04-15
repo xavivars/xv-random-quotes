@@ -22,16 +22,13 @@ padding:10px;
 }
 
 .stray_desc {
+	display:none;
 	margin-right:30px;
 	margin-left:100px;
 	margin-bottom:20px;
 	background-color:#FFFFCA;
 	border:#999999 solid 1px;
 	padding:10px;
-	padding-left:40px;
-	background-image:url(anchor_symbol.gif);
-	background-position:12px center;
-	background-repeat: no-repeat;
 }
 
 .stray_text {

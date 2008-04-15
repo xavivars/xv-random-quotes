@@ -23,10 +23,11 @@ function stray_quotes_options () {
 		update_option('stray_quotes_before_source', $_POST['before_source']);	
 		update_option('stray_quotes_after_source', $_POST['after_source']);
 		update_option('stray_quotes_put_quotes_first', $_POST['put_quotes_first']);
-		update_option('stray_quotes_use_google_links', $_POST['use_google_links']);
+		update_option('stray_quotes_use_google_links', $_POST['use_links']);
 		update_option('stray_quotes_default_visible', $_POST['default_visible']);
+		update_option('stray_quotes_wiki_lan', $_POST['wiki_lan']);		
 				
-		echo '<div class="updated"><p><strong>Options saved.</strong></p></div>';	
+		?><div class="updated"><p><strong><?php echo __('Options saved.','stray-quotes') ?></strong></p></div><?php	
 	}
 
 	//get options
@@ -41,127 +42,157 @@ function stray_quotes_options () {
 	$beforeSource = get_option ('stray_quotes_before_source');
 	$afterSource = get_option ('stray_quotes_after_source');
 	$putQuotesFirst = get_option ('stray_quotes_put_quotes_first');
-	$useGoogleLinks = get_option ('stray_quotes_use_google_links');
+	$useLinks = get_option ('stray_quotes_use_google_links');
 	$defaultVisible = get_option ('stray_quotes_default_visible');
+	$wikilan = get_option ('stray_quotes_wiki_lan');
 		
-	if ( $putQuotesFirst == 'Y' ) $putQuotesFirst_selected = 'checked';
-	if ( $useGoogleLinks == 'Y' ) $useGoogleLinks_selected = 'checked';
+	if ( $putQuotesFirst == 'Y' ) $putQuotesFirst_selected = 'checked';	
 	if ( $defaultVisible == 'Y' ) $defaultVisible_selected = 'checked';
 	
 	//build the option form
 	?>    
-    <div style="width:100%; margin:auto">	
-	<div class="wrap"><br/><h2>Stray Random Quotes - Options</h2><div id="stray_quotes_options">
-	These options can be used to customize the appearance of the quotes.<br/><br/>
+    <div id="stray_quotes_options" class="wrap">
+    <h2>Stray Random Quotes - <?php echo __('Options','stray-quotes') ?></h2><br/>
+	<?php echo str_replace("%s",WP_STRAY_QUOTES_PATH,__('These options can be used to customize the appearance of the quotes. Click on the help icons <img src="%s/help.png" alt="click for help" border="0" style="vertical-align:middle" /> to get help.','stray-quotes')); ?>
+    <br/><br/>
 
 	<form name="frm_options" method="post" action="<?php echo ($_SERVER['REQUEST_URI']); ?>">
 	
-	<fieldset><legend>Title</legend>
+	<fieldset><legend><?php echo __('Title','stray-quotes') ?></legend>
     	
-        <p><strong>Widget</strong>
-        <input type="text" size="50" name="widget_title" value="<?php echo ($widgetTitle); ?>" class="stray_text" /><br />
-        <div class="stray_desc">This is valid for the widget functionality only. Leave empty for no title.
-        It can also be changed from the <a href="<?php get_settings('siteurl'); ?>/wp-admin/widgets.php">widget page</a>. 
-		Formatting of this element is pre-determined by 
-        the template and shouldn't be inserted here. If you want to use a title with customized formatting elements, 
-        leave this empty and use the option below instead.</div></p>
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp1');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Widget','stray-quotes') ?></strong>
+        <input type="text" size="50" name="widget_title" value="<?php echo ($widgetTitle); ?>" class="stray_text" />
+        <br />
+    	<div id="hlp1" class="stray_desc"><?php echo str_replace("%s",get_option('siteurl')."/wp-admin/widgets.php",__('This is valid for the widget functionality only. Leave empty for no title. It can also be changed from the <a href="%s">widget page</a>. Formatting of this element is pre-determined by the template and shouldn\'t be inserted here. If you want to use a title with customized formatting elements, leave this empty and use the option below instead.','stray-quotes')); ?></div></p>
     	<p></p>
         
-        <p><strong>Sidebar element</strong>
-        <input type="text" size="50" name="regular_title" value="<?php echo (htmlentities($regularTitle)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">This is valid only when the widget functionality is not being used or when the widget title (option above) is left empty. 
-		Leave empty for no title.<br/></div></p>
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp2');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Sidebar element','stray-quotes') ?></strong>
+        <input type="text" size="50" name="regular_title" value="<?php echo (htmlentities($regularTitle)); ?>" class="stray_text" />
+        <br /><div id="hlp2" class="stray_desc"><?php echo __('This is valid only when the widget functionality is not being used or when the widget title (option above) is left empty. Leave empty for no title.','stray-quotes') ?></div></p>
     
 	</fieldset><p></p>
 	
-	<fieldset><legend>Author, Quote and Source</legend>
+	<fieldset><legend><?php echo __('Author, Quote and Source','stray-quotes') ?></legend>
     
-        <p><strong>Before</strong>
-        <input type="text" size="50" name="before_all" value="<?php echo (htmlentities($beforeAll)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you can enter elements or open tags that go before the group made by quote source and author. 
-        It comes after the title. Won't be considered when spewing all the quotes onto a page.</div></p>
-        <p></p>       
-        <p><strong>After</strong>
-        <input type="text" size="50" name="after_all" value="<?php echo (htmlentities($afterAll)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you enter elements that go right after the group made by quote source and author,  
-        or close the tags that you opened before it.
-        Won't be considered when spewing all the quotes onto a page.<br/></div></p>
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp3');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Before','stray-quotes') ?></strong>
+        <input type="text" size="50" name="before_all" value="<?php echo (htmlentities($beforeAll)); ?>" class="stray_text" />
+        <br /><div id="hlp3" class="stray_desc"><?php echo __('Here you can enter elements or open tags that go before the group made by quote source and author. It comes after the title.','stray-quotes') ?></div></p>
+        <p></p>
+            
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp4');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('After','stray-quotes') ?></strong>
+        <input type="text" size="50" name="after_all" value="<?php echo (htmlentities($afterAll)); ?>" class="stray_text" />
+        <br /><div id="hlp4" class="stray_desc"><?php echo __('Here you enter elements that go right after the group made by quote source and author,  
+        or close the tags that you opened before it.','stray-quotes') ?></div></p>
     
 	</fieldset><p></p>
 	
-	<fieldset><legend>Quote only</legend>
+	<fieldset><legend><?php echo __('Quote only','stray-quotes') ?></legend>
     
-        <p><strong>Before</strong>
-        <input type="text" size="50" name="before_quote" value="<?php echo (htmlentities($beforeQuote)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you can enter elements or open tags that go before the quote. 
-        This will be considered when spewing all the quotes onto a page.</div></p>
-        <p></p>        
-        <p><strong>After</strong>
-        <input type="text" size="50" name="after_quote" value="<?php echo (htmlentities($afterQuote)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you can enter elements or close the tags that you opened before the quote.
-        This will be considered when spewing all the quotes onto a page.<br/></div></p>
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp5');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Before','stray-quotes') ?></strong>
+        <input type="text" size="50" name="before_quote" value="<?php echo (htmlentities($beforeQuote)); ?>" class="stray_text" />
+        <br /><div id="hlp5" class="stray_desc"><?php echo __('Here you can enter elements or open tags that go before the quote.','stray-quotes') ?></div></p>
+        <p></p>
+        
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp6');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('After','stray-quotes') ?></strong>
+        <input type="text" size="50" name="after_quote" value="<?php echo (htmlentities($afterQuote)); ?>" class="stray_text" />
+        <br /><div id="hlp6" class="stray_desc"><?php echo __('Here you can enter elements or close the tags that you opened before the quote.','stray-quotes') ?></div></p>
     
     </fieldset><p></p>
 	
-	<fieldset><legend>Author only</legend>
+	<fieldset><legend><?php echo __('Author only','stray-quotes') ?></legend>
     
-        <p><strong>Before</strong>
-        <input type="text" size="50" name="before_author" value="<?php echo (htmlentities($beforeAuthor)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you can enter elements or open tags that go before the author.
-        This will be considered when spewing all the quotes onto a page.</div></p>
-        <p></p>        
-        <p><strong>After</strong>
-        <input type="text" size="50" name="after_author" value="<?php echo (htmlentities($afterAuthor)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you can enter elements or close the tags that you put before the author.
-        This will be considered when spewing all the quotes onto a page.<br/></div></p>
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp7');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Before','stray-quotes') ?></strong>
+        <input type="text" size="50" name="before_author" value="<?php echo (htmlentities($beforeAuthor)); ?>" class="stray_text" />
+        <br /><div id="hlp7" class="stray_desc"><?php echo __('Here you can enter elements or open tags that go before the author.','stray-quotes') ?></div></p>
+        <p></p>
+              
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp8');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('After','stray-quotes') ?></strong>
+        <input type="text" size="50" name="after_author" value="<?php echo (htmlentities($afterAuthor)); ?>" class="stray_text" />
+        <br /><div id="hlp8" class="stray_desc"><?php echo __('Here you can enter elements or close the tags that you put before the author.','stray-quotes') ?></div></p>
         
 	</fieldset><p></p>
 
-	<fieldset><legend>Source only</legend>
+	<fieldset><legend><?php echo __('Source only','stray-quotes') ?></legend>
     
-        <p><strong>Before</strong>
-        <input type="text" size="50" name="before_source" value="<?php echo (htmlentities($beforeSource)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you can enter elements or open tags that go before the source of the quote.
-        This will be considered when spewing all the quotes onto a page.</div></p>
-        <p></p>        
-        <p><strong>After</strong>
-        <input type="text" size="50" name="after_source" value="<?php echo (htmlentities($afterSource)); ?>" class="stray_text" /><br />
-        <div class="stray_desc">Here you can enter elements or close the tags that you put before the source of the quote.
-        This will be considered when spewing all the quotes onto a page.<br/></div></p>
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp9');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Before','stray-quotes') ?></strong>
+        <input type="text" size="50" name="before_source" value="<?php echo (htmlentities($beforeSource)); ?>" class="stray_text" />
+        <br /><div id="hlp9" class="stray_desc"><?php echo __('Here you can enter elements or open tags that go before the source of the quote.','stray-quotes') ?></div></p>
+
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp10');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('After','stray-quotes') ?></strong>
+        <input type="text" size="50" name="after_source" value="<?php echo (htmlentities($afterSource)); ?>" class="stray_text" />
+        <br /><div id="hlp10" class="stray_desc"><?php echo __('Here you can enter elements or close the tags that you put before the source of the quote.','stray-quotes') ?></div></p>
         
 	</fieldset><p></p>
 
-	<fieldset><legend>Other options</legend>
+	<fieldset><legend><?php echo __('Link to','stray-quotes') ?></legend>
     
-        <p><strong>Add google links:</strong> 
-        <input type="checkbox" name="use_google_links" value="Y" <?php echo ($useGoogleLinks_selected); ?>>
-        <br/><div class="stray_desc">Adds a google link to the Author element.
-        This will be considered when spewing all the quotes onto a page.</div></p>
-        <p></p>        
-        <p><strong>Put quote before the author:</strong> 
-        <input type="checkbox" name="put_quotes_first" value="Y" <?php echo ($putQuotesFirst_selected); ?>>
-        <br/><div class="stray_desc">If checked, returns the quote before the author. Otherwise, the author comes first.
-        This won't be considered when spewing all the quotes onto a page (quote will always come first).</div></p>
-        <p></p>        
-        <p><strong>Visible by default:</strong> 
-        <input type="checkbox" name="default_visible" value="Y" <?php echo ($defaultVisible_selected); ?>>
-        <br/><div class="stray_desc">If checked, will set "Visible" to "Yes" for all new quotes.<br/></div></p>
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp11');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<input type="radio" name="use_links" value="Y" <?php if ( $useLinks == 'Y' ) echo 'checked'; ?> />
+        &nbsp;<strong>Google</strong>
+        &nbsp;<input type="radio" name="use_links" value="W"<?php if ( $useLinks == 'W' ) echo 'checked'; ?> />&nbsp;<strong>Wikipedia</strong>
+        &nbsp;<select name="wiki_lan" style="margin: 0pt 0.4em; padding: -4	pt; vertical-align:middle;">
+        <?php echo (utf8_encode('
+		<option value="ca" xml:lang="ca"')); if ($wikilan == "ca") echo "selected=\"selected\""; echo (utf8_encode('lang="ca">Català</option>
+        <option value="de" xml:lang="de"')); if ($wikilan == "de") echo "selected=\"selected\""; echo (utf8_encode('lang="de">Deutsch</option>
+        <option value="en" xml:lang="en"')); if ($wikilan == "en") echo "selected=\"selected\""; echo (utf8_encode('lang="en">English</option>
+        <option value="es" xml:lang="es"')); if ($wikilan == "es") echo "selected=\"selected\""; echo (utf8_encode('lang="es">Español</option>
+        <option value="fr" xml:lang="fr"')); if ($wikilan == "fr") echo "selected=\"selected\""; echo (utf8_encode('lang="fr">Français</option>
+        <option value="it" xml:lang="it"')); if ($wikilan == "it") echo "selected=\"selected\""; echo (utf8_encode('lang="it">Italiano</option>
+        <option value="nl" xml:lang="nl"')); if ($wikilan == "nl") echo "selected=\"selected\""; echo (utf8_encode('lang="nl">Nederlands</option>
+        <option value="ja" xml:lang="ja"')); if ($wikilan == "ja") echo "selected=\"selected\""; echo (utf8_encode('lang="ja">Nihongo</option>
+        <option value="no" xml:lang="nb"')); if ($wikilan == "nb") echo "selected=\"selected\""; echo (utf8_encode('lang="nb">Norsk (bokmål)</option>
+        <option value="pl" xml:lang="pl"')); if ($wikilan == "pl") echo "selected=\"selected\""; echo (utf8_encode('lang="pl">Polski</option>
+        <option value="pt" xml:lang="pt"')); if ($wikilan == "pt") echo "selected=\"selected\""; echo (utf8_encode('lang="pt">Português</option>
+        <option value="ro" xml:lang="ro"')); if ($wikilan == "ro") echo "selected=\"selected\""; echo (utf8_encode(' lang="ro">Româna</option>
+        <option value="ru" xml:lang="ru"')); if ($wikilan == "ru") echo "selected=\"selected\""; echo (utf8_encode('lang="ru">Russian</option>
+        <option value="fi" xml:lang="fi"')); if ($wikilan == "fi") echo "selected=\"selected\""; echo (utf8_encode('lang="fi">Suomi</option>
+        <option value="sv" xml:lang="sv"')); if ($wikilan == "sv") echo "selected=\"selected\""; echo (utf8_encode('lang="sv">Svenska</option>
+        <option value="tr" xml:lang="tr"')); if ($wikilan == "tr") echo "selected=\"selected\""; echo (utf8_encode('lang="tr">Türkçe</option>
+        <option value="uk" xml:lang="uk"')); if ($wikilan == "uk") echo "selected=\"selected\""; echo (utf8_encode('lang="uk">Ukraine</option>
+        <option value="vo" xml:lang="vo"')); if ($wikilan == "vo") echo "selected=\"selected\""; echo (utf8_encode('lang="vo">Volapük</option>
+        <option value="zh" xml:lang="zh"')); if ($wikilan == "zh") echo "selected=\"selected\""; echo (utf8_encode('lang="zh">Zhongwén</option>')); ?>
+        </select>&nbsp;      
+        <input type="radio" name="use_links" value="" <?php if ( $useLinks == '' ) echo 'checked'; ?> />&nbsp;<strong>
+		<?php echo __('No link','stray-quotes') ?></strong>
+        <br /><div id="hlp11" class="stray_desc"><?php echo __('Add a google or Wikipedia link to the Author element.<br/>(If you choose wikipedia you can also select a language. You should also check if a page for any of your authors or sources really exists.)','stray-quotes') ?></div></p>
+        
+	</fieldset><p></p>
+        
+	<fieldset><legend><?php echo __('Other options','stray-quotes') ?></legend>        
+        
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp12');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Put quote before the author:','stray-quotes') ?></strong> 
+        <input type="checkbox" name="put_quotes_first" value="Y" <?php echo ($putQuotesFirst_selected); ?> />
+        <br /><div id="hlp12" class="stray_desc"><?php echo __('If checked, returns the quote before the author. Otherwise, the author comes first. This won\'t be considered when spewing all the quotes onto a page (quote will always come first).','stray-quotes') ?></div></p>
+        <p></p>
+        
+        <p><img src="<?php echo WP_STRAY_QUOTES_PATH; ?>/help.png" alt="click for help" onclick="return toggleMe('hlp13');"
+    	onMouseOver="this.style.cursor='help'" border="0" />&nbsp;<strong><?php echo __('Visible by default:','stray-quotes') ?></strong> 
+        <input type="checkbox" name="default_visible" value="Y" <?php echo ($defaultVisible_selected); ?> />
+        <br /><div id="hlp13" class="stray_desc"><?php echo __('If checked, will set "Visible" to "Yes" for all new quotes.','stray-quotes') ?></div></p>
     
 	</fieldset>
 	
 	<input type="hidden" name="update" value="yes" /><br/>
-	<p class="submit" align="right"><input type="submit" value="Update Options &raquo;" />
-	<br/></p>
-	</form>
-	</div><div class="wrap" style="margin-top:15px; padding:12px; margin:auto; text-align:center;"><ul>
-    <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">Plugin's Homepage</a> | </li>
+	<div class="submit"><input type="submit" value="<?php echo __('Update Options','stray-quotes') ?> &raquo;" /><br/><br/></div></form>
+    
+    <div style="margin-top:15px; padding:2px; border-top:#CCCCCC 1px solid; margin:auto; text-align:center;"><ul>
+    <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">
+	<?php echo __('Plugin\'s Homepage','stray-quotes') ?></a> | </li>
     <!--<li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;">Donate | </li>-->
-    <li style="display:inline;list-style:none;"><a href="http://www.italyisfalling.com/coding">Other plugins</a></li>
-    </ul>
-    </div>
-}
-
-</div> 
+    <li style="display:inline;list-style:none;"><a href="http://www.italyisfalling.com/coding">
+	<?php echo __('Other plugins','stray-quotes') ?></a></li>
+    </ul></div>
 	
 <?php }
 
@@ -173,24 +204,31 @@ function stray_quotes_manage() {
 	$first_time = get_option('stray_quotes_first_time');
 	if ($first_time == 1) {
 	
-		$wpdb->query( "INSERT INTO `" . WP_STRAY_QUOTES_TABLE . "` (quote, author, source, visible) values ('And strange it is / That nature must compel us to lament / Our most persisted deeds.', 'William Shakespeare', 'Antony and Cleopatra', 'yes') ");
+		$wpdb->query( "INSERT INTO `" . WP_STRAY_QUOTES_TABLE . "` (quote, author, source, visible) values ". __('And strange it is / That nature must compel us to lament / Our most persisted deeds.', 'stray-quotes') . ", 'William Shakespeare', 'Antony and Cleopatra', 'yes') ");
 		
-		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Random Quotes.</strong><br />
-		This seems to be your first time visiting this page. 
-		I just created the database table "<?php echo WP_STRAY_QUOTES_TABLE; ?>" to store your quotes, 
-		and added one to start you off.<br />
-		Check out the 
-        <a href="<?php echo get_settings('siteurl') ?>/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Happy quoting!</div><?php
+		$search = array("%s1", "%s2");
+		$replace = array(WP_STRAY_QUOTES_TABLE, get_settings('siteurl') . "/wp-admin/options-general.php?page=stray_quotes.php");
+		
+		?><div class="updated"><p><?php echo str_replace($search,$replace,__(
+		'Hey. Welcome to <strong>Stray Random Quotes.</strong><br />This seems to be your first time visiting this page.
+		I\'ve just created the database table "%s1" to store your quotes, 
+		and added one to start you off.<br />Check out the 
+        <a href="%s2"> Options Page</a> too. Happy quoting!', 'stray-quotes')); ?>
+        </div><?php
 		
 		update_option('stray_quotes_first_time', 3);
 	}
 	
 	else if ($first_time == 2) {
 	
-		?><div class="updated fade"><p>Hey. Welcome to <strong>Stray Random Quotes.</strong><br />
-		I just renamed the old tables of quotes "<?php echo WP_QUOTES_TABLE; ?>" as "<?php echo WP_STRAY_QUOTES_TABLE; ?>".<br />
-		All your quotes are still there. As you can see the new table comes with all your old quotes and a new optional field, "source". <br />
-		Check out the <a href="<?php echo get_settings('siteurl')?>/wp-admin/options-general.php?page=stray_quotes.php"> Options Page</a> too. Happy quoting!</div><?php
+		$search = array("%s1", "%s2", "%s3");
+		$replace = array(WP_QUOTES_TABLE, WP_STRAY_QUOTES_TABLE, 
+		get_settings('siteurl') . "/wp-admin/options-general.php?page=stray_quotes.php");
+	
+		?><div class="updated"><p><?php echo str_replace($search,$replace,__(
+		'Hey. Welcome to <strong>Stray Random Quotes.</strong><br />I just renamed the old tables of quotes "%s1" as "%s2".<br />
+		All your quotes are still there. As you can see the new table comes with all your old quotes and a new optional field,
+		"source". <br />Check out the <a href="%s3"> Options Page</a> too. Happy quoting!','stray-quotes')); ?></div><?php
 		
 		update_option('stray_quotes_first_time', 3);
         	
@@ -239,14 +277,14 @@ function stray_quotes_manage() {
 		$result = $wpdb->get_results($sql);
 		
 		if ( empty($result) || empty($result[0]->quoteID) )	{
-		
-				?><div class="error"><p><strong>Failure:</strong> 
-				Something went wrong when trying to insert the quote. Try again? </p></div><?php				
+			?><div class="error"><p><?php echo __(
+			'<strong>Failure:</strong> Something went wrong when trying to insert the quote. Try again?',
+			'stray-quotes'); ?></p></div><?php				
 		}
 			
 		else {
-			?><div class="updated"><p>Quote id <?php echo ($result[0]->quoteID); ?> successfully added to the database.</p></div><?php
-			
+			?><div class="updated"><p><?php echo str_replace("%s",$result[0]->quoteID,__(
+			'Quote id %s successfully added to the database.','stray-quotes')); ?></p></div><?php			
 		}
 	}
 	
@@ -266,7 +304,8 @@ function stray_quotes_manage() {
 		}
 		
 		if ( empty($quoteID) )	{
-			?><div class="error"><p><strong>Failure:</strong> No quote ID given.</p></div><?php
+			?><div class="error"><p><?php echo __(
+			'<strong>Failure:</strong> No quote ID given.','stray-quotes') ?></p></div><?php
 		}
 		
 		else {		
@@ -282,11 +321,12 @@ function stray_quotes_manage() {
 			$result = $wpdb->get_results($sql);
 			
 			if ( empty($result) || empty($result[0]->quoteID) )	{			
-				?><div class="error"><p><strong>Failure:</strong> Something went wrong. Try again?<?php
-				
+				?><div class="error"><p><?php echo __(
+				'<strong>Failure:</strong> Something went wrong. Try again?','stray-quotes') ?></p></div><?php				
 			}
 			else {			
-				?><div class="updated"><p>Quote <?php echo $quoteID ?> updated successfully.<?php
+				?><div class="updated"><p><?php echo str_replace("%s",$quoteID,__(
+				'Quote %s updated successfully.','stray-quotes'));?></p></div><?php
 			}		
 		}
 	}
@@ -294,8 +334,10 @@ function stray_quotes_manage() {
 	else if ( $action == 'delete' ) {
 	
 		if ( empty($quoteID) ) {
-		
-			?><div class="error"><p><strong>Failure:</strong> No quote ID given. Nothing deleted.</p></div><?php		
+			
+			
+			?><div class="error"><p><?php echo __(
+			'<strong>Failure:</strong> No quote ID given. Nothing deleted.','stray-quotes') ?></p></div><?php		
 		}
 			
 		else {
@@ -306,21 +348,19 @@ function stray_quotes_manage() {
 			$sql = "select quoteID from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "'";
 			$result = $wpdb->get_results($sql);
 			
-			if ( empty($result) || empty($result[0]->quoteID) )	{
-			
-				echo '<div class="updated"><p>Quote <?php echo $quoteID ?> deleted successfully</p></div>';
-			}
-			
-			else {
-						
-				echo '<div class="error"><p><strong>Failure:</strong> Nothing deleted.</p></div>';
-	
+			if ( empty($result) || empty($result[0]->quoteID) )	{			
+				?><div class="updated"><p><?php echo str_replace("%s",$quoteID,__(
+				'Quote %s deleted successfully','stray-quotes')); ?></p></div><?php
+			}			
+			else {						
+				?><div class="error"><p><?php echo __(
+				'<strong>Failure:</strong> Nothing deleted.','stray-quotes'); ?></p></div><?php	
 			}		
 		}
 	}
 	
 	//edit form
-	?><div style="width:100%; margin:auto"><div class="wrap"><?php
+	?><div class="wrap"><?php
 		
 	//if the page is opened after a edit action, shows only the form
 	if ( $action == 'edit' ) {
@@ -330,15 +370,18 @@ function stray_quotes_manage() {
 		
 		//check if something went wrong with quote id
 		if ( empty($quoteID) ) {
-			?><div class="error"><p>Something is wrong. I don't get a quote ID from the query string.</p></div><?php
+			?><div class="error"><p><?php echo __(
+			'Something is wrong. No quote ID from the query string.','stray-quotes') ?></p></div><?php
 		}
 		
 		else {			
 			
 			//query
-			$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "' limit 1");
+			$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" 
+			. mysql_real_escape_string($quoteID) . "' limit 1");
 			if ( empty($data) ) {
-				?><div class="error"><p>Something is wrong. I can't find a quote linked up with that ID.</p></div><?php
+				?><div class="error"><p><?php echo __(
+				'Something is wrong. I can\'t find a quote linked up with that ID.','stray-quotes') ?></p></div><?php
 				return;
 			}
 			$data = $data[0];
@@ -376,26 +419,27 @@ function stray_quotes_manage() {
 				<input type="hidden" name="action" value="edit_save">
 				<input type="hidden" name="quoteID" value="<?php echo $quoteID; ?>">
 			
-				<fieldset class="small"><legend>Quote: </legend>
+				<fieldset class="small"><legend><?php echo __('Quote:','stray-quotes') ?> </legend>
 					<textarea name="quote_quote" class="stray_textarea" cols=78 rows=7><?php echo $quote; ?></textarea>
 				</fieldset>
 				
-				<fieldset class="small"><legend>Author: </legend>
+				<fieldset class="small"><legend><?php echo __('Author:','stray-quotes') ?> </legend>
 					<input type="text" name="quote_author" class="stray_textedit" size=80
 					value="<?php echo $author ?>" />
 				</fieldset>
 
-				<fieldset class="small"><legend>Source: </legend>
+				<fieldset class="small"><legend><?php echo __('Source:','stray-quotes') ?> </legend>
 					<input type="text" name="quote_source" class="stray_textedit" size=80
 					value="<?php echo $source ?>" />
 				</fieldset>
 				
-				<fieldset class="small"><legend>Visible: </legend>
+				<fieldset class="small"><legend><?php echo __('Visible:','stray-quotes') ?> </legend>
 					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> Yes					
 					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> No
 				</fieldset>
-				<p align="right"><a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php">&laquo; go back to the list of quotes</a>&nbsp;
-                <input type="submit" name="save" class="button bold" value="Save quote &raquo;" />
+				<p align="right"><a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php">
+                &laquo; <?php echo __('go back to the list of quotes','stray-quotes') ?></a>&nbsp;
+                <input type="submit" name="save" class="button bold" value="<?php echo __('Save quote','stray-quotes') ?> &raquo;" />
                 </p>
 				</div>
 			</form><?php 
@@ -407,20 +451,21 @@ function stray_quotes_manage() {
 	//it is debatable whether this form should show empty fields or values from the last insert
 	else {
 	
-		?><h2><br/>Stray Random Quotes -  Add new</h2><?php 	
+		?><h2><br/>Stray Random Quotes -  <?php echo __('Add new','stray-quotes') ?></h2><?php 	
 		    
 			$quoteID=false;
 			$data = false;	
 			if ( $quoteID !== false ) {
 		
 				if ( intval($quoteID) != $quoteID ) {		
-					?><div class="error"><p>The Quote ID seems to be invalid.</p></div><?php
+					?><div class="error"><p><?php echo __('The Quote ID seems to be invalid.','stray-quotes') ?></p></div><?php
 					return;
 				}
 				else {
 					$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "' limit 1");
 					if ( empty($data) ) {
-						?><div class="error"><p>Something is wrong. I can't find a quote linked up with that ID.</p></div><?php
+						?><div class="error"><p><?php echo __(
+						'Something is wrong. I can\'t find a quote linked up with that ID.','stray-quotes') ?></p></div><?php
 						return;
 					}
 					$data = $data[0];
@@ -457,25 +502,28 @@ function stray_quotes_manage() {
 				<input type="hidden" name="action" value="add">
 				<input type="hidden" name="quoteID" value="">
 			
-				<fieldset class="small"><legend>Quote: </legend>
+				<fieldset class="small"><legend><?php echo __('Quote:','stray-quotes') ?> </legend>
 					<textarea name="quote_quote" class="stray_textarea" cols=78 rows=7></textarea>
 				</fieldset>
 				
-				<fieldset class="small"><legend>Author: </legend>
+				<fieldset class="small"><legend><?php echo __('Author:','stray-quotes') ?> </legend>
 					<input type="text" name="quote_author" class="stray_textedit" size=80
 					value="" />
 				</fieldset>
 
-				<fieldset class="small"><legend>Source: </legend>
+				<fieldset class="small"><legend><?php echo __('Source:','stray-quotes') ?> </legend>
 					<input type="text" name="quote_source" class="stray_textedit" size=80
 					value="" />
 				</fieldset>
 				
-				<fieldset class="small"><legend>Visible: </legend>
-					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> Yes					
-					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> No
+				<fieldset class="small"><legend><?php echo __('Visible:','stray-quotes') ?> </legend>
+					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> 
+					<?php echo __('Yes','stray-quotes') ?>					
+					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> 
+					<?php echo __('No','stray-quotes') ?>
 				</fieldset>
-				<p align="right"><input type="submit" name="save" class="button bold" value="Save quote &raquo;" /></p>
+				<div align="right"><input type="submit" name="save" class="button bold" 
+                value="<?php echo __('Save quote','stray-quotes') ?> &raquo;" /></div>
 				</div>
 			</form><?php
 			
@@ -484,7 +532,7 @@ function stray_quotes_manage() {
 			//list of existing quotes			
 			
 			$orderBY = 'quoteID';			
-			?><div class="wrap"><br/><h2>Stray Random Quotes - Manage</h2><?php
+			?><div class="wrap"><br/><h2>Stray Random Quotes - <?php echo __('Manage','stray-quotes') ?></h2><?php
 			$quotes = $wpdb->get_results("SELECT * FROM " . WP_STRAY_QUOTES_TABLE . " order by ". $orderBY);
 			if ( !empty($quotes) ) {
 				?><script language="JavaScript"><!--
@@ -498,10 +546,10 @@ function stray_quotes_manage() {
                     <table width="100%" cellpadding="3" cellspacing="3">
                         <tr>
                             <th scope="col"> ID </th>
-                            <th scope="col"> Quote </th>
-                            <th scope="col"> Author </th>
-                            <th scope="col"> Source </th>
-                            <th scope="col"> Visible </th>
+                            <th scope="col"> <?php echo __('Quote','stray-quotes') ?> </th>
+                            <th scope="col"> <?php echo __('Author','stray-quotes') ?> </th>
+                            <th scope="col"> <?php echo __('Source','stray-quotes') ?> </th>
+                            <th scope="col"> <?php echo __('Visible','stray-quotes') ?> </th>
                             <th scope="col">&nbsp;</th>
                             <th scope="col">&nbsp;</th>
                         </tr><?php
@@ -520,25 +568,33 @@ function stray_quotes_manage() {
 						<td align="center"><?php echo($quote->visible); ?></td>
 											
 						<td align="center">
-                        <a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=edit&quoteID=<?php echo($quote->quoteID); ?>">
-                        Edit</a></td>
+                        <a href="
+						<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=edit&quoteID=<?php echo($quote->quoteID); ?>">
+                        <?php echo __('Edit','stray-quotes') ?></a></td>
 		
 						<td align="center">
-                        <a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=delete&quoteID=<?php echo($quote->quoteID); ?>"
-                        onclick="if ( confirm('You are about to delete this quote\n  \'Cancel\' to stop, \'OK\' to delete.') ) { return true;}return false;">
-                        Delete</a></td>			
+                        <a href="
+						<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=delete&quoteID=<?php echo($quote->quoteID); ?>"
+                        onclick="if ( confirm('<?php echo __(
+						'You are about to delete this quote\\n\\\'Cancel\\\' to stop, \\\'OK\\\' to delete.\'',
+						'stray-quotes'); ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
 					</tr>
 					<?php $i++; 
 				} ?>
 				</table></div>			
-			<?php } else { ?><p> You haven't entered any quotes yet. </p><?php	}
+			<?php } else { ?><p> <?php echo __('You haven\'t entered any quotes yet.','stray-quotes') ?> </p><?php	}
 	} ?>
-	<div style="margin-top:15px; padding:12px; border-top:#CCCCCC 1px solid; margin:auto; text-align:center;"><ul>
-    <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">Plugin's Homepage</a> | </li>
+    
+	<div style="margin-top:15px; padding:2px; border-top:#CCCCCC 1px solid; margin:auto; text-align:center;"><ul>
+    <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">
+	<?php echo __('Plugin\'s Homepage','stray-quotes') ?></a> | </li>
     <!--<li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;">Donate | </li>-->
-    <li style="display:inline;list-style:none;"><a href="http://www.italyisfalling.com/coding">Other plugins</a></li>
+    <li style="display:inline;list-style:none;"><a href="http://www.italyisfalling.com/coding">
+	<?php echo __('Other plugins','stray-quotes') ?></a></li>
     </ul>
-    </div></div></div> <?php
+    </div></div>
+    
+    <?php
 }
 
 ?>
