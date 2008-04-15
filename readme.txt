@@ -3,7 +3,7 @@ Contributors: corpodibacco
 Tags: quotes, random, widget
 Requires at least: 2.0.2
 Tested up to: 2.5
-Stable tag: 1.53
+Stable tag: 1.6
 
 Display random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5.
 
@@ -24,12 +24,13 @@ Stray Random Quotes is a plugin for Wordpress that collects and displays random 
 1. Upload the content of stray-quotes.zip to your `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Check out the options in "Settings" > "Stray Random Quotes" in the admin menu
-4. If you use widgets to customize the sidebar of your blog, Stray Random Quotes does come with a widget. Just check "Design" > "Widgets" in the admin menu. 
-5. If you don't use the widget function, or you want random quotes to appear elsewhere other than the sidebar, use this in your theme: `<?php if (function_exists('stray_random_quote')) stray_random_quote(); ?>`. 
-6. To add a given quote instead of a random one use the following: `<?php if (function_exists('stray_a_quote')) stray_a_quote(id);?>`, where `id` is the id number of the quote as it appears on the management page.
-7. To insert a random quote inside a post or a page, just write in the editor `[random-quote]`.
-8. To insert a given quote inside a post or a page, just write in the editor `[quote id=xx]`, where `id` is the id number of the quote as it appears on the management page.
-9. To insert a list of all the quotes in a post or a page, just write in the editor `[all-quotes]`.
+4. Check out the management in "Manage" > "Quotes" in the admin menu
+5. If you use widgets to customize the sidebar of your blog, Stray Random Quotes does come with a widget. Just check "Design" > "Widgets" in the admin menu. 
+6. If you don't use the widget function, or you want random quotes to appear elsewhere other than the sidebar, use this in your theme: `<?php if (function_exists('stray_random_quote')) stray_random_quote(); ?>`. 
+7. To add a given quote instead of a random one use the following: `<?php if (function_exists('stray_a_quote')) stray_a_quote(id);?>`, where `id` is the id number of the quote as it appears on the management page.
+8. To insert a random quote inside a post or a page, just write in the editor `[random-quote]`.
+9. To insert a given quote inside a post or a page, just write in the editor `[quote id=xx]`, where `id` is the id number of the quote as it appears on the management page.
+10. To insert a list of all the quotes in a post or a page, just write in the editor `[all-quotes]`.
 
 == Changelog ==
 
