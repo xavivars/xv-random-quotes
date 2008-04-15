@@ -29,7 +29,7 @@ Stray Random Quotes is a plugin for Wordpress that collects and displays random 
 6. If you don't use the widget function, or you want random quotes to appear elsewhere other than the sidebar, use this in your theme: `<?php if (function_exists('stray_random_quote')) stray_random_quote(); ?>`. 
 7. To add a given quote instead of a random one use the following: `<?php if (function_exists('stray_a_quote')) stray_a_quote(id);?>`, where `id` is the id number of the quote as it appears on the management page.
 8. To insert a random quote inside a post or a page, just write in the editor `[random-quote]`.
-9. To insert a given quote inside a post or a page, just write in the editor `[quote id=xx]`, where `id` is the id number of the quote as it appears on the management page.
+9. To insert a given quote inside a post or a page, just write in the editor `[quote id=xx]`, where `xx` is the id number of the quote as it appears on the management page.
 10. To insert a list of all the quotes in a post or a page, just write in the editor `[all-quotes]`.
 
 == Changelog ==
