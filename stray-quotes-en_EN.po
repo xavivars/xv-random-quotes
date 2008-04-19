@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: strayquotes-en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-15 14:34+0100\n"
+"POT-Creation-Date: 2008-04-19 03:01+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: corpodibacco <corpodibacco@italyisfalling.com>\n"
 "Language-Team: \n"
@@ -15,11 +15,11 @@ msgstr ""
 "X-Poedit-Basepath: .\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: stray_functions.php:192
+#: stray_functions.php:178
 msgid "Title of the widget:"
 msgstr "Title of the widget:"
 
-#: stray_functions.php:194
+#: stray_functions.php:180
 msgid "Enter here a optional title for the widget."
 msgstr "Enter here a optional title for the widget."
 
@@ -160,20 +160,20 @@ msgid "Update Options"
 msgstr "Update Options"
 
 #: stray_pages.php:191
-#: stray_pages.php:590
+#: stray_pages.php:593
 msgid "Plugin's Homepage"
 msgstr "Plugin's Homepage"
 
 #: stray_pages.php:194
-#: stray_pages.php:593
+#: stray_pages.php:596
 msgid "Other plugins"
 msgstr "Other plugins"
 
-#: stray_pages.php:207
+#: stray_pages.php:208
 msgid "And strange it is / That nature must compel us to lament / Our most persisted deeds."
 msgstr "And strange it is / That nature must compel us to lament / Our most persisted deeds."
 
-#: stray_pages.php:213
+#: stray_pages.php:215
 #, php-format
 msgid ""
 "Hey. Welcome to <strong>Stray Random Quotes.</strong><br />This seems to be your first time visiting this page.\n"
@@ -186,7 +186,7 @@ msgstr ""
 "\t\tand added one to start you off.<br />Check out the \n"
 "        <a href=\"%s2\"> Options Page</a> too. Happy quoting!"
 
-#: stray_pages.php:229
+#: stray_pages.php:231
 #, php-format
 msgid ""
 "Hey. Welcome to <strong>Stray Random Quotes.</strong><br />I just renamed the old tables of quotes \"%s1\" as \"%s2\".<br />\n"
@@ -197,120 +197,120 @@ msgstr ""
 "\t\tAll your quotes are still there. As you can see the new table comes with all your old quotes and a new optional field,\n"
 "\t\t\"source\". <br />Check out the <a href=\"%s3\"> Options Page</a> too. Happy quoting!"
 
-#: stray_pages.php:281
+#: stray_pages.php:283
 msgid "<strong>Failure:</strong> Something went wrong when trying to insert the quote. Try again?"
 msgstr "<strong>Failure:</strong> Something went wrong when trying to insert the quote. Try again?"
 
-#: stray_pages.php:287
+#: stray_pages.php:289
 #, php-format
 msgid "Quote id %s successfully added to the database."
 msgstr "Quote id %s successfully added to the database."
 
-#: stray_pages.php:308
+#: stray_pages.php:310
 msgid "<strong>Failure:</strong> No quote ID given."
 msgstr "<strong>Failure:</strong> No quote ID given."
 
-#: stray_pages.php:325
+#: stray_pages.php:327
 msgid "<strong>Failure:</strong> Something went wrong. Try again?"
 msgstr "<strong>Failure:</strong> Something went wrong. Try again?"
 
-#: stray_pages.php:329
+#: stray_pages.php:331
 #, php-format
 msgid "Quote %s updated successfully."
 msgstr "Quote %s updated successfully."
 
-#: stray_pages.php:340
+#: stray_pages.php:342
 msgid "<strong>Failure:</strong> No quote ID given. Nothing deleted."
 msgstr "<strong>Failure:</strong> No quote ID given. Nothing deleted."
 
-#: stray_pages.php:353
+#: stray_pages.php:355
 #, php-format
 msgid "Quote %s deleted successfully"
 msgstr "Quote %s deleted successfully"
 
-#: stray_pages.php:357
+#: stray_pages.php:359
 msgid "<strong>Failure:</strong> Nothing deleted."
 msgstr "<strong>Failure:</strong> Nothing deleted."
 
-#: stray_pages.php:374
+#: stray_pages.php:376
 msgid "Something is wrong. No quote ID from the query string."
 msgstr "Something is wrong. No quote ID from the query string."
 
-#: stray_pages.php:384
-#: stray_pages.php:468
+#: stray_pages.php:386
+#: stray_pages.php:471
 msgid "Something is wrong. I can't find a quote linked up with that ID."
 msgstr "Something is wrong. I can't find a quote linked up with that ID."
 
-#: stray_pages.php:422
-#: stray_pages.php:505
+#: stray_pages.php:426
+#: stray_pages.php:509
 msgid "Quote:"
 msgstr "Quote:"
 
-#: stray_pages.php:426
-#: stray_pages.php:509
+#: stray_pages.php:430
+#: stray_pages.php:513
 msgid "Author:"
 msgstr "Author:"
 
-#: stray_pages.php:431
-#: stray_pages.php:514
+#: stray_pages.php:435
+#: stray_pages.php:518
 msgid "Source:"
 msgstr "Source:"
 
-#: stray_pages.php:436
-#: stray_pages.php:519
+#: stray_pages.php:440
+#: stray_pages.php:523
 msgid "Visible:"
 msgstr "Visible:"
 
-#: stray_pages.php:441
+#: stray_pages.php:445
 msgid "go back to the list of quotes"
 msgstr "go back to the list of quotes"
 
-#: stray_pages.php:442
-#: stray_pages.php:526
+#: stray_pages.php:446
+#: stray_pages.php:530
 msgid "Save quote"
 msgstr "Save quote"
 
-#: stray_pages.php:454
+#: stray_pages.php:457
 msgid "Add new"
 msgstr "Add new"
 
-#: stray_pages.php:461
+#: stray_pages.php:464
 msgid "The Quote ID seems to be invalid."
 msgstr "The Quote ID seems to be invalid."
 
-#: stray_pages.php:521
+#: stray_pages.php:525
 msgid "Yes"
 msgstr "Yes"
 
-#: stray_pages.php:523
+#: stray_pages.php:527
 msgid "No"
 msgstr "No"
 
-#: stray_pages.php:535
+#: stray_pages.php:538
 msgid "Manage"
 msgstr "Manage"
 
-#: stray_pages.php:549
+#: stray_pages.php:552
 msgid "Quote"
 msgstr "Quote"
 
-#: stray_pages.php:550
+#: stray_pages.php:553
 msgid "Author"
 msgstr "Author"
 
-#: stray_pages.php:551
+#: stray_pages.php:554
 msgid "Source"
 msgstr "Source"
 
-#: stray_pages.php:552
+#: stray_pages.php:555
 msgid "Visible"
 msgstr "Visible"
 
-#: stray_pages.php:573
+#: stray_pages.php:576
 msgid "Edit"
 msgstr "Edit"
 
-#: stray_pages.php:579
+#: stray_pages.php:582
 msgid ""
 "You are about to delete this quote\\n"
 "\\'Cancel\\' to stop, \\'OK\\' to delete.'"
@@ -318,15 +318,15 @@ msgstr ""
 "You are about to delete this quote\\n"
 "\\'Cancel\\' to stop, \\'OK\\' to delete.'"
 
-#: stray_pages.php:580
+#: stray_pages.php:583
 msgid "Delete"
 msgstr "Delete"
 
-#: stray_pages.php:585
+#: stray_pages.php:588
 msgid "You haven't entered any quotes yet."
 msgstr "You haven't entered any quotes yet."
 
-#: stray_quotes.php:105
+#: stray_quotes.php:102
 msgid "Quotes"
 msgstr "Quotes"
 

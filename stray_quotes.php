@@ -5,16 +5,15 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Displays random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5.
 Author: Corpodibacco
 Author URI: http://www.italyisfalling.com/coding/
-Version: 1.6
+Version: 1.6.1
 License: GPL compatible
 */
 
-global $wpdb;
+global $wpdb, $wp_version;
 
 //few definitions
 define("WP_QUOTES_TABLE", $wpdb->prefix . "quotes");
 define("WP_STRAY_QUOTES_TABLE", $wpdb->prefix . "stray_quotes");
-// define("WP_QUOTES_PAGE", "<!--wp_quotes_page-->"); not valid anymore: use "[all-quotes]"
 $dir = basename(dirname(__FILE__));
 if ($dir == 'plugins') $dir = '';
 else $dir = $dir . '/';	
@@ -28,7 +27,6 @@ if(!empty($currentLocale)) {
 	if ( strpos($moFile, '\\')) $moFile = str_replace('/','\\',$moFile); 
 	if(@file_exists($moFile) && is_readable($moFile)) load_textdomain('stray-quotes', $moFile);
 }
-
 	
 //add options and defaults if they do not exist
 add_option('stray_quotes_before_all', '<div align="right">');
@@ -93,8 +91,8 @@ include('stray_pages.php');
 //add headers
 function stray_quotes_header() {
 
-	echo "\n" . '<link rel="stylesheet" type="text/css" href="' . WP_STRAY_QUOTES_PATH . 'straystyle.css" />';	
-	echo "\n" . '<script type="text/javascript"> function toggleMe(a){ var e=document.getElementById(a); if(!e)return true; if(e.style.display=="block"){ e.style.display="none" } else{ e.style.display="block" } return true; } </script>';	
+	?><link rel="stylesheet" type="text/css" href="<?php echo WP_STRAY_QUOTES_PATH ?>straystyle.css" />	
+	<script type="text/javascript"> function toggleMe(a){ var e=document.getElementById(a); if(!e)return true; if(e.style.display=="block"){ e.style.display="none" } else{ e.style.display="block" } return true; } </script><?php 	
 }
 
 //build submenu entries
@@ -108,8 +106,13 @@ function stray_quotes_add_pages() {
 add_action('widgets_init', 'stray_quotes_widget_init');
 add_action('admin_menu', 'stray_quotes_add_pages');
 add_action('admin_head', 'stray_quotes_header');
-add_shortcode('quote', 'stray_id_shortcut');
-add_shortcode('random-quote', 'stray_rnd_shortcut');
-add_shortcode('all-quotes', 'stray_page_shortcut');
+if ($wp_version >= 2.5) {
+	add_shortcode('quote', 'stray_id_shortcut');
+	add_shortcode('random-quote', 'stray_rnd_shortcut');
+	add_shortcode('all-quotes', 'stray_page_shortcut');
+}
+
+//for compatibility
+if ($wp_version <= 2.3 ) add_filter('the_content', 'wp_quotes_page', 10);
 
 ?>

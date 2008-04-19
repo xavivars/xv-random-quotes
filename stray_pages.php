@@ -186,7 +186,7 @@ function stray_quotes_options () {
 	<input type="hidden" name="update" value="yes" /><br/>
 	<div class="submit"><input type="submit" value="<?php echo __('Update Options','stray-quotes') ?> &raquo;" /><br/><br/></div></form>
     
-    <div style="margin-top:15px; padding:2px; border-top:#CCCCCC 1px solid; margin:auto; text-align:center;"><ul>
+    <div style="text-align:center;"><ul>
     <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">
 	<?php echo __('Plugin\'s Homepage','stray-quotes') ?></a> | </li>
     <!--<li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;">Donate | </li>-->
@@ -204,10 +204,12 @@ function stray_quotes_manage() {
 	$first_time = get_option('stray_quotes_first_time');
 	if ($first_time == 1) {
 	
-		$wpdb->query( "INSERT INTO `" . WP_STRAY_QUOTES_TABLE . "` (quote, author, source, visible) values ". __('And strange it is / That nature must compel us to lament / Our most persisted deeds.', 'stray-quotes') . ", 'William Shakespeare', 'Antony and Cleopatra', 'yes') ");
+		
+		$sql = "INSERT INTO `" . WP_STRAY_QUOTES_TABLE . "` (quote, author, source, visible) values ('". __('And strange it is / That nature must compel us to lament / Our most persisted deeds.', 'stray-quotes') . "', 'William Shakespeare', 'Antony and Cleopatra', 'yes') ";
+		$wpdb->query($sql);
 		
 		$search = array("%s1", "%s2");
-		$replace = array(WP_STRAY_QUOTES_TABLE, get_settings('siteurl') . "/wp-admin/options-general.php?page=stray_quotes.php");
+		$replace = array(WP_STRAY_QUOTES_TABLE, get_option('siteurl') . "/wp-admin/options-general.php?page=stray_quotes.php");
 		
 		?><div class="updated"><p><?php echo str_replace($search,$replace,__(
 		'Hey. Welcome to <strong>Stray Random Quotes.</strong><br />This seems to be your first time visiting this page.
@@ -223,7 +225,7 @@ function stray_quotes_manage() {
 	
 		$search = array("%s1", "%s2", "%s3");
 		$replace = array(WP_QUOTES_TABLE, WP_STRAY_QUOTES_TABLE, 
-		get_settings('siteurl') . "/wp-admin/options-general.php?page=stray_quotes.php");
+		get_option('siteurl') . "/wp-admin/options-general.php?page=stray_quotes.php");
 	
 		?><div class="updated"><p><?php echo str_replace($search,$replace,__(
 		'Hey. Welcome to <strong>Stray Random Quotes.</strong><br />I just renamed the old tables of quotes "%s1" as "%s2".<br />
@@ -415,7 +417,9 @@ function stray_quotes_manage() {
 			}			
 			
 			//make the edit form
-			?><div class="stray_form"><form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
+			?>
+            <div class="stray_form">
+            <form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?> ">
 				<input type="hidden" name="action" value="edit_save">
 				<input type="hidden" name="quoteID" value="<?php echo $quoteID; ?>">
 			
@@ -440,9 +444,8 @@ function stray_quotes_manage() {
 				<p align="right"><a href="<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php">
                 &laquo; <?php echo __('go back to the list of quotes','stray-quotes') ?></a>&nbsp;
                 <input type="submit" name="save" class="button bold" value="<?php echo __('Save quote','stray-quotes') ?> &raquo;" />
-                </p>
-				</div>
-			</form><?php 
+                </p>				
+			</form></div></div><?php 
 	
 		}	
 	}	
@@ -498,7 +501,8 @@ function stray_quotes_manage() {
 			}			
 			
 			//make the edit form
-			?><div class="stray_form"><form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
+			?><div class="stray_form">
+            <form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
 				<input type="hidden" name="action" value="add">
 				<input type="hidden" name="quoteID" value="">
 			
@@ -522,10 +526,9 @@ function stray_quotes_manage() {
 					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> 
 					<?php echo __('No','stray-quotes') ?>
 				</fieldset>
-				<div align="right"><input type="submit" name="save" class="button bold" 
-                value="<?php echo __('Save quote','stray-quotes') ?> &raquo;" /></div>
-				</div>
-			</form><?php
+				<p align="right"><input type="submit" name="save" class="button bold" 
+                value="<?php echo __('Save quote','stray-quotes') ?> &raquo;" /></p>				
+			</form></div></div><?php
 			
 			
 			
@@ -585,7 +588,7 @@ function stray_quotes_manage() {
 			<?php } else { ?><p> <?php echo __('You haven\'t entered any quotes yet.','stray-quotes') ?> </p><?php	}
 	} ?>
     
-	<div style="margin-top:15px; padding:2px; border-top:#CCCCCC 1px solid; margin:auto; text-align:center;"><ul>
+	<div style="text-align:center;"><ul>
     <li style="display:inline;list-style:none"><a href="http://www.italyisfalling.com/stray-quotes">
 	<?php echo __('Plugin\'s Homepage','stray-quotes') ?></a> | </li>
     <!--<li style="line-height:1em;display:inline;list-style:none;letter-spacing:0.5%;">Donate | </li>-->
