@@ -2,10 +2,10 @@
 Contributors: corpodibacco
 Tags: quotes, random, widget
 Requires at least: 2.0.2
-Tested up to: 2.5
-Stable tag: 1.6.1
+Tested up to: 2.6
+Stable tag: 1.6.2
 
-Display random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5.
+Display random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5+.
 
 == Description ==
 
@@ -28,13 +28,13 @@ Stray Random Quotes is a plugin for Wordpress that collects and displays random 
 5. If you use widgets to customize the sidebar of your blog, Stray Random Quotes does come with a widget. Just check "Design" > "Widgets" in the admin menu. 
 6. If you don't use the widget function, or you want random quotes to appear elsewhere other than the sidebar, use this in your theme: `<?php if (function_exists('stray_random_quote')) stray_random_quote(); ?>`. 
 7. To add a given quote instead of a random one use the following: `<?php if (function_exists('stray_a_quote')) stray_a_quote(id);?>`, where `id` is the id number of the quote as it appears on the management page.
-8. To insert a random quote inside a post or a page, just write in the editor `[random-quote]` (Wordpress 2.5+ only).
-9. To insert a given quote inside a post or a page, just write in the editor `[quote id=xx]` (Wordpress 2.5+ only), where `xx` is the id number of the quote as it appears on the management page.
-10. To insert a list of all the quotes in a post or a page, just write in the editor `[all-quotes]` (Wordpress 2.5+ only). If you use an earlier version of Wordpress, you can still use `<!--wp_quotes_page-->` (Wordpress 2.3- only).
+8. To insert a random quote inside a post or a page, just write in the editor `[random-quote]`.
+9. To insert a given quote inside a post or a page, just write in the editor `[quote id=xx]`, where `xx` is the id number of the quote as it appears on the management page.
+10. To insert a list of all the quotes in a post or a page, just write in the editor `[all-quotes]`.
 
 == Changelog ==
 
-* 1.6.1 Fixed the fact that the plugin didn't really considered wordpress 2.3.x users. Now the compatibility is assured, although WP 2.3 cannot use the shortcodes (see 'installation'). Thanks to gnr for pointing the bug out! I also fixed a pretty significant bug in the first time run of the plugin, where it didn't insert a sample quote although a message said it did, and I fixed the html code of the management page, it was messed up.
+* 1.6.2 Fixed a compatibility issue with WP 2.6 which caused the available themes to not be displayed (thanks to all the users of Stray Random Quotes who pointed this bug out!). Also updated the layout of the option and manage pages to make them more consistent with the general design of WP.
 * 1.6 This a major update (hence the slight jump forward in numbering): First of all, it takes advantage of the new Wordpress 2.5 [shortcuts_API](http://codex.wordpress.org/Shortcode_API "shortcuts API") by adding three different shortcuts to easily insert quotes inside your posts. In addition, it gives you the option to link author and source of your quotes to Wikipedia (not only to Google anymore) in all the major languages. Talking about language, this plugin is now ready for translations so come forward if you're willing to translate it in your own language. Only english and italian are available so far. This version contains a bunch of minor fixes and code rewriting, and also a few new names for its functions (you shouldn't notice any difference, but check out the installation instructions).
 * 1.53 Hopefully fixed a little mishap with the code that caused the "updated table" message to persist. Also a link that didn't work should be fixed. Thanks to c for pointing these bugs out. Also I changed the name of the plugin to make it more to the point.
 * 1.52 Finally managed to use "edit" and "delete" links instead of buttons in the list of quotes. Great personal achievement since I was never able to make this simple thing work. More minor fixes. 

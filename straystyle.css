@@ -1,40 +1,10 @@
-
 @charset "utf-8";
 /* CSS Document */
-
-#stray_quotes_options {
-padding:10px;
-	padding-top:25px;
-	padding-bottom:25px;
-
-}
-
-#stray_quotes_options fieldset {
-	border: 1px solid #ccc;
-	padding: 10px;
-}
-
-
-#stray_quotes_options p {
-	padding-right:30px;
-	padding-left:100px;
-	border:none;
-}
-
-.stray_desc {
-	display:none;
-	margin-right:30px;
-	margin-left:100px;
-	margin-bottom:20px;
-	background-color:#FFFFCA;
-	border:#999999 solid 1px;
-	padding:10px;
-}
 
 .stray_text {
 	border:none;
 	border-bottom:dashed #aaa 1px;
-	background:none;
+	/*background:none;*/
 	font-family: "Courier New", Courier, monospace;
 }	
 
@@ -62,12 +32,6 @@ padding:10px;
 	padding-bottom:25px;
 }
 
-.stray_form fieldset {
-	border: none;
+.stray_form legend {
+	padding-top:8px;	
 }	
-
-.stray_list {
-
-	padding:10px;
-	padding-bottom:20px;
-}

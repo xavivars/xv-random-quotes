@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Displays random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5.
 Author: Corpodibacco
 Author URI: http://www.italyisfalling.com/coding/
-Version: 1.6.1
+Version: 1.6.2
 License: GPL compatible
 */
 
@@ -45,13 +45,13 @@ add_option('stray_quotes_default_visible','');
 add_option('stray_quotes_wiki_lan','en');
 
 //check if table exists and alter it if necessary	
-$tableExists = false;
-$tables = $wpdb->get_results("SHOW TABLES");
-foreach ( $tables as $table ){	
-	foreach ( $table as $value ){
+$straytableExists = false;
+$straytables = $wpdb->get_results("SHOW TABLES");
+foreach ( $straytables as $straytable ){	
+	foreach ( $straytable as $value ){
 	
 		if ( $value == WP_QUOTES_TABLE ){			
-			$tableExists = true;	
+			$straytableExists = true;	
 			//if table exists it must be old -- must update and rename.
 			$wpdb->query('ALTER TABLE ' . WP_QUOTES_TABLE . ' ADD COLUMN `source` VARCHAR( 255 ) NOT NULL AFTER `author`');
 			$wpdb->query('RENAME TABLE ' . WP_QUOTES_TABLE . ' TO ' . WP_STRAY_QUOTES_TABLE);
@@ -61,14 +61,14 @@ foreach ( $tables as $table ){
 			break;
 		}
 		elseif ( $value == WP_STRAY_QUOTES_TABLE ){			
-			$tableExists=true;
+			$straytableExists=true;
 			break;
 		}		
 	}
 }
 
 //table does not exist, create one
-if ( !$tableExists ) {
+if ( !$straytableExists ) {
 	
 	$wpdb->query("
 	CREATE TABLE IF NOT EXISTS `". WP_STRAY_QUOTES_TABLE . "` (
