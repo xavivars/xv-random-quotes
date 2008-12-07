@@ -3,7 +3,7 @@ Contributors: corpodibacco
 Tags: quotes, random, widget
 Requires at least: 2.0.2
 Tested up to: 2.6
-Stable tag: 1.6.2
+Stable tag: 1.6.3
 
 Display random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5+.
 
@@ -34,6 +34,7 @@ Stray Random Quotes is a plugin for Wordpress that collects and displays random 
 
 == Changelog ==
 
+* 1.6.3 Wordpress 2.7 compatibility.
 * 1.6.2 Fixed a compatibility issue with WP 2.6 which caused the available themes to not be displayed (thanks to all the users of Stray Random Quotes who pointed this bug out!). Also updated the layout of the option and manage pages to make them more consistent with the general design of WP.
 * 1.6 This a major update (hence the slight jump forward in numbering): First of all, it takes advantage of the new Wordpress 2.5 [shortcuts_API](http://codex.wordpress.org/Shortcode_API "shortcuts API") by adding three different shortcuts to easily insert quotes inside your posts. In addition, it gives you the option to link author and source of your quotes to Wikipedia (not only to Google anymore) in all the major languages. Talking about language, this plugin is now ready for translations so come forward if you're willing to translate it in your own language. Only english and italian are available so far. This version contains a bunch of minor fixes and code rewriting, and also a few new names for its functions (you shouldn't notice any difference, but check out the installation instructions).
 * 1.53 Hopefully fixed a little mishap with the code that caused the "updated table" message to persist. Also a link that didn't work should be fixed. Thanks to c for pointing these bugs out. Also I changed the name of the plugin to make it more to the point.

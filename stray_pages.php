@@ -514,6 +514,12 @@ function stray_quotes_manage() {
                     <tbody><?php
 				
 				$i = 0;	
+				
+				//wordpress >= 2.7 compat
+				global $wp_version;
+				if ($wp_version >= 2.7) { $the_page = "/wp-admin/tools.php?"; } else { $the_page = "/wp-admin/edit.php?"; };
+
+
 				foreach ( $quotes as $quote ) {
 				
 					$alt = ($i % 2 == 0) ? ' class="alternate"' : '';
