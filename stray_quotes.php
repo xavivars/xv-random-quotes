@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Displays random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.5.
 Author: Corpodibacco
 Author URI: http://www.italyisfalling.com/coding/
-Version: 1.6.2
+Version: 1.6.3
 License: GPL compatible
 */
 
