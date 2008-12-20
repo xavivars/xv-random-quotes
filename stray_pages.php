@@ -534,12 +534,12 @@ function stray_quotes_manage() {
 											
 						<td align="center">
                         <a href="
-						<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=edit&quoteID=<?php echo($quote->quoteID); ?>">
+						<?php echo (get_option('siteurl')).$the_page ?>page=stray_quotes.php&action=edit&quoteID=<?php echo($quote->quoteID); ?>">
                         <?php echo __('Edit','stray-quotes') ?></a></td>
 		
 						<td align="center">
                         <a href="
-						<?php echo (get_option('siteurl'))?>/wp-admin/edit.php?page=stray_quotes.php&action=delete&quoteID=<?php echo($quote->quoteID); ?>"
+						<?php echo (get_option('siteurl')).$the_page ?>page=stray_quotes.php&action=delete&quoteID=<?php echo($quote->quoteID); ?>"
                         onclick="if ( confirm('<?php echo __(
 						'You are about to delete this quote\\n\\\'Cancel\\\' to stop, \\\'OK\\\' to delete.\'',
 						'stray-quotes'); ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
