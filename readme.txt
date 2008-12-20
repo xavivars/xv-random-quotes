@@ -1,8 +1,8 @@
 === Stray Random Quotes ===
 Contributors: corpodibacco
 Tags: quotes, random, widget
-Requires at least: 2.0.2
-Tested up to: 2.6
+Requires at least: 2.3
+Tested up to: 2.7
 Stable tag: 1.6.4
 
 Display random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
