@@ -115,7 +115,7 @@ function stray_quotes_options () {
 
 	//execute and feedback the removal
 	$quotesoptions = get_option('stray_quotes_options');
-	?><div class="wrap"><h2><?php echo __('Deactivate Lighter Menus', 'stray-quotes') ?></h2>
+	?><div class="wrap"><h2><?php echo __('Deactivate Stray Random Quotes', 'stray-quotes') ?></h2>
 	<p><strong><a href=" <?php echo $deactivate_url ?>" >
 	<?php echo __('Click Here</a> to deactivate Stray Random Quotes.', 'stray-quotes'); ?>
 	</strong></p><p style="#990000"><?php			
