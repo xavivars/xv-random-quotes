@@ -239,11 +239,17 @@ function stray_manage() {
 	else $where = " WHERE `group`='" . $groups . "'";
 	
 	// how many rows we have in database
-	$result = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . $where);
+	$result = $wpdb->get_results("select quoteID from " . WP_STRAY_QUOTES_TABLE . $where);
 	$numrows = count($result);
 	
+	//temporary workaround for the "division by zero" problem
+	if (is_string($rows))$rows=intval($rows);
+	settype($rows, "integer"); 
+	
 	// how many pages we have when using paging?
+	if ($rows == NULL || $rows > 10) $rows = 10; 
 	$maxPage = ceil($numrows/$rows);
+		
 	
 	// print the link to access each page
 	$nav  = '';
@@ -408,7 +414,7 @@ function stray_manage() {
 		</tbody></table><p class="subsubsub" style="float:right"><?php
 		echo $first . $prev . $nav . $next . $last; ?></p><?php
 		
-	} else { ?><p> <?php echo __('You haven\'t entered any quotes yet.','stray-quotes') ?> </p>
+	} else { ?><p><div style="clear:both"> <?php echo __('<br/>No quotes yet.','stray-quotes') ?> </div></p>
 	
 	
 	

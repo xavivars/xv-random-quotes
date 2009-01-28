@@ -152,7 +152,7 @@ function stray_rnd_shortcut($groups=NULL) {
 			
 			//end of it
 			$get_one = $result[rand(0, count($result)-1)];
-			echo stray_output_one($get_one);
+			return stray_output_one($get_one);
 			
 		}
 	}
@@ -190,42 +190,104 @@ function stray_id_shortcut($attr='1') {
 		
 			//end of it
 			$get_one = $result[0];					
-			echo stray_output_one($get_one);
+			return stray_output_one($get_one);
 		}
 
 	}	
 }
 
-//this replaces "[all-quotes]" in a post with all the quotes
-function stray_page_shortcut($data) {
+//this replaces "[all-quotes rows=10, orderby="quoteID", sort="ASC", group="all"]" in a post with all the quotes
+function stray_page_shortcut($atts, $content = NULL) {
 
 	global $wpdb,$wp_version;
+	$quotesoptions = get_option('stray_quotes_options');
 	
-	//sql the thing
-	$result = $wpdb->get_results("select quoteID,quote,author,source,`group` from " . WP_STRAY_QUOTES_TABLE. " where visible='yes'");
+	//shortcodes are only for WP 2.5+
+	if ($wp_version >= 2.5) {
 	
-	if ( !empty($result) ) {
+		extract(shortcode_atts(array(
+			"rows" => 10,
+			"orderby" =>'quoteID',
+			"sort" => 'ASC',
+			"groups" => ''
+		), $atts));
 	
-		$contents = '<ul>';
-		foreach ( $result as $get_one )$contents .= '<li>'.stray_output_one($get_one).'</li>';	
-		$contents .= '</ul>';
+		// prepares group for sql
+		$where = '';
+		if ($groups == 'all' || $groups == '') $where = " WHERE visible='yes'";
+		else $where = " WHERE `group`='" . $groups . "' AND visible='yes'";
 		
-		//if it is not WP 2.5 do the old thing
-		if ($wp_version <= 2.3) {
-			$start = strpos($data, "<!--wp_quotes_page-->");
-			if ( $start !== false ) $data = substr_replace($data, $contents, $start, strlen("<!--wp_quotes_page-->"));		
+		//what page number?
+		$pages = 1;
+		if(isset($_GET['qp']))$pages = $_GET['qp'];	
+		$offset = ($pages - 1) * $rows;
+		
+		// how many rows we have in database?
+		$result = $wpdb->get_results("select quoteID from " . WP_STRAY_QUOTES_TABLE . $where);
+		$numrows = count($result);
+		
+		//temporary workaround for the "division by zero" problem
+		if (is_string($rows))$rows=intval($rows);
+		settype($rows, "integer"); 
+		
+		// how many pages we have when using paging?
+		if ($rows == NULL || $rows < 10) $rows = 10; 
+		$maxPage = ceil($numrows/$rows);
+		
+		// print the link to access each page
+		$nav  = '';
+		
+		$baseurl = $_SERVER['PHP_SELF'];
+		$urlpages = $baseurl.'&qp=';
+		
+		for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
+		   if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
+		   else $nav .= ' <a href="'.$urlpages.$quotepage.'">'.$quotepage.'</a> ';
+		}
+		
+		if ($pages > 1) {
+		   $quotepage  = $pages - 1;
+		   $prev  = ' <a href="'.$urlpages.$quotepage.'">Previous '.$rows.'</a> | ';		
+		   $first = ' <a href="'.$urlpages.'1">First</a> | ';
+		}
+		else {
+		   $prev  = '&nbsp;'; // we're on page one, don't print previous link
+		   $first = '&nbsp;'; // nor the first page link
+		}
+		
+		if ($pages < $maxPage) {
+		   $quotepage = $pages + 1;
+		   $next = ' | <a href="'.$urlpages.$quotepage.'"> Next '.$rows.'</a> ';
+		
+		   $last = ' | <a href="'.$urlpages.$maxPage.'"> Last</a> ';
+		}
+		else {
+		   $next = '&nbsp;'; // we're on the last page, don't print next link
+		   $last = '&nbsp;'; // nor the last page link
 		}		
-
-		if ($wp_version <= 2.3) echo $data;
-		else echo $contents;
-	
-	}	
+		$sql = "SELECT quoteID,quote,author,source,`group` FROM " 
+		. WP_STRAY_QUOTES_TABLE. $where 
+		. " ORDER BY `". $orderby ."`"
+		. $sort 
+		. " LIMIT " . $offset. ", ". $rows;
+		$result = $wpdb->get_results($sql);
+		
+		if ( !empty($result) ) {
+			
+			$contents = '<p>'.$first . $prev . $nav . $next . $last.'</p>';
+			$contents .= '<ul>';
+			foreach ( $result as $get_one )$contents .= '<li>'.stray_output_one($get_one).'</li>';	
+			$contents .= '</ul><p>'.$first . $prev . $nav . $next . $last.'</p>';;
+			return $contents;
+		
+		}
+	}
 }
 
 //this is for compatibility with old function names
-function wp_quotes_random() {return stray_random_quote('all');}
+function wp_quotes_random() {return stray_random_quote();}
 function wp_quotes($id) {return stray_a_quote($id);}
-function wp_quotes_page($data) {return stray_page_shortcut($data);}
+function wp_quotes_page($data) {return stray_page_shortcut();}
 
 //this creates a list of unique groups
 function make_groups() {

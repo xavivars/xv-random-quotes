@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Displays random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.7
+Version: 1.7.1
 License: GPL compatible
 */
 
@@ -31,8 +31,7 @@ if(!empty($currentLocale)) {
 //add header
 function stray_quotes_header() {
 
-	?><script type="text/javascript">function switchpage(select) {var index;for(index=0; index<select.options.length; index++)if(select.options[index].selected){if(select.options[index].value!="")window.location.href=select.options[index].value;break;}}</script>
-	<?php 	
+	?><script type="text/javascript">function switchpage(select) {var index;for(index=0; index<select.options.length; index++)if(select.options[index].selected){if(select.options[index].value!="")window.location.href=select.options[index].value;break;}}</script><?php 	
 	
 }
 
@@ -42,7 +41,8 @@ function quotes_activation() {
 	global $wpdb;
 	
 	//convert old options into new shiny array ones
-	$quotesoptions = get_option('stray_quotes_options');	
+	$quotesoptions = get_option('stray_quotes_options');
+	
 	if (false === $quotesoptions || !is_array($quotesoptions) ) {
 		
 		$quotesoptions = array();
@@ -125,7 +125,7 @@ function quotes_activation() {
 		$quotesoptions['stray_quotes_rows'] = 10; 
 		$quotesoptions['stray_quotes_groups'] = 'all';
 		$quotesoptions['stray_quotes_sort'] = 'DESC';
-		$quotesoptions['stray_quotes_version'] = 1.7; 
+		$quotesoptions['stray_quotes_version'] = 171; 
 				
 		//special trasformation for how link options work now
 		$var_12 = 'stray_quotes_use_google_links';
@@ -158,7 +158,14 @@ function quotes_activation() {
 		$quotesoptions['stray_quotes_first_time'] = 4;
 		delete_option('stray_quotes_first_time');
 				
-	}	
+	}
+	//if the new post 1.7 array options already exist
+	else {
+		//take care of version number
+		if($quotesoptions['stray_quotes_version'] <= 170 || $quotesoptions['stray_quotes_version'] != 171) {
+			$quotesoptions['stray_quotes_version'] = 171; 
+		}
+	}
 
 	//check if table exists and alter it if necessary	
 	$straytableExists = false;
@@ -173,6 +180,7 @@ function quotes_activation() {
 				//if table exists it must be old -- must update and rename.
 				$wpdb->query('ALTER TABLE ' . WP_QUOTES_TABLE . ' ADD COLUMN `source` VARCHAR( 255 ) NOT NULL AFTER `author`');
 				$wpdb->query('ALTER TABLE ' . WP_QUOTES_TABLE . ' ADD COLUMN `group` VARCHAR( 255 ) NOT NULL  DEFAULT "default" AFTER `source`');			
+				
 				//and fill in default values
 				$wpdb->query('UPDATE '. WP_QUOTES_TABLE . ' SET `group`="default"');				
 				$wpdb->query('RENAME TABLE ' . WP_QUOTES_TABLE . ' TO ' . WP_STRAY_QUOTES_TABLE);
@@ -258,6 +266,7 @@ if ($wp_version <= 2.3 ) add_filter('the_content', 'wp_quotes_page', 10);
 function stray_quotes_add_pages() {
 
 	add_menu_page('Stray Random Quotes', 'Quotes', 8, __FILE__, 'stray_intro', WP_STRAY_QUOTES_PATH.'/img/lightbulb.png');
+	add_submenu_page(__FILE__, __('Overview','stray-quotes'), __('Overview','stray-quotes'), 8, __FILE__, 'stray_intro');
 	add_submenu_page(__FILE__, __('Manage','stray-quotes'), __('Manage','stray-quotes'), 8, 'stray_manage', 'stray_manage');
 	add_submenu_page(__FILE__, __('Add New','stray-quotes'), __('Add New','stray-quotes'), 8, 'stray_new', 'stray_new');
 	add_submenu_page(__FILE__, __('Settings','stray-quotes'), __('Settings','stray-quotes'), 8, 'stray_quotes_options', 'stray_quotes_options'); 	
@@ -266,7 +275,7 @@ function stray_quotes_add_pages() {
 
 //includes
 include('inc/stray_functions.php');
-include('inc/stray_intro.php');
+include('inc/stray_overview.php');
 include('inc/stray_settings.php');
 include('inc/stray_manage.php');
 include('inc/stray_editor.php');
