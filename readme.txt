@@ -5,7 +5,7 @@ Requires at least: 2.3
 Tested up to: 2.7
 Stable tag: 1.7.1
 
-Display random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
+Display random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 
 == Description ==
 
