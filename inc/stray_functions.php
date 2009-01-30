@@ -27,27 +27,31 @@ function stray_output_one($get_one) {
 	$output = '';
 	
 	//make or not the author link
-	if (!$linkto)$Author = $get_one->author;
-	else {
-		$Author = $get_one->author;
-		if ($authorspaces)$Author =str_replace(" ",$authorspaces,$Author);
-		
-		$search = array('"', '&', '%AUTHOR%');
-		$replace = array('%22','%26', $Author);
-		$linkto = str_replace($search,$replace,$linkto);
-		$Author = '<a href="'.$linkto.'">' . $get_one->author . '</a>';
+	if ( $get_one->author ) {
+		if (!$linkto || strpos('<a href=',$get_one->author))$Author = $get_one->author;
+		else {
+			$Author = $get_one->author;
+			if ($authorspaces)$Author =str_replace(" ",$authorspaces,$Author);
+			
+			$search = array('"', '&', '%AUTHOR%');
+			$replace = array('%22','%26', $Author);
+			$linkto = str_replace($search,$replace,$linkto);
+			$Author = '<a href="'.htmlentities($linkto).'">' . $get_one->author . '</a>';
+		}
 	}
 	
 	//make or not the source link
-	if (!$sourcelinkto)$Source = $get_one->source;
-	else {
-		$Source = $get_one->source;
-		if ($sourcespaces)$Source =str_replace(" ",$sourcespaces,$Source);
-		
-		$search = array('"', '&', '%SOURCE%');
-		$replace = array('%22','%26', $Source);
-		$sourcelinkto = str_replace($search,$replace,$sourcelinkto);
-		$Source = '<a href="'.$sourcelinkto.'">' . $get_one->source . '</a>';
+	if ( $get_one->source ) {
+		if (!$sourcelinkto || strpos('<a href=',$get_one->source))$Source = $get_one->source;
+		else {
+			$Source = $get_one->source;
+			if ($sourcespaces)$Source =str_replace(" ",$sourcespaces,$Source);
+			
+			$search = array('"', '&', '%SOURCE%');
+			$replace = array('%22','%26', $Source);
+			$sourcelinkto = str_replace($search,$replace,$sourcelinkto);
+			$Source = '<a href="'.htmlentities($sourcelinkto).'">' . $get_one->source . '</a>';
+		}
 	}
 	
 	//output the content
@@ -295,6 +299,38 @@ function make_groups() {
 	$allgroups = $wpdb->get_col("SELECT `group` FROM " . WP_STRAY_QUOTES_TABLE);
 	$uniquegroups = array_unique($allgroups);
 	return $uniquegroups;
+}
+
+//this finds the most used value in a column
+function mostused($field) {
+
+	global $wpdb;
+
+	$sql = 'SELECT `'.$field.'` FROM ' . WP_STRAY_QUOTES_TABLE . ' WHERE `'.$field.'` IS NOT NULL AND `'.$field.'` !=""' ;
+	$all = $wpdb->get_col($sql);
+	$array = array_count_values($all);
+	
+	reset($array);
+	if(FALSE === key($array)) {
+		return array('min' => NULL, 'max' => NULL);
+	}
+	
+	$min = $max = current($array);
+	$val = next($array);
+	$atleastonerepeat = false;
+	
+	while(NULL !== key($array)) {
+		if($val > $max)$max = $val;
+		elseif($val < $min)$min = $val;
+		if ($val > 1) $atleastonerepeat = true;
+		$val = next($array);
+		
+	}
+	if ($atleastonerepeat == true) {
+		$keys = array_keys($array, $max);
+		$maxvalue = $keys[0];
+		return $maxvalue;	
+	} else return false;
 }
 
 ?>

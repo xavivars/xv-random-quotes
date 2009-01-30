@@ -2,10 +2,10 @@
 /*
 Plugin Name: Stray Random Quotes
 Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
-Description: Displays random quotes on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
+Description: Displays random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.7.1
+Version: 1.7.3
 License: GPL compatible
 */
 
@@ -14,10 +14,13 @@ global $wpdb, $wp_version;
 //few definitions
 define("WP_QUOTES_TABLE", $wpdb->prefix . "quotes");
 define("WP_STRAY_QUOTES_TABLE", $wpdb->prefix . "stray_quotes");
-$dir = basename(dirname(__FILE__));
-if ($dir == 'plugins') $dir = '';
-else $dir = $dir . '/';	
-define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . $dir);
+define ("DIR",basename(dirname(__FILE__)));
+
+if (DIR == 'plugins') $dir = '';
+define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
+
+// !!! remember to change this with every new version !!!
+define ("WP_STRAY_VERSION", 173);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -39,109 +42,106 @@ function stray_quotes_header() {
 function quotes_activation() {
 
 	global $wpdb;
-	
-	//convert old options into new shiny array ones
 	$quotesoptions = get_option('stray_quotes_options');
 	
-	if (false === $quotesoptions || !is_array($quotesoptions) ) {
+	//convert old options into new shiny array ones	
+	if (false === $quotesoptions || !is_array($quotesoptions) || $quotesoptions=='' ) {
 		
 		$quotesoptions = array();
 		
-		$var_1 = 'stray_quotes_before_all';
-		$temp_1 = get_option($var_1);
-		if (false === $temp_1) $quotesoptions[$var_1] =  '<div align="right">';
-		else $quotesoptions[$var_1] = $temp_1;
-		delete_option($var_1);
+		//conversion of old pre-1.7 options
+		$var = 'stray_quotes_before_all';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '<div align="right">';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);
+		unset($var);unset($temp);		
+		$var = 'stray_quotes_before_quote';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '&#8220;';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_after_quote';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '&#8221;';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_before_author';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '<br/>by&nbsp;';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_after_author';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_before_source';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '<em>&nbsp;';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_after_source';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '</em>';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_after_all';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '</div>';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_widget_title';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  'Random Quote';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_regular_title';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  '<h2>Random Quote</h2>';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_put_quotes_first';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  'Y';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_default_visible';
+		$temp = get_option($var);
+		if (false === $temp) $quotesoptions[$var] =  'Y';
+		else $quotesoptions[$var] = $temp;
+		delete_option($var);
+		unset($var);unset($temp);
 		
-		$var_2 = 'stray_quotes_before_quote';
-		$temp_2 = get_option($var_2);
-		if (false === $temp_2) $quotesoptions[$var_2] =  '&#8220;';
-		else $quotesoptions[$var_2] = $temp_2;
-		delete_option($var_2);
+		//the first time thing
+		$quotesoptions['stray_quotes_first_time'] = 4;
+		delete_option('stray_quotes_first_time');
 		
-		$var_3 = 'stray_quotes_after_quote';
-		$temp_3 = get_option($var_3);
-		if (false === $temp_3) $quotesoptions[$var_3] =  '&#8221;';
-		else $quotesoptions[$var_3] = $temp_3;
-		delete_option($var_3);
-		
-		$var_4 = 'stray_quotes_before_author';
-		$temp_4 = get_option($var_4);
-		if (false === $temp_4) $quotesoptions[$var_4] =  '<br/>by&nbsp;';
-		else $quotesoptions[$var_4] = $temp_4;
-		delete_option($var_4);
-		
-		$var_5 = 'stray_quotes_after_author';
-		$temp_5 = get_option($var_5);
-		if (false === $temp_5) $quotesoptions[$var_5] =  '';
-		else $quotesoptions[$var_5] = $temp_5;
-		delete_option($var_5);
-		
-		$var_6 = 'stray_quotes_before_source';
-		$temp_6 = get_option($var_6);
-		if (false === $temp_6) $quotesoptions[$var_6] =  '<em>&nbsp;';
-		else $quotesoptions[$var_6] = $temp_6;
-		delete_option($var_6);
-		
-		$var_7 = 'stray_quotes_after_source';
-		$temp_7 = get_option($var_7);
-		if (false === $temp_7) $quotesoptions[$var_7] =  '</em>';
-		else $quotesoptions[$var_7] = $temp_7;
-		delete_option($var_7);
-		
-		$var_8 = 'stray_quotes_after_all';
-		$temp_8 = get_option($var_8);
-		if (false === $temp_8) $quotesoptions[$var_8] =  '</div>';
-		else $quotesoptions[$var_8] = $temp_8;
-		delete_option($var_8);
-		
-		$var_9 = 'stray_quotes_widget_title';
-		$temp_9 = get_option($var_9);
-		if (false === $temp_9) $quotesoptions[$var_9] =  'Random Quote';
-		else $quotesoptions[$var_9] = $temp_9;
-		delete_option($var_9);
-		
-		$var_10 = 'stray_quotes_regular_title';
-		$temp_10 = get_option($var_10);
-		if (false === $temp_10) $quotesoptions[$var_10] =  '<h2>Random Quote</h2>';
-		else $quotesoptions[$var_10] = $temp_10;
-		delete_option($var_10);
-		
-		$var_11 = 'stray_quotes_put_quotes_first';
-		$temp_11 = get_option($var_11);
-		if (false === $temp_11) $quotesoptions[$var_11] =  'Y';
-		else $quotesoptions[$var_11] = $temp_11;
-		delete_option($var_11);
-		
-		$var_13 = 'stray_quotes_default_visible';
-		$temp_13 = get_option($var_13);
-		if (false === $temp_13) $quotesoptions[$var_13] =  'Y';
-		else $quotesoptions[$var_13] = $temp_13;
-		delete_option($var_13);
-		
-		//new entries
-		$quotesoptions['stray_quotes_uninstall'] = '';
-		$quotesoptions['stray_quotes_order'] = 'quoteID';
-		$quotesoptions['stray_quotes_rows'] = 10; 
-		$quotesoptions['stray_quotes_groups'] = 'all';
-		$quotesoptions['stray_quotes_sort'] = 'DESC';
-		$quotesoptions['stray_quotes_version'] = 171; 
-				
 		//special trasformation for how link options work now
-		$var_12 = 'stray_quotes_use_google_links';
-		$temp_12 = get_option($var_12);
-		$var_14 = 'stray_quotes_wiki_lan';		
-		$temp_14 = get_option($var_14);
-		if ($temp12 == 'Y') {
+		$var = 'stray_quotes_use_google_links';
+		$temp = get_option($var);
+		$varb = 'stray_quotes_wiki_lan';		
+		$tempb = get_option($varb);
+		if ($temp == 'Y') {
 			$quotesoptions['stray_quotes_linkto'] = '<a href="http://www.google.com/search?q=&quot;%AUTHOR%&quot;">';
 			$quotesoptions['stray_quotes_sourcelinkto'] = '<a href="http://www.google.com/search?q=&quot;%SOURCE%&quot;">';
 			$quotesoptions['stray_quotes_sourcespaces'] = ' ';	
 			$quotesoptions['stray_quotes_authorspaces'] = ' ';		
 		} 
 		
-		else if ($temp12 == 'W') {
-			$quotesoptions['stray_quotes_linkto'] = '<a href="http://'.$temp_14.'.wikipedia.org/wiki/%AUTHOR%';
-			$quotesoptions['stray_quotes_linkto'] = '<a href="http://'.$temp_14.'.wikipedia.org/wiki/%SOURCE%';
+		else if ($temp == 'W') {
+			$quotesoptions['stray_quotes_linkto'] = '<a href="http://'.$tempb.'.wikipedia.org/wiki/%AUTHOR%';
+			$quotesoptions['stray_quotes_linkto'] = '<a href="http://'.$tempb.'.wikipedia.org/wiki/%SOURCE%';
 			$quotesoptions['stray_quotes_sourcespaces'] = '_';	
 			$quotesoptions['stray_quotes_authorspaces'] = '_';		
 		}
@@ -152,19 +152,33 @@ function quotes_activation() {
 			$quotesoptions['stray_quotes_sourcespaces'] = '-';	
 			$quotesoptions['stray_quotes_authorspaces'] = '-';		
 		}
-		delete_option($var_12);
-		delete_option($var_14);
+		delete_option($var);
+		delete_option($varb);
 				
-		$quotesoptions['stray_quotes_first_time'] = 4;
-		delete_option('stray_quotes_first_time');
+		//more new entries
+		$quotesoptions['stray_quotes_uninstall'] = '';
+		$quotesoptions['stray_quotes_order'] = 'quoteID';
+		$quotesoptions['stray_quotes_rows'] = 10; 
+		$quotesoptions['stray_quotes_groups'] = 'all';
+		$quotesoptions['stray_quotes_sort'] = 'DESC';
+		$quotesoptions['stray_default_group'] =  'default';		
+		$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
 				
 	}
-	//if the new post 1.7 array options already exist
+	
+	//if the 1.7+ array options already exist
 	else {
+	
 		//take care of version number
-		if($quotesoptions['stray_quotes_version'] <= 170 || $quotesoptions['stray_quotes_version'] != 171) {
-			$quotesoptions['stray_quotes_version'] = 171; 
+		if( $quotesoptions['stray_quotes_version'] <= (WP_STRAY_VERSION-1) ) {
+			$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION;
+			//make new things here
+			$quotesoptions['stray_default_group'] =  'default';		
 		}
+		
+		//we also reset the removal option
+		$quotesoptions['stray_quotes_uninstall'] = "";
+		
 	}
 
 	//check if table exists and alter it if necessary	
@@ -199,10 +213,10 @@ function quotes_activation() {
 					$wpdb->query('ALTER TABLE ' . WP_STRAY_QUOTES_TABLE . ' ADD COLUMN `group` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `source`');
 					//and fill in default group values
 					$wpdb->query('UPDATE '. WP_STRAY_QUOTES_TABLE . ' SET `group`="default"');
+					//1 = first time, 2 = altered old table, 3 = altered new table =, 4 = we're cool
+					$quotesoptions['stray_quotes_first_time'] = 3;
 				}
 						
-				//1 = first time, 2 = altered old table, 3 = altered new table =, 4 = we're cool
-				$quotesoptions['stray_quotes_first_time'] = 3;
 				$straytableExists=true;			
 				break;	
 			}		
@@ -242,16 +256,15 @@ function quotes_deactivation() {
 	global $wpdb;
 
 	$quotesoptions = get_option('stray_quotes_options');
-	$widgetsoptions =  get_option('stray_quotes_widgets');
 	$sql = "DROP TABLE IF EXISTS ".WP_STRAY_QUOTES_TABLE;
-	
+
 	//delete the options
-	if($quotesoptions['uninstall'] == 'options') {
+	if($quotesoptions['stray_quotes_uninstall'] == 'options') {
 		delete_option('stray_quotes_options');
 		delete_option('stray_quotes_widgets');
 	}
-	else if ($quotesoptions['uninstall'] == 'table')$wpdb->query($sql);
-	else if ($quotesoptions['uninstall'] == 'both'){
+	else if ($quotesoptions['stray_quotes_uninstall'] == 'table')$wpdb->query($sql);
+	else if ($quotesoptions['stray_quotes_uninstall'] == 'both'){
 		 delete_option('stray_quotes_options');
 		 delete_option('stray_quotes_widgets');
 		$wpdb->query($sql);
@@ -262,6 +275,16 @@ function quotes_deactivation() {
 //for compatibility
 if ($wp_version <= 2.3 ) add_filter('the_content', 'wp_quotes_page', 10);
 
+//includes
+include('inc/stray_functions.php');
+include('inc/stray_overview.php');
+include('inc/stray_settings.php');
+include('inc/stray_manage.php');
+include('inc/stray_new.php');
+include('inc/stray_widgets.php');
+include('inc/stray_help.php');
+include('inc/stray_remove.php');
+
 //build submenu entries
 function stray_quotes_add_pages() {
 
@@ -269,18 +292,12 @@ function stray_quotes_add_pages() {
 	add_submenu_page(__FILE__, __('Overview','stray-quotes'), __('Overview','stray-quotes'), 8, __FILE__, 'stray_intro');
 	add_submenu_page(__FILE__, __('Manage','stray-quotes'), __('Manage','stray-quotes'), 8, 'stray_manage', 'stray_manage');
 	add_submenu_page(__FILE__, __('Add New','stray-quotes'), __('Add New','stray-quotes'), 8, 'stray_new', 'stray_new');
-	add_submenu_page(__FILE__, __('Settings','stray-quotes'), __('Settings','stray-quotes'), 8, 'stray_quotes_options', 'stray_quotes_options'); 	
+	add_submenu_page(__FILE__, __('Settings','stray-quotes'), __('Settings','stray-quotes'), 8, 'stray_quotes_options', 'stray_quotes_options'); 
+	add_submenu_page(__FILE__, __('Help','stray-quotes'), __('Help','stray-quotes'), 8, 'stray_help', 'stray_help');
+	add_submenu_page(__FILE__, __('Remove','stray-quotes'), __('Remove','stray-quotes'), 8, 'stray_remove', 'stray_remove'); 	
+
 	
 }
-
-//includes
-include('inc/stray_functions.php');
-include('inc/stray_overview.php');
-include('inc/stray_settings.php');
-include('inc/stray_manage.php');
-include('inc/stray_editor.php');
-include('inc/stray_new.php');
-include('inc/stray_widgets.php');
 
 //excuse me, I'm hooking into wordpress
 add_action('admin_menu', 'stray_quotes_add_pages');

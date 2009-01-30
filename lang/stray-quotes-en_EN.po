@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: strayquotes-en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-25 01:27+0100\n"
+"POT-Creation-Date: 2009-01-30 09:17+0100\n"
 "PO-Revision-Date: \n"
-"Last-Translator: ico <ico@italyisfalling.com>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,17 +16,30 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../stray_quotes.php:261
+#: ../stray_quotes.php:292
+msgid "Overview"
+msgstr "Overview"
+
+#: ../stray_quotes.php:293
 msgid "Manage"
 msgstr "Manage"
 
-#: ../stray_quotes.php:262
+#: ../stray_quotes.php:294
 msgid "Add New"
 msgstr "Add New"
 
-#: ../stray_quotes.php:263
+#: ../stray_quotes.php:295
+#: ../inc/stray_settings.php:116
 msgid "Settings"
 msgstr "Settings"
+
+#: ../stray_quotes.php:296
+msgid "Help"
+msgstr "Help"
+
+#: ../stray_quotes.php:297
+msgid "Remove"
+msgstr "Remove"
 
 #: ../inc/stray_editor.php:61
 #: ../inc/stray_new.php:63
@@ -39,7 +52,7 @@ msgid "Quote id %s successfully added to the database."
 msgstr "Quote id %s successfully added to the database."
 
 #: ../inc/stray_editor.php:90
-#: ../inc/stray_manage.php:176
+#: ../inc/stray_manage.php:190
 msgid "<strong>Failure:</strong> No quote ID given."
 msgstr "<strong>Failure:</strong> No quote ID given."
 
@@ -53,7 +66,7 @@ msgid "Quote %s updated successfully."
 msgstr "Quote %s updated successfully."
 
 #: ../inc/stray_editor.php:128
-#: ../inc/stray_manage.php:214
+#: ../inc/stray_manage.php:228
 msgid "<strong>Failure:</strong> No quote ID given. Nothing deleted."
 msgstr "<strong>Failure:</strong> No quote ID given. Nothing deleted."
 
@@ -63,38 +76,38 @@ msgid "Quote %s deleted successfully"
 msgstr "Quote %s deleted successfully"
 
 #: ../inc/stray_editor.php:145
-#: ../inc/stray_manage.php:231
+#: ../inc/stray_manage.php:245
 msgid "<strong>Failure:</strong> Nothing deleted."
 msgstr "<strong>Failure:</strong> Nothing deleted."
 
 #: ../inc/stray_editor.php:162
-#: ../inc/stray_manage.php:63
+#: ../inc/stray_manage.php:71
 msgid "Something is wrong. No quote ID from the query string."
 msgstr "Something is wrong. No quote ID from the query string."
 
 #: ../inc/stray_editor.php:172
-#: ../inc/stray_manage.php:73
+#: ../inc/stray_manage.php:82
 msgid "Something is wrong. I can't find a quote linked up with that ID."
 msgstr "Something is wrong. I can't find a quote linked up with that ID."
 
 #: ../inc/stray_editor.php:213
 #: ../inc/stray_editor.php:302
-#: ../inc/stray_manage.php:116
-#: ../inc/stray_new.php:137
+#: ../inc/stray_manage.php:125
+#: ../inc/stray_new.php:148
 msgid "Quote:"
 msgstr "Quote:"
 
 #: ../inc/stray_editor.php:217
 #: ../inc/stray_editor.php:306
-#: ../inc/stray_manage.php:121
-#: ../inc/stray_new.php:141
+#: ../inc/stray_manage.php:131
+#: ../inc/stray_new.php:154
 msgid "Author:"
 msgstr "Author:"
 
 #: ../inc/stray_editor.php:222
 #: ../inc/stray_editor.php:311
-#: ../inc/stray_manage.php:124
-#: ../inc/stray_new.php:144
+#: ../inc/stray_manage.php:136
+#: ../inc/stray_new.php:159
 msgid "Source:"
 msgstr "Source:"
 
@@ -105,22 +118,22 @@ msgstr "Group:"
 
 #: ../inc/stray_editor.php:232
 #: ../inc/stray_editor.php:321
-#: ../inc/stray_manage.php:141
-#: ../inc/stray_new.php:162
+#: ../inc/stray_manage.php:155
+#: ../inc/stray_new.php:178
 msgid "Visible:"
 msgstr "Visible:"
 
 #: ../inc/stray_editor.php:233
 #: ../inc/stray_editor.php:323
-#: ../inc/stray_manage.php:142
-#: ../inc/stray_new.php:163
+#: ../inc/stray_manage.php:156
+#: ../inc/stray_new.php:179
 msgid "Yes"
 msgstr "Yes"
 
 #: ../inc/stray_editor.php:234
 #: ../inc/stray_editor.php:325
-#: ../inc/stray_manage.php:143
-#: ../inc/stray_new.php:164
+#: ../inc/stray_manage.php:157
+#: ../inc/stray_new.php:180
 msgid "No"
 msgstr "No"
 
@@ -130,8 +143,8 @@ msgstr "go back to the list of quotes"
 
 #: ../inc/stray_editor.php:238
 #: ../inc/stray_editor.php:328
-#: ../inc/stray_manage.php:146
-#: ../inc/stray_new.php:167
+#: ../inc/stray_manage.php:160
+#: ../inc/stray_new.php:183
 msgid "Save quote"
 msgstr "Save quote"
 
@@ -140,297 +153,360 @@ msgid "Add new"
 msgstr "Add new"
 
 #: ../inc/stray_editor.php:256
-#: ../inc/stray_new.php:87
+#: ../inc/stray_new.php:89
 msgid "The Quote ID seems to be invalid."
 msgstr "The Quote ID seems to be invalid."
 
 #: ../inc/stray_editor.php:263
-#: ../inc/stray_new.php:94
+#: ../inc/stray_new.php:96
 msgid "Something is wrong. I can't find a quote connected to that ID."
 msgstr "Something is wrong. I can't find a quote connected to that ID."
 
-#: ../inc/stray_intro.php:24
-#, php-format
-msgid ""
-"Hey. Welcome to <strong>Stray Random Quotes.</strong><br />\n"
-"\t\tThis seems to be your first time with this plugin.\n"
-"\t\tI've just created the database table \"%s1\" to store your quotes, \n"
-"\t\tand added one to start you off."
-msgstr ""
-"Hey. Welcome to <strong>Stray Random Quotes.</strong><br />\n"
-"\t\tThis seems to be your first time with this plugin.\n"
-"\t\tI've just created the database table \"%s1\" to store your quotes, \n"
-"\t\tand added one to start you off."
+#: ../inc/stray_help.php:8
+msgid "The help page"
+msgstr "The help page"
 
-#: ../inc/stray_intro.php:41
-#, php-format
-msgid ""
-"Hey. Welcome to <strong>Stray Random Quotes.</strong><br />\n"
-"\t\tI updated the old table \"%s1\" to \"%s2\" but don't worry, all your quotes are still there."
-msgstr ""
-"Hey. Welcome to <strong>Stray Random Quotes.</strong><br />\n"
-"\t\tI updated the old table \"%s1\" to \"%s2\" but don't worry, all your quotes are still there."
+#: ../inc/stray_help.php:9
+msgid "\"Quote me as saying I was misquoted.\" ~ Groucho Marx"
+msgstr "\"Quote me as saying I was misquoted.\" ~ Groucho Marx"
 
-#: ../inc/stray_intro.php:56
-#, php-format
-msgid ""
-"Hey. Welcome to this new version of <strong>Stray Random Quotes</strong>.<br />\n"
-"\t\tThis plugin now comes with \"groups\", which should make for a more intelligent way to organize, maintain and display\n"
-"\t\tquotes on your blog.<br />\n"
-"\t\tI updated the table \"%s1\" but as you will see in the new <a href=\"%s2\">Management page</a> \n"
-"\t\tall your quotes are still there."
-msgstr ""
-"Hey. Welcome to this new version of <strong>Stray Random Quotes</strong>.<br />\n"
-"\t\tThis plugin now comes with \"groups\", which should make for a more intelligent way to organize, maintain and display\n"
-"\t\tquotes on your blog.<br />\n"
-"\t\tI updated the table \"%s1\" but as you will see in the new <a href=\"%s2\">Management page</a> \n"
-"\t\tall your quotes are still there."
-
-#: ../inc/stray_intro.php:72
-#, php-format
-msgid "<strong>is a Wordpress plugin by <a href=\"http://www.italyisfalling.com/coding\">italyisfalling.com</a></strong><p>With it you can: <a href=\"%s1\"><strong>add new quotes</strong></a> to be randomly displayed in your blog;<br />use the <a href=\"%s2\"><strong>manage</strong></a> page to edit or delete existing quotes;<br />change the <a href=\"%s3\"><strong>settings</strong></a> to control how the quotes are displayed on your blog."
-msgstr "<strong>is a Wordpress plugin by <a href=\"http://www.italyisfalling.com/coding\">italyisfalling.com</a></strong><p>With it you can: <a href=\"%s1\"><strong>add new quotes</strong></a> to be randomly displayed in your blog;<br />use the <a href=\"%s2\"><strong>manage</strong></a> page to edit or delete existing quotes;<br />change the <a href=\"%s3\"><strong>settings</strong></a> to control how the quotes are displayed on your blog."
-
-#: ../inc/stray_intro.php:75
+#: ../inc/stray_help.php:11
 msgid "So, how do I display a random quote on this blog?"
 msgstr "So, how do I display a random quote on this blog?"
 
-#: ../inc/stray_intro.php:76
+#: ../inc/stray_help.php:12
 #, php-format
 msgid "Stray Random Quotes comes with <strong>Widgets</strong>. Depending on your preferences, a random quote in a widget could be coming from one or two groups of quotes, or from all the groups. You can use all the widgets you want. Just enable one widget at a time on the <a href=\"%s1\">widget page</a>, and change its settings accordingly.<br />Note: <em>Your template must be widget compatible.</em></p>"
 msgstr "Stray Random Quotes comes with <strong>Widgets</strong>. Depending on your preferences, a random quote in a widget could be coming from one or two groups of quotes, or from all the groups. You can use all the widgets you want. Just enable one widget at a time on the <a href=\"%s1\">widget page</a>, and change its settings accordingly.<br />Note: <em>Your template must be widget compatible.</em></p>"
 
-#: ../inc/stray_intro.php:78
-msgid "If your template <strong>does not</strong> use widgets, or you want to display the quotes <strong>elsewhere</strong> other than the sidebar,<br />you can add this piece of code to your template (in the header, the footer etc):"
-msgstr "If your template <strong>does not</strong> use widgets, or you want to display the quotes <strong>elsewhere</strong> other than the sidebar,<br />you can add this piece of code to your template (in the header, the footer etc):"
+#: ../inc/stray_help.php:14
+msgid "What if I don't use widgets?"
+msgstr "What if I don't use widgets?"
 
-#: ../inc/stray_intro.php:80
+#: ../inc/stray_help.php:15
+msgid "If your template <strong>does not</strong> use widgets, or you want to display the quotes on your template <strong>elsewhere</strong> other than the sidebar, you can add this piece of code to your template (in the header, the footer etc):"
+msgstr "If your template <strong>does not</strong> use widgets, or you want to display the quotes on your template <strong>elsewhere</strong> other than the sidebar, you can add this piece of code to your template (in the header, the footer etc):"
+
+#: ../inc/stray_help.php:16
 #, php-format
-msgid "<code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('group1,group2,etc'); ?&gt;</code><br/><br/>Note that <code>'group1,group2,etc'</code> is where you add a comma separated list of the groups from which to extract the random quote. This setting is optional. If don't indicate anything, a random quote from all the groups will be displayed. A default title, such as 'Random quote', is set through the <a href=\"%s1\">settings page</a>. If you want specific titles for different groups, you will have to put that directly in the HTML of the template. For example:<br/><code>&lt;h2&gt;Random Mark Twain quote:&lt;/h2&gt;&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('mark twain'); ?&gt;</code>, you got the idea."
-msgstr "<code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('group1,group2,etc'); ?&gt;</code><br/><br/>Note that <code>'group1,group2,etc'</code> is where you add a comma separated list of the groups from which to extract the random quote. This setting is optional. If don't indicate anything, a random quote from all the groups will be displayed. A default title, such as 'Random quote', is set through the <a href=\"%s1\">settings page</a>. If you want specific titles for different groups, you will have to put that directly in the HTML of the template. For example:<br/><code>&lt;h2&gt;Random Mark Twain quote:&lt;/h2&gt;&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('mark twain'); ?&gt;</code>, you got the idea."
+msgid "<code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('group1,group2,etc'); ?&gt;</code><br/><br/>Note that <code>'group1,group2,etc'</code> is where you add a comma separated list of the groups from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the groups will be displayed. A default title, such as 'Random quote', is set through the <a href=\"%s1\">settings page</a>. If you want specific titles for different groups, you will have to put that directly in the HTML of the template. For example:<br/><br/><code>&lt;h2&gt;Random Mark Twain quote:&lt;/h2&gt;&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('mark twain'); ?&gt;</code>, you got the idea."
+msgstr "<code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('group1,group2,etc'); ?&gt;</code><br/><br/>Note that <code>'group1,group2,etc'</code> is where you add a comma separated list of the groups from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the groups will be displayed. A default title, such as 'Random quote', is set through the <a href=\"%s1\">settings page</a>. If you want specific titles for different groups, you will have to put that directly in the HTML of the template. For example:<br/><br/><code>&lt;h2&gt;Random Mark Twain quote:&lt;/h2&gt;&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('mark twain'); ?&gt;</code>, you got the idea."
 
-#: ../inc/stray_intro.php:88
-msgid "<strong>To add a given quote</strong> instead of a random one use the following: <code>&lt;?php if (function_exists('stray_a_quote')) stray_a_quote(id);?&gt;</code>, where <code>id</code> is the id number of the quote as it appears on the management page."
-msgstr "<strong>To add a given quote</strong> instead of a random one use the following: <code>&lt;?php if (function_exists('stray_a_quote')) stray_a_quote(id);?&gt;</code>, where <code>id</code> is the id number of the quote as it appears on the management page."
+#: ../inc/stray_help.php:21
+msgid "What about posts and pages?"
+msgstr "What about posts and pages?"
 
-#: ../inc/stray_intro.php:89
-msgid "To insert a random quote inside a post or a page, just write in the editor <code>[random-quote group='group1,group2,etc'].</code>"
-msgstr "To insert a random quote inside a post or a page, just write in the editor <code>[random-quote group='group1,group2,etc'].</code>"
+#: ../inc/stray_help.php:23
+msgid "To insert a <strong>random quote in a post or page</strong>, just write in the editor <code>[random-quote 'group1' 'group2']</code>. Note that <code>'group1' 'group2'</code> is where you add the groups from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the groups will be displayed."
+msgstr "To insert a <strong>random quote in a post or page</strong>, just write in the editor <code>[random-quote 'group1' 'group2']</code>. Note that <code>'group1' 'group2'</code> is where you add the groups from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the groups will be displayed."
 
-#: ../inc/stray_intro.php:90
-msgid "To insert a given quote inside a post or a page, just write in the editor <code>[quote id=1]</code>."
-msgstr "To insert a given quote inside a post or a page, just write in the editor <code>[quote id=1]</code>."
+#: ../inc/stray_help.php:24
+msgid "To insert a list of <strong>many or all the quotes in a post or page</strong>, just write in the editor <code>[all-quotes rows=10, orderby=\"quoteID\", sort=\"ASC\", group=\"all\"]</code>. The variables here I think are pretty straightforward, but to clarify: <em>rows</em> is how many quotes you want per page; <em>orderby</em> if you want to order the quotes by \"quoteID\", \"author\" \"source\" or \"group\"; <em>sort</em> is whether the quotes will be sorted ascending \"ASC\" or descending \"DESC\". Finally <em>groups</em> is from which group you want the quotes to be. Use \"all\" for all the groups, or use the names of the groups separated by comma. All these settings are optional. Without them, the values you see in this example are used as defaults."
+msgstr "To insert a list of <strong>many or all the quotes in a post or page</strong>, just write in the editor <code>[all-quotes rows=10, orderby=\"quoteID\", sort=\"ASC\", group=\"all\"]</code>. The variables here I think are pretty straightforward, but to clarify: <em>rows</em> is how many quotes you want per page; <em>orderby</em> if you want to order the quotes by \"quoteID\", \"author\" \"source\" or \"group\"; <em>sort</em> is whether the quotes will be sorted ascending \"ASC\" or descending \"DESC\". Finally <em>groups</em> is from which group you want the quotes to be. Use \"all\" for all the groups, or use the names of the groups separated by comma. All these settings are optional. Without them, the values you see in this example are used as defaults."
 
-#: ../inc/stray_intro.php:91
-msgid "To insert a list of all the quotes in a post or a page, just write in the editor <code>[all-quotes]</code>."
-msgstr "To insert a list of all the quotes in a post or a page, just write in the editor <code>[all-quotes]</code>."
+#: ../inc/stray_help.php:26
+msgid "What else can I do?"
+msgstr "What else can I do?"
 
-#: ../inc/stray_intro.php:93
+#: ../inc/stray_help.php:28
+msgid "Well you could insert <strong>a given quote in a post or a page</strong>, in which case you should just write in the editor <code>[quote id=x]</code>, where <code>x</code> is the id number of the quote as it appears on the management page."
+msgstr "Well you could insert <strong>a given quote in a post or a page</strong>, in which case you should just write in the editor <code>[quote id=x]</code>, where <code>x</code> is the id number of the quote as it appears on the management page."
+
+#: ../inc/stray_help.php:29
+msgid "To insert <strong>a given quote in your template</strong> use the following: <code>&lt;?php if (function_exists('stray_a_quote')) stray_a_quote(id);?&gt;</code>."
+msgstr "To insert <strong>a given quote in your template</strong> use the following: <code>&lt;?php if (function_exists('stray_a_quote')) stray_a_quote(id);?&gt;</code>."
+
+#: ../inc/stray_help.php:32
+msgid "Is that really all?"
+msgstr "Is that really all?"
+
+#: ../inc/stray_help.php:33
 #, php-format
-msgid "For further help, make use of the comments <a href=\"%s1\">on this post</a>.<br />Happy quoting."
-msgstr "For further help, make use of the comments <a href=\"%s1\">on this post</a>.<br />Happy quoting."
+msgid "Look, for further help, you're welcome to trash the comments <a href=\"%s1\">on this post</a>. I am stopping here because this page proved well enough already that I am not having a life.<br /><br />"
+msgstr "Look, for further help, you're welcome to trash the comments <a href=\"%s1\">on this post</a>. I am stopping here because this page proved well enough already that I am not having a life.<br /><br />"
 
 #: ../inc/stray_manage.php:6
 msgid "Manage quotes"
 msgstr "Manage quotes"
 
-#: ../inc/stray_manage.php:127
-#: ../inc/stray_new.php:148
+#: ../inc/stray_manage.php:7
+msgid "\"Quotations are cultivated only by those who have known fear in the midst of words.\" ~ E.M. Cioran"
+msgstr "\"Quotations are cultivated only by those who have known fear in the midst of words.\" ~ E.M. Cioran"
+
+#: ../inc/stray_manage.php:129
+#: ../inc/stray_new.php:152
+msgid "* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera."
+msgstr "* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera."
+
+#: ../inc/stray_manage.php:140
+#: ../inc/stray_new.php:163
+msgid "* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag."
+msgstr "* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag."
+
+#: ../inc/stray_manage.php:141
+#: ../inc/stray_new.php:165
 msgid "Group:&nbsp;"
 msgstr "Group:&nbsp;"
 
-#: ../inc/stray_manage.php:138
-#: ../inc/stray_new.php:159
+#: ../inc/stray_manage.php:152
+#: ../inc/stray_new.php:175
 msgid "new group:&nbsp;"
 msgstr "new group:&nbsp;"
 
-#: ../inc/stray_manage.php:199
+#: ../inc/stray_manage.php:213
 msgid "<strong>Failure:</strong> Something went wrong."
 msgstr "<strong>Failure:</strong> Something went wrong."
 
-#: ../inc/stray_manage.php:203
+#: ../inc/stray_manage.php:217
 #, php-format
-msgid "Quote %s updated."
-msgstr "Quote %s updated."
+msgid "Quote <strong>%s</strong> updated. To insert it in a post use: <code>[quote id=%s]</code>."
+msgstr "Quote <strong>%s</strong> updated. To insert it in a post use: <code>[quote id=%s]</code>."
 
-#: ../inc/stray_manage.php:227
+#: ../inc/stray_manage.php:241
 #, php-format
 msgid "Quote %s deleted."
 msgstr "Quote %s deleted."
 
-#: ../inc/stray_manage.php:319
-#: ../inc/stray_manage.php:320
-#: ../inc/stray_manage.php:326
+#: ../inc/stray_manage.php:339
+#: ../inc/stray_manage.php:340
+#: ../inc/stray_manage.php:346
 msgid "ID"
 msgstr "ID"
 
-#: ../inc/stray_manage.php:329
-#: ../inc/stray_settings.php:184
+#: ../inc/stray_manage.php:349
+#: ../inc/stray_settings.php:135
 msgid "Quote"
 msgstr "Quote"
 
-#: ../inc/stray_manage.php:332
-#: ../inc/stray_manage.php:333
-#: ../inc/stray_manage.php:339
-#: ../inc/stray_settings.php:192
+#: ../inc/stray_manage.php:352
+#: ../inc/stray_manage.php:353
+#: ../inc/stray_manage.php:359
+#: ../inc/stray_settings.php:141
 msgid "Author"
 msgstr "Author"
 
-#: ../inc/stray_manage.php:343
-#: ../inc/stray_manage.php:344
-#: ../inc/stray_manage.php:350
-#: ../inc/stray_settings.php:208
+#: ../inc/stray_manage.php:363
+#: ../inc/stray_manage.php:364
+#: ../inc/stray_manage.php:370
+#: ../inc/stray_settings.php:155
 msgid "Source"
 msgstr "Source"
 
-#: ../inc/stray_manage.php:354
-#: ../inc/stray_manage.php:355
-#: ../inc/stray_manage.php:361
+#: ../inc/stray_manage.php:374
+#: ../inc/stray_manage.php:375
+#: ../inc/stray_manage.php:381
 msgid "Group"
 msgstr "Group"
 
-#: ../inc/stray_manage.php:365
-#: ../inc/stray_manage.php:366
-#: ../inc/stray_manage.php:372
+#: ../inc/stray_manage.php:385
+#: ../inc/stray_manage.php:386
+#: ../inc/stray_manage.php:392
 msgid "Visible"
 msgstr "Visible"
 
-#: ../inc/stray_manage.php:397
+#: ../inc/stray_manage.php:417
 msgid "Edit"
 msgstr "Edit"
 
-#: ../inc/stray_manage.php:403
-msgid ""
-"You are about to delete this quote\\n"
-"\\'Cancel\\' to stop, \\'OK\\' to delete.'"
-msgstr ""
-"You are about to delete this quote\\n"
-"\\'Cancel\\' to stop, \\'OK\\' to delete.'"
+#: ../inc/stray_manage.php:423
+msgid "You are about to delete quote "
+msgstr "You are about to delete quote "
 
-#: ../inc/stray_manage.php:404
+#: ../inc/stray_manage.php:424
 msgid "Delete"
 msgstr "Delete"
 
-#: ../inc/stray_manage.php:411
-msgid "You haven't entered any quotes yet."
-msgstr "You haven't entered any quotes yet."
+#: ../inc/stray_manage.php:431
+msgid "<br/>No quotes yet."
+msgstr "<br/>No quotes yet."
 
 #: ../inc/stray_new.php:74
 #, php-format
-msgid ""
-"Quote id %s1 added to the database. \n"
-"\t\t\tYou can check it in the <a href=\"%s2\">Manage page</a>."
-msgstr ""
-"Quote id %s1 added to the database. \n"
-"\t\t\tYou can check it in the <a href=\"%s2\">Manage page</a>."
+msgid "Quote no. <strong>%s1</strong> was added to the database. To insert it in a post use: <code>[quote id=%s1]</code>. To review use the <a href=\"%s2\">Manage page</a>."
+msgstr "Quote no. <strong>%s1</strong> was added to the database. To insert it in a post use: <code>[quote id=%s1]</code>. To review use the <a href=\"%s2\">Manage page</a>."
 
-#: ../inc/stray_new.php:80
+#: ../inc/stray_new.php:79
 msgid "Add new quote"
 msgstr "Add new quote"
 
-#: ../inc/stray_settings.php:70
-msgid "<strong>Options saved...</strong> "
-msgstr "<strong>Options saved...</strong> "
+#: ../inc/stray_new.php:80
+msgid "\"A minimum of sound to a maximum of sense.\" ~ Mark Twain"
+msgstr "\"A minimum of sound to a maximum of sense.\" ~ Mark Twain"
 
-#: ../inc/stray_settings.php:71
-msgid "No problems. Well,  except that the links you provided for the author and source were invalid. I had to discard them."
-msgstr "No problems. Well,  except that the links you provided for the author and source were invalid. I had to discard them."
+#: ../inc/stray_overview.php:24
+#, php-format
+msgid "Hey. Welcome to <strong>Stray Random Quotes.</strong><br />This seems to be your first time with this plugin. I've just created the database table \"%s1\" to store your quotes, and added one to start you off."
+msgstr "Hey. Welcome to <strong>Stray Random Quotes.</strong><br />This seems to be your first time with this plugin. I've just created the database table \"%s1\" to store your quotes, and added one to start you off."
 
-#: ../inc/stray_settings.php:72
-msgid "No problems. Well, except that there was no variable in the author link. I discared it."
-msgstr "No problems. Well, except that there was no variable in the author link. I discared it."
+#: ../inc/stray_overview.php:38
+#, php-format
+msgid "Hey. Welcome to <strong>Stray Random Quotes.</strong><br />I updated the old table \"%s1\" to \"%s2\" but don't worry, all your quotes are still there."
+msgstr "Hey. Welcome to <strong>Stray Random Quotes.</strong><br />I updated the old table \"%s1\" to \"%s2\" but don't worry, all your quotes are still there."
 
-#: ../inc/stray_settings.php:73
-msgid "No problems. Well,  except that there was no variable in the source link. I discared it."
-msgstr "No problems. Well,  except that there was no variable in the source link. I discared it."
+#: ../inc/stray_overview.php:52
+#, php-format
+msgid "Hey. Welcome to this new version of <strong>Stray Random Quotes</strong>.<br />This plugin now comes with \"groups\", which should make for a more intelligent way to organize, maintain and display quotes on your blog.<br />I updated the table \"%s1\" but all your quotes <a href=\"%s2\">are still there</a>."
+msgstr "Hey. Welcome to this new version of <strong>Stray Random Quotes</strong>.<br />This plugin now comes with \"groups\", which should make for a more intelligent way to organize, maintain and display quotes on your blog.<br />I updated the table \"%s1\" but all your quotes <a href=\"%s2\">are still there</a>."
 
-#: ../inc/stray_settings.php:74
-msgid "No problems."
-msgstr "No problems."
+#: ../inc/stray_overview.php:77
+msgid "\"A witty saying proves nothing.\" ~ Voltaire"
+msgstr "\"A witty saying proves nothing.\" ~ Voltaire"
 
-#: ../inc/stray_settings.php:78
-msgid "<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> "
-msgstr "<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> "
+#: ../inc/stray_overview.php:82
+#, php-format
+msgid "Right now you have <strong>%s1 quotes</strong> in <strong>%s2</strong>.<br/><strong>%s3</strong> are visible.<br/> "
+msgstr "Right now you have <strong>%s1 quotes</strong> in <strong>%s2</strong>.<br/><strong>%s3</strong> are visible.<br/> "
 
-#: ../inc/stray_settings.php:79
-msgid "<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. "
-msgstr "<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. "
+#: ../inc/stray_overview.php:83
+#, php-format
+msgid "<br/>The group you are using the most is \"<strong>%s4</strong>\".<br/>"
+msgstr "<br/>The group you are using the most is \"<strong>%s4</strong>\".<br/>"
 
-#: ../inc/stray_settings.php:80
-msgid "<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. "
-msgstr "<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. "
+#: ../inc/stray_overview.php:89
+msgid "<br/>Your most quoted author is <strong>%s5</strong>, who says: <br /><div style=\"width:35%\">\"<em>%s6</em>\"</div>"
+msgstr "<br/>Your most quoted author is <strong>%s5</strong>, who says: <br /><div style=\"width:35%\">\"<em>%s6</em>\"</div>"
 
-#: ../inc/stray_settings.php:81
-msgid "<strong>Something went wrong!</strong> The options could not be saved.</strong> "
-msgstr "<strong>Something went wrong!</strong> The options could not be saved.</strong> "
+#: ../inc/stray_overview.php:96
+#, php-format
+msgid "To start doing stuff, you can <a href=\"%s1\"><strong>add new quotes</strong></a>;<br />use the <a href=\"%s2\"><strong>manage</strong></a> page to edit or delete existing quotes;<br />change the <a href=\"%s3\"><strong>settings</strong></a> to control how the quotes are displayed on your blog.<br/>If you're new to all this, there's a <a href=\"%s4\"><strong>help page</strong></a> as well."
+msgstr "To start doing stuff, you can <a href=\"%s1\"><strong>add new quotes</strong></a>;<br />use the <a href=\"%s2\"><strong>manage</strong></a> page to edit or delete existing quotes;<br />change the <a href=\"%s3\"><strong>settings</strong></a> to control how the quotes are displayed on your blog.<br/>If you're new to all this, there's a <a href=\"%s4\"><strong>help page</strong></a> as well."
 
-#: ../inc/stray_settings.php:118
-msgid "Deactivate Lighter Menus"
-msgstr "Deactivate Lighter Menus"
+#: ../inc/stray_overview.php:98
+msgid "Happy quoting."
+msgstr "Happy quoting."
 
-#: ../inc/stray_settings.php:120
+#: ../inc/stray_remove.php:35
+#: ../inc/stray_remove.php:49
+msgid "Remove and deactivate"
+msgstr "Remove and deactivate"
+
+#: ../inc/stray_remove.php:37
 msgid "Click Here</a> to deactivate Stray Random Quotes."
 msgstr "Click Here</a> to deactivate Stray Random Quotes."
 
-#: ../inc/stray_settings.php:122
-msgid "The quotes AND plugin options will be removed."
-msgstr "The quotes AND plugin options will be removed."
+#: ../inc/stray_remove.php:39
+msgid "The <strong>quotes</strong> AND the <strong>options</strong> will be removed."
+msgstr "The <strong>quotes</strong> AND the <strong>options</strong> will be removed."
+
+#: ../inc/stray_remove.php:40
+msgid "The <strong>plugin options</strong> will be removed."
+msgstr "The <strong>plugin options</strong> will be removed."
+
+#: ../inc/stray_remove.php:41
+msgid "The <strong>quotes</strong> will be removed."
+msgstr "The <strong>quotes</strong> will be removed."
+
+#: ../inc/stray_remove.php:50
+msgid "\"Patch grief with proverbs.\" ~ William Shakespeare"
+msgstr "\"Patch grief with proverbs.\" ~ William Shakespeare"
+
+#: ../inc/stray_remove.php:53
+msgid "When deactivating Stray Random Quotes"
+msgstr "When deactivating Stray Random Quotes"
+
+#: ../inc/stray_remove.php:56
+msgid "Remove the options from the database."
+msgstr "Remove the options from the database."
+
+#: ../inc/stray_remove.php:58
+msgid "Remove all the quotes from the database."
+msgstr "Remove all the quotes from the database."
+
+#: ../inc/stray_remove.php:64
+msgid "Deactivate Stray Random Quotes &raquo;"
+msgstr "Deactivate Stray Random Quotes &raquo;"
+
+#: ../inc/stray_settings.php:68
+msgid "<strong>Options saved...</strong> "
+msgstr "<strong>Options saved...</strong> "
+
+#: ../inc/stray_settings.php:69
+msgid "No problems. Well,  except that the links you provided for the author and source were invalid. I had to discard them."
+msgstr "No problems. Well,  except that the links you provided for the author and source were invalid. I had to discard them."
+
+#: ../inc/stray_settings.php:70
+msgid "No problems. Well, except that there was no variable in the author link. I discared it."
+msgstr "No problems. Well, except that there was no variable in the author link. I discared it."
+
+#: ../inc/stray_settings.php:71
+msgid "No problems. Well,  except that there was no variable in the source link. I discared it."
+msgstr "No problems. Well,  except that there was no variable in the source link. I discared it."
+
+#: ../inc/stray_settings.php:72
+msgid "No problems."
+msgstr "No problems."
+
+#: ../inc/stray_settings.php:76
+msgid "<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> "
+msgstr "<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> "
+
+#: ../inc/stray_settings.php:77
+msgid "<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. "
+msgstr "<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. "
+
+#: ../inc/stray_settings.php:78
+msgid "<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. "
+msgstr "<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. "
+
+#: ../inc/stray_settings.php:79
+msgid "<strong>Something went wrong!</strong> The options could not be saved.</strong> "
+msgstr "<strong>Something went wrong!</strong> The options could not be saved.</strong> "
+
+#: ../inc/stray_settings.php:117
+msgid "\"With just enough of learning to misquote.\" ~ Lord Byron "
+msgstr "\"With just enough of learning to misquote.\" ~ Lord Byron "
+
+#: ../inc/stray_settings.php:119
+msgid "How the quotes look"
+msgstr "How the quotes look"
+
+#: ../inc/stray_settings.php:120
+msgid "Default settings to change how the quotes appear in your blog."
+msgstr "Default settings to change how the quotes appear in your blog."
 
 #: ../inc/stray_settings.php:123
-msgid "The plugin options will be removed."
-msgstr "The plugin options will be removed."
-
-#: ../inc/stray_settings.php:124
-msgid "The quotes will be removed."
-msgstr "The quotes will be removed."
-
-#: ../inc/stray_settings.php:164
-msgid "Settings: how the quotes look"
-msgstr "Settings: how the quotes look"
-
-#: ../inc/stray_settings.php:168
 msgid "The Title"
 msgstr "The Title"
 
-#: ../inc/stray_settings.php:170
+#: ../inc/stray_settings.php:125
 #, php-format
 msgid "<br/>The default title for all the quote widgets. Single settings can be changed on the <a href=\"%s\">widget page</a>. HTML is not needed here.<br /><strong>Sample value:</strong> <code>Random Quote</code>"
 msgstr "<br/>The default title for all the quote widgets. Single settings can be changed on the <a href=\"%s\">widget page</a>. HTML is not needed here.<br /><strong>Sample value:</strong> <code>Random Quote</code>"
 
-#: ../inc/stray_settings.php:173
+#: ../inc/stray_settings.php:127
 #, php-format
 msgid "<br/>The default title for when the widget functionality is not being used. On how to work with the code added to your template, refer to <a href=\"%s\">this page</a>.<br/><strong>Sample value:</strong> <code>&lt;h2&gt;Random Quote&lt;/h2&gt;</code>"
 msgstr "<br/>The default title for when the widget functionality is not being used. On how to work with the code added to your template, refer to <a href=\"%s\">this page</a>.<br/><strong>Sample value:</strong> <code>&lt;h2&gt;Random Quote&lt;/h2&gt;</code>"
 
-#: ../inc/stray_settings.php:176
+#: ../inc/stray_settings.php:129
 msgid "Author, Quote and Source"
 msgstr "Author, Quote and Source"
 
-#: ../inc/stray_settings.php:178
+#: ../inc/stray_settings.php:131
 msgid "<br/>HTML or other elements before this whole group, which comes after the title.<br/><strong>Sample value:</strong>"
 msgstr "<br/>HTML or other elements before this whole group, which comes after the title.<br/><strong>Sample value:</strong>"
 
-#: ../inc/stray_settings.php:181
+#: ../inc/stray_settings.php:133
 msgid "<br/>HTML or other elements after this group.<br/><strong>Sample value:</strong>"
 msgstr "<br/>HTML or other elements after this group.<br/><strong>Sample value:</strong>"
 
-#: ../inc/stray_settings.php:186
+#: ../inc/stray_settings.php:137
 msgid "<br/>HTML or other elements before the quote.<br/><strong>Sample value:</strong>"
 msgstr "<br/>HTML or other elements before the quote.<br/><strong>Sample value:</strong>"
 
-#: ../inc/stray_settings.php:189
+#: ../inc/stray_settings.php:139
 msgid "<br/>HTML or other elements after the quote.<br/><strong>Sample value:</strong>"
 msgstr "<br/>HTML or other elements after the quote.<br/><strong>Sample value:</strong>"
 
-#: ../inc/stray_settings.php:194
+#: ../inc/stray_settings.php:143
 msgid "<br/>HTML or other elements before the author.<br/><strong>Sample value:</strong>"
 msgstr "<br/>HTML or other elements before the author.<br/><strong>Sample value:</strong>"
 
-#: ../inc/stray_settings.php:197
+#: ../inc/stray_settings.php:146
 msgid "<br/>HTML or other elements after the author."
 msgstr "<br/>HTML or other elements after the author."
 
-#: ../inc/stray_settings.php:200
+#: ../inc/stray_settings.php:148
 msgid ""
 "<br/>You can link the Author to a website of your choice.\n"
 "\t\t<br/>Use this variable in your link: <code>%AUTHOR%</code><br/>\n"
@@ -440,19 +516,19 @@ msgstr ""
 "\t\t<br/>Use this variable in your link: <code>%AUTHOR%</code><br/>\n"
 "\t\t<strong>Sample values:</strong>"
 
-#: ../inc/stray_settings.php:204
+#: ../inc/stray_settings.php:152
 msgid "Replace spaces within %AUTHOR% with "
 msgstr "Replace spaces within %AUTHOR% with "
 
-#: ../inc/stray_settings.php:210
+#: ../inc/stray_settings.php:157
 msgid "<br/>HTML or other elements before the source.<br/><strong>Sample value:</strong>"
 msgstr "<br/>HTML or other elements before the source.<br/><strong>Sample value:</strong>"
 
-#: ../inc/stray_settings.php:213
+#: ../inc/stray_settings.php:160
 msgid "<br/>HTML or other elements after the source.<br/><strong>Sample value:</strong>"
 msgstr "<br/>HTML or other elements after the source.<br/><strong>Sample value:</strong>"
 
-#: ../inc/stray_settings.php:216
+#: ../inc/stray_settings.php:162
 msgid ""
 "<br/>You can link the Source to a website of your choice.\n"
 "\t\t<br/>Use this variable in your link: <code>%SOURCE%</code><br/>\n"
@@ -462,83 +538,134 @@ msgstr ""
 "\t\t<br/>Use this variable in your link: <code>%SOURCE%</code><br/>\n"
 "\t\t<strong>Sample values:</strong>"
 
-#: ../inc/stray_settings.php:220
+#: ../inc/stray_settings.php:166
 msgid "Replace spaces within %SOURCE% with "
 msgstr "Replace spaces within %SOURCE% with "
 
-#: ../inc/stray_settings.php:225
+#: ../inc/stray_settings.php:170
 msgid "Quote before Author and Source"
 msgstr "Quote before Author and Source"
 
-#: ../inc/stray_settings.php:227
+#: ../inc/stray_settings.php:172
 msgid "If checked, returns the quote before author and source. This won't be considered when spewing all the quotes onto a page (quote will always come first)."
 msgstr "If checked, returns the quote before author and source. This won't be considered when spewing all the quotes onto a page (quote will always come first)."
 
-#: ../inc/stray_settings.php:235
-#: ../inc/stray_settings.php:295
+#: ../inc/stray_settings.php:178
+#: ../inc/stray_settings.php:207
+#: ../inc/stray_settings.php:262
 msgid "Update all Settings"
 msgstr "Update all Settings"
 
-#: ../inc/stray_settings.php:239
-msgid "Settings: management of the quotes"
-msgstr "Settings: management of the quotes"
+#: ../inc/stray_settings.php:184
+msgid "New quotes"
+msgstr "New quotes"
 
-#: ../inc/stray_settings.php:242
+#: ../inc/stray_settings.php:185
+msgid "Default settings when you create a new quote."
+msgstr "Default settings when you create a new quote."
+
+#: ../inc/stray_settings.php:188
 msgid "Visibility"
 msgstr "Visibility"
 
-#: ../inc/stray_settings.php:244
+#: ../inc/stray_settings.php:190
 msgid "If checked, will set \"Visible\" to \"Yes\" for all new quotes."
 msgstr "If checked, will set \"Visible\" to \"Yes\" for all new quotes."
 
-#: ../inc/stray_settings.php:247
+#: ../inc/stray_settings.php:192
+msgid "Default group"
+msgstr "Default group"
+
+#: ../inc/stray_settings.php:201
+msgid "This group will be the default for all new quotes."
+msgstr "This group will be the default for all new quotes."
+
+#: ../inc/stray_settings.php:214
+msgid "Management of the quotes"
+msgstr "Management of the quotes"
+
+#: ../inc/stray_settings.php:215
+msgid "Default settings for the management page.  They can be changed on the management page as well."
+msgstr "Default settings for the management page.  They can be changed on the management page as well."
+
+#: ../inc/stray_settings.php:218
 msgid "Order by"
 msgstr "Order by"
 
-#: ../inc/stray_settings.php:255
-msgid "<br/>The list of quotes in the management page will be ordered by this value. This can be changed on the management page as well."
-msgstr "<br/>The list of quotes in the management page will be ordered by this value. This can be changed on the management page as well."
+#: ../inc/stray_settings.php:226
+msgid "<br/>The list of quotes in the management page will be ordered by this value."
+msgstr "<br/>The list of quotes in the management page will be ordered by this value."
 
-#: ../inc/stray_settings.php:262
-msgid "<br/>The sorting of quotes will take this direction. This can be changed on the management page as well."
-msgstr "<br/>The sorting of quotes will take this direction. This can be changed on the management page as well."
+#: ../inc/stray_settings.php:232
+msgid "<br/>The sorting of quotes will take this direction."
+msgstr "<br/>The sorting of quotes will take this direction."
 
-#: ../inc/stray_settings.php:265
+#: ../inc/stray_settings.php:234
 msgid "Quotes per page"
 msgstr "Quotes per page"
 
-#: ../inc/stray_settings.php:274
-msgid "The list of quotes in the management page will display this much quotes per page. This can be changed on the management page as well."
-msgstr "The list of quotes in the management page will display this much quotes per page. This can be changed on the management page as well."
+#: ../inc/stray_settings.php:243
+msgid "The list of quotes in the management page will display this much quotes per page."
+msgstr "The list of quotes in the management page will display this much quotes per page."
 
-#: ../inc/stray_settings.php:277
+#: ../inc/stray_settings.php:245
 msgid "Show groups"
 msgstr "Show groups"
 
-#: ../inc/stray_settings.php:288
-msgid "The list of quotes in the management page will present quotes from this group only. This can be changed on the management page as well."
-msgstr "The list of quotes in the management page will present quotes from this group only. This can be changed on the management page as well."
+#: ../inc/stray_settings.php:248
+msgid "All groups"
+msgstr "All groups"
 
-#: ../inc/stray_settings.php:299
-msgid "Deactivation"
-msgstr "Deactivation"
+#: ../inc/stray_settings.php:256
+msgid "The list of quotes in the management page will present quotes from this group only."
+msgstr "The list of quotes in the management page will present quotes from this group only."
 
-#: ../inc/stray_settings.php:304
-msgid "When deactivating Stray Random Quotes"
-msgstr "When deactivating Stray Random Quotes"
-
-#: ../inc/stray_settings.php:307
-msgid "Remove the above options from the database."
-msgstr "Remove the above options from the database."
-
-#: ../inc/stray_settings.php:309
-msgid "Remove all the quotes from the database."
-msgstr "Remove all the quotes from the database."
-
-#: ../inc/stray_settings.php:314
-msgid "Deactivate Stray Random Quotes &raquo;"
-msgstr "Deactivate Stray Random Quotes &raquo;"
-
+#~ msgid "Where the user is helped."
+#~ msgstr "Where the user is helped."
+#~ msgid ""
+#~ "For further help, make use of the comments <a href=\"%s1\">on this post</"
+#~ "a>."
+#~ msgstr ""
+#~ "For further help, make use of the comments <a href=\"%s1\">on this post</"
+#~ "a>."
+#~ msgid "Quote %s updated."
+#~ msgstr "Quote %s updated."
+#~ msgid ""
+#~ "You are about to delete this quote\\n\\'Cancel\\' to stop, \\'OK\\' to "
+#~ "delete.'"
+#~ msgstr ""
+#~ "You are about to delete this quote\\n\\'Cancel\\' to stop, \\'OK\\' to "
+#~ "delete.'"
+#~ msgid "Deactivate Stray Random Quotes"
+#~ msgstr "Deactivate Stray Random Quotes"
+#~ msgid "Settings: new quotes"
+#~ msgstr "Settings: new quotes"
+#~ msgid "Deactivation"
+#~ msgstr "Deactivation"
+#~ msgid "Use this to remove Stray random Quotes from your blog."
+#~ msgstr "Use this to remove Stray random Quotes from your blog."
+#~ msgid ""
+#~ "To insert a random quote inside a post or a page, just write in the "
+#~ "editor <code>[random-quote group='group1,group2,etc'].</code>"
+#~ msgstr ""
+#~ "To insert a random quote inside a post or a page, just write in the "
+#~ "editor <code>[random-quote group='group1,group2,etc'].</code>"
+#~ msgid ""
+#~ "To insert a given quote inside a post or a page, just write in the editor "
+#~ "<code>[quote id=1]</code>."
+#~ msgstr ""
+#~ "To insert a given quote inside a post or a page, just write in the editor "
+#~ "<code>[quote id=1]</code>."
+#~ msgid ""
+#~ "To insert a list of all the quotes in a post or a page, just write in the "
+#~ "editor <code>[all-quotes]</code>."
+#~ msgstr ""
+#~ "To insert a list of all the quotes in a post or a page, just write in the "
+#~ "editor <code>[all-quotes]</code>."
+#~ msgid "You haven't entered any quotes yet."
+#~ msgstr "You haven't entered any quotes yet."
+#~ msgid "Deactivate Lighter Menus"
+#~ msgstr "Deactivate Lighter Menus"
 #~ msgid "Title of the widget:"
 #~ msgstr "Title of the widget:"
 #~ msgid "Enter here a optional title for the widget."

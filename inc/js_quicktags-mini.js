@@ -58,6 +58,25 @@ function edShowButton(button, i) {
 	}
 }
 
+function edShowButton1(button, i) {
+	if (button.id == 'ed_link') {
+		document.write('<input type="button" id="' + button.id + '" class="ed_button" onclick="edInsertLink(edCanvas1, ' + i + ');" value="' + button.display + '" />');
+	}
+	else {
+		document.write('<input type="button" id="' + button.id + '" class="ed_button" onclick="edInsertTag(edCanvas1, ' + i + ');" value="' + button.display + '" />');
+	}
+}
+
+function edShowButton2(button, i) {
+	if (button.id == 'ed_link') {
+		document.write('<input type="button" id="' + button.id + '" class="ed_button" onclick="edInsertLink(edCanvas2, ' + i + ');" value="' + button.display + '" />');
+	}
+	else {
+		document.write('<input type="button" id="' + button.id + '" class="ed_button" onclick="edInsertTag(edCanvas2, ' + i + ');" value="' + button.display + '" />');
+	}
+}
+
+
 function edAddTag(button) {
 	if (edButtons[button].tagEnd != '') {
 		edOpenTags[edOpenTags.length] = button;
@@ -69,7 +88,7 @@ function edRemoveTag(button) {
 	for (i = 0; i < edOpenTags.length; i++) {
 		if (edOpenTags[i] == button) {
 			edOpenTags.splice(i, 1);
-			document.getElementById(edButtons[button].id).value = 		document.getElementById(edButtons[button].id).value.replace('/', '');
+			document.getElementById(edButtons[button].id).value = 	document.getElementById(edButtons[button].id).value.replace('/', '');
 		}
 	}
 }
@@ -107,6 +126,20 @@ function edToolbar() {
 	/*document.write('<input type="button" id="ed_close" class="ed_button" onclick="edCloseAllTags();" value="Close Tags" />');*/
 	document.write('</div>');
 }
+
+function edToolbar1() {
+	document.write('<span id="ed_toolbar">');
+		edShowButton1(edButtons[2], 2);
+	document.write('</span>');
+}
+
+
+function edToolbar2() {
+	document.write('<span id="ed_toolbar">');
+		edShowButton2(edButtons[2], 2);
+	document.write('</span>');
+}
+
 
 // insertion code
 

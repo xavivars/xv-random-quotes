@@ -3,12 +3,18 @@
 //manage page
 function stray_manage() {
 
-	?><div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2><?php    
+	?><div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
+	    <span class="setting-description"><?php echo __('"Quotations are cultivated only by those who have known fear in the midst of words." ~ E.M. Cioran','stray-quotes') ?></span><br/><br/>
+
+	
+	<?php    
     
 	global $wpdb;
 	$quotesoptions = get_option('stray_quotes_options');
+	
 	//decode and intercept
-	foreach($_POST as $key => $val)$_POST[$key] = stripslashes($val); 
+	foreach($_POST as $key => $val)$_POST[$key] = stripslashes($val);
+	 
 	// Global variable cleanup. 
 	$edit = $create = $save = $delete = false;	
 		
@@ -43,6 +49,8 @@ function stray_manage() {
 	}
 	
 	$offset = ($pages - 1) * $rows;
+	
+	//update options now
 	update_option('stray_quotes_options', $quotesoptions);
 	
 	//urls for different use (primitive, I know)
@@ -66,8 +74,9 @@ function stray_manage() {
 		else {			
 			
 			//query
-			$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" 
-			. mysql_real_escape_string($quoteID) . "' limit 1");
+			$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "' limit 1");
+			
+			//bad feedback
 			if ( empty($data) ) {
 				?><div id="message" class="error"><p><?php echo __(
 				'Something is wrong. I can\'t find a quote linked up with that ID.','stray-quotes') ?></p></div><?php
@@ -107,23 +116,28 @@ function stray_manage() {
 			//make the edit form
 			$styleborder = 'style="border:1px solid #ccc"';
 			$styletextarea = 'style="border:1px solid #ccc; font-family: Times New Roman, Times, serif; font-size: 1.4em;"'; ?>
-            <div>
+            <div style="width:42em">
 			<script src="<?php echo WP_STRAY_QUOTES_PATH ?>/inc/js_quicktags-mini.js" type="text/javascript"></script>
             <form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?> ">
 				<input type="hidden" name="qa" value="edit_save">
 				<input type="hidden" name="qi" value="<?php echo $quoteID; ?>">
 			
-				<p><label><?php echo __('Quote:','stray-quotes') ?></label><br />
+				<p><!--<label><?php echo __('Quote:','stray-quotes') ?></label><br />-->
                 <script type="text/javascript">edToolbar();</script>
                 <textarea id="qeditor" name="quote_quote" <?php echo $styletextarea ?> cols=68 rows=7><?php echo $quote; ?></textarea></p>
 				<script type="text/javascript">var edCanvas = document.getElementById('qeditor');</script>
-
-				<p><label><?php echo __('Author:','stray-quotes') ?></label>
-                <input type="text" name="quote_author" size=65 value="<?php echo $author ?>" <?php echo $styleborder ?> /></p>
-				
-				<p><label><?php echo __('Source:','stray-quotes') ?></label>
-                <input type="text" name="quote_source" size=65 value="<?php echo $source ?>" <?php echo $styleborder ?> /></p>
+                <p class="setting-description"><small><?php echo __('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
                 
+				<p><label><?php echo __('Author:','stray-quotes') ?></label>
+                <input type="text" name="quote_author" size=58 value="<?php echo $author ?>" <?php echo $styleborder ?> />
+				<script type="text/javascript">edToolbar1();</script>
+                <script type="text/javascript">var edCanvas1 = document.getElementById('aeditor');</script><br />
+				
+				<label><?php echo __('Source:','stray-quotes') ?></label>
+                <input type="text" name="quote_source" size=58 value="<?php echo $source ?>" <?php echo $styleborder ?> />
+				<script type="text/javascript">edToolbar2();</script>
+                <script type="text/javascript">var edCanvas2 = document.getElementById('seditor');</script>
+                <p class="setting-description"><small><?php echo __('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
                 <p><label><?php echo __('Group:&nbsp;','stray-quotes') ?></label>
                 
                 <select name="groups" style="vertical-align:middle; width:17em;"> 
@@ -200,7 +214,7 @@ function stray_manage() {
 			}
 			else {			
 				?><div id="message" class="updated fade"><p><?php echo str_replace("%s",$quoteID,__(
-				'Quote %s updated.','stray-quotes'));?></p></div><?php
+				'Quote <strong>%s</strong> updated. To insert it in a post use: <code>[quote id=%s]</code>.','stray-quotes'));?></p></div><?php
 			}		
 		}
 	}
@@ -316,8 +330,8 @@ function stray_manage() {
 	
 	//build table
 	if ( !empty($quotes) ) {
-		$imgasc = WP_STRAY_QUOTES_PATH . 'img/s_asc.png';
-		$imgdsc = WP_STRAY_QUOTES_PATH . 'img/s_desc.png';
+		$imgasc = WP_STRAY_QUOTES_PATH . '/img/s_asc.png';
+		$imgdsc = WP_STRAY_QUOTES_PATH . '/img/s_desc.png';
 		?><table class="widefat">
         <thead><tr>          
 			
@@ -406,7 +420,7 @@ function stray_manage() {
 				<a href="
 				<?php echo $urlaction . '&qa=delete&qi='.$quote->quoteID; ?>"
 				onclick="if ( confirm('<?php echo __(
-				'You are about to delete this quote\\n\\\'Cancel\\\' to stop, \\\'OK\\\' to delete.\'',
+				'You are about to delete quote '.$quote->quoteID.'.\\n\\\'Cancel\\\' to stop, \\\'OK\\\' to delete.\'',
 				'stray-quotes'); ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
 			</tr>
 			<?php $i++; 
@@ -415,9 +429,7 @@ function stray_manage() {
 		echo $first . $prev . $nav . $next . $last; ?></p><?php
 		
 	} else { ?><p><div style="clear:both"> <?php echo __('<br/>No quotes yet.','stray-quotes') ?> </div></p>
-	
-	
-	
+
 	</div><?php	}	
 	
 ?></div><?php

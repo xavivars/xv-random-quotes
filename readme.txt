@@ -3,7 +3,7 @@ Contributors: corpodibacco
 Tags: quotes, random, widget, everywhere
 Requires at least: 2.3
 Tested up to: 2.7
-Stable tag: 1.7.1
+Stable tag: 1.7.3
 
 Display random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 
@@ -21,15 +21,14 @@ Stray Random Quotes helps you collects and display random quotes everywhere on y
 
 == Installation ==
 
-1. Upload the content of stray-quotes.zip to your `/wp-content/plugins/` directory.
-2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. As you can see, Stray quotes has its own menu. Check the introductory/help page in "Quotes" > "quotes"
-4. Check out the options in "Quotes" > "Stray Random Quotes" in the admin menu
-5. Check out the management in "Quotes" > "Quotes" in the admin menu
-6. If you use widgets to customize the sidebar of your blog, Stray Random Quotes does come with a widget. Just check "Design" > "Widgets" in the admin menu.
+1. If you don't upgrade the plugin automatically via wordpress, always **deactivate the older version** first.
+2. Upload the content of stray-quotes.zip to your `/wp-content/plugins/` directory.
+3. Activate the plugin through the 'Plugins' menu in WordPress.
+4. As you can see, Stray quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
 
 == Changelog ==
 
+* 1.7.3: This version has a new overview page (I don't know why); a dedicated help page; a more helpful "add new quote" page. It now handles links in author and source a little better, so that a specific link added to the author or source of a quote overrides the defaults indicated in the settings page. It also has a page for the removal of the plugin, quotes on every page, and it has been slightly redesigned here and there: more importantly it comes with many many fixes, some of which thanks to the help of the users, whom I thank profusely.
 * 1.7.1: With this version the list of the quotes in a page or post can be paged (thanks to James and others who reminded me of this missing functionality). Also, the list of quotes can now be generated from one or some or all the groups. Refer to the overview page in the plugin menu for more details. On the fixing front, I solved a problem with shortcodes that were always displayed at the top of the post regardless their position in the post editor. I also might have found a temporary workaround for the "division by zero" problem someone encountered in the management page. I still have to figure that one out though since I can't reproduce the problem (I suspect it depends on the settings of each one's php server) so give me feedback on this if you have any. I also made minor corrections to some of the functions and a slight enhancement to the 'quotes' menu in the admin area. Some fixing and enhancement on the linking front is still to be made so be patient on that.
 * 1.7 I think it is fair to say that this new version of Stray Random Quotes scores as a significative improvement. I could say 'dramatic'. It comes with new features, such as groups for quotes; a new management page; a new quote editor and much more. Most of the functions have been rewritten and all in all this version is definitively worthed a try. After the update your widget might disappear. Just enable it again in the widget page. I temporarily removed the sketchy italian translation because there was still too much to translate. The plugin is localization-ready and eager for new translators though.
 * 1.6.4 Wordpress 2.7 compatibility FIXED. Sorry, the last update was really pointless and not really compatible with anything. Also, I'm having a bunch of obtuse problems with connections and computers these days which should explain the delay with this fix. Sorry about it.

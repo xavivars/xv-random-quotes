@@ -17,7 +17,7 @@ function stray_new() {
 	
 	// Global variable cleanup. 
 	$edit = $create = $save = $delete = false;
-			
+	
 	// How to control the app
 	$action = !empty($_REQUEST['action']) ? $_REQUEST['action'] : '';
 	$quoteID = !empty($_REQUEST['quoteID']) ? $_REQUEST['quoteID'] : '';
@@ -42,11 +42,11 @@ function stray_new() {
 		}	
 		
 		$sql = "insert into " . WP_STRAY_QUOTES_TABLE
-		. " set quote='" . mysql_real_escape_string($quote) 
-		. "', author='" . mysql_real_escape_string($author) 
-		. "', source='" . mysql_real_escape_string($source) 
-		. "', `group`='" . mysql_real_escape_string($group) 
-		. "', visible='" . mysql_real_escape_string($visible) . "'";	     
+		. " set quote='" . $quote
+		. "', author='" . $author
+		. "', source='" . $source
+		. "', `group`='" . $group
+		. "', visible='" . $visible . "'";	     
 		$wpdb->get_results($sql);
 		
 		$sql2 = "select quoteID from " . WP_STRAY_QUOTES_TABLE
@@ -71,13 +71,15 @@ function stray_new() {
 			$search = array("%s1", "%s2");
 			$replace = array($result[0]->quoteID, get_option("siteurl").'/wp-admin/admin.php?page=stray_manage');
 			echo str_replace($search,$replace,__(
-			'Quote id %s1 added to the database. 
-			You can check it in the <a href="%s2">Manage page</a>.','stray-quotes')); ?></p></div><?php			
+			'Quote no. <strong>%s1</strong> was added to the database. To insert it in a post use: <code>[quote id=%s1]</code>. To review use the <a href="%s2">Manage page</a>.','stray-quotes')); ?></p></div><?php			
 		}
 	}	
 	
 	//edit form
-	?><div class="wrap"><h2><?php echo __('Add new quote','stray-quotes') ?></h2><?php 	
+	?><div class="wrap"><h2><?php echo __('Add new quote','stray-quotes') ?></h2>
+    <span class="setting-description"><?php echo __('"A minimum of sound to a maximum of sense." ~ Mark Twain','stray-quotes') ?></span>
+    <br/><br/>
+	<?php 	
 		    
 			$quoteID=false;
 			$data = false;	
@@ -102,7 +104,12 @@ function stray_new() {
 			if ( !empty($data) ) $source = htmlspecialchars($data->source);
 			if ( !empty($data) ) $group = htmlspecialchars($data->group);
 			
-			$defaultVisible = get_option ('stray_quotes_default_visible');
+			//load defaults
+			$quotesoptions = array();
+			$quotesoptions = get_option('stray_quotes_options');
+		
+			//set visibility
+			$defaultVisible = $quotesoptions['stray_quotes_default_visible'];
 			if ( empty($data)){				
 				if  ($defaultVisible == 'Y') {			
 					$visible_yes = "checked";
@@ -122,7 +129,11 @@ function stray_new() {
 					$visible_yes = "";
 					$visible_no = "checked";				
 				}		
-			}			
+			}
+			
+			//set default group
+			$defaultgroup = $quotesoptions['stray_default_group'];
+			
 			
 			//make the edit form
 			$styleborder = 'style="border:1px solid #ccc"';
@@ -134,24 +145,29 @@ function stray_new() {
 				<input type="hidden" name="action" value="add">
 				<input type="hidden" name="quoteID" value="<?php echo $quoteID; ?>">
 			
-				<p><label><?php echo __('Quote:','stray-quotes') ?></label><br />
+				<p><!--<label><?php echo __('Quote:','stray-quotes') ?></label>-->
                 <script type="text/javascript">edToolbar();</script>
-                <textarea id="qeditor" name="quote_quote" <?php echo $styletextarea ?> cols=68 rows=7><?php echo $quote; ?></textarea></p>
+                <textarea id="qeditor" name="quote_quote" <?php echo $styletextarea ?> cols=68 rows=7><?php echo $quote; ?></textarea>
 				<script type="text/javascript">var edCanvas = document.getElementById('qeditor');</script>
-				<p><label><?php echo __('Author:','stray-quotes') ?></label>
-                <input type="text" name="quote_author" size=65 value="" <?php echo $styleborder ?> /></p>
-				
-				<p><label><?php echo __('Source:','stray-quotes') ?></label>
-                <input type="text" name="quote_source" size=65 value="" <?php echo $styleborder ?> /></p>
+                <p class="setting-description"><small><?php echo __('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
                 
+				<p><label><?php echo __('Author:','stray-quotes') ?></label>
+                <input type="text" id="aeditor" name="quote_author" size=58 value="" <?php echo $styleborder ?> />
+				<script type="text/javascript">edToolbar1();</script>
+                <script type="text/javascript">var edCanvas1 = document.getElementById('aeditor');</script><br />
+
+				<label><?php echo __('Source:','stray-quotes') ?></label>
+                <input type="text" id="seditor" name="quote_source" size=58 value="" <?php echo $styleborder ?> />
+				<script type="text/javascript">edToolbar2();</script>
+                <script type="text/javascript">var edCanvas2 = document.getElementById('seditor');</script>
+                <p class="setting-description"><small><?php echo __('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
 				
                 <p><label><?php echo __('Group:&nbsp;','stray-quotes') ?></label>
                 
                 <select name="groups" style="vertical-align:middle; width:17em;" > 
                 <?php $grouplist = make_groups(); 
                 foreach($grouplist as $groupo){ ?>
-                <option value="<?php echo $groupo; ?>" style=" padding-right:5px"
-                <?php  if ( $groupo == 'default') echo ' selected'; ?> >
+                <option value="<?php echo $groupo; ?>" style=" padding-right:5px" <?php  if ( $groupo == $defaultgroup) echo ' selected'; ?> >
                 <?php echo $groupo;?></option>
                 <?php } ?>   
                 </select>
