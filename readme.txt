@@ -21,7 +21,7 @@ Stray Random Quotes helps you collects and display random quotes everywhere on y
 
 == Installation ==
 
-1. If you don't upgrade the plugin automatically via wordpress, always **deactivate the older version** first.
+1. If are upgrading and not automatically via wordpress, always **deactivate the older version** first.
 2. Upload the content of stray-quotes.zip to your `/wp-content/plugins/` directory.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 4. As you can see, Stray quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
