@@ -3,7 +3,7 @@ Contributors: corpodibacco
 Tags: quotes, random, widget, everywhere
 Requires at least: 2.3
 Tested up to: 2.7
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 
 Display random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 
