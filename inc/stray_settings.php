@@ -114,8 +114,8 @@ function stray_quotes_options () {
 
     <?php //quote aspect ?>
     <div class="wrap"><h2><?php echo __('Settings','stray-quotes') ?></h2>
-    <span class="setting-description"><?php echo __('"With just enough of learning to misquote." ~ Lord Byron ','stray-quotes') ?></span>
-    <p>&nbsp;</p>
+    <!--<span class="setting-description"><?php /*echo __('"With just enough of learning to misquote." ~ Lord Byron ','stray-quotes')*/ ?></span>
+    <p>&nbsp;</p>-->
     <p><h3 style="line-height:.1em"><?php echo __('How the quotes look','stray-quotes') ?></h3>
     <span class="setting-description"><?php echo __('Default settings to change how the quotes appear in your blog.','stray-quotes') ?></span>
     </p>

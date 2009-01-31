@@ -42,11 +42,11 @@ function stray_new() {
 		}	
 		
 		$sql = "insert into " . WP_STRAY_QUOTES_TABLE
-		. " set quote='" . $quote
-		. "', author='" . $author
-		. "', source='" . $source
-		. "', `group`='" . $group
-		. "', visible='" . $visible . "'";	     
+		. " set quote='" . mysql_real_escape_string($quote)
+		. "', author='" . mysql_real_escape_string($author)
+		. "', source='" . mysql_real_escape_string($source)
+		. "', `group`='" . mysql_real_escape_string($group)
+		. "', visible='" . mysql_real_escape_string($visible) . "'";	     
 		$wpdb->get_results($sql);
 		
 		$sql2 = "select quoteID from " . WP_STRAY_QUOTES_TABLE
@@ -77,8 +77,8 @@ function stray_new() {
 	
 	//edit form
 	?><div class="wrap"><h2><?php echo __('Add new quote','stray-quotes') ?></h2>
-    <span class="setting-description"><?php echo __('"A minimum of sound to a maximum of sense." ~ Mark Twain','stray-quotes') ?></span>
-    <br/><br/>
+    <!--<span class="setting-description"><?php /*echo __('"A minimum of sound to a maximum of sense." ~ Mark Twain','stray-quotes')*/ ?></span>
+    <br/><br/>-->
 	<?php 	
 		    
 			$quoteID=false;

@@ -4,7 +4,7 @@
 function stray_manage() {
 
 	?><div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
-	    <span class="setting-description"><?php echo __('"Quotations are cultivated only by those who have known fear in the midst of words." ~ E.M. Cioran','stray-quotes') ?></span><br/><br/>
+	    <!--<span class="setting-description"><?php /*echo __('"Quotations are cultivated only by those who have known fear in the midst of words." ~ E.M. Cioran','stray-quotes')*/ ?></span><br/><br/>-->
 
 	
 	<?php    
@@ -262,7 +262,7 @@ function stray_manage() {
 	
 	// how many pages we have when using paging?
 	if ($rows == NULL || $rows > 10) $rows = 10; 
-	$maxPage = ceil($numrows/$rows);
+	$maxPage = ceil($numrows/intval($rows));
 		
 	
 	// print the link to access each page

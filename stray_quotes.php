@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Displays random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.7.3
+Version: 1.7.4
 License: GPL compatible
 */
 
@@ -20,7 +20,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 173);
+define ("WP_STRAY_VERSION", 174);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -170,15 +170,16 @@ function quotes_activation() {
 	else {
 	
 		//take care of version number
-		if( $quotesoptions['stray_quotes_version'] <= (WP_STRAY_VERSION-1) ) {
-			$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION;
-			//make new things here
+		if( $quotesoptions['stray_quotes_version'] <= (WP_STRAY_VERSION-1) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
+			
+		//make new things here
+		if( $quotesoptions['stray_quotes_version'] <= 172 ){
 			$quotesoptions['stray_default_group'] =  'default';		
 		}
 		
-		//we also reset the removal option
+		//we also reset the removal option for everyone
 		$quotesoptions['stray_quotes_uninstall'] = "";
-		
+
 	}
 
 	//check if table exists and alter it if necessary	

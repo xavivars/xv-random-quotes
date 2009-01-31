@@ -6,7 +6,7 @@ function stray_help() {
 	
 	?>
 <div class="wrap" style="width:52%"><h2><?php echo __('The help page','stray-quotes');?></h2>
-    <span class="setting-description"><?php echo __('"Quote me as saying I was misquoted." ~ Groucho Marx','stray-quotes') ?></span><br/><br/>
+    <!--<span class="setting-description"><?php /*echo __('"Quote me as saying I was misquoted." ~ Groucho Marx','stray-quotes')*/ ?></span><br/><br/>-->
     <?php // help part 2 ?>
     <h3><?php echo __('So, how do I display a random quote on this blog?','stray-quotes');?></h3>
     <p><?php echo str_replace("%s1",$widgetpage,__('Stray Random Quotes comes with <strong>Widgets</strong>. Depending on your preferences, a random quote in a widget could be coming from one or two groups of quotes, or from all the groups. You can use all the widgets you want. Just enable one widget at a time on the <a href="%s1">widget page</a>, and change its settings accordingly.<br />Note: <em>Your template must be widget compatible.</em></p>','stray-quotes')); ?>
@@ -29,8 +29,8 @@ function stray_help() {
     <li><?php echo __('To insert <strong>a given quote in your template</strong> use the following: <code>&lt;?php if (function_exists(\'stray_a_quote\')) stray_a_quote(id);?&gt;</code>.', 'stray-quotes');?></li>
     </ul></p>
     
-    <h3><?php echo __('Is that really all?','stray-quotes');?></h3>
-    <p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('Look, for further help, you\'re welcome to trash the comments <a href="%s1">on this post</a>. I am stopping here because this page proved well enough already that I am not having a life.<br /><br />', 'stray-quotes')); ?></p>
+    <h3><?php echo __('Hey. There is a bug!','stray-quotes');?></h3>
+    <p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('I knew it! See, I am not a programmer or anything. There\'s always a bug. If you want to help me catch it, and for further help, please come and trash the comments <a href="%s1">on this post</a>. Thanks.<br /><br />', 'stray-quotes')); ?></p>
 
 </div><?php
 

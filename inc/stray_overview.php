@@ -74,8 +74,8 @@ function stray_intro() {
 	if($visiblequotes == $howmanyquotes)$visiblequotes = 'all ';
 	 
 	?><div class="wrap"><h2>Stray Random Quotes, a wordpress plugin</h2>
-    <span class="setting-description"><?php echo __('"A witty saying proves nothing." ~ Voltaire','stray-quotes') ?></span>
-    <br/><br/>
+    <!--<span class="setting-description"><?php /*echo __('"A witty saying proves nothing." ~ Voltaire','stray-quotes')*/ ?></span>
+    <br/><br/>-->
     <p><?php if ($howmanyquotes) { 
         $search = array('%s1','%s2','%s3');
         $replace = array($howmanyquotes,$howmanygroups,$visiblequotes);

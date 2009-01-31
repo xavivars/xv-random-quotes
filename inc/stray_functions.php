@@ -236,7 +236,7 @@ function stray_page_shortcut($atts, $content = NULL) {
 		
 		// how many pages we have when using paging?
 		if ($rows == NULL || $rows < 10) $rows = 10; 
-		$maxPage = ceil($numrows/$rows);
+		$maxPage = ceil($numrows/intval($rows));
 		
 		// print the link to access each page
 		$nav  = '';
