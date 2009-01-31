@@ -55,11 +55,11 @@ function stray_manage() {
 	
 	//urls for different use (primitive, I know)
 	$baseurl = get_option("siteurl").'/wp-admin/admin.php?page=stray_manage';
-	$urlorder = $baseurl.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qa='.$action.'&qi='.$quoteID.'&qo=';	
-	$urlpages = $baseurl.'&qo='.$orderby.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qa='.$action.'&qi='.$quoteID.'&qp=';
-	$urlrows = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qg='.$groups.'&qs='.$sort.'&qa='.$action.'&qi='.$quoteID.'&qr=';
-	$urlgroup = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qs='.$sort.'&qa='.$action.'&qi='.$quoteID.'&qg=';
-	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qa='.$action.'&qi='.$quoteID.'&qs=';
+	$urlorder = $baseurl.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qo=';	
+	$urlpages = $baseurl.'&qo='.$orderby.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qp=';
+	$urlrows = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qg='.$groups.'&qs='.$sort.'&qr=';
+	$urlgroup = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qs='.$sort.'&qg=';
+	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs=';
 	$urlaction = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort; 
 		
 	//if the page is opened after a edit action
