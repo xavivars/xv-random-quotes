@@ -261,8 +261,8 @@ function stray_manage() {
 	settype($rows, "integer"); 
 	
 	// how many pages we have when using paging?
-	if ($rows == NULL || $rows > 10) $rows = 10; 
-	$maxPage = ceil($numrows/intval($rows));
+	if ($rows == NULL || $rows < 10) $rows = 10; 
+	$maxPage = ceil($numrows/$rows);
 		
 	
 	// print the link to access each page
