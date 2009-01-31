@@ -123,7 +123,8 @@ function stray_manage() {
 				<input type="hidden" name="qi" value="<?php echo $quoteID; ?>">
 			
 				<p><!--<label><?php echo __('Quote:','stray-quotes') ?></label><br />-->
-                <script type="text/javascript">edToolbar();</script>
+                <div style="float:left"><script type="text/javascript">edToolbar();</script></div>
+                <div style="float:right; display:compact;margin-top:12px"><small>To insert this quote in a post use: <code>[quote id=<?php echo $quoteID ?>]</code></small></div>
                 <textarea id="qeditor" name="quote_quote" <?php echo $styletextarea ?> cols=68 rows=7><?php echo $quote; ?></textarea></p>
 				<script type="text/javascript">var edCanvas = document.getElementById('qeditor');</script>
                 <p class="setting-description"><small><?php echo __('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
@@ -214,7 +215,7 @@ function stray_manage() {
 			}
 			else {			
 				?><div id="message" class="updated fade"><p><?php echo str_replace("%s",$quoteID,__(
-				'Quote <strong>%s</strong> updated. To insert it in a post use: <code>[quote id=%s]</code>.','stray-quotes'));?></p></div><?php
+				'Quote <strong>%s</strong> updated.','stray-quotes'));?></p></div><?php
 			}		
 		}
 	}
@@ -238,7 +239,7 @@ function stray_manage() {
 			
 			if ( empty($result) || empty($result[0]->quoteID) )	{			
 				?><div class="updated"><p><?php echo str_replace("%s",$quoteID,__(
-				'Quote %s deleted.','stray-quotes')); ?></p></div><?php
+				'Quote <strong>%s</strong> deleted.','stray-quotes')); ?></p></div><?php
 			}			
 			else {						
 				?><div class="error fade"><p><?php echo __(
@@ -268,15 +269,21 @@ function stray_manage() {
 	// print the link to access each page
 	$nav  = '';
 	
+	
+/*	$missing;
+	echo '('.$rows.'*'.$quotepage.')-'.$numrows;
+*/	
 	for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
 	   if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
 	   else $nav .= ' <a href="'.$urlpages.$quotepage.'">'.$quotepage.'</a> ';
 	}
 	
+	
 	if ($pages > 1) {
-	   $quotepage  = $pages - 1;
-	   $prev  = ' <a href="'.$urlpages.$quotepage.'">Previous '.$rows.'</a> | ';		
-	   $first = ' <a href="'.$urlpages.'1">First</a> | ';
+		
+		$quotepage  = $pages - 1;		
+		$prev  = ' <a href="'.$urlpages.$quotepage.'">Previous '.$rows.'</a> | ';		
+		$first = ' <a href="'.$urlpages.'1">First</a> | ';
 	}
 	else {
 	   $prev  = '&nbsp;'; // we're on page one, don't print previous link
@@ -284,10 +291,14 @@ function stray_manage() {
 	}
 	
 	if ($pages < $maxPage) {
-	   $quotepage = $pages + 1;
-	   $next = ' | <a href="'.$urlpages.$quotepage.'"> Next '.$rows.'</a> ';
 	
-	   $last = ' | <a href="'.$urlpages.$maxPage.'"> Last</a> ';
+		$missing = $numrows-($rows*$pages);		
+		if ($missing > $rows) $missing = $rows;
+		
+		$quotepage = $pages + 1;
+		$next = ' | <a href="'.$urlpages.$quotepage.'"> Next '.$missing.'</a> ';
+		
+		$last = ' | <a href="'.$urlpages.$maxPage.'"> Last</a> ';
 	}
 	else {
 	   $next = '&nbsp;'; // we're on the last page, don't print next link

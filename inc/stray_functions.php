@@ -260,10 +260,14 @@ function stray_page_shortcut($atts, $content = NULL) {
 		}
 		
 		if ($pages < $maxPage) {
-		   $quotepage = $pages + 1;
-		   $next = ' | <a href="'.$urlpages.$quotepage.'"> Next '.$rows.'</a> ';
 		
-		   $last = ' | <a href="'.$urlpages.$maxPage.'"> Last</a> ';
+			$missing = $numrows-($rows*$pages);		
+			if ($missing > $rows) $missing = $rows;
+			
+			$quotepage = $pages + 1;
+			$next = ' | <a href="'.$urlpages.$quotepage.'"> Next '.$missing.'</a> ';
+			
+			$last = ' | <a href="'.$urlpages.$maxPage.'"> Last</a> ';
 		}
 		else {
 		   $next = '&nbsp;'; // we're on the last page, don't print next link
