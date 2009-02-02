@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Displays random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.7.5
+Version: 1.7.6
 License: GPL compatible
 */
 
@@ -20,7 +20,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 175);
+define ("WP_STRAY_VERSION", 176);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -156,7 +156,9 @@ function quotes_activation() {
 		delete_option($varb);
 				
 		//more new entries
+		$quotesoptions['stray_if_no_author'] =  '<br/>source:&nbsp;';	
 		$quotesoptions['stray_quotes_uninstall'] = '';
+		$quotesoptions['stray_clear_form'] =  'Y';	
 		$quotesoptions['stray_quotes_order'] = 'quoteID';
 		$quotesoptions['stray_quotes_rows'] = 10; 
 		$quotesoptions['stray_quotes_groups'] = 'all';
@@ -168,17 +170,28 @@ function quotes_activation() {
 	
 	//if the 1.7+ array options already exist
 	else {
-	
-		//take care of version number
-		if( $quotesoptions['stray_quotes_version'] <= (WP_STRAY_VERSION-1) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
 			
 		//make new things here
 		if( $quotesoptions['stray_quotes_version'] <= 172 ){
 			$quotesoptions['stray_default_group'] =  'default';		
 		}
 		
+		if( $quotesoptions['stray_quotes_version'] <= 175 ){
+			
+			//add a new fields
+			$quotesoptions['stray_if_no_author'] =  '';
+			$quotesoptions['stray_clear_form'] =  'Y';	
+			
+			//remove all spaces from groups
+			$removal = $wpdb->query("UPDATE `".WP_STRAY_QUOTES_TABLE."` SET `group`= REPLACE(`group`, ' ', '-') WHERE `group` LIKE '% %'");
+			if ($removal)$quotesoptions['stray_quotes_first_time'] = 5;
+		}
+		
 		//we also reset the removal option for everyone
 		$quotesoptions['stray_quotes_uninstall'] = "";
+	
+		//take care of version number
+		if( $quotesoptions['stray_quotes_version'] <= (WP_STRAY_VERSION-1) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
 
 	}
 
@@ -242,7 +255,7 @@ function quotes_activation() {
 		$wpdb->query("INSERT INTO " . WP_STRAY_QUOTES_TABLE . " (
 		`quote`, `author`, `source`) values ('Always tell the truth. Then you don\'t have to remember anything.', 'Mark Twain', 'Roughin it') ");
 		
-		//1 = first time, 2 = altered old table, 3 = altered new table =, 4 = we're cool
+		//1 = first time, 2 = altered old table, 3 = altered new table =, 4 = we're cool, 5 = etc
 		$quotesoptions['stray_quotes_first_time'] = 1;		
 	}
 		
@@ -291,12 +304,11 @@ function stray_quotes_add_pages() {
 
 	add_menu_page('Stray Random Quotes', 'Quotes', 8, __FILE__, 'stray_intro', WP_STRAY_QUOTES_PATH.'/img/lightbulb.png');
 	add_submenu_page(__FILE__, __('Overview','stray-quotes'), __('Overview','stray-quotes'), 8, __FILE__, 'stray_intro');
-	add_submenu_page(__FILE__, __('Manage','stray-quotes'), __('Manage','stray-quotes'), 8, 'stray_manage', 'stray_manage');
-	add_submenu_page(__FILE__, __('Add New','stray-quotes'), __('Add New','stray-quotes'), 8, 'stray_new', 'stray_new');
-	add_submenu_page(__FILE__, __('Settings','stray-quotes'), __('Settings','stray-quotes'), 8, 'stray_quotes_options', 'stray_quotes_options'); 
+	add_submenu_page(__FILE__, __('Manage Quotes','stray-quotes'), __('Manage','stray-quotes'), 8, 'stray_manage', 'stray_manage');
+	add_submenu_page(__FILE__, __('Add New Quote','stray-quotes'), __('Add New','stray-quotes'), 8, 'stray_new', 'stray_new');
+	add_submenu_page(__FILE__, __('Settings of the Quotes','stray-quotes'), __('Settings','stray-quotes'), 8, 'stray_quotes_options', 'stray_quotes_options'); 
 	add_submenu_page(__FILE__, __('Help','stray-quotes'), __('Help','stray-quotes'), 8, 'stray_help', 'stray_help');
-	add_submenu_page(__FILE__, __('Remove','stray-quotes'), __('Remove','stray-quotes'), 8, 'stray_remove', 'stray_remove'); 	
-
+	add_submenu_page(__FILE__, __('Remove Stray Random Quotes','stray-quotes'), __('Remove','stray-quotes'), 8, 'stray_remove', 'stray_remove'); 	
 	
 }
 

@@ -53,6 +53,8 @@ function stray_quotes_options () {
 		'stray_quotes_groups' => $_POST['groups'],
 		'stray_quotes_sort' => $_POST['sort'],
 		'stray_default_group' => $_POST['default_group'],
+		'stray_if_no_author'=> $_POST['no_author'],	
+		'stray_clear_form'=> $_POST['clear_form'],
 		
 		'stray_quotes_version' => WP_STRAY_VERSION,				
 		'stray_quotes_first_time' => 4,
@@ -105,9 +107,12 @@ function stray_quotes_options () {
 	$groups = $quotesoptions['stray_quotes_groups'];
 	$sort = $quotesoptions['stray_quotes_sort'];
 	$defaultgroup = $quotesoptions['stray_default_group'];
+	$ifnoauthor = $quotesoptions['stray_if_no_author'];	
+	$clearform = $quotesoptions['stray_clear_form'];
 		
 	if ( $putQuotesFirst == 'Y' ) $putQuotesFirst_selected = 'checked';	
 	if ( $defaultVisible == 'Y' ) $defaultVisible_selected = 'checked';	
+	if ( $clearform == 'Y' ) $clearform_selected = 'checked';	
 	
 	//the options form	?>
 	<form name="frm_options" method="post" action="<?php echo ($_SERVER['REQUEST_URI']); ?>">
@@ -156,6 +161,9 @@ function stray_quotes_options () {
         <input type="text" size="50" name="before_source" value="<?php echo (htmlentities($beforeSource)); ?>" class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements before the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>,&lt;em&gt;&amp;nbsp;</code></span>
         <br/>
+        <input type="text" size="50" name="no_author" value="<?php echo (htmlentities($ifnoauthor)); ?>" class="regular-text" /><span class="setting-description">
+		<?php echo __('<br/>HTML or other elements before the source <strong>if there is no author</strong>.<br/>Overrides the field above when no author is present.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;br/&gt;source:&amp;nbsp;</code></span>
+        <br/>        
         <input type="text" size="50" name="after_source" value="<?php echo (htmlentities($afterSource)); ?>" class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements after the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/em&gt;</code></span></td>
         <td><input type="text" size="50" name="source_link_to" value="<?php if ($sourcelinkto) echo (htmlentities($sourcelinkto)); else echo 'http://'; ?>" class="regular-text code" /><span class="setting-description">
@@ -200,6 +208,10 @@ function stray_quotes_options () {
     </select><span class="setting-description"> 
 	<?php echo __('This group will be the default for all new quotes.','stray-quotes') ?></span>
 	</td></tr>
+    <tr valign="top"><th scope="row"><?php echo __('Clear the form','stray-quotes') ?></th>       
+        <td colspan="2"><input type="checkbox" name="clear_form" value="Y" <?php echo ($clearform_selected); ?> /><span class="setting-description">
+        <?php echo __('If checked, will clear the values from the form after adding a new quote.','stray-quotes') ?></span>
+    </td></tr> 
 	</table>
     <br/>
 	<div class="submit">
@@ -209,8 +221,7 @@ function stray_quotes_options () {
     
     <p>&nbsp;</p>
      
-	<?php //management of quotes ?>
-    
+	<?php //management of quotes ?>    
     <p><h3 style="line-height:.1em"><?php echo __('Management of the quotes','stray-quotes') ?></h3>
     <span class="setting-description"><?php echo __('Default settings for the management page.  They can be changed on the management page as well.','stray-quotes') ?></span>
     </p>

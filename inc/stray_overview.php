@@ -13,7 +13,7 @@ function stray_intro() {
 	$help =  get_option('siteurl')."/wp-admin/admin.php?page=stray_help";
 	$first_time = $quotesoptions['stray_quotes_first_time'];
 
-	//if it is really the first time
+	//1 if it is really the first time
 	if ($first_time == 1) {
 	
 		$search = "%s1";
@@ -28,7 +28,7 @@ function stray_intro() {
 		update_option('stray_quotes_options', $quotesoptions);
 	}
 	
-	//if you udpated the old table
+	//2 if you udpated the old table
 	else if ($first_time == 2) {
 	
 		$search = array("%s1", "%s2");
@@ -42,7 +42,7 @@ function stray_intro() {
         	
 	}
 	
-	//if you updated the new table
+	//3 if you updated the new table
 	else if ($first_time == 3) {
 	
 		$search = array("%s1", "%s2");
@@ -54,6 +54,17 @@ function stray_intro() {
 		$quotesoptions['stray_quotes_first_time'] = 4;
 		update_option('stray_quotes_options', $quotesoptions);
         	
+	}
+	
+	//5 if spaces were removed from group names (1.7.6)
+	else if  ($first_time == 5) {
+	
+		?><div id="message" class="updated fade"><p><?php echo __(
+		'Hey. Welcome to this new version of <strong>Stray Random Quotes</strong>.<br />With this version spaces are not allowed within group names anymore, because they created all sorts of problems. It so happens that you had spaces in your group names, so I replaced them with dashes. I hope it\'s okay.','stray-quotes'); ?></div><?php
+		
+		$quotesoptions['stray_quotes_first_time'] = 4;
+		update_option('stray_quotes_options', $quotesoptions);
+	
 	}
 	
 	//the blah blah	

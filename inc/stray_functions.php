@@ -18,12 +18,13 @@ $defaultVisible = $quotesoptions['stray_quotes_default_visible'];
 $linkto = $quotesoptions['stray_quotes_linkto'];
 $sourcelinkto = $quotesoptions['stray_quotes_sourcelinkto'];
 $sourcespaces = $quotesoptions['stray_quotes_sourcespaces'];	
-$authorspaces = $quotesoptions['stray_quotes_authorspaces'];	
+$authorspaces = $quotesoptions['stray_quotes_authorspaces'];
+$ifnoauthor = $quotesoptions['stray_if_no_author'];		
 
 //this is called by other functions to output a given quote
 function stray_output_one($get_one) {
 
-	global $wpdb,$widgetTitle,$regularTitle,$beforeAll,$beforeAuthor,$afterAuthor,$beforeSource,$afterSource,$beforeQuote,$afterQuote,$afterAll,$putQuotesFirst,$linkto,$sourcelinkto,$sourcespaces,$authorspaces;
+	global $wpdb,$widgetTitle,$regularTitle,$beforeAll,$beforeAuthor,$afterAuthor,$beforeSource,$afterSource,$beforeQuote,$afterQuote,$afterAll,$putQuotesFirst,$linkto,$sourcelinkto,$sourcespaces,$authorspaces,$ifnoauthor;
 	$output = '';
 	
 	//make or not the author link
@@ -57,25 +58,42 @@ function stray_output_one($get_one) {
 	//output the content
 	if ( !$putQuotesFirst) {
 		$output .= $beforeAll;
+		
+		//if author
 		if ( !empty($get_one->author) ) {
 			$output .= $beforeAuthor . $Author . $afterAuthor;
+			//source values if there is an author
+			if ( !empty($get_one->source) ) {
+				$output .= $beforeSource . $Source . $afterSource;
+			}				
+		//source values if there is no author	
+		} else {
+			if ( !empty($get_one->source) ) {
+				$output .= $ifnoauthor . $Source . $afterSource;
+			}				
 		}
-		if ( !empty($get_one->source) ) {
-			$output .= $beforeSource . $Source . $afterSource;
-		}		
 
 		$output .= $beforeQuote . nl2br($get_one->quote) . $afterQuote;			
 		$output .= $afterAll;		
 	}
-	else {		
+	//quote first
+	else {	
+		
 		$output .= $beforeAll;		
 		$output .= $beforeQuote . nl2br($get_one->quote) . $afterQuote;
+		//if author
 		if ( !empty($get_one->author) ) {
 			$output .= $beforeAuthor . $Author . $afterAuthor;
+			//source values if there is an author
+			if ( !empty($get_one->source) ) {
+				$output .= $beforeSource . $Source . $afterSource;
+			}				
+		//source values if there is no author	
+		} else {
+			if ( !empty($get_one->source) ) {
+				$output .= $ifnoauthor . $Source . $afterSource;
+			}				
 		}
-		if ( !empty($get_one->source) ) {
-			$output .= $beforeSource . $Source . $afterSource;
-		}		
 		$output .= $afterAll;		
 	}		
 	
@@ -239,8 +257,7 @@ function stray_page_shortcut($atts, $content = NULL) {
 		$maxPage = ceil($numrows/intval($rows));
 		
 		// print the link to access each page
-		$nav  = '';
-		
+		$nav  = '';		
 		$baseurl = $_SERVER['PHP_SELF'];
 		$urlpages = $baseurl.'&qp=';
 		
@@ -280,9 +297,11 @@ function stray_page_shortcut($atts, $content = NULL) {
 		. " LIMIT " . $offset. ", ". $rows;
 		$result = $wpdb->get_results($sql);
 		
+		$contents = '';		
 		if ( !empty($result) ) {
 			
-			$contents = '<p>'.$first . $prev . $nav . $next . $last.'</p>';
+			//uncomment this to have the navigation also above the list.
+			/*$contents .= '<p>'.$first . $prev . $nav . $next . $last.'</p>';*/
 			$contents .= '<ul>';
 			foreach ( $result as $get_one )$contents .= '<li>'.stray_output_one($get_one).'</li>';	
 			$contents .= '</ul><p>'.$first . $prev . $nav . $next . $last.'</p>';;

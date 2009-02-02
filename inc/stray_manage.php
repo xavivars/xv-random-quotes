@@ -4,20 +4,14 @@
 function stray_manage() {
 
 	?><div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
-	    <!--<span class="setting-description"><?php /*echo __('"Quotations are cultivated only by those who have known fear in the midst of words." ~ E.M. Cioran','stray-quotes')*/ ?></span><br/><br/>-->
-
+	    <!--<span class="setting-description"></span><br/><br/>-->
 	
-	<?php    
-    
-	global $wpdb;
+	<?php global $wpdb;
 	$quotesoptions = get_option('stray_quotes_options');
 	
 	//decode and intercept
 	foreach($_POST as $key => $val)$_POST[$key] = stripslashes($val);
-	 
-	// Global variable cleanup. 
-	$edit = $create = $save = $delete = false;	
-		
+	 		
 	//defaults and gets
 	$action = !empty($_REQUEST['qa']) ? $_REQUEST['qa'] : '';
 	$quoteID = !empty($_REQUEST['qi']) ? $_REQUEST['qi'] : '';
@@ -55,11 +49,6 @@ function stray_manage() {
 	
 	//urls for different use (primitive, I know)
 	$baseurl = get_option("siteurl").'/wp-admin/admin.php?page=stray_manage';
-	$urlorder = $baseurl.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qo=';	
-	$urlpages = $baseurl.'&qo='.$orderby.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qp=';
-	$urlrows = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qg='.$groups.'&qs='.$sort.'&qr=';
-	$urlgroup = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qs='.$sort.'&qg=';
-	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs=';
 	$urlaction = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort; 
 		
 	//if the page is opened after a edit action
@@ -158,7 +147,7 @@ function stray_manage() {
 					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php echo __('No','stray-quotes') ?></div>
 				</p><p>&nbsp;</p>
 				<p> <a href=" <?php echo $urlaction ?>">Cancel</a>&nbsp;
-            <input type="submit" name="save"  class="button-primary" value="<?php echo __('Save quote','stray-quotes') ?> &raquo;" /></p>
+            <input type="submit" name="save"  class="button-primary" value="<?php echo __('Update quote','stray-quotes') ?> &raquo;" /></p>
             
                 				
 			</form><p>&nbsp;</p></div><?php 
@@ -176,6 +165,12 @@ function stray_manage() {
 		
 		if ($_REQUEST['quote_group'])$group = $_REQUEST['quote_group'];
 		else $group = $_REQUEST['groups'];
+		
+		if (preg_match('/\s+/',$group)>0){
+			$group=preg_replace('/\s+/','-',$group);
+			$plusmessage = "<br/>Note: <strong>The name of the group you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
+		} 
+
 	
 		if ( ini_get('magic_quotes_gpc') )	{
 		
@@ -215,7 +210,7 @@ function stray_manage() {
 			}
 			else {			
 				?><div id="message" class="updated fade"><p><?php echo str_replace("%s",$quoteID,__(
-				'Quote <strong>%s</strong> updated.','stray-quotes'));?></p></div><?php
+				'Quote <strong>%s</strong> updated.'.$plusmessage,'stray-quotes'));?></p></div><?php
 			}		
 		}
 	}
@@ -269,15 +264,12 @@ function stray_manage() {
 	// print the link to access each page
 	$nav  = '';
 	
+	$urlpages = $baseurl.'&qo='.$orderby.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qp=';
 	
-/*	$missing;
-	echo '('.$rows.'*'.$quotepage.')-'.$numrows;
-*/	
 	for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
 	   if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
 	   else $nav .= ' <a href="'.$urlpages.$quotepage.'">'.$quotepage.'</a> ';
 	}
-	
 	
 	if ($pages > 1) {
 		
@@ -314,6 +306,13 @@ function stray_manage() {
 	. " LIMIT " . $offset. ", ". $rows;
 	
 	$quotes = $wpdb->get_results($sql);
+	
+	//page number has to reset to 1 otherwise it would look like you have no quotes left when you are on a page too high for so many quotes.
+	$urlrows = $baseurl.'&qo='.$orderby.'&qp='.'1'/*$pages*/.'&qg='.$groups.'&qs='.$sort.'&qr=';
+	
+	$urlgroup = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qs='.$sort.'&qg='; 
+	$urlorder = $baseurl.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qo=';	
+	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs=';
 
 	//HTML
 	?><p class="subsubsub" style="float:left"> quotes per page: 
@@ -330,8 +329,9 @@ function stray_manage() {
     <option value="<?php echo $urlgroup.'all'; ?>" 
 	<?php  if ( $groups == '' || $groups == 'all' ) echo ' selected'; ?>>all</option>
     <?php $grouplist = make_groups(); 
-	foreach($grouplist as $groupo){ ?>
-    	<option value="<?php echo $urlgroup.$groupo; ?>" 
+	foreach($grouplist as $groupo){ 
+    if (strpos(" ",$groupo)) $groupo = str_replace(" ","-",$groupo);
+    	?><option value="<?php echo $urlgroup.$groupo; ?>" 
 		<?php  if ( $groups) {if ( $groups == $groupo) echo ' selected';} ?> >
 		<?php echo $groupo;?></option>
 	<?php } ?>   
