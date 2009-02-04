@@ -3,7 +3,7 @@ Contributors: corpodibacco
 Tags: quotes, random, widget, everywhere
 Requires at least: 2.3
 Tested up to: 2.7
-Stable tag: 1.7.6
+Stable tag: 1.7.7
 
 Display random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 
@@ -28,6 +28,7 @@ Stray Random Quotes helps you collects and display random quotes everywhere on y
 
 == Changelog ==
 
+* 1.7.7 This version should fix the support for UTF8 characters as experienced in the settings page (thanks to Chrille for pointing the bug out). Please give me confirmation on this if you care. There is nothing else: although new things are hoepfully cooking for the next versions.
 * 1.7.6 Added: ability to manually reset the index of the quotes if the numbers get too high (on the help page). Added: an overriding HTML element to put before the source when there is no author (on the settings page). Fixed: it is now impossible for group names to have spaces in them-- because it made things wacky (on the new and manage pages). If you do have spaces in the names of any of your groups, upon activation this version will replace them with dashes (don't worry about it, everything else will be untouched). Changed: when all the quotes are rendered on a post or a page, only the bottom navigation links will be present. I think the above ones were redundant. If you want them back, uncomment the line `304` in the file `stray_functions.php`. Changed: Now the user can choose whether after inserting a new quote the values should persist in the form or not (settings page)(thanks to AgentSmith for pointing this out). Fixed: titles of the pages are a little more explicative. Fixed: when switching how many quotes to show per page, the page number is reset to 1 to avoid false '"no quotes yet" messages (manage page). Fixed: few more little things.
 * 1.7.5 I had to issue this other update right away for a much bigger bug that I just discovered at my own expenses (the loss of not one but two quotes). In short, whenever a quote was edited in the manage page and then the manage page was changed by sorting or picking a different group, the just edited quote would get emptied of all its content. Yep, you read it right. Hollowed out. I hope this hasn't happened to anyone else yet because there is no turning back unless you can enter the quote again. Anyway, this version solves the problem. I wish the bugs were discovered all together but this is not how it works.
 * 1.7.4 OK, another version right away for a tiny bug that screwed up the creation of new groups for the new quotes: thanks to pupo, James and AgentSmith for catching the bug and saving the day. I also removed the quotes I had placed myself at the top of the pages: at first I thought they were fun, but they were also annoying. Man I hope this is the last update for a week at least.

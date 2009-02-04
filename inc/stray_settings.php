@@ -12,7 +12,7 @@ function stray_quotes_options () {
 	
 	//decode and intercept
 	foreach($_POST as $key => $val) {
-		$_POST[$key] = stripslashes($val);
+		$_POST[$key] = stripslashes(utf8_encode($val));
 	}
 	
 	//handle the post event
@@ -55,10 +55,6 @@ function stray_quotes_options () {
 		'stray_default_group' => $_POST['default_group'],
 		'stray_if_no_author'=> $_POST['no_author'],	
 		'stray_clear_form'=> $_POST['clear_form'],
-		
-		'stray_quotes_version' => WP_STRAY_VERSION,				
-		'stray_quotes_first_time' => 4,
-		'stray_quotes_uninstall' => '',
 		);		
 		
 		//update options
@@ -128,51 +124,51 @@ function stray_quotes_options () {
 	<tr valign="top"><th scope="row"><?php echo __('The Title','stray-quotes') ?></th>    	
         <td><input type="text" size="50" name="widget_title" value="<?php echo ($widgetTitle); ?>"class="regular-text" /><span class="setting-description">
     	<?php echo str_replace("%s",get_option('siteurl')."/wp-admin/widgets.php",__('<br/>The default title for all the quote widgets. Single settings can be changed on the <a href="%s">widget page</a>. HTML is not needed here.<br /><strong>Sample value:</strong> <code>Random Quote</code>','stray-quotes')); ?></span></td>
-        <td><input type="text" size="50" name="regular_title" value="<?php echo (htmlentities($regularTitle)); ?>"class="regular-text" /><span class="setting-description">
+        <td><input type="text" size="50" name="regular_title" value="<?php echo (utf8_decode(htmlspecialchars($regularTitle))); ?>"class="regular-text" /><span class="setting-description">
 		<?php echo str_replace("%s",get_option("siteurl").'/wp-admin/admin.php?page=stray_quotes/stray_quotes.php',__('<br/>The default title for when the widget functionality is not being used. On how to work with the code added to your template, refer to <a href="%s">this page</a>.<br/><strong>Sample value:</strong> <code>&lt;h2&gt;Random Quote&lt;/h2&gt;</code>','stray-quotes')) ?></span>   
 	</td></tr>
 	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Author, Quote and Source','stray-quotes') ?></th>    
-        <td><input type="text" size="50" name="before_all" value="<?php echo (htmlentities($beforeAll)); ?>"class="regular-text" /><span class="setting-description">
+        <td><input type="text" size="50" name="before_all" value="<?php echo (utf8_decode(htmlspecialchars($beforeAll))); ?>"class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements before this whole group, which comes after the title.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;div align=&quot;right&quot;&gt;</code></span></td>
-        <td><input type="text" size="50" name="after_all" value="<?php echo (htmlentities($afterAll)); ?>"class="regular-text" /><span class="setting-description">
+        <td><input type="text" size="50" name="after_all" value="<?php echo (utf8_decode(htmlspecialchars($afterAll))); ?>"class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements after this group.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/div&gt;</code></span>   
 	</td></tr>
 	<tr valign="top"><th scope="row"><?php echo __('Quote','stray-quotes') ?></th>    
-        <td><input type="text" size="50" name="before_quote" value="<?php echo (htmlentities($beforeQuote)); ?>"class="regular-text" /><span class="setting-description">
+        <td><input type="text" size="50" name="before_quote" value="<?php echo (utf8_decode(htmlspecialchars($beforeQuote))); ?>"class="regular-text" /><span class="setting-description">
         <?php echo __('<br/>HTML or other elements before the quote.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&amp;#8220;</code></span>
-        <td><input type="text" size="50" name="after_quote" value="<?php echo (htmlentities($afterQuote)); ?>"class="regular-text" /><span class="setting-description">
+        <td><input type="text" size="50" name="after_quote" value="<?php echo (utf8_decode(htmlspecialchars($afterQuote))); ?>"class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements after the quote.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&amp;#8221;</code></span>    
     </td></tr>
 	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Author','stray-quotes') ?></th><td>    
-        <input type="text" size="50" name="before_author" value="<?php echo (htmlentities($beforeAuthor)); ?>" class="regular-text" /><span class="setting-description">
+        <input type="text" size="50" name="before_author" value="<?php echo (utf8_decode(htmlspecialchars($beforeAuthor))); ?>" class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements before the author.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;br/&gt;by&amp;nbsp;</code></span>
         <br/>
-        <input type="text" size="50" name="after_author" value="<?php echo (htmlentities($afterAuthor)); ?>" class="regular-text" /><span class="setting-description">
+        <input type="text" size="50" name="after_author" value="<?php echo (utf8_decode(htmlspecialchars($afterAuthor))); ?>" class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements after the author.','stray-quotes') ?></span></td>
-        <td><input type="text" size="50" name="link_to" value="<?php if ($linkto) echo (htmlentities($linkto)); else echo 'http://'; ?>" class="regular-text code" /><span class="setting-description">
+        <td><input type="text" size="50" name="link_to" value="<?php if ($linkto) echo (utf8_decode(htmlspecialchars($linkto))); else echo 'http://'; ?>" class="regular-text code" /><span class="setting-description">
 		<?php echo __('<br/>You can link the Author to a website of your choice.
 		<br/>Use this variable in your link: <code>%AUTHOR%</code><br/>
 		<strong>Sample values:</strong>','stray-quotes') ?> <code>http://www.google.com/search?q=&quot;%AUTHOR%&quot;</code><br/> 
 		<code>http://en.wikipedia.org/wiki/%AUTHOR%</code><br />
         <?php echo __('Replace spaces within %AUTHOR% with ','stray-quotes') ?>
-        <input type="text" size="1" maxlength="1" name="author_spaces" value="<?php echo (htmlentities($authorspaces)); ?>" /></span>
+        <input type="text" size="1" maxlength="1" name="author_spaces" value="<?php echo (utf8_decode(htmlspecialchars($authorspaces))); ?>" /></span>
    	</td></tr>
 	<tr valign="top"><th scope="row"><?php echo __('Source','stray-quotes') ?></th><td>    
-        <input type="text" size="50" name="before_source" value="<?php echo (htmlentities($beforeSource)); ?>" class="regular-text" /><span class="setting-description">
+        <input type="text" size="50" name="before_source" value="<?php echo (utf8_decode(htmlspecialchars($beforeSource))); ?>" class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements before the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>,&lt;em&gt;&amp;nbsp;</code></span>
         <br/>
-        <input type="text" size="50" name="no_author" value="<?php echo (htmlentities($ifnoauthor)); ?>" class="regular-text" /><span class="setting-description">
+        <input type="text" size="50" name="no_author" value="<?php echo (utf8_decode(htmlspecialchars($ifnoauthor))); ?>" class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements before the source <strong>if there is no author</strong>.<br/>Overrides the field above when no author is present.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;br/&gt;source:&amp;nbsp;</code></span>
         <br/>        
-        <input type="text" size="50" name="after_source" value="<?php echo (htmlentities($afterSource)); ?>" class="regular-text" /><span class="setting-description">
+        <input type="text" size="50" name="after_source" value="<?php echo (utf8_decode(htmlspecialchars($afterSource))); ?>" class="regular-text" /><span class="setting-description">
 		<?php echo __('<br/>HTML or other elements after the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/em&gt;</code></span></td>
-        <td><input type="text" size="50" name="source_link_to" value="<?php if ($sourcelinkto) echo (htmlentities($sourcelinkto)); else echo 'http://'; ?>" class="regular-text code" /><span class="setting-description">
+        <td><input type="text" size="50" name="source_link_to" value="<?php if ($sourcelinkto) echo (utf8_decode(htmlspecialchars($sourcelinkto))); else echo 'http://'; ?>" class="regular-text code" /><span class="setting-description">
 		<?php echo __('<br/>You can link the Source to a website of your choice.
 		<br/>Use this variable in your link: <code>%SOURCE%</code><br/>
 		<strong>Sample values:</strong>','stray-quotes') ?> <code>http://www.google.com/search?q=&quot;%SOURCE%&quot;</code><br/> 
 		<code>http://en.wikipedia.org/wiki/%SOURCE%</code><br />
         <?php echo __('Replace spaces within %SOURCE% with ','stray-quotes') ?>
-        <input type="text" size="1" maxlength="1" name="source_spaces" value="<?php echo (htmlentities($sourcespaces)); ?>" />
+        <input type="text" size="1" maxlength="1" name="source_spaces" value="<?php echo (utf8_decode(htmlspecialchars($sourcespaces))); ?>" />
         </span>
    	</td></tr>
 	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Quote before Author and Source','stray-quotes') ?></th><td colspan="2">    

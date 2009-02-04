@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Displays random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.7.6
+Version: 1.7.7
 License: GPL compatible
 */
 
@@ -15,12 +15,11 @@ global $wpdb, $wp_version;
 define("WP_QUOTES_TABLE", $wpdb->prefix . "quotes");
 define("WP_STRAY_QUOTES_TABLE", $wpdb->prefix . "stray_quotes");
 define ("DIR",basename(dirname(__FILE__)));
-
 if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 176);
+define ("WP_STRAY_VERSION", 177);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -33,9 +32,21 @@ if(!empty($currentLocale)) {
 
 //add header
 function stray_quotes_header() {
-
-	?><script type="text/javascript">function switchpage(select) {var index;for(index=0; index<select.options.length; index++)if(select.options[index].selected){if(select.options[index].value!="")window.location.href=select.options[index].value;break;}}</script><?php 	
 	
+	?><script  type='text/javascript'>
+	<!--
+    
+    function switchpage(select) {
+        var index;
+        for(index=0; index<select.options.length; index++) {
+            if(select.options[index].selected){
+                if(select.options[index].value!="")window.location.href=select.options[index].value;
+                break;
+            }
+		}
+     }
+	-->	
+	</script><?php /*wp_enqueue_script('jquery');*/
 }
 
 //upon activation
@@ -187,11 +198,20 @@ function quotes_activation() {
 			if ($removal)$quotesoptions['stray_quotes_first_time'] = 5;
 		}
 		
+		/*if( $quotesoptions['stray_quotes_version'] <= 177 ){
+			
+			//add a new fields
+			$quotesoptions['stray_another_before'] =  '<p align="right">';
+			$quotesoptions['stray_another_after'] =  '</p>';	
+			$quotesoptions['stray_another_random'] =  'Another random quote &raquo;';
+			$quotesoptions['stray_another_id'] =  'Next quote &raquo;';	
+		}*/		
+		
 		//we also reset the removal option for everyone
 		$quotesoptions['stray_quotes_uninstall'] = "";
 	
 		//take care of version number
-		if( $quotesoptions['stray_quotes_version'] <= (WP_STRAY_VERSION-1) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
+		if( $quotesoptions['stray_quotes_version'] != (WP_STRAY_VERSION) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
 
 	}
 
@@ -315,6 +335,7 @@ function stray_quotes_add_pages() {
 //excuse me, I'm hooking into wordpress
 add_action('admin_menu', 'stray_quotes_add_pages');
 add_action('admin_head', 'stray_quotes_header');
+
 if ($wp_version >= 2.5) {
 	add_shortcode('quote', 'stray_id_shortcut');
 	add_shortcode('random-quote', 'stray_rnd_shortcut');
