@@ -23,12 +23,12 @@ function stray_new() {
 		$source = !empty($_REQUEST['quote_source']) ? $_REQUEST['quote_source'] : '';
 		$visible = !empty($_REQUEST['quote_visible']) ? $_REQUEST['quote_visible'] : '';
 		
-		if ($_REQUEST['quote_group'])$group = $_REQUEST['quote_group'];
-		else $group = $_REQUEST['groups'];
+		if ($_REQUEST['quote_category'])$category = $_REQUEST['quote_category'];
+		else $category = $_REQUEST['categories'];
 		
-		if (preg_match('/\s+/',$group)>0){
-			$group=preg_replace('/\s+/','-',$group);
-			$plusmessage = "<br/>Note: <strong>The name of the group you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
+		if (preg_match('/\s+/',$category)>0){
+			$category=preg_replace('/\s+/','-',$category);
+			$plusmessage = "<br/>Note: <strong>The name of the category you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
 		} 
 		
 		if ( ini_get('magic_quotes_gpc') )	{
@@ -36,24 +36,24 @@ function stray_new() {
 			$quote = stripslashes($quote);
 			$author = stripslashes($author);
 			$source = stripslashes($source);
-			$group = stripslashes($group);
+			$category = stripslashes($category);
 			$visible = stripslashes($visible);	
 		}	
 		
 		$sql = "insert into " . WP_STRAY_QUOTES_TABLE
-		. " set quote='" . mysql_real_escape_string($quote)
-		. "', author='" . mysql_real_escape_string($author)
-		. "', source='" . mysql_real_escape_string($source)
-		. "', `group`='" . mysql_real_escape_string($group)
-		. "', visible='" . mysql_real_escape_string($visible) . "'";	     
+		. " set `quote`='" . mysql_real_escape_string($quote)
+		. "', `author`='" . mysql_real_escape_string($author)
+		. "', `source`='" . mysql_real_escape_string($source)
+		. "', `category`='" . mysql_real_escape_string($category)
+		. "', `visible`='" . mysql_real_escape_string($visible) . "'";	     
 		$wpdb->get_results($sql);
 		
-		$sql2 = "select quoteID from " . WP_STRAY_QUOTES_TABLE
-		. " where quote='" . mysql_real_escape_string($quote) 
-		. "' and author='" . mysql_real_escape_string($author) 
-		. "' and source='" . mysql_real_escape_string($source) 
-		. "' and `group`='" . mysql_real_escape_string($group) 
-		. "' and visible='" . mysql_real_escape_string($visible) . "' limit 1";
+		$sql2 = "select `quoteID` from " . WP_STRAY_QUOTES_TABLE
+		. " where `quote`='" . mysql_real_escape_string($quote) 
+		. "' and `author`='" . mysql_real_escape_string($author) 
+		. "' and `source`='" . mysql_real_escape_string($source) 
+		. "' and `category`='" . mysql_real_escape_string($category) 
+		. "' and `visible`='" . mysql_real_escape_string($visible) . "' limit 1";
 		$result = $wpdb->get_results($sql2);
 		
 		//failure message
@@ -101,7 +101,7 @@ function stray_new() {
 			if ( !empty($data) ) $quote = htmlspecialchars($data->quote); 
 			if ( !empty($data) ) $author = htmlspecialchars($data->author);
 			if ( !empty($data) ) $source = htmlspecialchars($data->source);
-			if ( !empty($data) ) $group = htmlspecialchars($data->group);
+			if ( !empty($data) ) $category = htmlspecialchars($data->category);
 			
 			//load defaults
 			$quotesoptions = array();
@@ -130,15 +130,15 @@ function stray_new() {
 				}		
 			}
 			
-			//set default group
-			$defaultgroup = $quotesoptions['stray_default_group'];
+			//set default category
+			$defaultcategory = $quotesoptions['stray_default_category'];
 			
 			//make the edit form
 			$styleborder = 'style="border:1px solid #ccc"';
 			$styletextarea = 'style="border:1px solid #ccc; font-family: Times New Roman, Times, serif; font-size: 1.4em;"';
 			
 			if ($quotesoptions['stray_clear_form']=='Y') {
-				$quote = $author = $source = $group = false;
+				$quote = $author = $source = $category = false;
 			}
 			
 			?>
@@ -164,18 +164,17 @@ function stray_new() {
 				<script type="text/javascript">var edCanvas2 = document.getElementById('seditor');</script>
 				<p class="setting-description"><small><?php echo __('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
 				
-				<p><label><?php echo __('Group:&nbsp;','stray-quotes') ?></label>
-				
-				<select name="groups" style="vertical-align:middle; width:17em;" > 
-				<?php $grouplist = make_groups(); 
-				foreach($grouplist as $groupo){ ?>
-				<option value="<?php echo $groupo; ?>" style=" padding-right:5px" <?php	if ($groupo== $group) echo ' selected'; else if ( $groupo == $defaultgroup) echo ' selected'; ?> >
-				<?php echo $groupo;?></option>
+				<p><label><?php echo __('Category:&nbsp;','stray-quotes') ?></label>				
+				<select name="categories" style="vertical-align:middle; width:14em;" > 
+				<?php $categorylist = make_categories(); 
+				foreach($categorylist as $categoryo){ ?>
+				<option value="<?php echo $categoryo; ?>" style=" padding-right:5px" <?php	if ($categoryo== $category) echo ' selected'; else if ( $categoryo == $defaultcategory) echo ' selected'; ?> >
+				<?php echo $categoryo;?></option>
 				<?php } ?>   
 				</select>
 				  
-				<label><?php echo __('new group:&nbsp;','stray-quotes') ?></label>
-				<input type="text" name="quote_group" size=26 value="" maxlength="25" <?php echo $styleborder ?> /></p>
+				<label><?php echo __('&nbsp;new category:&nbsp;','stray-quotes') ?></label>
+				<input type="text" name="quote_category" size=24 value="" maxlength="24" <?php echo $styleborder ?> /></p>
 				
 				<p><label><?php echo __('Visible:','stray-quotes') ?></label>
 					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php echo __('Yes','stray-quotes') ?>					

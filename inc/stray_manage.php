@@ -18,7 +18,7 @@ function stray_manage() {
 	$orderby = $quotesoptions['stray_quotes_order'];
 	$pages = 1;
 	$rows = $quotesoptions['stray_quotes_rows']; 
-	$groups = $quotesoptions['stray_quotes_groups']; 
+	$categories = $quotesoptions['stray_quotes_categories']; 
 	$sort = $quotesoptions['stray_quotes_sort']; 
 	
 	if(isset($_GET['qo'])){
@@ -33,8 +33,8 @@ function stray_manage() {
 	}
 	
 	if(isset($_GET['qg'])){
-		$groups = $_GET['qg'];
-		$quotesoptions['stray_quotes_groups'] = $_GET['qg'];	
+		$categories = $_GET['qg'];
+		$quotesoptions['stray_quotes_categories'] = $_GET['qg'];	
 	}
 	
 	if(isset($_GET['qs'])){
@@ -49,7 +49,7 @@ function stray_manage() {
 	
 	//urls for different use (primitive, I know)
 	$baseurl = get_option("siteurl").'/wp-admin/admin.php?page=stray_manage';
-	$urlaction = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort; 
+	$urlaction = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$categories.'&qs='.$sort; 
 		
 	//if the page is opened after a edit action
 	if ( $action == 'edit' ) {
@@ -77,7 +77,7 @@ function stray_manage() {
 			if ( !empty($data) ) $quote = htmlspecialchars($data->quote); 
 			if ( !empty($data) ) $author = htmlspecialchars($data->author);
 			if ( !empty($data) ) $source = htmlspecialchars($data->source);
-			if ( !empty($data) ) $group = htmlspecialchars($data->group);
+			if ( !empty($data) ) $category = htmlspecialchars($data->category);
 			
 			//set visibility
 			$defaultVisible = get_option ('stray_quotes_default_visible');
@@ -128,19 +128,19 @@ function stray_manage() {
 				<script type="text/javascript">edToolbar2();</script>
                 <script type="text/javascript">var edCanvas2 = document.getElementById('seditor');</script>
                 <p class="setting-description"><small><?php echo __('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
-                <p><label><?php echo __('Group:&nbsp;','stray-quotes') ?></label>
                 
-                <select name="groups" style="vertical-align:middle; width:17em;"> 
-                <?php $grouplist = make_groups(); 
-                foreach($grouplist as $groupo){ ?>
-                <option value="<?php echo $groupo; ?>" style=" padding-right:5px"
-                <?php  if ( $groupo == $group) echo ' selected'; ?> >
-                <?php echo $groupo;?></option>
+                <p><label><?php echo __('Category:&nbsp;','stray-quotes') ?></label>                
+                <select name="categories" style="vertical-align:middle; width:17em;"> 
+                <?php $categorylist = make_categories(); 
+                foreach($categorylist as $categoryo){ ?>
+                <option value="<?php echo $categoryo; ?>" style=" padding-right:5px"
+                <?php  if ( $categoryo == $category) echo ' selected'; ?> >
+                <?php echo $categoryo;?></option>
                 <?php } ?>   
                 </select>
                   
-                <label><?php echo __('new group:&nbsp;','stray-quotes') ?></label>
-                <input type="text" name="quote_group" size=26 value=""  maxlength="25" <?php echo $styleborder ?> /></p>
+                <label><?php echo __('new category:&nbsp;','stray-quotes') ?></label>
+                <input type="text" name="quote_category" size=26 value=""  maxlength="25" <?php echo $styleborder ?> /></p>
                 
 				<p><label><?php echo __('Visible:','stray-quotes') ?></label>
 					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php echo __('Yes','stray-quotes') ?>					
@@ -163,12 +163,12 @@ function stray_manage() {
 		$source = !empty($_REQUEST['quote_source']) ? $_REQUEST['quote_source'] : '';
 		$visible = !empty($_REQUEST['quote_visible']) ? $_REQUEST['quote_visible'] : '';
 		
-		if ($_REQUEST['quote_group'])$group = $_REQUEST['quote_group'];
-		else $group = $_REQUEST['groups'];
+		if ($_REQUEST['quote_category'])$category = $_REQUEST['quote_category'];
+		else $category = $_REQUEST['categories'];
 		
-		if (preg_match('/\s+/',$group)>0){
-			$group=preg_replace('/\s+/','-',$group);
-			$plusmessage = "<br/>Note: <strong>The name of the group you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
+		if (preg_match('/\s+/',$category)>0){
+			$category=preg_replace('/\s+/','-',$category);
+			$plusmessage = "<br/>Note: <strong>The name of the category you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
 		} 
 
 	
@@ -177,7 +177,7 @@ function stray_manage() {
 			$quote = stripslashes($quote);
 			$author = stripslashes($author);
 			$source = stripslashes($source);
-			$group = stripslashes($group);
+			$category = stripslashes($category);
 			$visible = stripslashes($visible);	
 		}
 		
@@ -187,21 +187,21 @@ function stray_manage() {
 		}
 		
 		else {		
-			$sql = "update " . WP_STRAY_QUOTES_TABLE 
-			. " set quote='" . mysql_real_escape_string($quote)
-			. "', author='" . mysql_real_escape_string($author) 
-			. "', source='" . mysql_real_escape_string($source) 
-			. "', `group`='" . mysql_real_escape_string($group)
-			. "', visible='" . mysql_real_escape_string($visible) 
-			. "' where quoteID='" . mysql_real_escape_string($quoteID) . "'";		     
+			$sql = "UPDATE " . WP_STRAY_QUOTES_TABLE 
+			. " SET `quote`='" . mysql_real_escape_string($quote)
+			. "', `author`='" . mysql_real_escape_string($author) 
+			. "', `source`='" . mysql_real_escape_string($source) 
+			. "', `category`='" . mysql_real_escape_string($category)
+			. "', `visible`='" . mysql_real_escape_string($visible) 
+			. "' WHERE `quoteID`='" . mysql_real_escape_string($quoteID) . "'";		     
 			$wpdb->get_results($sql);
 			
-			$sql = "select quoteID from " . WP_STRAY_QUOTES_TABLE 
-			. " where quote='" . mysql_real_escape_string($quote) 
-			. "' and author='" . mysql_real_escape_string($author) 
-			. "' and source='" . mysql_real_escape_string($source) 
-			. "' and `group`='" . mysql_real_escape_string($group) 
-			. "' and visible='" . mysql_real_escape_string($visible) . "' limit 1";
+			$sql = "SELECT `quoteID` FROM " . WP_STRAY_QUOTES_TABLE 
+			. " WHERE `quote`='" . mysql_real_escape_string($quote) 
+			. "' AND `author`='" . mysql_real_escape_string($author) 
+			. "' AND `source`='" . mysql_real_escape_string($source) 
+			. "' AND `category`='" . mysql_real_escape_string($category) 
+			. "' AND `visible`='" . mysql_real_escape_string($visible) . "' LIMIT 1";
 			$result = $wpdb->get_results($sql);
 			
 			if ( empty($result) || empty($result[0]->quoteID) )	{			
@@ -243,13 +243,13 @@ function stray_manage() {
 		}
 	}
 		
-	// prepares group for sql
+	// prepares category for sql
 	$where = '';
-	if (!$groups || $groups == 'all') $where = '';
-	else $where = " WHERE `group`='" . $groups . "'";
+	if (!$categories || $categories == 'all') $where = '';
+	else $where = " WHERE `category`='" . $categories . "'";
 	
 	// how many rows we have in database
-	$result = $wpdb->get_results("select quoteID from " . WP_STRAY_QUOTES_TABLE . $where);
+	$result = $wpdb->get_results("select `quoteID` from " . WP_STRAY_QUOTES_TABLE . $where);
 	$numrows = count($result);
 	
 	//temporary workaround for the "division by zero" problem
@@ -258,13 +258,12 @@ function stray_manage() {
 	
 	// how many pages we have when using paging?
 	if ($rows == NULL || $rows < 10) $rows = 10; 
-	$maxPage = ceil($numrows/$rows);
-		
+	$maxPage = ceil($numrows/$rows);		
 	
 	// print the link to access each page
 	$nav  = '';
 	
-	$urlpages = $baseurl.'&qo='.$orderby.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qp=';
+	$urlpages = $baseurl.'&qo='.$orderby.'&qr='.$rows.'&qg='.$categories.'&qs='.$sort.'&qp=';
 	
 	for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
 	   if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
@@ -298,7 +297,7 @@ function stray_manage() {
 	}		
 
 	//get all the quotes
-	$sql = "SELECT * FROM " 
+	$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category`,`visible` FROM " 
 	. WP_STRAY_QUOTES_TABLE 
 	. $where
 	. " ORDER BY `". $orderby ."`"
@@ -307,15 +306,15 @@ function stray_manage() {
 	
 	$quotes = $wpdb->get_results($sql);
 	
-	//page number has to reset to 1 otherwise it would look like you have no quotes left when you are on a page too high for so many quotes.
-	$urlrows = $baseurl.'&qo='.$orderby.'&qp='.'1'/*$pages*/.'&qg='.$groups.'&qs='.$sort.'&qr=';
+	//page number has to be reset to 1 otherwise it would look like you have no quotes left when you are on a page too high for so many quotes.
+	$urlrows = $baseurl.'&qo='.$orderby.'&qp='.'1'/*$pages*/.'&qg='.$categories.'&qs='.$sort.'&qr=';
 	
-	$urlgroup = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qs='.$sort.'&qg='; 
-	$urlorder = $baseurl.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs='.$sort.'&qo=';	
-	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$groups.'&qs=';
+	$urlcategory = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qs='.$sort.'&qg='; 
+	$urlorder = $baseurl.'&qp='.$pages.'&qr='.$rows.'&qg='.$categories.'&qs='.$sort.'&qo=';	
+	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$categories.'&qs=';
 
 	//HTML
-	?><p class="subsubsub" style="float:left"> quotes per page: 
+	?><p class="subsubsub" style="float:left"> <?php echo __('quotes per page:','stray-quotes'); ?> 
     <select name="lines" onchange="switchpage(this)"  style="vertical-align:middle">
     <option value=<?php echo $urlrows.'10'; if ( $rows == 10) echo ' selected';  ?> >10</option>
     <option value=<?php echo $urlrows.'15'; if ( $rows == 15) echo ' selected'; ?> >15</option>
@@ -323,17 +322,17 @@ function stray_manage() {
 	<option value=<?php echo $urlrows.'30'; if ( $rows == 30) echo ' selected'; ?> >30</option>
     <option value=<?php echo $urlrows.'50'; if ( $rows == 50) echo ' selected'; ?> >50</option>
     <option value=<?php echo $urlrows.'100'; if ( $rows == 100) echo ' selected'; ?> >100</option>
-	</select> | show group: 
+	</select> | <?php echo __('show category: ','stray-quotes'); ?> 
     
-    <select name="groups" onchange="switchpage(this)"  style="vertical-align:middle"> 
-    <option value="<?php echo $urlgroup.'all'; ?>" 
-	<?php  if ( $groups == '' || $groups == 'all' ) echo ' selected'; ?>>all</option>
-    <?php $grouplist = make_groups(); 
-	foreach($grouplist as $groupo){ 
-    if (strpos(" ",$groupo)) $groupo = str_replace(" ","-",$groupo);
-    	?><option value="<?php echo $urlgroup.$groupo; ?>" 
-		<?php  if ( $groups) {if ( $groups == $groupo) echo ' selected';} ?> >
-		<?php echo $groupo;?></option>
+    <select name="categories" onchange="switchpage(this)"  style="vertical-align:middle"> 
+    <option value="<?php echo $urlcategory.'all'; ?>" 
+	<?php  if ( $categories == '' || $categories == 'all' ) echo ' selected'; ?>>all</option>
+    <?php $categorylist = make_categories(); 
+	foreach($categorylist as $categoryo){ 
+    if (strpos(" ",$categoryo)) $categoryo = str_replace(" ","-",$categoryo);
+    	?><option value="<?php echo $urlcategory.$categoryo; ?>" 
+		<?php  if ( $categories) {if ( $categories == $categoryo) echo ' selected';} ?> >
+		<?php echo $categoryo;?></option>
 	<?php } ?>   
     </select>
     </p>
@@ -381,15 +380,15 @@ function stray_manage() {
 			<?php }}else{ echo __('Source','stray-quotes'); }  ?>            
             </th>
             
-            <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'group') { ?>
-            <a href="<?php echo $urlorder . 'group'; ?>"><?php echo __('Group','stray-quotes') ?></a>
-			<?php } else { echo __('Group','stray-quotes');
+            <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'category') { ?>
+            <a href="<?php echo $urlorder . 'category'; ?>"><?php echo __('Category','stray-quotes') ?></a>
+			<?php } else { echo __('Category','stray-quotes');
 				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
                 <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
 				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
 				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
 			</a>			
-			<?php } }else{ echo __('Group','stray-quotes'); } ?>            
+			<?php } }else{ echo __('Category','stray-quotes'); } ?>            
             </th>
             
             <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'visible') { ?>
@@ -420,7 +419,7 @@ function stray_manage() {
 				<td><?php echo(nl2br($quote->quote)); ?></td>
 				<td><?php echo($quote->author); ?></td>
 				<td><?php echo($quote->source); ?></td>
-                <td><?php if ($quote->group == 'default')echo('<em>'.$quote->group.'</em>'); else echo $quote->group;?></td>
+                <td><?php if ($quote->category == 'default')echo('<em>'.$quote->category.'</em>'); else echo $quote->category;?></td>
 				<td align="center"><?php echo $quote->visible; ?></td>
 									
 				<td align="center">

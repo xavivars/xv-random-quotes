@@ -3,23 +3,23 @@
 //this is all about the variables
 $quotesoptions = array();
 $quotesoptions = get_option('stray_quotes_options');
-$regularTitle =  $quotesoptions['stray_quotes_regular_title'];
-$widgetTitle = $quotesoptions['stray_quotes_widget_title'];
-$beforeAll =  $quotesoptions['stray_quotes_before_all'];
-$afterAll = $quotesoptions['stray_quotes_after_all'];
-$beforeQuote = $quotesoptions['stray_quotes_before_quote'];
-$afterQuote = $quotesoptions['stray_quotes_after_quote'];
-$beforeAuthor = $quotesoptions['stray_quotes_before_author'];
-$afterAuthor = $quotesoptions['stray_quotes_after_author'];
-$beforeSource = $quotesoptions['stray_quotes_before_source'];
-$afterSource = $quotesoptions['stray_quotes_after_source'];
-$putQuotesFirst = $quotesoptions['stray_quotes_put_quotes_first'];
-$defaultVisible = $quotesoptions['stray_quotes_default_visible'];
-$linkto = $quotesoptions['stray_quotes_linkto'];
-$sourcelinkto = $quotesoptions['stray_quotes_sourcelinkto'];
-$sourcespaces = $quotesoptions['stray_quotes_sourcespaces'];	
-$authorspaces = $quotesoptions['stray_quotes_authorspaces'];
-$ifnoauthor = $quotesoptions['stray_if_no_author'];		
+$regularTitle =  utf8_decode($quotesoptions['stray_quotes_regular_title']);
+$widgetTitle = utf8_decode($quotesoptions['stray_quotes_widget_title']);
+$beforeAll =  utf8_decode($quotesoptions['stray_quotes_before_all']);
+$afterAll = utf8_decode($quotesoptions['stray_quotes_after_all']);
+$beforeQuote = utf8_decode($quotesoptions['stray_quotes_before_quote']);
+$afterQuote = utf8_decode($quotesoptions['stray_quotes_after_quote']);
+$beforeAuthor = utf8_decode($quotesoptions['stray_quotes_before_author']);
+$afterAuthor = utf8_decode($quotesoptions['stray_quotes_after_author']);
+$beforeSource = utf8_decode($quotesoptions['stray_quotes_before_source']);
+$afterSource = utf8_decode($quotesoptions['stray_quotes_after_source']);
+$putQuotesFirst = utf8_decode($quotesoptions['stray_quotes_put_quotes_first']);
+$defaultVisible = utf8_decode($quotesoptions['stray_quotes_default_visible']);
+$linkto = utf8_decode($quotesoptions['stray_quotes_linkto']);
+$sourcelinkto = utf8_decode($quotesoptions['stray_quotes_sourcelinkto']);
+$sourcespaces = utf8_decode($quotesoptions['stray_quotes_sourcespaces']);	
+$authorspaces = utf8_decode($quotesoptions['stray_quotes_authorspaces']);
+$ifnoauthor = utf8_decode($quotesoptions['stray_if_no_author']);		
 
 //this is called by other functions to output a given quote
 function stray_output_one($get_one) {
@@ -76,6 +76,7 @@ function stray_output_one($get_one) {
 		$output .= $beforeQuote . nl2br($get_one->quote) . $afterQuote;			
 		$output .= $afterAll;		
 	}
+	
 	//quote first
 	else {	
 		
@@ -102,27 +103,27 @@ function stray_output_one($get_one) {
 
 }
 
-//this prints a random quote from given groups
-function stray_random_quote($groups=NULL) {
+//this prints a random quote from given categories
+function stray_random_quote($categories=NULL) {
 
 	global $wpdb;
 
-	//handle the groups
-	if ($groups) {
-		$groupquery = ' AND `group`="';
-		if (is_string($groups))$groups = explode(",", $groups);
-		foreach ($groups as $group) {
-			$group = trim($group);
-			$groupquery .= $group.'" OR `group`="';
+	//handle the categories
+	if ($categories) {
+		$categoryquery = ' AND `category`="';
+		if (is_string($categories))$categories = explode(",", $categories);
+		foreach ($categories as $category) {
+			$category = trim($category);
+			$categoryquery .= $category.'" OR `category`="';
 		}
-		$groupquery = rtrim($groupquery,' OR `group`=""');
-		$groupquery .='"';
+		$categoryquery = rtrim($categoryquery,' OR `category`=""');
+		$categoryquery .='"';
 	} else {
-		$groupquery = '';
+		$categoryquery = '';
 	}		
 	
 	//sql the thing
-	$sql = "SELECT quoteID,quote,author,source,`group` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$groupquery;
+	$sql = "SELECT quoteID,quote,author,source,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery;
 	$result = $wpdb->get_results($sql);	
 	
 	//if the sql has something to say, get to work
@@ -139,30 +140,30 @@ function stray_random_quote($groups=NULL) {
 	}
 }
 
-//this replaces "[random-quote groups=X]" inside a post with a random quote from a given group
-function stray_rnd_shortcut($groups=NULL) {
+//this replaces "[random-quote categories=X]" inside a post with a random quote from a given category
+function stray_rnd_shortcut($categories=NULL) {
 		
 	global $wpdb,$wp_version;
 	
-	//handle the groups
-	if ($groups) {
-		$groupquery = ' AND `group`="';
-		if (is_string($groups)){$groups = explode(",", $groups);}
-		foreach ($groups as $group) {
-			$group = trim($group);
-			$groupquery .= $group.'" OR `group`="';
+	//handle the categories
+	if ($categories) {
+		$categoryquery = ' AND `category`="';
+		if (is_string($categories)){$categories = explode(",", $categories);}
+		foreach ($categories as $category) {
+			$category = trim($category);
+			$categoryquery .= $category.'" OR `category`="';
 		}
-		$groupquery = rtrim($groupquery,' OR `group`=""');
-		$groupquery .='"';
+		$categoryquery = rtrim($categoryquery,' OR `category`=""');
+		$categoryquery .='"';
 	} else {
-		$groupquery = '';
+		$categoryquery = '';
 	}		
 
 	//shortcodes are only for WP-2.5+
 	if ($wp_version >= 2.5) {
 		
 		//sql the thing
-		$sql = "SELECT quoteID,quote,author,source,`group` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$groupquery;
+		$sql = "SELECT quoteID,quote,author,source,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery;
 		$result = $wpdb->get_results($sql);	
 		
 		//if the sql has something to say, get to work
@@ -186,7 +187,7 @@ function stray_a_quote($id ='1') {
 	global $wpdb;
 	
 	//sql the thing
-	$result = $wpdb->get_results("select quoteID,quote,author,source,`group` from " . WP_STRAY_QUOTES_TABLE . " where quoteID='{$id}'");				
+	$result = $wpdb->get_results("select quoteID,quote,author,source,`category` from " . WP_STRAY_QUOTES_TABLE . " where quoteID='{$id}'");				
 	
 	//if the sql has something to say, get to work
 	if ( !empty($result) )	{
@@ -206,7 +207,7 @@ function stray_id_shortcut($attr='1') {
 	if ($wp_version >= 2.5) {
 		
 		//sql the thing
-		$result = $wpdb->get_results("select quoteID,quote,author,source,`group` from " . WP_STRAY_QUOTES_TABLE . " where quoteID=". $attr['id']);				
+		$result = $wpdb->get_results("select quoteID,quote,author,source,`category` from " . WP_STRAY_QUOTES_TABLE . " where quoteID=". $attr['id']);				
 		
 		if ( !empty($result) )	{
 		
@@ -218,7 +219,7 @@ function stray_id_shortcut($attr='1') {
 	}	
 }
 
-//this replaces "[all-quotes rows=10, orderby="quoteID", sort="ASC", group="all"]" in a post with all the quotes
+//this replaces "[all-quotes rows=10, orderby="quoteID", sort="ASC", category="all"]" in a post with all the quotes
 function stray_page_shortcut($atts, $content = NULL) {
 
 	global $wpdb,$wp_version;
@@ -231,13 +232,13 @@ function stray_page_shortcut($atts, $content = NULL) {
 			"rows" => 10,
 			"orderby" =>'quoteID',
 			"sort" => 'ASC',
-			"groups" => ''
+			"categories" => ''
 		), $atts));
 	
-		// prepares group for sql
+		// prepares category for sql
 		$where = '';
-		if ($groups == 'all' || $groups == '') $where = " WHERE visible='yes'";
-		else $where = " WHERE `group`='" . $groups . "' AND visible='yes'";
+		if ($categories == 'all' || $categories == '') $where = " WHERE visible='yes'";
+		else $where = " WHERE `category`='" . $categories . "' AND visible='yes'";
 		
 		//what page number?
 		$pages = 1;
@@ -258,8 +259,9 @@ function stray_page_shortcut($atts, $content = NULL) {
 		
 		// print the link to access each page
 		$nav  = '';		
-		$baseurl = $_SERVER['PHP_SELF'];
-		$urlpages = $baseurl.'&qp=';
+		$baseurl = $_SERVER['REQUEST_URI'];
+		if (strpos( $_SERVER['REQUEST_URI'],'?'))$urlpages = $baseurl.'&qp=';
+		else $urlpages = $baseurl.'?qp=';
 		
 		for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
 		   if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
@@ -290,7 +292,7 @@ function stray_page_shortcut($atts, $content = NULL) {
 		   $next = '&nbsp;'; // we're on the last page, don't print next link
 		   $last = '&nbsp;'; // nor the last page link
 		}		
-		$sql = "SELECT quoteID,quote,author,source,`group` FROM " 
+		$sql = "SELECT quoteID,quote,author,source,`category` FROM " 
 		. WP_STRAY_QUOTES_TABLE. $where 
 		. " ORDER BY `". $orderby ."`"
 		. $sort 
@@ -316,12 +318,12 @@ function wp_quotes_random() {return stray_random_quote();}
 function wp_quotes($id) {return stray_a_quote($id);}
 function wp_quotes_page($data) {return stray_page_shortcut();}
 
-//this creates a list of unique groups
-function make_groups() {
+//this creates a list of unique categories
+function make_categories() {
 	global $wpdb;
-	$allgroups = $wpdb->get_col("SELECT `group` FROM " . WP_STRAY_QUOTES_TABLE);
-	$uniquegroups = array_unique($allgroups);
-	return $uniquegroups;
+	$allcategories = $wpdb->get_col("SELECT `category` FROM " . WP_STRAY_QUOTES_TABLE);
+	$uniquecategories = array_unique($allcategories);
+	return $uniquecategories;
 }
 
 //this finds the most used value in a column
@@ -340,16 +342,16 @@ function mostused($field) {
 	
 	$min = $max = current($array);
 	$val = next($array);
-	$atleastonerepeat = false;
+	$atleastthree = false;
 	
 	while(NULL !== key($array)) {
 		if($val > $max)$max = $val;
 		elseif($val < $min)$min = $val;
-		if ($val > 1) $atleastonerepeat = true;
+		if ($val > 3) $atleastthree = true;
 		$val = next($array);
 		
 	}
-	if ($atleastonerepeat == true) {
+	if ($atleastthree == true) {
 		$keys = array_keys($array, $max);
 		$maxvalue = $keys[0];
 		return $maxvalue;	

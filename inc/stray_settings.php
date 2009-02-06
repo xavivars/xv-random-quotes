@@ -50,9 +50,9 @@ function stray_quotes_options () {
 		'stray_quotes_sourcespaces' => $_POST['source_spaces'],	
 		'stray_quotes_order' => $_POST['order'],
 		'stray_quotes_rows' => $_POST['rows'],
-		'stray_quotes_groups' => $_POST['groups'],
+		'stray_quotes_categories' => $_POST['categories'],
 		'stray_quotes_sort' => $_POST['sort'],
-		'stray_default_group' => $_POST['default_group'],
+		'stray_default_category' => $_POST['default_category'],
 		'stray_if_no_author'=> $_POST['no_author'],	
 		'stray_clear_form'=> $_POST['clear_form'],
 		);		
@@ -100,9 +100,9 @@ function stray_quotes_options () {
 	$authorspaces = $quotesoptions['stray_quotes_authorspaces'];	
 	$order = $quotesoptions['stray_quotes_order'];
 	$rows = $quotesoptions['stray_quotes_rows'];
-	$groups = $quotesoptions['stray_quotes_groups'];
+	$categories = $quotesoptions['stray_quotes_categories'];
 	$sort = $quotesoptions['stray_quotes_sort'];
-	$defaultgroup = $quotesoptions['stray_default_group'];
+	$defaultcategory = $quotesoptions['stray_default_category'];
 	$ifnoauthor = $quotesoptions['stray_if_no_author'];	
 	$clearform = $quotesoptions['stray_clear_form'];
 		
@@ -129,9 +129,9 @@ function stray_quotes_options () {
 	</td></tr>
 	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Author, Quote and Source','stray-quotes') ?></th>    
         <td><input type="text" size="50" name="before_all" value="<?php echo (utf8_decode(htmlspecialchars($beforeAll))); ?>"class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements before this whole group, which comes after the title.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;div align=&quot;right&quot;&gt;</code></span></td>
+		<?php echo __('<br/>HTML or other elements before this whole category, which comes after the title.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;div align=&quot;right&quot;&gt;</code></span></td>
         <td><input type="text" size="50" name="after_all" value="<?php echo (utf8_decode(htmlspecialchars($afterAll))); ?>"class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements after this group.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/div&gt;</code></span>   
+		<?php echo __('<br/>HTML or other elements after this category.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/div&gt;</code></span>   
 	</td></tr>
 	<tr valign="top"><th scope="row"><?php echo __('Quote','stray-quotes') ?></th>    
         <td><input type="text" size="50" name="before_quote" value="<?php echo (utf8_decode(htmlspecialchars($beforeQuote))); ?>"class="regular-text" /><span class="setting-description">
@@ -193,16 +193,16 @@ function stray_quotes_options () {
         <td colspan="2"><input type="checkbox" name="default_visible" value="Y" <?php echo ($defaultVisible_selected); ?> /><span class="setting-description">
         <?php echo __('If checked, will set "Visible" to "Yes" for all new quotes.','stray-quotes') ?></span>
     </td></tr> 
-    <tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Default group','stray-quotes') ?></th>       
-    <td colspan="2"><select name="default_group" style="vertical-align:middle"> 
-    <?php $grouplist = make_groups(); 
-	foreach($grouplist as $groupo){ ?>
-    	<option value="<?php echo $groupo; ?>" 
-		<?php  if ( $groupo == $defaultgroup) echo ' selected '; ?> >
-		<?php echo $groupo;?></option>
+    <tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Default category','stray-quotes') ?></th>       
+    <td colspan="2"><select name="default_category" style="vertical-align:middle"> 
+    <?php $categorylist = make_categories(); 
+	foreach($categorylist as $categoryo){ ?>
+    	<option value="<?php echo $categoryo; ?>" 
+		<?php  if ( $categoryo == $defaultcategory) echo ' selected '; ?> >
+		<?php echo $categoryo;?></option>
 	<?php } ?>   
     </select><span class="setting-description"> 
-	<?php echo __('This group will be the default for all new quotes.','stray-quotes') ?></span>
+	<?php echo __('This category will be the default for all new quotes.','stray-quotes') ?></span>
 	</td></tr>
     <tr valign="top"><th scope="row"><?php echo __('Clear the form','stray-quotes') ?></th>       
         <td colspan="2"><input type="checkbox" name="clear_form" value="Y" <?php echo ($clearform_selected); ?> /><span class="setting-description">
@@ -227,7 +227,7 @@ function stray_quotes_options () {
         <option value="quoteID" <?php if ($order == "quoteID") echo 'selected="selected"'; ?> >ID</option>
         <option value="author" <?php if ($order == "author") echo 'selected="selected"'; ?> >Author</option>
         <option value="source" <?php if ($order == "source") echo 'selected="selected"'; ?> >Source</option>
-        <option value="group" <?php if ($order == "group") echo 'selected="selected"'; ?> >Group</option>
+        <option value="category" <?php if ($order == "category") echo 'selected="selected"'; ?> >Category</option>
         <option value="visible" <?php if ($order == "visible") echo 'selected="selected"'; ?> >Visibility</option>
         </select><span class="setting-description">
         <?php echo __('<br/>The list of quotes in the management page will be ordered by this value.','stray-quotes') ?></span>
@@ -249,18 +249,18 @@ function stray_quotes_options () {
         </select><span class="setting-description">
         <?php echo __('The list of quotes in the management page will display this much quotes per page.','stray-quotes') ?></span>
       </td></tr>
-    <tr valign="top"><th scope="row"><?php echo __('Show groups','stray-quotes') ?></th>       
-    <td colspan="2"><select name="groups" style="vertical-align:middle"> 
-    <option value="<?php echo $urlgroup.'all'; ?>" 
-	<?php  if ( $groups == '' || $groups == 'all' ) echo ' selected'; ?>><?php echo __('All groups','stray-quotes') ?></option>
-    <?php $grouplist = make_groups(); 
-	foreach($grouplist as $groupo){ ?>
-    	<option value="<?php echo $urlgroup.$groupo; ?>" 
-		<?php  if ( $groups) {if ( $groups == $groupo) echo ' selected';} ?> >
-		<?php echo $groupo;?></option>
+    <tr valign="top"><th scope="row"><?php echo __('Show categories','stray-quotes') ?></th>       
+    <td colspan="2"><select name="categories" style="vertical-align:middle"> 
+    <option value="<?php echo $urlcategory.'all'; ?>" 
+	<?php  if ( $categories == '' || $categories == 'all' ) echo ' selected'; ?>><?php echo __('All categories','stray-quotes') ?></option>
+    <?php $categorylist = make_categories(); 
+	foreach($categorylist as $categoryo){ ?>
+    	<option value="<?php echo $urlcategory.$categoryo; ?>" 
+		<?php  if ( $categories) {if ( $categories == $categoryo) echo ' selected';} ?> >
+		<?php echo $categoryo;?></option>
 	<?php } ?>   
     </select><span class="setting-description"> 
-	<?php echo __('The list of quotes in the management page will present quotes from this group only.','stray-quotes') ?></span>
+	<?php echo __('The list of quotes in the management page will present quotes from this category only.','stray-quotes') ?></span>
 	</td></tr>
 	</table>
     <br/>

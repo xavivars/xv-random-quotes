@@ -66,7 +66,7 @@ class stray_widgets {
         echo $before_widget.$before_title;
 		echo $options["title"];
         echo $after_title;
-		stray_random_quote(isset($options["groups"]) ? explode(',', $options["groups"]) : array("default"));
+		stray_random_quote(isset($options["categories"]) ? explode(',', $options["categories"]) : array(""));
         echo $after_widget;
     }
 
@@ -105,7 +105,7 @@ class stray_widgets {
                 $options = array();
                 
                 $options['title'] = $posted['title'];
-                $options['groups'] = isset($posted['groups']) ? implode(',', $posted['groups']) : ''; 
+                $options['categories'] = isset($posted['categories']) ? implode(',', $posted['categories']) : ''; 
                 
                 $options_all[$widget_number] = $options;
             }
@@ -117,7 +117,7 @@ class stray_widgets {
 		$widgetTitle = $quotesoptions['stray_quotes_widget_title'];
 		$default_options = array(
 				'title' => $widgetTitle, 
-				'groups' => implode(",",make_groups()),
+				'categories' => implode(",",make_categories()),
 		);
 	
 
@@ -134,16 +134,16 @@ class stray_widgets {
         name="widget_stray_quotes[<?php echo $number; ?>][title]" type="text" 
         value="<?php echo htmlspecialchars($values['title'], ENT_QUOTES); ?>" />
         </p>
-		<p><label for="gdpnav-title">Select groups (drag the mouse or ctrl-click to multi-select):</label>
-		<select class="widefat" style="width: 100%; height: 70px;" name="widget_stray_quotes[<?php echo $number; ?>][groups][]" 
-        id="widget_stray_quotes-<?php echo $number; ?>-groups" multiple="multiple"></p>
+		<p><label for="gdpnav-title">Select categories (drag the mouse or ctrl-click to multi-select):</label>
+		<select class="widefat" style="width: 100%; height: 70px;" name="widget_stray_quotes[<?php echo $number; ?>][categories][]" 
+        id="widget_stray_quotes-<?php echo $number; ?>-categories" multiple="multiple"></p>
         
 		<?php 
-		$items = make_groups();
-		$groups = explode(',', $values['groups']);
+		$items = make_categories();
+		$categories = explode(',', $values['categories']);
         if ($items) {
             foreach ($items as $item) {
-                if (in_array($item, $groups))
+                if (in_array($item, $categories))
                     $current = ' selected="selected"';
                 else
                     $current = '';
@@ -156,7 +156,7 @@ class stray_widgets {
 
     }
     
-    function render_quotes($groups = array()) {
+    function render_quotes($categories = array()) {
  		
     }
 }
