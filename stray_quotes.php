@@ -53,12 +53,89 @@ function stray_quotes_header() {
 function quotes_activation() {
 
 	global $wpdb;
-	$quotesoptions = get_option('stray_quotes_options');
 	
 	//set the messages
 	$straymessage = "";
 	$newmessage = str_replace("%1","http://www.italyisfalling.com/stray-random-quotes/#changelog",__('<p>Hey. Welcome to a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href="%1">changelog</a>, but you should know that: </p>','stray-quotes'));
+
+	//check if table exists and alter it if necessary	
+	$straytableExists = false;
+	$straytables = $wpdb->get_results("SHOW TABLES");
+	foreach ( $straytables as $straytable ){	
+		foreach ( $straytable as $value ){
+			
+			//takes care of the old wp_quotes table (probably useless)
+			if ( $value == WP_QUOTES_TABLE ){
+					
+				$straytableExists = true;	
+				//if table exists it must be old -- must update and rename.
+				$wpdb->query('ALTER TABLE ' . WP_QUOTES_TABLE . ' ADD COLUMN `source` VARCHAR( 255 ) NOT NULL AFTER `author`');
+				$wpdb->query('ALTER TABLE ' . WP_QUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL  DEFAULT "default" AFTER `source`');			
+				
+				//and fill in default values
+				$wpdb->query('UPDATE '. WP_QUOTES_TABLE . ' SET `category`="default"');				
+				$wpdb->query('RENAME TABLE ' . WP_QUOTES_TABLE . ' TO ' . WP_STRAY_QUOTES_TABLE);
+				
+				//message
+				$search = array("%s1", "%s2");
+				$replace = array(WP_QUOTES_TABLE, WP_STRAY_QUOTES_TABLE);
+				if (!$straymessage) $straymessage = $newmessage;
+				$straymessage .= str_replace($search,$replace,__('<li>* I changed the old table "%s1" into a new one called "%s2" but don\'t worry, all your quotes are still there.</li>','stray-quotes')); 
+				
+				break;
+			}
+			
+			//takes care of the new table
+			if ( $value == WP_STRAY_QUOTES_TABLE ){			
+				
+				$categoryCol = $wpdb->get_col('SELECT `category` FROM '.WP_STRAY_QUOTES_TABLE);
+				$groupCol = $wpdb->get_col('SELECT `group` FROM '.WP_STRAY_QUOTES_TABLE);
+				if (!$categoryCol && !$groupCol) {
+				
+					//add new field
+					$wpdb->query('ALTER TABLE ' . WP_STRAY_QUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `source`');
+					
+					//and fill in default category values
+					$wpdb->query('UPDATE '. WP_STRAY_QUOTES_TABLE . ' SET `category`="default"');
+					
+					//message
+					$search = array("%s1", "%s2");
+					$replace = array(WP_STRAY_QUOTES_TABLE,  get_option('siteurl')."/wp-admin/admin.php?page=stray_manage");
+					if (!$straymessage) $straymessage = $newmessage;
+					$straymessage .= str_replace($search,$replace,__('<li>* This plugin now comes with "categories", which should make for a more intelligent way to organize, maintain and display quotes on your blog. I updated the table "%s1" but all your quotes <a href="%s2">are still there</a>.</li>','stray-quotes')); 
 	
+				}
+						
+				$straytableExists=true;			
+				break;	
+			}		
+		}
+	}
+	
+	//table does not exist, create one
+	if ( !$straytableExists ) {
+		
+		$wpdb->query("
+		CREATE TABLE IF NOT EXISTS `". WP_STRAY_QUOTES_TABLE . "` (
+		`quoteID` INT NOT NULL AUTO_INCREMENT ,
+		`quote` TEXT NOT NULL ,
+		`author` varchar( 255 ) NOT NULL ,
+		`source` varchar( 255 ) NOT NULL ,
+		`category` varchar( 255 ) NOT NULL  DEFAULT 'default',
+		`visible` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes',
+		PRIMARY KEY ( `quoteID` ) )
+		");
+		
+		//insert sample quote
+		$wpdb->query("INSERT INTO " . WP_STRAY_QUOTES_TABLE . " (
+		`quote`, `author`, `source`) values ('Always tell the truth. Then you don\'t have to remember anything.', 'Mark Twain', 'Roughin it') ");
+		
+		//message
+		$straymessage = __('Hey. This seems to be your first time with this plugin. I\'ve just created the database table "%s1" to store your quotes, and added one to start you off.','stray-quotes');
+	}
+	
+	$quotesoptions = get_option('stray_quotes_options');
+		
 	//convert old options into new shiny array ones	
 	if (false === $quotesoptions || !is_array($quotesoptions) || $quotesoptions=='' ) {
 		
@@ -184,7 +261,10 @@ function quotes_activation() {
 				
 	}
 				
-	// < 1.7.3
+	//reset the removal option for everyone
+	$quotesoptions['stray_quotes_uninstall'] = "";
+	
+	// < 1.7.3 NOTE: to this version
 	if( $quotesoptions['stray_quotes_version'] <= 172 )$quotesoptions['stray_default_category'] =  'default';
 	
 	// < 1.7.6
@@ -194,11 +274,11 @@ function quotes_activation() {
 		$quotesoptions['stray_if_no_author'] =  '';
 		$quotesoptions['stray_clear_form'] =  'Y';	
 		
-		//remove all spaces from categories
-		$removal = $wpdb->query("UPDATE `".WP_STRAY_QUOTES_TABLE."` SET `category`= REPLACE(`category`, ' ', '-') WHERE `category` LIKE '% %'");
+		//remove all spaces from categories. NOTE: to this version, categories were still called group and they must be called so here
+		$removal = $wpdb->query("UPDATE `".WP_STRAY_QUOTES_TABLE."` SET `group`= REPLACE(`group`, ' ', '-') WHERE `group` LIKE '% %'");
 		if ($removal) {
 			if (!$straymessage)$straymessage = $newmessage;
-			$straymessage .=__('<li>* Spaces are not allowed within Category names anymore, because they created all sorts of problems. It so happens that you had spaces in your Category names, so I replaced them with dashes. I hope it\'s okay.</li>','stray-quotes');
+			$straymessage .=__('<li>* Spaces are not allowed within groups names anymore, because they created all sorts of problems. It so happens that you had spaces in your Category names, so I replaced them with dashes. I hope it\'s okay.</li>','stray-quotes');
 		}
 		
 	}
@@ -213,85 +293,6 @@ function quotes_activation() {
 		$straymessage .=str_replace("%1",  get_option('siteurl')."/wp-admin/admin.php?page=stray_help", __('<li>* For not entirely clear reasons, groups are now named "Categories". The only case in which this will affect you is with the use of the shortcode <code>[all-quotes group="group"...]</code>, which must now be written as <code>[all-quotes category="category"...]</code>. More on the <a href="%1">help page</a>.</li>','stray-quotes'));
 		
 	}	
-
-	//check if table exists and alter it if necessary	
-	$straytableExists = false;
-	$straytables = $wpdb->get_results("SHOW TABLES");
-	foreach ( $straytables as $straytable ){	
-		foreach ( $straytable as $value ){
-			
-			//takes care of the old wp_quotes table (probably useless)
-			if ( $value == WP_QUOTES_TABLE ){
-					
-				$straytableExists = true;	
-				//if table exists it must be old -- must update and rename.
-				$wpdb->query('ALTER TABLE ' . WP_QUOTES_TABLE . ' ADD COLUMN `source` VARCHAR( 255 ) NOT NULL AFTER `author`');
-				$wpdb->query('ALTER TABLE ' . WP_QUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL  DEFAULT "default" AFTER `source`');			
-				
-				//and fill in default values
-				$wpdb->query('UPDATE '. WP_QUOTES_TABLE . ' SET `category`="default"');				
-				$wpdb->query('RENAME TABLE ' . WP_QUOTES_TABLE . ' TO ' . WP_STRAY_QUOTES_TABLE);
-				
-				//message
-				$search = array("%s1", "%s2");
-				$replace = array(WP_QUOTES_TABLE, WP_STRAY_QUOTES_TABLE);
-				if (!$straymessage) $straymessage = $newmessage;
-				$straymessage .= str_replace($search,$replace,__('<li>* I changed the old table "%s1" into a new one called "%s2" but don\'t worry, all your quotes are still there.</li>','stray-quotes')); 
-				
-				break;
-			}
-			
-			//takes care of the new table
-			if ( $value == WP_STRAY_QUOTES_TABLE ){			
-				
-				$categoryCol = $wpdb->get_col('SELECT `category` FROM '.WP_STRAY_QUOTES_TABLE);
-				$groupCol = $wpdb->get_col('SELECT `group` FROM '.WP_STRAY_QUOTES_TABLE);
-				if (!$categoryCol && !$groupCol) {
-				
-					//add new field
-					$wpdb->query('ALTER TABLE ' . WP_STRAY_QUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `source`');
-					
-					//and fill in default category values
-					$wpdb->query('UPDATE '. WP_STRAY_QUOTES_TABLE . ' SET `category`="default"');
-					
-					//message
-					$search = array("%s1", "%s2");
-					$replace = array(WP_STRAY_QUOTES_TABLE,  get_option('siteurl')."/wp-admin/admin.php?page=stray_manage");
-					if (!$straymessage) $straymessage = $newmessage;
-					$straymessage .= str_replace($search,$replace,__('<li>* This plugin now comes with "categories", which should make for a more intelligent way to organize, maintain and display quotes on your blog. I updated the table "%s1" but all your quotes <a href="%s2">are still there</a>.</li>','stray-quotes')); 
-	
-				}
-						
-				$straytableExists=true;			
-				break;	
-			}		
-		}
-	}
-	
-	//table does not exist, create one
-	if ( !$straytableExists ) {
-		
-		$wpdb->query("
-		CREATE TABLE IF NOT EXISTS `". WP_STRAY_QUOTES_TABLE . "` (
-		`quoteID` INT NOT NULL AUTO_INCREMENT ,
-		`quote` TEXT NOT NULL ,
-		`author` varchar( 255 ) NOT NULL ,
-		`source` varchar( 255 ) NOT NULL ,
-		`category` varchar( 255 ) NOT NULL  DEFAULT 'default',
-		`visible` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes',
-		PRIMARY KEY ( `quoteID` ) )
-		");
-		
-		//insert sample quote
-		$wpdb->query("INSERT INTO " . WP_STRAY_QUOTES_TABLE . " (
-		`quote`, `author`, `source`) values ('Always tell the truth. Then you don\'t have to remember anything.', 'Mark Twain', 'Roughin it') ");
-		
-		//message
-		$straymessage = __('Hey. This seems to be your first time with this plugin. I\'ve just created the database table "%s1" to store your quotes, and added one to start you off.','stray-quotes');
-	}
-		
-	//reset the removal option for everyone
-	$quotesoptions['stray_quotes_uninstall'] = "";
 
 	//take care of version number
 	if( $quotesoptions['stray_quotes_version'] != (WP_STRAY_VERSION) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
