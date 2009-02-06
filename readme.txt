@@ -9,7 +9,7 @@ Display random quotes everywhere on your blog. Easy to custom and manage. Compat
 
 == Description ==
 
-Stray Random Quotes helps you collects and display random quotes everywhere on your blog. The plugin is widget compatible, and the appearance of the quotes can be highly customized. It comes with a easy to use, advanced management tool and a option page.
+Stray Random Quotes helps you collect and display random quotes everywhere on your blog. The plugin is widget compatible, and the appearance of the quotes can be highly customized. It comes with a easy to use, advanced management tool and a option page.
 
 == Screenshots ==
 
