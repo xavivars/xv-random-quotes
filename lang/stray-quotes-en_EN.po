@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: strayquotes-en\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-06 03:54+0100\n"
+"POT-Creation-Date: 2009-02-07 02:44+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,83 +16,83 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: ..\n"
 
-#: ../stray_quotes.php:60
+#: ../stray_quotes.php:58
 msgid "<p>Hey. Welcome to a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href=\"%1\">changelog</a>, but you should know that: </p>"
 msgstr "<p>Hey. Welcome to a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href=\"%1\">changelog</a>, but you should know that: </p>"
 
-#: ../stray_quotes.php:183
-msgid "<li>* I converted your old settings into new ones that will take less room in your database and be faster to load.</li>"
-msgstr "<li>* I converted your old settings into new ones that will take less room in your database and be faster to load.</li>"
-
-#: ../stray_quotes.php:201
-msgid "<li>* Spaces are not allowed within Category names anymore, because they created all sorts of problems. It so happens that you had spaces in your Category names, so I replaced them with dashes. I hope it's okay.</li>"
-msgstr "<li>* Spaces are not allowed within Category names anymore, because they created all sorts of problems. It so happens that you had spaces in your Category names, so I replaced them with dashes. I hope it's okay.</li>"
-
-#: ../stray_quotes.php:213
-msgid "<li>* For not entirely clear reasons, groups are now named \"Categories\". The only case in which this will affect you is with the use of the shortcode <code>[all-quotes group=\"group\"...]</code>, which must now be written as <code>[all-quotes category=\"category\"...]</code>. More on the <a href=\"%1\">help page</a>.</li>"
-msgstr "<li>* For not entirely clear reasons, groups are now named \"Categories\". The only case in which this will affect you is with the use of the shortcode <code>[all-quotes group=\"group\"...]</code>, which must now be written as <code>[all-quotes category=\"category\"...]</code>. More on the <a href=\"%1\">help page</a>.</li>"
-
-#: ../stray_quotes.php:239
+#: ../stray_quotes.php:83
 #, php-format
 msgid "<li>* I changed the old table \"%s1\" into a new one called \"%s2\" but don't worry, all your quotes are still there.</li>"
 msgstr "<li>* I changed the old table \"%s1\" into a new one called \"%s2\" but don't worry, all your quotes are still there.</li>"
 
-#: ../stray_quotes.php:261
+#: ../stray_quotes.php:105
 #, php-format
 msgid "<li>* This plugin now comes with \"categories\", which should make for a more intelligent way to organize, maintain and display quotes on your blog. I updated the table \"%s1\" but all your quotes <a href=\"%s2\">are still there</a>.</li>"
 msgstr "<li>* This plugin now comes with \"categories\", which should make for a more intelligent way to organize, maintain and display quotes on your blog. I updated the table \"%s1\" but all your quotes <a href=\"%s2\">are still there</a>.</li>"
 
-#: ../stray_quotes.php:290
+#: ../stray_quotes.php:134
 #, php-format
 msgid "Hey. This seems to be your first time with this plugin. I've just created the database table \"%s1\" to store your quotes, and added one to start you off."
 msgstr "Hey. This seems to be your first time with this plugin. I've just created the database table \"%s1\" to store your quotes, and added one to start you off."
 
-#: ../stray_quotes.php:346
+#: ../stray_quotes.php:260
+msgid "<li>* I converted your old settings into new ones that will take less room in your database and be faster to load.</li>"
+msgstr "<li>* I converted your old settings into new ones that will take less room in your database and be faster to load.</li>"
+
+#: ../stray_quotes.php:317
+msgid "<li>* hopefully the mess caused by version 1.7.8 has now been corrected... If you changed the categories assigned to quotes using the 1.7.8 version, you might find now that the changes made are lost. All the rest will stay the same, including that \"groups\" are now called \"categories\".</li>"
+msgstr "<li>* hopefully the mess caused by version 1.7.8 has now been corrected... If you changed the categories assigned to quotes using the 1.7.8 version, you might find now that the changes made are lost. All the rest will stay the same, including that \"groups\" are now called \"categories\".</li>"
+
+#: ../stray_quotes.php:321
+msgid "<li>* spaces are not allowed within categories names, because they created all sorts of problems. I replaced them with dashes. I hope it's okay.</li>"
+msgstr "<li>* spaces are not allowed within categories names, because they created all sorts of problems. I replaced them with dashes. I hope it's okay.</li>"
+
+#: ../stray_quotes.php:386
 msgid "Overview for the Quotes"
 msgstr "Overview for the Quotes"
 
-#: ../stray_quotes.php:346
+#: ../stray_quotes.php:386
 msgid "Overview"
 msgstr "Overview"
 
-#: ../stray_quotes.php:347
+#: ../stray_quotes.php:387
 msgid "Manage Quotes"
 msgstr "Manage Quotes"
 
-#: ../stray_quotes.php:347
+#: ../stray_quotes.php:387
 msgid "Manage"
 msgstr "Manage"
 
-#: ../stray_quotes.php:348
+#: ../stray_quotes.php:388
 msgid "Add New Quote"
 msgstr "Add New Quote"
 
-#: ../stray_quotes.php:348
+#: ../stray_quotes.php:388
 msgid "Add New"
 msgstr "Add New"
 
-#: ../stray_quotes.php:349
+#: ../stray_quotes.php:389
 msgid "Settings of the Quotes"
 msgstr "Settings of the Quotes"
 
-#: ../stray_quotes.php:349
+#: ../stray_quotes.php:389
 #: ../inc/stray_settings.php:117
 msgid "Settings"
 msgstr "Settings"
 
-#: ../stray_quotes.php:350
+#: ../stray_quotes.php:390
 msgid "Help with the Quotes"
 msgstr "Help with the Quotes"
 
-#: ../stray_quotes.php:350
+#: ../stray_quotes.php:390
 msgid "Help"
 msgstr "Help"
 
-#: ../stray_quotes.php:351
+#: ../stray_quotes.php:391
 msgid "Remove Stray Random Quotes"
 msgstr "Remove Stray Random Quotes"
 
-#: ../stray_quotes.php:351
+#: ../stray_quotes.php:391
 msgid "Remove"
 msgstr "Remove"
 
@@ -226,26 +226,26 @@ msgid "* By adding a link to the author or the source, the default links specifi
 msgstr "* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag."
 
 #: ../inc/stray_manage.php:132
+#: ../inc/stray_new.php:167
 msgid "Category:&nbsp;"
 msgstr "Category:&nbsp;"
 
 #: ../inc/stray_manage.php:142
-#: ../inc/stray_new.php:177
 msgid "new category:&nbsp;"
 msgstr "new category:&nbsp;"
 
 #: ../inc/stray_manage.php:145
-#: ../inc/stray_new.php:180
+#: ../inc/stray_new.php:179
 msgid "Visible:"
 msgstr "Visible:"
 
 #: ../inc/stray_manage.php:146
-#: ../inc/stray_new.php:181
+#: ../inc/stray_new.php:180
 msgid "Yes"
 msgstr "Yes"
 
 #: ../inc/stray_manage.php:147
-#: ../inc/stray_new.php:182
+#: ../inc/stray_new.php:181
 msgid "No"
 msgstr "No"
 
@@ -361,11 +361,11 @@ msgstr "The Quote ID seems to be invalid."
 msgid "Something is wrong. I can't find a quote connected to that ID."
 msgstr "Something is wrong. I can't find a quote connected to that ID."
 
-#: ../inc/stray_new.php:167
-msgid "category:&nbsp;"
-msgstr "category:&nbsp;"
+#: ../inc/stray_new.php:176
+msgid "&nbsp;new category:&nbsp;"
+msgstr "&nbsp;new category:&nbsp;"
 
-#: ../inc/stray_new.php:185
+#: ../inc/stray_new.php:184
 msgid "Add quote"
 msgstr "Add quote"
 
@@ -659,6 +659,20 @@ msgstr "All categories"
 msgid "The list of quotes in the management page will present quotes from this category only."
 msgstr "The list of quotes in the management page will present quotes from this category only."
 
+#~ msgid ""
+#~ "<li>* For not entirely clear reasons, groups are now named \"Categories"
+#~ "\". The only case in which this will affect you is with the use of the "
+#~ "shortcode <code>[all-quotes group=\"group\"...]</code>, which must now be "
+#~ "written as <code>[all-quotes category=\"category\"...]</code>. More on "
+#~ "the <a href=\"%1\">help page</a>.</li>"
+#~ msgstr ""
+#~ "<li>* For not entirely clear reasons, groups are now named \"Categories"
+#~ "\". The only case in which this will affect you is with the use of the "
+#~ "shortcode <code>[all-quotes group=\"group\"...]</code>, which must now be "
+#~ "written as <code>[all-quotes category=\"category\"...]</code>. More on "
+#~ "the <a href=\"%1\">help page</a>.</li>"
+#~ msgid "category:&nbsp;"
+#~ msgstr "category:&nbsp;"
 #~ msgid "Group:&nbsp;"
 #~ msgstr "Group:&nbsp;"
 #~ msgid "Group"
