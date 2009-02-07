@@ -330,7 +330,8 @@ function quotes_activation() {
 			$quotesoptions['stray_default_category'] = $quotesoptions['stray_default_group'];
 			unset($quotesoptions['stray_default_group']);
 		}		
-	
+		 //also make sure this value is not "group"
+		 $quotesoptions['stray_quotes_order'] = 'quoteID';
 	}
 
 	//take care of version number
