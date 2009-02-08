@@ -357,12 +357,12 @@ function quotes_deactivation() {
 	//delete the options
 	if($quotesoptions['stray_quotes_uninstall'] == 'options') {
 		delete_option('stray_quotes_options');
-		delete_option('stray_quotes_widgets');
+		delete_option('widget_stray_quotes');
 	}
 	else if ($quotesoptions['stray_quotes_uninstall'] == 'table')$wpdb->query($sql);
 	else if ($quotesoptions['stray_quotes_uninstall'] == 'both'){
 		 delete_option('stray_quotes_options');
-		 delete_option('stray_quotes_widgets');
+		 delete_option('widget_stray_quotes');
 		$wpdb->query($sql);
 	}
 
