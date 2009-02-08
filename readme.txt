@@ -3,7 +3,7 @@ Contributors: corpodibacco
 Tags: quotes, random, widget, everywhere
 Requires at least: 2.3
 Tested up to: 2.7
-Stable tag: 1.7.9
+Stable tag: 1.7.9_fix
 
 Display random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
 
@@ -28,6 +28,7 @@ Stray Random Quotes helps you collect and display random quotes everywhere on yo
 
 == Changelog ==
 
+* 1.7.9 _fix: Just a fix to the removal feature that did not work properly and did not remove the widget options. I didn't want to make this another version number since 1.8.0 will soon come with new features.
 * 1.7.9 Following the crash of the previous version, I am forced to issue another fix. In case you were involved in the accident, here's what happened: wanting to change "groups" to "categories", I ventured in an SQL operation that in certain cases created a duplicated column... I don't know why, since for others worked without a problem. Doesn't matter. Furthermore, in version 1.7.8 I changed the names of certain options related to groups, but forgot to do so upon activation. This involved widgets as well. Because of all this, many users reported not being able to browse their quotes and even to display quotes on the blog using widgets. This version should fix all this and also remove the duplicate column in your database. Please deactivate before installing (if you don't upgrade automatically). To make a clean install, you might want consider removing the old options (using the plugin "remove" tool. I know it is annoying and you don't really have to do it) and backup the `wp_stray_quotes` table. It is not required but at this point, why not. I must thank for the precious help in (hopefully) understanding this matter: [xensen](http://www.follymuseum.com/) and [Andre Camara](http://www.lulalol.co.cc/). Thanks also to Rebecca, Robert Clay, Sab Guy, Bonnie and Jason for reporting the problem in a timely fashion.
 * 1.7.8 Another hassle-fixing version while new functions are in the works. Fixed: the UTF8 support _again_, because the previous fix didn't work. Now it does work as far as I can tell! Fixed: the navigation within quotes in the [all-quotes] shortcode. Big thanks to Frettsy for pointing this bug out. Changed: "groups" are now called "categories". I think "groups" was a lame nomenclature to organize quotes with. "Categories" probably is even lamer. However, to have a column called "group" in a SQL table can create problems if for some reason backticks are forgotten. This change will affect only one thing for you, the use of the `[all-quotes]` shortcode with its options (more on the help page). Changed: the overview page is slightly more informative. Is all.
 * 1.7.7 This version should fix the support for UTF8 characters as experienced in the settings page (thanks to Chrille for pointing the bug out). Please give me confirmation on this if you care. There is nothing else: although new things are hoepfully cooking for the next versions.
