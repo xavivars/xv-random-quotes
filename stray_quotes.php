@@ -321,15 +321,16 @@ function quotes_activation() {
 		if ($removal)$straymessage .=__('<li>* spaces are not allowed within categories names, because they created all sorts of problems. I replaced them with dashes. I hope it\'s okay.</li>','stray-quotes');
 	
 		//options that have changed their names (operation forgot in 1.7.8)
-		if ($quotesoptions['stray_quotes_groups']) {
+		if ($quotesoptions['stray_quotes_groups'] !== false) {
 			$quotesoptions['stray_quotes_categories'] = $quotesoptions['stray_quotes_groups'];
 			unset($quotesoptions['stray_quotes_groups']);
-		}
+		} else $quotesoptions['stray_quotes_categories'] = "all";
 		
-		if ($quotesoptions['stray_default_group']) {
+		if ($quotesoptions['stray_default_group'] !== false) {
 			$quotesoptions['stray_default_category'] = $quotesoptions['stray_default_group'];
 			unset($quotesoptions['stray_default_group']);
-		}		
+		} else $quotesoptions['stray_default_category'] = "default";
+			
 		 //also make sure this value is not "group"
 		 $quotesoptions['stray_quotes_order'] = 'quoteID';
 	}
