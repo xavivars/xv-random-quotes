@@ -338,8 +338,8 @@ function quotes_activation() {
 	if ( $quotesoptions['stray_quotes_version'] < 180 ){
 	
 		//add a new fields
-		$quotesoptions['stray_before_loader'] = '<p align="left">';
-		$quotesoptions['stray_loader'] = __('New quote &raquo;', 'stray-quotes');
+		$quotesoptions['stray_before_loader'] = '<p>';
+		$quotesoptions['stray_loader'] = __('', 'stray-quotes');
 		$quotesoptions['stray_after_loader'] = '</p>';
 		
 		//message
@@ -349,6 +349,7 @@ function quotes_activation() {
 		$straymessage .=__('<li>* this version introduces for the first time bits of automation that will allow the visitor of your blog to load new quotes without reloading the blog pages. Check out the <a href="%s1">settings</a> and <a href="%s2">help</a> pages for more.</li>','stray-quotes');
 
 	}
+	
 
 	//take care of version number
 	if( $quotesoptions['stray_quotes_version'] != (WP_STRAY_VERSION) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
