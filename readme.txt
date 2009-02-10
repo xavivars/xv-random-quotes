@@ -26,6 +26,12 @@ Stray Random Quotes helps you collect and display random quotes everywhere on yo
 2. Activate the plugin on the 'Plugins' page in WordPress.
 3. Now Stray Random Quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
 
+== Credits ==
+
+* For the original plugin I took inspiration from, [ZombieRobots](http://www.zombierobot.com/wp-quotes)
+* For Multi-widget functionality, [Millian's tutorial](http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/)
+* For the essential help in developing user-end AJAX functionality, [AgentSmith](http://www.matrixagents.org)
+
 == Changelog ==
 
 * 1.8.1 This version fixes few bugs, mainly concerning the ajax automation where the quotes where loaded twice instead of just once. I also adjusted the transition between quotes, now it should feel a bit better.
