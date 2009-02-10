@@ -23,8 +23,6 @@ function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=N
 	$sourcespaces = utf8_decode($quotesoptions['stray_quotes_sourcespaces']);	
 	$authorspaces = utf8_decode($quotesoptions['stray_quotes_authorspaces']);
 	$ifnoauthor = utf8_decode($quotesoptions['stray_if_no_author']);	
-	$quotesoptions = array();
-	$quotesoptions = get_option('stray_quotes_options');
 	$beforeloader = utf8_decode($quotesoptions['stray_before_loader']);
 	$quoteloader = utf8_decode($quotesoptions['stray_loader']);
 	$afterloader = utf8_decode($quotesoptions['stray_after_loader']);
@@ -223,6 +221,7 @@ function stray_rnd_shortcut($categories=NULL) {
 		$categoryquery .='"';
 	} else {
 		$categoryquery = '';
+		$categories = '';
 	}
 	
 	//generate a casual id if the function is not called via a widget
