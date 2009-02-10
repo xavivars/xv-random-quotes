@@ -28,7 +28,7 @@ Stray Random Quotes helps you collect and display random quotes everywhere on yo
 
 == Credits ==
 
-* For the original plugin I took inspiration from, [ZombieRobots](http://www.zombierobot.com/wp-quotes) (which by the way is still compatible with my plugin, via a automated conversion invisible to the user)
+* For the original plugin I took inspiration from years ago, [ZombieRobots](http://www.zombierobot.com/wp-quotes)
 * For Multi-widget functionality, [Millian's tutorial](http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/)
 * For the essential help in developing user-end AJAX functionality, [AgentSmith](http://www.matrixagents.org)
 
