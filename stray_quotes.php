@@ -2,10 +2,10 @@
 /*
 Plugin Name: Stray Random Quotes
 Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
-Description: Displays random quotes everywhere on your blog. Easy to custom and manage. Compatible with Wordpress 2.7.
+Description: Display random quotes everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with Wordpress 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.7.9_fix
+Version: 1.8.1
 License: GPL compatible
 */
 
@@ -18,7 +18,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 179);
+define ("WP_STRAY_VERSION", 181);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -29,24 +29,11 @@ if(!empty($currentLocale)) {
 	if(@file_exists($moFile) && is_readable($moFile)) load_textdomain('stray-quotes', $moFile);
 }
 
-//add header
-function stray_quotes_header() {
-	
-	?><script  type='text/javascript'>
-	<!--
-    
-    function switchpage(select) {
-        var index;
-        for(index=0; index<select.options.length; index++) {
-            if(select.options[index].selected){
-                if(select.options[index].value!="")window.location.href=select.options[index].value;
-                break;
-            }
-		}
-     }
-	-->	
-	</script><?php /*wp_enqueue_script('jquery');*/
+//add ajax script
+function stray_quotes_add_js() {
+		wp_enqueue_script('stray_quotes_ajax_script', WP_STRAY_QUOTES_PATH.'/inc/js_ajax.js', array('jquery'));
 }
+
 
 //upon activation
 function quotes_activation() {
@@ -56,6 +43,13 @@ function quotes_activation() {
 	//set the messages
 	$straymessage = "";
 	$newmessage = str_replace("%1","http://www.italyisfalling.com/stray-random-quotes/#changelog",__('<p>Hey. Welcome to a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href="%1">changelog</a>, but you should know that: </p>','stray-quotes'));
+	
+	//in case we have to point to other pages in the messages
+	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";
+	$management = get_option('siteurl')."/wp-admin/admin.php?page=stray_manage";
+	$options =  get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options";
+	$new = get_option('siteurl')."/wp-admin/admin.php?page=stray_new";
+	$help =  get_option('siteurl')."/wp-admin/admin.php?page=stray_help";
 
 	//check if table exists and alter it if necessary	
 	$straytableExists = false;
@@ -253,6 +247,10 @@ function quotes_activation() {
 		$quotesoptions['stray_quotes_sort'] = 'DESC';
 		$quotesoptions['stray_default_category'] =  'default';	
 		$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
+		$quotesoptions['stray_before_loader'] = '<p align="left">';
+		$quotesoptions['stray_loader'] = __('New quote &raquo;', 'stray-quotes');
+		$quotesoptions['stray_after_loader'] = '</p>';	
+
 				
 		//the message
 		delete_option('stray_quotes_first_time');		
@@ -331,8 +329,25 @@ function quotes_activation() {
 		} else $quotesoptions['stray_default_category'] = "default";
 		unset($quotesoptions['stray_default_group']);
 			
-		 //also make sure this value is not "group"
-		 $quotesoptions['stray_quotes_order'] = 'quoteID';
+		//also make sure this value is not "group"
+		if ($quotesoptions['stray_quotes_order'] == 'group')$quotesoptions['stray_quotes_order'] = 'category';
+		
+	}
+
+	// < 1.8.0
+	if ( $quotesoptions['stray_quotes_version'] < 180 ){
+	
+		//add a new fields
+		$quotesoptions['stray_before_loader'] = '<p align="left">';
+		$quotesoptions['stray_loader'] = __('New quote &raquo;', 'stray-quotes');
+		$quotesoptions['stray_after_loader'] = '</p>';
+		
+		//message
+		if (!$straymessage)$straymessage = $newmessage;
+		$search = array("%s1","%s2");
+		$replace = array($options,$help);
+		$straymessage .=__('<li>* this version introduces for the first time bits of automation that will allow the visitor of your blog to load new quotes without reloading the blog pages. Check out the <a href="%s1">settings</a> and <a href="%s2">help</a> pages for more.</li>','stray-quotes');
+
 	}
 
 	//take care of version number
@@ -394,9 +409,9 @@ function stray_quotes_add_pages() {
 	
 }
 
-//excuse me, I'm hooking into wordpress
+//excuse me, I'm hooking wordpress
 add_action('admin_menu', 'stray_quotes_add_pages');
-add_action('admin_head', 'stray_quotes_header');
+add_action('wp_print_scripts', 'stray_quotes_add_js');
 
 if ($wp_version >= 2.5) {
 	add_shortcode('quote', 'stray_id_shortcut');

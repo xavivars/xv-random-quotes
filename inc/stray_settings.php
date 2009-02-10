@@ -3,10 +3,9 @@
 //options page
 function stray_quotes_options () {
 	
-	
 	global $wpdb;
 	
-	// Check Whether User Can Manage Options
+	//check whether user can manage options
 	if(!current_user_can('manage_options'))die('Access Denied');	
 	$mode = trim($_GET['mode']);
 	
@@ -29,6 +28,9 @@ function stray_quotes_options () {
 			unset($_POST['source_link_to']);
 			$msgvar2 = 1;
 		}
+		
+		//check loader
+		if ($_POST['loader'])$_POST['loader'] = strip_tags($_POST['loader']);
 		
 		//create array of values
 		$quotesoptions = array(
@@ -55,6 +57,10 @@ function stray_quotes_options () {
 		'stray_default_category' => $_POST['default_category'],
 		'stray_if_no_author'=> $_POST['no_author'],	
 		'stray_clear_form'=> $_POST['clear_form'],
+		'stray_before_loader'=> $_POST['before_loader'],
+		'stray_loader'=> $_POST['loader'],
+		'stray_after_loader'=> $_POST['after_loader']
+		
 		);		
 		
 		//update options
@@ -74,7 +80,7 @@ function stray_quotes_options () {
 		<?php if ( $msgvar1 == 1 && $msgvar2 == 1) echo __('<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> ','stray-quotes'); 
 		else if ( $msgvar1 == 1 ) echo __('<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. ','stray-quotes'); 
 		else if ( $msgvar2 == 1 )  echo __('<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. ','stray-quotes'); 
-		else  echo __('<strong>Something went wrong!</strong> The options could not be saved.</strong> ','stray-quotes'); 
+		else  echo __('<strong>The options could not be saved</strong>. Either the operation went wrong, or you didn\'t make any changes.</strong> ','stray-quotes'); 
 		?></p></div><?php }
 		
 	}	
@@ -105,7 +111,10 @@ function stray_quotes_options () {
 	$defaultcategory = $quotesoptions['stray_default_category'];
 	$ifnoauthor = $quotesoptions['stray_if_no_author'];	
 	$clearform = $quotesoptions['stray_clear_form'];
-		
+	$beforeloader = $quotesoptions['stray_before_loader'];
+	$quoteloader = $quotesoptions['stray_loader'];
+	$afterloader = $quotesoptions['stray_after_loader'];
+	
 	if ( $putQuotesFirst == 'Y' ) $putQuotesFirst_selected = 'checked';	
 	if ( $defaultVisible == 'Y' ) $defaultVisible_selected = 'checked';	
 	if ( $clearform == 'Y' ) $clearform_selected = 'checked';	
@@ -115,8 +124,7 @@ function stray_quotes_options () {
 
     <?php //quote aspect ?>
     <div class="wrap"><h2><?php echo __('Settings','stray-quotes') ?></h2>
-    <!--<span class="setting-description"><?php /*echo __('"With just enough of learning to misquote." ~ Lord Byron ','stray-quotes')*/ ?></span>
-    <p>&nbsp;</p>-->
+
     <p><h3 style="line-height:.1em"><?php echo __('How the quotes look','stray-quotes') ?></h3>
     <span class="setting-description"><?php echo __('Default settings to change how the quotes appear in your blog.','stray-quotes') ?></span>
     </p>
@@ -174,7 +182,12 @@ function stray_quotes_options () {
 	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Quote before Author and Source','stray-quotes') ?></th><td colspan="2">    
     	<input type="checkbox" name="put_quotes_first" value="Y" <?php echo ($putQuotesFirst_selected); ?> /><span class="setting-description">
         <?php echo __('If checked, returns the quote before author and source. This won\'t be considered when spewing all the quotes onto a page (quote will always come first).','stray-quotes') ?></span>
-    </td></tr>
+    </td></tr>    
+	<tr valign="top"><th scope="row"><?php echo __('New quote loader','stray-quotes') ?></th>    
+        <td><input type="text" size="50" name="loader" value="<?php echo (utf8_decode(htmlspecialchars($quoteloader))); ?>" class="regular-text" /><span class="setting-description">
+		<?php echo __('<br/>A link phrase used to dynamically load another quote. HTML is not allowed here. If you leave this empty, the quote will be reloaded by clicking on it. This can be overridden by each widget in the widget options.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>New quote &amp;raquo;</code></span></td>        
+        <td><input type="text" size="50" name="before_loader" value="<?php echo (utf8_decode(htmlspecialchars($beforeloader))); ?>" class="regular-text" /><span class="setting-description"><?php echo __('<br/>HTML or other elements before the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;p align="left"&gt;</code></span><br/> 
+        <input type="text" size="50" name="after_loader" value="<?php echo (utf8_decode(htmlspecialchars($afterloader))); ?>" class="regular-text" /><span class="setting-description"><?php echo __('<br/>HTML or other elements after the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/p&gt;</code></span> </td></tr>
     </table>
     <br/>
    	<div class="submit">
@@ -270,6 +283,7 @@ function stray_quotes_options () {
     </div>
     <p>&nbsp;</p>
     </div>
+    
     </form><?php
 	
 }

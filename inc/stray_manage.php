@@ -3,9 +3,11 @@
 //manage page
 function stray_manage() {
 
-	?><div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
-	    <!--<span class="setting-description"></span><br/><br/>-->
-	
+	?><script  type='text/javascript'><!-- 
+	function switchpage(select) {var index;for(index=0; index<select.options.length; index++) {if(select.options[index].selected){if(select.options[index].value!="")window.location.href=select.options[index].value;break;}}} 
+	--></script>
+    <div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
+    	
 	<?php global $wpdb;
 	$quotesoptions = get_option('stray_quotes_options');
 	
@@ -130,7 +132,7 @@ function stray_manage() {
                 <p class="setting-description"><small><?php echo __('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
                 
                 <p><label><?php echo __('Category:&nbsp;','stray-quotes') ?></label>                
-                <select name="categories" style="vertical-align:middle; width:17em;"> 
+                <select name="categories" style="vertical-align:middle; width:14em;"> 
                 <?php $categorylist = make_categories(); 
                 foreach($categorylist as $categoryo){ ?>
                 <option value="<?php echo $categoryo; ?>" style=" padding-right:5px"
@@ -140,7 +142,7 @@ function stray_manage() {
                 </select>
                   
                 <label><?php echo __('new category:&nbsp;','stray-quotes') ?></label>
-                <input type="text" name="quote_category" size=26 value=""  maxlength="25" <?php echo $styleborder ?> /></p>
+                <input type="text" name="quote_category" size=24 value=""  maxlength="24" <?php echo $styleborder ?> /></p>
                 
 				<p><label><?php echo __('Visible:','stray-quotes') ?></label>
 					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php echo __('Yes','stray-quotes') ?>					
@@ -249,8 +251,7 @@ function stray_manage() {
 	else $where = " WHERE `category`='" . $categories . "'";
 	
 	// how many rows we have in database
-	$result = $wpdb->get_results("select `quoteID` from " . WP_STRAY_QUOTES_TABLE . $where);
-	$numrows = count($result);
+	$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . $where);
 	
 	//temporary workaround for the "division by zero" problem
 	if (is_string($rows))$rows=intval($rows);

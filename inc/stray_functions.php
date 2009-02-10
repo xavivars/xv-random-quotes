@@ -1,31 +1,56 @@
 <?php
 
-//this is all about the variables
-$quotesoptions = array();
-$quotesoptions = get_option('stray_quotes_options');
-$regularTitle =  utf8_decode($quotesoptions['stray_quotes_regular_title']);
-$widgetTitle = utf8_decode($quotesoptions['stray_quotes_widget_title']);
-$beforeAll =  utf8_decode($quotesoptions['stray_quotes_before_all']);
-$afterAll = utf8_decode($quotesoptions['stray_quotes_after_all']);
-$beforeQuote = utf8_decode($quotesoptions['stray_quotes_before_quote']);
-$afterQuote = utf8_decode($quotesoptions['stray_quotes_after_quote']);
-$beforeAuthor = utf8_decode($quotesoptions['stray_quotes_before_author']);
-$afterAuthor = utf8_decode($quotesoptions['stray_quotes_after_author']);
-$beforeSource = utf8_decode($quotesoptions['stray_quotes_before_source']);
-$afterSource = utf8_decode($quotesoptions['stray_quotes_after_source']);
-$putQuotesFirst = utf8_decode($quotesoptions['stray_quotes_put_quotes_first']);
-$defaultVisible = utf8_decode($quotesoptions['stray_quotes_default_visible']);
-$linkto = utf8_decode($quotesoptions['stray_quotes_linkto']);
-$sourcelinkto = utf8_decode($quotesoptions['stray_quotes_sourcelinkto']);
-$sourcespaces = utf8_decode($quotesoptions['stray_quotes_sourcespaces']);	
-$authorspaces = utf8_decode($quotesoptions['stray_quotes_authorspaces']);
-$ifnoauthor = utf8_decode($quotesoptions['stray_if_no_author']);		
-
 //this is called by other functions to output a given quote
-function stray_output_one($get_one) {
+function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=NULL,$widgetid=NULL) {
 
-	global $wpdb,$widgetTitle,$regularTitle,$beforeAll,$beforeAuthor,$afterAuthor,$beforeSource,$afterSource,$beforeQuote,$afterQuote,$afterAll,$putQuotesFirst,$linkto,$sourcelinkto,$sourcespaces,$authorspaces,$ifnoauthor;
+	//the variables
+	$quotesoptions = array();
+	$quotesoptions = get_option('stray_quotes_options');
+	$regularTitle =  utf8_decode($quotesoptions['stray_quotes_regular_title']);
+	$widgetTitle = utf8_decode($quotesoptions['stray_quotes_widget_title']);
+	$beforeAll =  utf8_decode($quotesoptions['stray_quotes_before_all']);
+	$afterAll = utf8_decode($quotesoptions['stray_quotes_after_all']);
+	$beforeQuote = utf8_decode($quotesoptions['stray_quotes_before_quote']);
+	$afterQuote = utf8_decode($quotesoptions['stray_quotes_after_quote']);
+	$beforeAuthor = utf8_decode($quotesoptions['stray_quotes_before_author']);
+	$afterAuthor = utf8_decode($quotesoptions['stray_quotes_after_author']);
+	$beforeSource = utf8_decode($quotesoptions['stray_quotes_before_source']);
+	$afterSource = utf8_decode($quotesoptions['stray_quotes_after_source']);
+	$putQuotesFirst = utf8_decode($quotesoptions['stray_quotes_put_quotes_first']);
+	$defaultVisible = utf8_decode($quotesoptions['stray_quotes_default_visible']);
+	$linkto = utf8_decode($quotesoptions['stray_quotes_linkto']);
+	$sourcelinkto = utf8_decode($quotesoptions['stray_quotes_sourcelinkto']);
+	$sourcespaces = utf8_decode($quotesoptions['stray_quotes_sourcespaces']);	
+	$authorspaces = utf8_decode($quotesoptions['stray_quotes_authorspaces']);
+	$ifnoauthor = utf8_decode($quotesoptions['stray_if_no_author']);	
+	$quotesoptions = array();
+	$quotesoptions = get_option('stray_quotes_options');
+	$beforeloader = utf8_decode($quotesoptions['stray_before_loader']);
+	$quoteloader = utf8_decode($quotesoptions['stray_loader']);
+	$afterloader = utf8_decode($quotesoptions['stray_after_loader']);
+	
 	$output = '';
+
+	if ($linkphrase)$quoteloader = $linkphrase;
+	
+	if(is_array($categories))$categories = implode(',', $categories);
+	
+	//the javascript event with all the variables
+	$event = 'onclick="newQuote(\''.
+	$categories .'\',\''.
+	$widgetid.'\',\''.
+	WP_STRAY_QUOTES_PATH.'\',\''.
+	urlencode($quoteloader).'\',\''.
+	$sequence.'\')"';
+	
+	//this trick is for the all-quotes shortcode
+	if ($sequence != 'skip' && $linkphrase !='skip' && $widgetid !='skip') {
+	
+		//click on the quote itself or on the link (part 1)
+		if (!$quoteloader) $output .= '<div class="stray_quote-'.$widgetid.'" '.$event.' >';
+		else  $output .= '<div class="stray_quote-'.$widgetid.'">';
+	
+	}
 	
 	//make or not the author link
 	if ( $get_one->author ) {
@@ -98,13 +123,27 @@ function stray_output_one($get_one) {
 		$output .= $afterAll;		
 	}		
 	
+	//this trick is for the all-quotes shortcode
+	if ($sequence != 'skip' && $linkphrase !='skip' && $widgetid !='skip') {
+
+		//click on the quote itself or on the link (part 2)
+		if ($quoteloader) {
+			
+			$output .= $beforeloader;
+			$output .= '<a '.$event.' style="cursor:pointer" >'. $quoteloader.'</a>';
+			$output .= $afterloader;
+		}
+		
+		$finale = '</div>';	
+	}
+	
 	//end of story
-	return $output;		
+	return $output.$finale;
 
 }
 
 //this prints a random quote from given categories
-function stray_random_quote($categories=NULL) {
+function stray_random_quote($categories=NULL,$sequence=NULL,$linkphrase=NULL,$widgetid=NULL) {
 
 	global $wpdb;
 
@@ -116,31 +155,58 @@ function stray_random_quote($categories=NULL) {
 			$category = trim($category);
 			$categoryquery .= $category.'" OR `category`="';
 		}
-		$categoryquery = rtrim($categoryquery,' OR `category`=""');
+		$categoryquery = substr($categoryquery,0,-17);
 		$categoryquery .='"';
 	} else {
 		$categoryquery = '';
-	}		
+	}			
+	
+	//generate a casual id if the function is not called via a widget
+	if (!$widgetid)$widgetid = mt_rand(9,999);
 	
 	//sql the thing
-	$sql = "SELECT quoteID,quote,author,source,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery;
+	$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery. ' ORDER BY `quoteID` ASC';
 	$result = $wpdb->get_results($sql);	
+	$sql2 = "SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery;
+	$totalquotes = $wpdb->get_var($sql2);
 	
-	//if the sql has something to say, get to work
-	if ( !empty($result) )	{
+	//if the sql has something to say, may it say it now
+	if ( !empty($result) )	{		
 		
-		//create random moment	
-		list($usec, $sec) = explode(' ', microtime());
-		srand( (double)(float) $sec + ((float) $usec * 100000) );		
+		//check the random/not random thing
+		if ($sequence) {
 		
+			//if is a bool=true, make it a random number
+			if ($sequence === true)$sequence = mt_rand(0, $totalquotes-1); 
+			
+			//make sure it is not a string
+			if (is_string($sequence)) settype($sequence, "integer"); 		
+			
+			//if it is a number
+			if (is_int($sequence)) {
+				//start over when reached the last one
+				if ($sequence >= $totalquotes)$sequence = -1;
+				//grow the sequence
+				$sequence = $sequence+1;
+			}
+						
+			//get the next quote in sequence
+			$get_one = $result[$sequence];
+		 
+		} 
+		
+		else {
+			//get the quote randomly
+			$get_one = $result[rand(0, $totalquotes-1)];		
+		}
+
 		//end of it
-		$get_one = $result[rand(0, count($result)-1)];
-		echo stray_output_one($get_one);
+		echo stray_output_one($get_one,$categories,$sequence,$linkphrase,$widgetid);
 		
 	}
 }
 
-//this replaces "[random-quote categories=X]" inside a post with a random quote from a given category
+//this replaces "[random-quote "category"]" inside a post with a random quote from a given category
 function stray_rnd_shortcut($categories=NULL) {
 		
 	global $wpdb,$wp_version;
@@ -148,34 +214,34 @@ function stray_rnd_shortcut($categories=NULL) {
 	//handle the categories
 	if ($categories) {
 		$categoryquery = ' AND `category`="';
-		if (is_string($categories)){$categories = explode(",", $categories);}
+		if (is_string($categories))$categories = explode(",", $categories);
 		foreach ($categories as $category) {
 			$category = trim($category);
 			$categoryquery .= $category.'" OR `category`="';
 		}
-		$categoryquery = rtrim($categoryquery,' OR `category`=""');
+		$categoryquery = substr($categoryquery,0,-17);
 		$categoryquery .='"';
 	} else {
 		$categoryquery = '';
-	}		
+	}
+	
+	//generate a casual id if the function is not called via a widget
+	if (!$widgetid)$widgetid = mt_rand(9,99);	
 
 	//shortcodes are only for WP-2.5+
 	if ($wp_version >= 2.5) {
 		
 		//sql the thing
-		$sql = "SELECT quoteID,quote,author,source,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery;
+		$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE `visible`='yes'".$categoryquery;
 		$result = $wpdb->get_results($sql);	
+		$totalquotes = $wpdb->get_var("SELECT COUNT (`quoteID`) FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery);
 		
 		//if the sql has something to say, get to work
 		if ( !empty($result) )	{
-				
-			//create random moment	
-			list($usec, $sec) = explode(' ', microtime());
-			srand( (double)(float) $sec + ((float) $usec * 100000) );		
-			
+							
 			//end of it
-			$get_one = $result[rand(0, count($result)-1)];
-			return stray_output_one($get_one);
+			$get_one = $result[mt_rand(0, $totalquotes-1)];
+			return stray_output_one($get_one,$categories,false,'',$widgetid);
 			
 		}
 	}
@@ -187,14 +253,17 @@ function stray_a_quote($id ='1') {
 	global $wpdb;
 	
 	//sql the thing
-	$result = $wpdb->get_results("select quoteID,quote,author,source,`category` from " . WP_STRAY_QUOTES_TABLE . " where quoteID='{$id}'");				
+	$result = $wpdb->get_results("select `quoteID`,`quote`,`author`,`source`,`category` from " . WP_STRAY_QUOTES_TABLE . " where `quoteID`='{$id}'");				
+
+	//generates casual id if the function is not called via a widget
+	$widgetid =  mt_rand(9,99);
 	
 	//if the sql has something to say, get to work
 	if ( !empty($result) )	{
 		
 		//end of it
 		$get_one = $result[0];	
-		echo stray_output_one($get_one);
+		echo stray_output_one($get_one,$result->category,true,'',$widgetid);
 	}
 }
 
@@ -207,13 +276,16 @@ function stray_id_shortcut($attr='1') {
 	if ($wp_version >= 2.5) {
 		
 		//sql the thing
-		$result = $wpdb->get_results("select quoteID,quote,author,source,`category` from " . WP_STRAY_QUOTES_TABLE . " where quoteID=". $attr['id']);				
-		
+		$result = $wpdb->get_results("select `quoteID`,`quote`,`author`,`source`,`category` from " . WP_STRAY_QUOTES_TABLE . " where `quoteID`=". $attr['id']);				
+
+		//generates casual id if the function is not called via a widget
+		$widgetid =  mt_rand(9,99);
+	
 		if ( !empty($result) )	{
 		
 			//end of it
 			$get_one = $result[0];					
-			return stray_output_one($get_one);
+			return stray_output_one($get_one,$result->category,true,'',$widgetid);
 		}
 
 	}	
@@ -246,8 +318,7 @@ function stray_page_shortcut($atts, $content = NULL) {
 		$offset = ($pages - 1) * $rows;
 		
 		// how many rows we have in database?
-		$result = $wpdb->get_results("select quoteID from " . WP_STRAY_QUOTES_TABLE . $where);
-		$numrows = count($result);
+		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . $where);
 		
 		//temporary workaround for the "division by zero" problem
 		if (is_string($rows))$rows=intval($rows);
@@ -305,7 +376,7 @@ function stray_page_shortcut($atts, $content = NULL) {
 			//uncomment this to have the navigation also above the list.
 			/*$contents .= '<p>'.$first . $prev . $nav . $next . $last.'</p>';*/
 			$contents .= '<ul>';
-			foreach ( $result as $get_one )$contents .= '<li>'.stray_output_one($get_one).'</li>';	
+			foreach ( $result as $get_one )$contents .= '<li>'.stray_output_one($get_one,$categories,'skip','skip','skip').'</li>';	
 			$contents .= '</ul><p>'.$first . $prev . $nav . $next . $last.'</p>';;
 			return $contents;
 		

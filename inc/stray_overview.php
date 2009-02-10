@@ -12,6 +12,8 @@ function stray_intro() {
 	$new = get_option('siteurl')."/wp-admin/admin.php?page=stray_new";
 	$help =  get_option('siteurl')."/wp-admin/admin.php?page=stray_help";
 	$straymessage = $quotesoptions['stray_quotes_first_time'];
+	$totalquotes = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE);
+
 
 	//feedback following activation (see main file)
 	if ($straymessage !="") {
@@ -25,11 +27,7 @@ function stray_intro() {
 	
 	?><div class="wrap"><h2>Stray Random Quotes: Overview</h2><?php 
 	
-	//count how many quotes we have
-	$sql1 = "SELECT quoteID FROM " . WP_STRAY_QUOTES_TABLE; 
-	$howmanyquotes = count($wpdb->get_results($sql1));
-	
-    if ($howmanyquotes > 3) { 
+    if ($totalquotes > 3) { 
 	
 		//quotes and categories
 		$howmanycategories = count(make_categories());
@@ -44,7 +42,7 @@ function stray_intro() {
 		if ( count($howmany) > 1) $as = __(', distributed as follows:','stray-quotes');
 		else $as = '.';
         $search = array('%s1','%s2', '%s3');
-        $replace = array($howmanyquotes, $howmanycategories, $as);
+        $replace = array($totalquotes, $howmanycategories, $as);
         echo str_replace ($search,$replace, __('<p>Right now you have <strong>%s1 quotes</strong> in <strong>%s2</strong>%s3</p>','stray-quotes'));
 		if ($howmany && count($howmany) > 1) { ?>
 		
@@ -65,9 +63,8 @@ function stray_intro() {
 		}		
 		
 		//visible quotes
-		$sql2 = "SELECT quoteID FROM " . WP_STRAY_QUOTES_TABLE. " WHERE visible='yes'"; 
-		$visiblequotes = count($wpdb->get_results($sql2));
-		if($visiblequotes == $howmanyquotes)$visiblequotes = 'All your quotes ';
+		$visiblequotes = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'"); 
+		if($visiblequotes == $totalquotes)$visiblequotes = 'All your quotes ';
 		echo str_replace ('%s3',$visiblequotes, __('<p><strong>%s3</strong> are visible.</p>','stray-quotes'));
 		
 		//author

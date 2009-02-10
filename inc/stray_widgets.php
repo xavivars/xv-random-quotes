@@ -69,11 +69,17 @@ class stray_widgets {
             return;
 
         $options = $options_all[$number];
+		
+		if ($options["sequence"] == "Y")$sequence = false;
+		else $sequence = true;
+		
+		$linkphrase = $options["linkphrase"];
+		$widgetid = $number;
 
         echo $before_widget.$before_title;
 		echo $options["title"];
         echo $after_title;
-		stray_random_quote(isset($options["groups"]) ? explode(',', $options["groups"]) : array("default"));
+		stray_random_quote(isset($options["groups"]) ? explode(',', $options["groups"]) : array("default"),$sequence,$linkphrase,$widgetid);
         echo $after_widget;
     }
 
@@ -113,6 +119,8 @@ class stray_widgets {
                 
                 $options['title'] = $posted['title'];
                 $options['groups'] = isset($posted['groups']) ? implode(',', $posted['groups']) : ''; 
+				$options['sequence'] =  $posted['sequence'];
+				$options['linkphrase'] =  $posted['linkphrase'];
                 
                 $options_all[$widget_number] = $options;
             }
@@ -122,9 +130,12 @@ class stray_widgets {
 		
 		$quotesoptions = get_option('stray_quotes_options');
 		$widgetTitle = $quotesoptions['stray_quotes_widget_title'];
+		$linkphrase = $quotesoptions['stray_loader'];
 		$default_options = array(
 				'title' => $widgetTitle, 
 				'groups' => implode(",",make_categories()),
+				'sequence' => false,
+				'linkphrase' => $linkphrase
 		);
 	
 
@@ -135,15 +146,20 @@ class stray_widgets {
         else {
             $values = $options_all[$number];
         }
+		
+		
+		if ( $values['sequence'] == "Y" ) $random_selected = ' checked="checked"';	
         
-		?><p><label for="gdpnav-title">Pick a title:</label>
+		?><p><label><strong>Title</strong></label>
 		<input class="widefat" id="widget_stray_quotes-<?php echo $number; ?>-title" 
         name="widget_stray_quotes[<?php echo $number; ?>][title]" type="text" 
         value="<?php echo htmlspecialchars($values['title'], ENT_QUOTES); ?>" />
         </p>
-		<p><label for="gdpnav-title">Select categories (drag the mouse or ctrl-click to multi-select):</label>
+        
+		<p><label><strong>Categories</strong><span class="setting-description"> <small>quotes are taken from these. drag the mouse or ctrl-click to multi-select</small></span></label>
 		<select class="widefat" style="width: 100%; height: 70px;" name="widget_stray_quotes[<?php echo $number; ?>][groups][]" 
         id="widget_stray_quotes-<?php echo $number; ?>-groups" multiple="multiple"></p>
+        
         
 		<?php 
 		$items = make_categories();
@@ -159,7 +175,15 @@ class stray_widgets {
             }
         }         
 		?></select>
-		<br /><?php
+        
+		<p><label><strong>Link phrase</strong><span class="setting-description"> <small>if left empty, reloading is done by clicking on the quote.</small></span></label>
+		<input class="widefat" id="widget_stray_quotes-<?php echo $number; ?>-title" 
+        name="widget_stray_quotes[<?php echo $number; ?>][linkphrase]" type="text" 
+        value="<?php echo htmlspecialchars($values['linkphrase'], ENT_QUOTES); ?>" />
+        </p>
+        
+		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][sequence]" value="Y" <?php echo $random_selected; ?> /><label><strong>Random</strong><span class="setting-description"><small> leave unckecked to load the quotes in order beginning from a random one.</small></span></label></p>
+<?php
 
     }
     
