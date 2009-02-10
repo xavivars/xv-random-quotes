@@ -12,8 +12,8 @@ if($_POST['action'] == 'newquote')
 		$changedDir = preg_replace('|wp-content.*$|','', __FILE__);
 	}
 	include_once($changedDir.'/wp-config.php');
-	
-	$categories = isset($_POST['categories'])?explode(",",$_POST['categories']):'';
+	if ($categories) $categories = isset($_POST['categories'])?explode(",",$_POST['categories']):'';
+	else $categoires = array('');
 	$sequence = isset($_POST['sequence'])?$_POST['sequence']:'';
 	$linkphrase = isset($_POST['linkphrase'])?$_POST['linkphrase']:'';
 	$widgetid = isset($_POST['widgetid'])?$_POST['widgetid']:'';
