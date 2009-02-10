@@ -1,6 +1,6 @@
 === Stray Random Quotes ===
 Contributors: corpodibacco
-Tags: quotes, random, widget, everywhere, ajax
+Tags: quotes, random, widget, sidebar, AJAX
 Requires at least: 2.3
 Tested up to: 2.7
 Stable tag: 1.8.1
