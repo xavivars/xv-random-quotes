@@ -22,7 +22,6 @@ function stray_new() {
 		$source = !empty($_REQUEST['quote_source']) ? $_REQUEST['quote_source'] : '';
 		$visible = !empty($_REQUEST['quote_visible']) ? $_REQUEST['quote_visible'] : '';
 		
-		if ( $_REQUEST['quote_category'] == '' || $_REQUEST['quote_category']==false)$_REQUEST['quote_category'] = 'default';
 		if ( $_REQUEST['quote_category'] )$category = $_REQUEST['quote_category'];
 		else $category = $_REQUEST['categories'];
 		

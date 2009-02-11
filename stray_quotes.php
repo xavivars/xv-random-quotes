@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Display random quotes everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with Wordpress 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.8.1
+Version: 1.8.2
 License: GPL compatible
 */
 
@@ -18,7 +18,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 181);
+define ("WP_STRAY_VERSION", 182);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -31,8 +31,71 @@ if(!empty($currentLocale)) {
 
 //add ajax script
 function stray_quotes_add_js() {
-		wp_enqueue_script('stray_quotes_ajax_script', WP_STRAY_QUOTES_PATH.'/inc/js_ajax.js', array('jquery'));
+	$quotesoptions = get_option('stray_quotes_options');
+	if ($quotesoptions['stray_ajax'] !='Y') wp_enqueue_script('stray_quotes_ajax_script', WP_STRAY_QUOTES_PATH.'/inc/js_ajax.js', array('jquery'));
 }
+
+
+//add header
+function stray_quotes_header(){
+	
+	//header for the manage page
+	if(strpos($_SERVER['REQUEST_URI'],'stray_manage')) {
+	
+		?><script  type='text/javascript'><!-- 
+		function switchpage(select) {var index;for(index=0; index<select.options.length; index++) {if(select.options[index].selected){if(select.options[index].value!="")window.location.href=select.options[index].value;break;}}} 
+		--></script><?php	
+	}
+
+	//header for the settings page
+	if(strpos($_SERVER['REQUEST_URI'],'stray_quotes_options')) {
+	
+		?><script type="text/javascript">
+		
+		function disable_enable(){
+		
+			var a = document.getElementById('ajaxinput1');
+			var b = document.getElementById('ajaxinput2');
+			var c = document.getElementById('ajaxinput3');
+			
+			if (a.disabled==true)a.disabled=false;
+			else a.disabled=true;
+			if (b.disabled==true)b.disabled=false;
+			else b.disabled=true;
+			if (c.disabled==true)c.disabled=false;
+			else c.disabled=true;
+			
+		}
+
+		
+		// Multiple onload function created by: Simon Willison
+		// http://simonwillison.net/2004/May/26/addLoadEvent/
+		function addLoadEvent(func) {
+		  var oldonload = window.onload;
+		  if (typeof window.onload != 'function') {
+			window.onload = func;
+		  } else {
+			window.onload = function() {
+			  if (oldonload) {
+				oldonload();
+			  }
+			  func();
+			}
+		  }
+		}
+
+		addLoadEvent(function() {
+			disablefields();
+		});
+			
+		</script><?php
+	
+	}
+
+
+}
+
+
 
 
 //upon activation
@@ -248,9 +311,9 @@ function quotes_activation() {
 		$quotesoptions['stray_default_category'] =  'default';	
 		$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
 		$quotesoptions['stray_before_loader'] = '<p align="left">';
-		$quotesoptions['stray_loader'] = __('New quote &raquo;', 'stray-quotes');
-		$quotesoptions['stray_after_loader'] = '</p>';	
-
+		$quotesoptions['stray_loader'] = '';
+		$quotesoptions['stray_after_loader'] = '</p>';
+		$quotesoptions['stray_ajax'] =  '';
 				
 		//the message
 		delete_option('stray_quotes_first_time');		
@@ -339,7 +402,7 @@ function quotes_activation() {
 	
 		//add a new fields
 		$quotesoptions['stray_before_loader'] = '<p>';
-		$quotesoptions['stray_loader'] = __('', 'stray-quotes');
+		$quotesoptions['stray_loader'] = '';
 		$quotesoptions['stray_after_loader'] = '</p>';
 		
 		//message
@@ -350,6 +413,12 @@ function quotes_activation() {
 
 	}
 	
+	// < 1.8.2
+	if( $quotesoptions['stray_quotes_version'] < 182 ){
+		//add a new fields
+		$quotesoptions['stray_ajax'] =  '';
+	}
+
 
 	//take care of version number
 	if( $quotesoptions['stray_quotes_version'] != (WP_STRAY_VERSION) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
@@ -413,6 +482,7 @@ function stray_quotes_add_pages() {
 //excuse me, I'm hooking wordpress
 add_action('admin_menu', 'stray_quotes_add_pages');
 add_action('wp_print_scripts', 'stray_quotes_add_js');
+add_action('admin_head', 'stray_quotes_header');
 
 if ($wp_version >= 2.5) {
 	add_shortcode('quote', 'stray_id_shortcut');

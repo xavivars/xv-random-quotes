@@ -1,22 +1,7 @@
 <?php
-
-/*
-
-Multi-Widget solution thanks to 
-Millan http://wp.gdragon.info/
-Tutorial on this page:
-http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/
-
-I'll add comments to this section soon.
-
-*/
-
-/* 
-
-NOTE: whenever on this page you find "group" mentioned, it is meant "category". 
-But it has to remain "group", to avoid having to change the 'widget_stray_quotes' array structure in the database. 
-
-*/
+/*I'll add comments to this section soon.*/
+/* NOTE: whenever on this page you find "group" mentioned, it is meant "category". 
+But it has to remain "group", to avoid having to change the 'widget_stray_quotes' array structure in the database. */
 
 class stray_widgets {
 
@@ -183,13 +168,8 @@ class stray_widgets {
         </p>
         
 		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][sequence]" value="Y" <?php echo $random_selected; ?> /><label><strong>Random</strong><span class="setting-description"><small> leave unckecked to load the quotes in order beginning from a random one.</small></span></label></p>
-<?php
-
-    }
+<?php }
     
-    function render_quotes($groups = array()) {
- 		
-    }
 }
 
 $gdm = new stray_widgets();

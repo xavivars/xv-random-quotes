@@ -1,5 +1,6 @@
 function newQuote(categories, id, url, linkphrase, sequence)
 {
+	
 	jQuery(document).ready
 	(
 		
@@ -18,7 +19,7 @@ function newQuote(categories, id, url, linkphrase, sequence)
 						{	
 							//needed to avoid the creation of two divs one inside the other
 							if ($("div.stray_quote-" + id).parent().is("div.stray_quote-" + id)==false) { 
-								$("div.stray_quote-" + id).html(html).fadeIn();
+								$("div.stray_quote-" + id).html(html);
 							}
 						}
 				});

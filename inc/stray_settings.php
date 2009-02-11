@@ -57,6 +57,7 @@ function stray_quotes_options () {
 		'stray_default_category' => $_POST['default_category'],
 		'stray_if_no_author'=> $_POST['no_author'],	
 		'stray_clear_form'=> $_POST['clear_form'],
+		'stray_ajax'=> $_POST['stray_ajax'],
 		'stray_before_loader'=> $_POST['before_loader'],
 		'stray_loader'=> $_POST['loader'],
 		'stray_after_loader'=> $_POST['after_loader']
@@ -111,6 +112,7 @@ function stray_quotes_options () {
 	$defaultcategory = $quotesoptions['stray_default_category'];
 	$ifnoauthor = $quotesoptions['stray_if_no_author'];	
 	$clearform = $quotesoptions['stray_clear_form'];
+	$strayajax = $quotesoptions['stray_ajax'];
 	$beforeloader = $quotesoptions['stray_before_loader'];
 	$quoteloader = $quotesoptions['stray_loader'];
 	$afterloader = $quotesoptions['stray_after_loader'];
@@ -118,8 +120,29 @@ function stray_quotes_options () {
 	if ( $putQuotesFirst == 'Y' ) $putQuotesFirst_selected = 'checked';	
 	if ( $defaultVisible == 'Y' ) $defaultVisible_selected = 'checked';	
 	if ( $clearform == 'Y' ) $clearform_selected = 'checked';	
+	if ( $strayajax == 'Y' )$strayajax_selected = 'checked';
 	
-	//the options form	?>
+	//javascript to disable ajax forms
+	?><script type="text/javascript">
+		
+		function disablefields() {
+			// Get a fieldset
+			var a = document.getElementById('ajaxinput1');
+			var b = document.getElementById('ajaxinput2');
+			var c = document.getElementById('ajaxinput3');
+			<?php if ( $strayajax == "Y" ) { ?>
+			a.disabled = true;
+			b.disabled = true;
+			c.disabled = true;
+			<?php } else { ?>
+			a.disabled = false;
+			b.disabled = false;
+			c.disabled = false;
+			<?php } ?>
+		} </script>
+	
+	
+	<?php //the options form	?>
 	<form name="frm_options" method="post" action="<?php echo ($_SERVER['REQUEST_URI']); ?>">
 
     <?php //quote aspect ?>
@@ -129,11 +152,11 @@ function stray_quotes_options () {
     <span class="setting-description"><?php echo __('Default settings to change how the quotes appear in your blog.','stray-quotes') ?></span>
     </p>
 	<table class="form-table"> 
-	<tr valign="top"><th scope="row"><?php echo __('The Title','stray-quotes') ?></th>    	
-        <td><input type="text" size="50" name="widget_title" value="<?php echo ($widgetTitle); ?>"class="regular-text" /><span class="setting-description">
+	<tr valign="top"><th scope="row" width="20%"><?php echo __('The Title','stray-quotes') ?></th>    	
+        <td width="40%"><input type="text" size="50" name="widget_title" value="<?php echo ($widgetTitle); ?>"class="regular-text" /><span class="setting-description">
     	<?php echo str_replace("%s",get_option('siteurl')."/wp-admin/widgets.php",__('<br/>The default title for all the quote widgets. Single settings can be changed on the <a href="%s">widget page</a>. HTML is not needed here.<br /><strong>Sample value:</strong> <code>Random Quote</code>','stray-quotes')); ?></span></td>
-        <td><input type="text" size="50" name="regular_title" value="<?php echo (utf8_decode(htmlspecialchars($regularTitle))); ?>"class="regular-text" /><span class="setting-description">
-		<?php echo str_replace("%s",get_option("siteurl").'/wp-admin/admin.php?page=stray_quotes/stray_quotes.php',__('<br/>The default title for when the widget functionality is not being used. On how to work with the code added to your template, refer to <a href="%s">this page</a>.<br/><strong>Sample value:</strong> <code>&lt;h2&gt;Random Quote&lt;/h2&gt;</code>','stray-quotes')) ?></span>   
+        <td width="40%"><input type="text" size="50" name="regular_title" value="<?php echo (utf8_decode(htmlspecialchars($regularTitle))); ?>"class="regular-text" /><span class="setting-description">
+		<?php echo str_replace("%s",get_option("siteurl").'/wp-admin/admin.php?page=stray_help',__('<br/>The default title for when the widget functionality is not being used. On how to work with the code added to your template, refer to <a href="%s">this page</a>.<br/><strong>Sample value:</strong> <code>&lt;h2&gt;Random Quote&lt;/h2&gt;</code>','stray-quotes')) ?></span>   
 	</td></tr>
 	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Author, Quote and Source','stray-quotes') ?></th>    
         <td><input type="text" size="50" name="before_all" value="<?php echo (utf8_decode(htmlspecialchars($beforeAll))); ?>"class="regular-text" /><span class="setting-description">
@@ -179,15 +202,22 @@ function stray_quotes_options () {
         <input type="text" size="1" maxlength="1" name="source_spaces" value="<?php echo (utf8_decode(htmlspecialchars($sourcespaces))); ?>" />
         </span>
    	</td></tr>
-	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Quote before Author and Source','stray-quotes') ?></th><td colspan="2">    
+	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Quote before Author and Source','stray-quotes') ?></th><td>    
     	<input type="checkbox" name="put_quotes_first" value="Y" <?php echo ($putQuotesFirst_selected); ?> /><span class="setting-description">
-        <?php echo __('If checked, returns the quote before author and source. This won\'t be considered when spewing all the quotes onto a page (quote will always come first).','stray-quotes') ?></span>
-    </td></tr>    
-	<tr valign="top"><th scope="row"><?php echo __('New quote loader','stray-quotes') ?></th>    
-        <td><input type="text" size="50" name="loader" value="<?php echo (utf8_decode(htmlspecialchars($quoteloader))); ?>" class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>A link phrase used to dynamically load another quote. HTML is not allowed here. If you leave this empty, the quote will be reloaded by clicking on it. This can be overridden by each widget in the widget options.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>New quote &amp;raquo;</code></span></td>        
-        <td><input type="text" size="50" name="before_loader" value="<?php echo (utf8_decode(htmlspecialchars($beforeloader))); ?>" class="regular-text" /><span class="setting-description"><?php echo __('<br/>HTML or other elements before the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;p align="left"&gt;</code></span><br/> 
-        <input type="text" size="50" name="after_loader" value="<?php echo (utf8_decode(htmlspecialchars($afterloader))); ?>" class="regular-text" /><span class="setting-description"><?php echo __('<br/>HTML or other elements after the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/p&gt;</code></span> </td></tr>
+        <?php echo __('If checked, returns the quote before author and source (The opposite is NOT considered by the <code>[all-quotes]</code> shortcode).','stray-quotes') ?></span>
+    </td><td></td></tr>
+	<tr valign="top"><th scope="row"><?php echo __('AJAX quote loader','stray-quotes') ?></th>    
+        <td><input type="checkbox" name="stray_ajax" value="Y" <?php echo ($strayajax_selected); ?> onchange="javascript:disable_enable()" /><span class="setting-description"><?php echo __('&nbsp;If checked, <strong>disables the AJAX loader</strong> entirely.','stray-quotes') ?></span><br/><br/>
+        <input type="text" size="50" name="loader" value="<?php echo (utf8_decode(htmlspecialchars($quoteloader))); ?>" class="regular-text" id="ajaxinput1" /><span class="setting-description"><?php echo str_replace("%s",get_option("siteurl").'/wp-admin/admin.php?page=stray_help',__('<br/>Enter here the <strong>link phrase</strong> used to dynamically load another quote. HTML not allowed. If you leave this empty, the quote will be reloaded by clicking on it. You can <strong>override</strong> this setting in the widget or in the template (see <a href="%s">help page</a>), <strong>only</strong> if you leave this field empty.<br/><strong>Sample value:</strong>','stray-quotes')) ?> <code>New quote &amp;raquo;</code></span></td>        
+        <td><br/><br/><input type="text" size="50" name="before_loader" value="<?php echo (utf8_decode(htmlspecialchars($beforeloader))); ?>" class="regular-text"  id="ajaxinput2" /><span class="setting-description"><?php echo __('<br/>HTML or other elements before the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;p align="left"&gt;</code></span><br/> 
+        <input type="text" size="50" name="after_loader" value="<?php echo (utf8_decode(htmlspecialchars($afterloader))); ?>" class="regular-text"  id="ajaxinput3"  /><span class="setting-description"><?php echo __('<br/>HTML or other elements after the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/p&gt;</code></span> </td>
+        
+        
+        </tr>
+        
+        
+        
+        
     </table>
     <br/>
    	<div class="submit">

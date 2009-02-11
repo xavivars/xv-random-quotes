@@ -3,10 +3,7 @@
 //manage page
 function stray_manage() {
 
-	?><script  type='text/javascript'><!-- 
-	function switchpage(select) {var index;for(index=0; index<select.options.length; index++) {if(select.options[index].selected){if(select.options[index].value!="")window.location.href=select.options[index].value;break;}}} 
-	--></script>
-    <div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
+	?><div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
     	
 	<?php global $wpdb;
 	$quotesoptions = get_option('stray_quotes_options');
@@ -149,9 +146,7 @@ function stray_manage() {
 					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php echo __('No','stray-quotes') ?></div>
 				</p><p>&nbsp;</p>
 				<p> <a href=" <?php echo $urlaction ?>">Cancel</a>&nbsp;
-            <input type="submit" name="save"  class="button-primary" value="<?php echo __('Update quote','stray-quotes') ?> &raquo;" /></p>
-            
-                				
+         	   <input type="submit" name="save"  class="button-primary" value="<?php echo __('Update quote','stray-quotes') ?> &raquo;" /></p>
 			</form><p>&nbsp;</p></div><?php 
 	
 		}	

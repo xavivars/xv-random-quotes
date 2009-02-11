@@ -4,16 +4,12 @@
 // It has nothing to do with your URL, we're talking about your server here. Example: '/home/www/public_html/wp'
 $changedDir = ''; 
 
+if($_POST['action'] == 'newquote'){
 
-if($_POST['action'] == 'newquote')
-{
-	if (!$changedDir)
-	{
-		$changedDir = preg_replace('|wp-content.*$|','', __FILE__);
-	}
+	if (!$changedDir)$changedDir = preg_replace('|wp-content.*$|','', __FILE__);
 	include_once($changedDir.'/wp-config.php');
-	if ($categories) $categories = isset($_POST['categories'])?explode(",",$_POST['categories']):'';
-	else $categoires = array('');
+	
+	$categories = isset($_POST['categories'])?$_POST['categories']:'';
 	$sequence = isset($_POST['sequence'])?$_POST['sequence']:'';
 	$linkphrase = isset($_POST['linkphrase'])?$_POST['linkphrase']:'';
 	$widgetid = isset($_POST['widgetid'])?$_POST['widgetid']:'';

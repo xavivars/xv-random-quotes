@@ -20,7 +20,6 @@ function stray_remove() {
 		$removeoptions =  $_POST['remove'];
 		$removetable = $_POST['removequotes'];
 		$quotesoptions = get_option('stray_quotes_options');
-		
 		if ($removeoptions == 1 && $removetable == 1)$quotesoptions['stray_quotes_uninstall'] = 'both';
 		else if ($removeoptions == 1)$quotesoptions['stray_quotes_uninstall'] = 'options';
 		else if ($removetable == 1)$quotesoptions['stray_quotes_uninstall'] = 'table';
@@ -67,7 +66,6 @@ function stray_remove() {
 		</form><?php 
 	
 	}
-
 }
 
 ?>
