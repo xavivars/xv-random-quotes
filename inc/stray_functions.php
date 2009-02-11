@@ -184,7 +184,7 @@ function stray_random_quote($categories=NULL,$sequence=NULL,$linkphrase=NULL,$wi
 
 	//generate a casual id if the function is not called via a widget
 	if (is_string($widgetid)) settype($widgetid, "integer"); 
-	if (!$widgetid)$widgetid = mt_rand(9,999);
+	if (!$widgetid)$widgetid = mt_rand(0,999999);
 	
 	//sql the thing
 	$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" .$categoryquery. " ORDER BY `quoteID` ASC";
@@ -253,7 +253,8 @@ function stray_rnd_shortcut($categories=NULL) {
 	}			
 	
 	//generate a casual id if the function is not called via a widget
-	if (!$widgetid)$widgetid = mt_rand(9,99);	
+	if (is_string($widgetid)) settype($widgetid, "integer"); 
+	if (!$widgetid)$widgetid = mt_rand(0,999999);
 
 	//shortcodes are only for WP-2.5+
 	if ($wp_version >= 2.5) {
@@ -282,8 +283,9 @@ function stray_a_quote($id ='1') {
 	//sql the thing
 	$result = $wpdb->get_results("select `quoteID`,`quote`,`author`,`source`,`category` from " . WP_STRAY_QUOTES_TABLE . " where `quoteID`='{$id}'");				
 
-	//generates casual id if the function is not called via a widget
-	$widgetid =  mt_rand(9,99);
+	//generate a casual id if the function is not called via a widget
+	if (is_string($widgetid)) settype($widgetid, "integer"); 
+	if (!$widgetid)$widgetid = mt_rand(0,999999);
 	
 	//if the sql has something to say, get to work
 	if ( !empty($result) )	{
@@ -305,8 +307,9 @@ function stray_id_shortcut($attr='1') {
 		//sql the thing
 		$result = $wpdb->get_results("select `quoteID`,`quote`,`author`,`source`,`category` from " . WP_STRAY_QUOTES_TABLE . " where `quoteID`=". $attr['id']);				
 
-		//generates casual id if the function is not called via a widget
-		$widgetid =  mt_rand(9,99);
+		//generate a casual id if the function is not called via a widget
+		if (is_string($widgetid)) settype($widgetid, "integer"); 
+		if (!$widgetid)$widgetid = mt_rand(0,999999);
 	
 		if ( !empty($result) )	{
 		
