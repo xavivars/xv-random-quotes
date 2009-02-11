@@ -419,9 +419,8 @@ function quotes_activation() {
 		$quotesoptions['stray_ajax'] =  '';
 	}
 
-
 	//take care of version number
-	if( $quotesoptions['stray_quotes_version'] != (WP_STRAY_VERSION) )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
+	if( $quotesoptions['stray_quotes_version'] != WP_STRAY_VERSION )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
 	
 	//insert the feedback message
 	$quotesoptions['stray_quotes_first_time'] = $straymessage;
