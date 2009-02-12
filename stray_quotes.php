@@ -2,7 +2,7 @@
 /*
 Plugin Name: Stray Random Quotes
 Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
-Description: Display random quotes everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with Wordpress 2.7.
+Description: Display random quotes everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with Wordpress 2.7. Beware of imitations.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
 Version: 1.8.2
@@ -35,7 +35,6 @@ function stray_quotes_add_js() {
 	if ($quotesoptions['stray_ajax'] !='Y') wp_enqueue_script('stray_quotes_ajax_script', WP_STRAY_QUOTES_PATH.'/inc/js_ajax.js', array('jquery'));
 }
 
-
 //add header
 function stray_quotes_header(){
 	
@@ -51,23 +50,17 @@ function stray_quotes_header(){
 	if(strpos($_SERVER['REQUEST_URI'],'stray_quotes_options')) {
 	
 		?><script type="text/javascript">
-		
 		function disable_enable(){
-		
 			var a = document.getElementById('ajaxinput1');
 			var b = document.getElementById('ajaxinput2');
 			var c = document.getElementById('ajaxinput3');
-			
 			if (a.disabled==true)a.disabled=false;
 			else a.disabled=true;
 			if (b.disabled==true)b.disabled=false;
 			else b.disabled=true;
 			if (c.disabled==true)c.disabled=false;
 			else c.disabled=true;
-			
 		}
-
-		
 		// Multiple onload function created by: Simon Willison
 		// http://simonwillison.net/2004/May/26/addLoadEvent/
 		function addLoadEvent(func) {
@@ -83,20 +76,13 @@ function stray_quotes_header(){
 			}
 		  }
 		}
-
 		addLoadEvent(function() {
 			disablefields();
 		});
-			
 		</script><?php
 	
 	}
-
-
 }
-
-
-
 
 //upon activation
 function quotes_activation() {
@@ -198,7 +184,7 @@ function quotes_activation() {
 		
 		$quotesoptions = array();
 		
-		//conversion of old pre-1.7 options
+		//conversion of old pre-1.7 options AND/OR creating new options
 		$var = 'stray_quotes_before_all';
 		$temp = get_option($var);
 		if (false === $temp) $quotesoptions[$var] =  '<div align="right">';
