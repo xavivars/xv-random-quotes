@@ -15,7 +15,7 @@ The main features:
 * The quotes can be refreshed by the user with **AJAX** automation (without reloading the page). AJAX can be disabled if you like.
 * The plugin is **widget compatible**. You can use as many widgets as you like, each displaying quotes from different categories.
 * The quotes can be rotated randomly, or one by one starting randomly.
-* It makes use of **shortcodes** to add single quotes or multiple quotes to your posts and pages, and **template tags**. This way random words can really be added everywhere.
+* You can use **shortcodes** to add single quotes or multiple quotes to your posts and pages, and **template tags**. This way random words can really be added everywhere.
 * The appearance of the quotes can be highly customized with a dedicated option page, and individually with each widget or template tag.
 * It comes with a easy to use advanced management tool and a help page. 
 
