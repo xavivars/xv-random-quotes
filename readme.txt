@@ -5,7 +5,7 @@ Requires at least: 2.3
 Tested up to: 2.7.1
 Stable tag: 1.8.2
 
-Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7. Beware of imitations.
+Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
 
 == Description ==
 
