@@ -9,7 +9,7 @@ Display random words everywhere on your blog. Easy to custom and manage. Ajax en
 
 == Description ==
 
-Stray Random Quotes helps you collect and display random quotes everywhere on your blog. Actually, this plugin is so flexible that it can be used to display random words of all sorts: taglines, comment titles (such as "Joe said"), footer or header sections etc.
+Stray Random Quotes helps you collect and display random quotes everywhere on your blog. Actually, this plugin is so flexible that it can be used to display random words of all sorts: taglines, comments intro (such as "x said"), footer or header sections etc.
 The main features:
 
 * The quotes can be refreshed by the user with **AJAX** automation (without reloading the page). AJAX can be disabled if you like.
