@@ -9,7 +9,7 @@ Display random quotes everywhere on your blog. Easy to custom and manage. Ajax e
 
 == Description ==
 
-Stray Random Quotes helps you collect and display random quotes everywhere on your blog. Optionally the quotes can be refreshed by the user with **AJAX** automation. The plugin is **widget compatible**. It makes use of **shortcodes** to add quotes to your posts and pages, and **template tags** for template authors. The appearance of the quotes can be highly customized. It comes with a easy to use, advanced management tool, a option page, and a help page. 
+Stray Random Quotes helps you collect and display random quotes everywhere on your blog. The quotes can be refreshed by the user with **AJAX** automation. The plugin is **widget compatible**. It makes use of **shortcodes** to add quotes to your posts and pages, and **template tags** for template authors. The appearance of the quotes can be highly customized. It comes with a easy to use, advanced management tool, a option page, and a help page. 
 
 == Screenshots ==
 
