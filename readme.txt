@@ -16,7 +16,7 @@ The main features:
 * The plugin is **widget compatible**. You can use as many widgets as you like, each displaying quotes from different categories.
 * The quotes can be rotated randomly, or one by one starting randomly.
 * It makes use of **shortcodes** to add single quotes or multiple quotes to your posts and pages, and **template tags**. This way random words can really be added everywhere.
-* The appearance of the quotes can be highly customized with a dedicated option page, and individually with each widget.
+* The appearance of the quotes can be highly customized with a dedicated option page, and individually with each widget or template tag.
 * It comes with a easy to use advanced management tool and a help page. 
 
 == Screenshots ==
