@@ -19,7 +19,7 @@ The main features:
 * The appearance of the quotes can be highly customized with a dedicated option page, and individually with each widget or template tag.
 * The plugin also comes with a easy to use advanced management tool and a help page. 
 
-Consider answering [this poll](http://www.italyisfalling.com/i-clean-the-house-in-preparation-to-go-to-milan/) to influence what the new features of the next versions should be!
+Consider answering [this poll](http://www.italyisfalling.com/a-poll-for-the-new-stray-random-quotes/) to influence what the new features of the next versions should be!
 
 == Screenshots ==
 
