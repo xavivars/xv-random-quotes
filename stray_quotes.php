@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.8.2
+Version: 1.8.3
 License: GPL compatible
 */
 
@@ -18,7 +18,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 182);
+define ("WP_STRAY_VERSION", 183);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -305,7 +305,7 @@ function quotes_activation() {
 		delete_option('stray_quotes_first_time');		
 		if (!$straymessage) $straymessage = $newmessage;
 		$straymessage .=__('<li>* I converted your old settings into new ones that will take less room in your database and be faster to load.</li>','stray-quotes');
-				
+		
 	}
 				
 	//reset the removal option for everyone
@@ -454,7 +454,7 @@ include('inc/stray_remove.php');
 //build submenu entries
 function stray_quotes_add_pages() {
 
-	add_menu_page('Stray Random Quotes', 'Quotes', 8, __FILE__, 'stray_intro', WP_STRAY_QUOTES_PATH.'/img/lightbulb.png');
+	add_menu_page('Stray Random Quotes', __('Quotes','stray-quotes'), 8, __FILE__, 'stray_intro', WP_STRAY_QUOTES_PATH.'/img/lightbulb.png');
 	add_submenu_page(__FILE__, __('Overview for the Quotes','stray-quotes'), __('Overview','stray-quotes'), 8, __FILE__, 'stray_intro');
 	add_submenu_page(__FILE__, __('Manage Quotes','stray-quotes'), __('Manage','stray-quotes'), 8, 'stray_manage', 'stray_manage');
 	add_submenu_page(__FILE__, __('Add New Quote','stray-quotes'), __('Add New','stray-quotes'), 8, 'stray_new', 'stray_new');

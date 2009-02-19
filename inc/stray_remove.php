@@ -31,13 +31,13 @@ function stray_remove() {
 
 		//execute and feedback the removal
 		$quotesoptions = get_option('stray_quotes_options');
-		?><div class="wrap"><h2><?php echo __('Remove and deactivate', 'stray-quotes') ?></h2>
+		?><div class="wrap"><h2><?php _e('Remove and deactivate', 'stray-quotes') ?></h2>
 		<p><strong><a href=" <?php echo $deactivate_url ?>" >
-		<?php echo __('Click Here</a> to deactivate Stray Random Quotes.', 'stray-quotes'); ?>
+		<?php _e('Click Here</a> to deactivate Stray Random Quotes.', 'stray-quotes'); ?>
 		</strong></p><p style="#990000"><?php			
-		if( $quotesoptions['stray_quotes_uninstall'] ==  'both' ) echo __('The <strong>quotes</strong> AND the <strong>options</strong> will be removed.', 'stray-quotes').'<br />';
-		else if( $quotesoptions['stray_quotes_uninstall'] ==  'options' ) echo __('The <strong>plugin options</strong> will be removed.', 'stray-quotes').'<br />';
-		else if( $quotesoptions['stray_quotes_uninstall'] ==  'table' ) echo __('The <strong>quotes</strong> will be removed.', 'stray-quotes').'<br />';
+		if( $quotesoptions['stray_quotes_uninstall'] ==  'both' ) _e('The <strong>quotes</strong> AND the <strong>options</strong> will be removed.', 'stray-quotes').'<br />';
+		else if( $quotesoptions['stray_quotes_uninstall'] ==  'options' ) _e('The <strong>plugin options</strong> will be removed.', 'stray-quotes').'<br />';
+		else if( $quotesoptions['stray_quotes_uninstall'] ==  'table' ) _e('The <strong>quotes</strong> will be removed.', 'stray-quotes').'<br />';
 		?></p></div><?php 
 		
 	} else {
@@ -45,22 +45,22 @@ function stray_remove() {
 		// the deactivation form ?>
 		<form method="post" action="<?php $_SERVER['REQUEST_URI'] ?>">
 		<div class="wrap">
-		<h2><?php echo __('Remove and deactivate','stray-quotes') ?></h2>     
-		<span class="setting-description"><?php echo __('"Patch grief with proverbs." ~ William Shakespeare','stray-quotes') ?></span>     
+		<h2><?php _e('Remove and deactivate','stray-quotes') ?></h2>     
+		<span class="setting-description"><?php _e('"Patch grief with proverbs." ~ William Shakespeare','stray-quotes') ?></span>     
 		<br/><br/>
 		<table class="form-table">
-		<tr valign="top"><th scope="row"><?php echo __('When deactivating Stray Random Quotes', 'stray-quotes'); ?></th>
+		<tr valign="top"><th scope="row"><?php _e('When deactivating Stray Random Quotes', 'stray-quotes'); ?></th>
 		<td>
 		<input type="checkbox" name="remove" value="1" />
-		<?php echo __('Remove the options from the database.','stray-quotes') ?><br />
+		<?php _e('Remove the options from the database.','stray-quotes') ?><br />
 		<input type="checkbox" name="removequotes" value="1" />
-		<?php echo __('Remove all the quotes from the database.','stray-quotes') ?><br />
+		<?php _e('Remove all the quotes from the database.','stray-quotes') ?><br />
 		</tr>
 		</table></div>
 		<br/>
 		<div class="submit">
 		<input type="hidden" name="do" value="Deactivate" />
-		<input type="submit" value="<?php echo __('Deactivate Stray Random Quotes &raquo;','stray-quotes') ?>"  style="color:#990000"/>
+		<input type="submit" value="<?php _e('Deactivate Stray Random Quotes &raquo;','stray-quotes') ?>"  style="color:#990000"/>
 		</div>
 		<p>&nbsp;</p>
 		</form><?php 

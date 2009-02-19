@@ -3,7 +3,7 @@
 //manage page
 function stray_manage() {
 
-	?><div class="wrap"><h2><?php echo __('Manage quotes','stray-quotes') ?></h2>
+	?><div class="wrap"><h2><?php _e('Manage quotes','stray-quotes') ?></h2>
     	
 	<?php global $wpdb;
 	$quotesoptions = get_option('stray_quotes_options');
@@ -55,8 +55,7 @@ function stray_manage() {
 	
 		//check if something went wrong with quote id
 		if ( empty($quoteID) ) {
-			?><div id="message" class="error"><p><?php echo __(
-			'Something is wrong. No quote ID from the query string.','stray-quotes') ?></p></div><?php
+			?><div id="message" class="error"><p><?php _e('Something is wrong. No quote ID from the query string.','stray-quotes') ?></p></div><?php
 		}
 		
 		else {			
@@ -66,8 +65,7 @@ function stray_manage() {
 			
 			//bad feedback
 			if ( empty($data) ) {
-				?><div id="message" class="error"><p><?php echo __(
-				'Something is wrong. I can\'t find a quote linked up with that ID.','stray-quotes') ?></p></div><?php
+				?><div id="message" class="error"><p><?php _e('Something is wrong. I can\'t find a quote linked up with that ID.','stray-quotes') ?></p></div><?php
 				return;
 			}
 			$data = $data[0];
@@ -110,25 +108,25 @@ function stray_manage() {
 				<input type="hidden" name="qa" value="edit_save">
 				<input type="hidden" name="qi" value="<?php echo $quoteID; ?>">
 			
-				<p><!--<label><?php echo __('Quote:','stray-quotes') ?></label><br />-->
+				<p><!--<label><?php _e('Quote:','stray-quotes') ?></label><br />-->
                 <div style="float:left"><script type="text/javascript">edToolbar();</script></div>
-                <div style="float:right; display:compact;margin-top:12px"><small>To insert this quote in a post use: <code>[quote id=<?php echo $quoteID ?>]</code></small></div>
+                <div style="float:right; display:compact;margin-top:12px"><small><?php _e('To insert this quote in a post use:','stray-quotes'); ?> <code>[quote id=<?php echo $quoteID ?>]</code></small></div>
                 <textarea id="qeditor" name="quote_quote" <?php echo $styletextarea ?> cols=68 rows=7><?php echo $quote; ?></textarea></p>
 				<script type="text/javascript">var edCanvas = document.getElementById('qeditor');</script>
-                <p class="setting-description"><small><?php echo __('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
+                <p class="setting-description"><small><?php _e('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
                 
-				<p><label><?php echo __('Author:','stray-quotes') ?></label>
+				<p><label><?php _e('Author:','stray-quotes') ?></label>
                 <input type="text" name="quote_author" size=58 value="<?php echo $author ?>" <?php echo $styleborder ?> />
 				<script type="text/javascript">edToolbar1();</script>
                 <script type="text/javascript">var edCanvas1 = document.getElementById('aeditor');</script><br />
 				
-				<label><?php echo __('Source:','stray-quotes') ?></label>
+				<label><?php _e('Source:','stray-quotes') ?></label>
                 <input type="text" name="quote_source" size=58 value="<?php echo $source ?>" <?php echo $styleborder ?> />
 				<script type="text/javascript">edToolbar2();</script>
                 <script type="text/javascript">var edCanvas2 = document.getElementById('seditor');</script>
-                <p class="setting-description"><small><?php echo __('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
+                <p class="setting-description"><small><?php _e('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
                 
-                <p><label><?php echo __('Category:&nbsp;','stray-quotes') ?></label>                
+                <p><label><?php _e('Category:&nbsp;','stray-quotes') ?></label>                
                 <select name="categories" style="vertical-align:middle; width:14em;"> 
                 <?php $categorylist = make_categories(); 
                 foreach($categorylist as $categoryo){ ?>
@@ -138,15 +136,15 @@ function stray_manage() {
                 <?php } ?>   
                 </select>
                   
-                <label><?php echo __('new category:&nbsp;','stray-quotes') ?></label>
+                <label><?php _e('new category:&nbsp;','stray-quotes') ?></label>
                 <input type="text" name="quote_category" size=24 value=""  maxlength="24" <?php echo $styleborder ?> /></p>
                 
-				<p><label><?php echo __('Visible:','stray-quotes') ?></label>
-					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php echo __('Yes','stray-quotes') ?>					
-					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php echo __('No','stray-quotes') ?></div>
+				<p><label><?php _e('Visible:','stray-quotes') ?></label>
+					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php _e('Yes','stray-quotes') ?>					
+					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php _e('No','stray-quotes') ?></div>
 				</p><p>&nbsp;</p>
-				<p> <a href=" <?php echo $urlaction ?>">Cancel</a>&nbsp;
-         	   <input type="submit" name="save"  class="button-primary" value="<?php echo __('Update quote','stray-quotes') ?> &raquo;" /></p>
+				<p> <a href=" <?php echo $urlaction ?>"><?php _e('Cancel','stray-quotes') ?></a>&nbsp;
+         	   <input type="submit" name="save"  class="button-primary" value="<?php _e('Update quote','stray-quotes') ?> &raquo;" /></p>
 			</form><p>&nbsp;</p></div><?php 
 	
 		}	
@@ -179,8 +177,7 @@ function stray_manage() {
 		}
 		
 		if ( empty($quoteID) )	{
-			?><div id="message" class="error fade"><p><?php echo __(
-			'<strong>Failure:</strong> No quote ID given.','stray-quotes') ?></p></div><?php
+			?><div id="message" class="error fade"><p><?php _e('<strong>Failure:</strong> No quote ID given.','stray-quotes') ?></p></div><?php
 		}
 		
 		else {		
@@ -202,8 +199,7 @@ function stray_manage() {
 			$result = $wpdb->get_results($sql);
 			
 			if ( empty($result) || empty($result[0]->quoteID) )	{			
-				?><div id="message" class="error fade"><p><?php echo __(
-				'<strong>Failure:</strong> Something went wrong.','stray-quotes') ?></p></div><?php				
+				?><div id="message" class="error fade"><p><?php _e('<strong>Failure:</strong> Something went wrong.','stray-quotes') ?></p></div><?php				
 			}
 			else {			
 				?><div id="message" class="updated fade"><p><?php echo str_replace("%s",$quoteID,__(
@@ -217,8 +213,7 @@ function stray_manage() {
 		if ( empty($quoteID) ) {
 			
 			
-			?><div class="error fade"><p><?php echo __(
-			'<strong>Failure:</strong> No quote ID given. Nothing deleted.','stray-quotes') ?></p></div><?php		
+			?><div class="error fade"><p><?php _e('<strong>Failure:</strong> No quote ID given. Nothing deleted.','stray-quotes') ?></p></div><?php		
 		}
 			
 		else {
@@ -234,8 +229,7 @@ function stray_manage() {
 				'Quote <strong>%s</strong> deleted.','stray-quotes')); ?></p></div><?php
 			}			
 			else {						
-				?><div class="error fade"><p><?php echo __(
-				'<strong>Failure:</strong> Nothing deleted.','stray-quotes'); ?></p></div><?php	
+				?><div class="error fade"><p><?php _e('<strong>Failure:</strong> Nothing deleted.','stray-quotes'); ?></p></div><?php	
 			}		
 		}
 	}
@@ -310,7 +304,7 @@ function stray_manage() {
 	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$categories.'&qs=';
 
 	//HTML
-	?><p class="subsubsub" style="float:left"> <?php echo __('quotes per page:','stray-quotes'); ?> 
+	?><p class="subsubsub" style="float:left"> <?php _e('quotes per page:','stray-quotes'); ?> 
     <select name="lines" onchange="switchpage(this)"  style="vertical-align:middle">
     <option value=<?php echo $urlrows.'10'; if ( $rows == 10) echo ' selected';  ?> >10</option>
     <option value=<?php echo $urlrows.'15'; if ( $rows == 15) echo ' selected'; ?> >15</option>
@@ -318,7 +312,7 @@ function stray_manage() {
 	<option value=<?php echo $urlrows.'30'; if ( $rows == 30) echo ' selected'; ?> >30</option>
     <option value=<?php echo $urlrows.'50'; if ( $rows == 50) echo ' selected'; ?> >50</option>
     <option value=<?php echo $urlrows.'100'; if ( $rows == 100) echo ' selected'; ?> >100</option>
-	</select> | <?php echo __('show category: ','stray-quotes'); ?> 
+	</select> | <?php _e('show category: ','stray-quotes'); ?> 
     
     <select name="categories" onchange="switchpage(this)"  style="vertical-align:middle"> 
     <option value="<?php echo $urlcategory.'all'; ?>" 
@@ -342,60 +336,60 @@ function stray_manage() {
         <thead><tr>          
 			
             <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'quoteID') { ?>
-            <a href="<?php echo $urlorder . 'quoteID'; ?>" title="Sort"><?php echo __('ID','stray-quotes') ?></a>
-			<?php } else { echo __('ID','stray-quotes');
+            <a href="<?php echo $urlorder . 'quoteID'; ?>" title="Sort"><?php _e('ID','stray-quotes') ?></a>
+			<?php } else { _e('ID','stray-quotes');
 				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
                 <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
 				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
 				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
 			</a>			
-			<?php } }else{ echo __('ID','stray-quotes'); }?>            
+			<?php } }else{ _e('ID','stray-quotes'); }?>            
             </th>
             
-			<th scope="col"> <?php echo __('Quote','stray-quotes') ?> </th>
+			<th scope="col"> <?php _e('Quote','stray-quotes') ?> </th>
             
             <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'author') { ?>
-            <a href="<?php echo $urlorder . 'author'; ?>"><?php echo __('Author','stray-quotes') ?></a>
-			<?php } else { echo __('Author','stray-quotes');
+            <a href="<?php echo $urlorder . 'author'; ?>"><?php _e('Author','stray-quotes') ?></a>
+			<?php } else { _e('Author','stray-quotes');
 				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
                 <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
 				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
 				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
 			</a>			
-			<?php } }else{ echo __('Author','stray-quotes'); } ?>            
+			<?php } }else{ _e('Author','stray-quotes'); } ?>            
             </th>
             
             <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'source') { ?>
-            <a href="<?php echo $urlorder . 'source'; ?>"><?php echo __('Source','stray-quotes') ?></a>
-			<?php } else { echo __('Source','stray-quotes');
+            <a href="<?php echo $urlorder . 'source'; ?>"><?php _e('Source','stray-quotes') ?></a>
+			<?php } else { _e('Source','stray-quotes');
 				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
                 <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
 				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
 				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
 			</a>			
-			<?php }}else{ echo __('Source','stray-quotes'); }  ?>            
+			<?php }}else{ _e('Source','stray-quotes'); }  ?>            
             </th>
             
             <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'category') { ?>
-            <a href="<?php echo $urlorder . 'category'; ?>"><?php echo __('Category','stray-quotes') ?></a>
-			<?php } else { echo __('Category','stray-quotes');
+            <a href="<?php echo $urlorder . 'category'; ?>"><?php _e('Category','stray-quotes') ?></a>
+			<?php } else { _e('Category','stray-quotes');
 				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
                 <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
 				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
 				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
 			</a>			
-			<?php } }else{ echo __('Category','stray-quotes'); } ?>            
+			<?php } }else{ _e('Category','stray-quotes'); } ?>            
             </th>
             
             <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'visible') { ?>
-            <a href="<?php echo $urlorder . 'visible'; ?>"><?php echo __('Visible','stray-quotes') ?></a>
-			<?php } else { echo __('Visible','stray-quotes');
+            <a href="<?php echo $urlorder . 'visible'; ?>"><?php _e('Visible','stray-quotes') ?></a>
+			<?php } else { _e('Visible','stray-quotes');
 				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
                 <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
 				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
 				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
 			</a>			
-			<?php }}else{ echo __('Visible','stray-quotes'); }  ?>            
+			<?php }}else{ _e('Visible','stray-quotes'); }  ?>            
             </th>
             
 			<th scope="col">&nbsp;</th>
@@ -416,25 +410,23 @@ function stray_manage() {
 				<td><?php echo($quote->author); ?></td>
 				<td><?php echo($quote->source); ?></td>
                 <td><?php if ($quote->category == 'default')echo('<em>'.$quote->category.'</em>'); else echo $quote->category;?></td>
-				<td align="center"><?php echo $quote->visible; ?></td>
+				<td align="center"><?php if( $quote->visible == 'yes' ) _e( 'yes', 'stray-quotes' ); else _e( 'no', 'stray-quotes' ); ?></td>
 									
 				<td align="center">
 				<a href="<?php echo $urlaction . '&qa=edit&qi='.$quote->quoteID ; ?>">
-				<?php echo __('Edit','stray-quotes') ?></a></td>
+				<?php _e('Edit','stray-quotes') ?></a></td>
 
 				<td align="center">
 				<a href="
 				<?php echo $urlaction . '&qa=delete&qi='.$quote->quoteID; ?>"
-				onclick="if ( confirm('<?php echo __(
-				'You are about to delete quote '.$quote->quoteID.'.\\n\\\'Cancel\\\' to stop, \\\'OK\\\' to delete.\'',
-				'stray-quotes'); ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
+				onclick="if ( confirm('<?php echo __( 'You are about to delete quote ','stray-quotes') . $quote->quoteID . '.\\n\\\'' . __('Cancel','stray-quotes') . '\\\' ' . __('to stop','stray-quotes') . ', \\\'OK\\\' ' . __('to delete','stray-quotes') . '.\''; ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
 			</tr>
 			<?php $i++; 
 		} ?>
 		</tbody></table><p class="subsubsub" style="float:right"><?php
 		echo $first . $prev . $nav . $next . $last; ?></p><?php
 		
-	} else { ?><p><div style="clear:both"> <?php echo __('<br/>No quotes yet.','stray-quotes') ?> </div></p>
+	} else { ?><p><div style="clear:both"> <?php _e('<br/>No quotes yet.','stray-quotes') ?> </div></p>
 
 	</div><?php	}	
 	

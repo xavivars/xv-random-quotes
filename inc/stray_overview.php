@@ -25,16 +25,16 @@ function stray_intro() {
 		update_option('stray_quotes_options', $quotesoptions);
 	}	
 	
-	?><div class="wrap"><h2>Stray Random Quotes: Overview</h2><?php 
+	?><div class="wrap"><h2>Stray Random Quotes: <?php _e('Overview','stray-quotes'); ?></h2><?php 
 	
     if ($totalquotes > 3) { 
 	
 		//quotes and categories
 		$howmanycategories = count(make_categories());
-		if ($howmanycategories == 1)$howmanycategories = 'one category';
+		if ($howmanycategories == 1)$howmanycategories = __('one category','stray-quotes');
 		else { 
 			if ($howmanycategories)
-				$howmanycategories = $howmanycategories . ' categories';
+				$howmanycategories = $howmanycategories . ' ' . __('categories','stray-quotes');
 				$categorymost = mostused("category");	
 		}		
 		$sql = "SELECT COUNT( `category` ) AS `Rows` , `category` FROM `" . WP_STRAY_QUOTES_TABLE . "` GROUP BY `category` ORDER BY `Rows` DESC";
@@ -64,7 +64,7 @@ function stray_intro() {
 		
 		//visible quotes
 		$visiblequotes = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'"); 
-		if($visiblequotes == $totalquotes)$visiblequotes = 'All your quotes ';
+		if($visiblequotes == $totalquotes)$visiblequotes = __('All your quotes ','stray-quotes');
 		echo str_replace ('%s3',$visiblequotes, __('<p><strong>%s3</strong> are visible.</p>','stray-quotes'));
 		
 		//author
@@ -75,7 +75,7 @@ function stray_intro() {
 		$sourcemost = mostused("source");
 		if ($sourcemost) str_replace ('%s5',$sourcemost, __('<p>Your most used source is <strong>%s5</strong>.</p>','stray-quotes'));
 		
-    } else echo __('There is nothing to report.','stray-quotes');
+    } else _e('There is nothing to report.','stray-quotes');
     ?><p><?php
 	
 	//link pages
@@ -83,7 +83,7 @@ function stray_intro() {
 	$replace = array($new,$management,$options,$help);	
 	echo str_replace($search,$replace,__('To start doing stuff, you can <a href="%s1"><strong>add new quotes</strong></a>;<br />use the <a href="%s2"><strong>manage</strong></a> page to edit or delete existing quotes;<br />change the <a href="%s3"><strong>settings</strong></a> to control how the quotes are displayed on your blog.<br/>If you\'re new to all this, there\'s a <a href="%s4"><strong>help page</strong></a> as well.','stray-quotes')); ?>
 	</p></div>
-    <p>This is all in a day's work for <a href="http://www.italyisfalling.com/coding">italyisfalling.com</a>, <?php echo date('Y'); ?>.<br/><?php echo __('Happy quoting.','stray-quotes'); ?></p><?php
+    <p>This is all in a day's work for <a href="http://www.italyisfalling.com/coding">italyisfalling.com</a>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p><?php
 	
 }
 ?>

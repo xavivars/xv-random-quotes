@@ -70,18 +70,18 @@ function stray_quotes_options () {
 		//positive feedback
 		if ($update_quotes_options) { ?>
 		<div id="message" class="updated fade below-h2"><p>
-		<?php echo __('<strong>Options saved...</strong> ','stray-quotes');
-		if ($msgvar1 == 1 && $msgvar2 == 1) echo __('No problems. Well,  except that the links you provided for the author and source were invalid. I had to discard them.', 'stray-quotes');
-		else if ($msgvar1 == 1) echo __('No problems. Well, except that there was no variable in the author link. I discared it.', 'stray-quotes');
-		else if ($msgvar2 == 1) echo __('No problems. Well,  except that there was no variable in the source link. I discared it.', 'stray-quotes');	
-		else echo __('No problems.', 'stray-quotes'); ?></p></div><?php } else {
+		<?php _e('<strong>Options saved...</strong> ','stray-quotes');
+		if ($msgvar1 == 1 && $msgvar2 == 1) _e('No problems. Well,  except that the links you provided for the author and source were invalid. I had to discard them.', 'stray-quotes');
+		else if ($msgvar1 == 1) _e('No problems. Well, except that there was no variable in the author link. I discared it.', 'stray-quotes');
+		else if ($msgvar2 == 1) _e('No problems. Well,  except that there was no variable in the source link. I discared it.', 'stray-quotes');	
+		else _e('No problems.', 'stray-quotes'); ?></p></div><?php } else {
 		
 		//negative feedback		
 		?><div id="message" class="error fade below-h2"><p>
-		<?php if ( $msgvar1 == 1 && $msgvar2 == 1) echo __('<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> ','stray-quotes'); 
-		else if ( $msgvar1 == 1 ) echo __('<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. ','stray-quotes'); 
-		else if ( $msgvar2 == 1 )  echo __('<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. ','stray-quotes'); 
-		else  echo __('<strong>The options could not be saved</strong>. Either the operation went wrong, or you didn\'t make any changes.</strong> ','stray-quotes'); 
+		<?php if ( $msgvar1 == 1 && $msgvar2 == 1) _e('<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> ','stray-quotes'); 
+		else if ( $msgvar1 == 1 ) _e('<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. ','stray-quotes'); 
+		else if ( $msgvar2 == 1 )  _e('<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. ','stray-quotes'); 
+		else  _e('<strong>The options could not be saved</strong>. Either the operation went wrong, or you didn\'t make any changes.</strong> ','stray-quotes'); 
 		?></p></div><?php }
 		
 	}	
@@ -146,97 +146,90 @@ function stray_quotes_options () {
 	<form name="frm_options" method="post" action="<?php echo ($_SERVER['REQUEST_URI']); ?>">
 
     <?php //quote aspect ?>
-    <div class="wrap"><h2><?php echo __('Settings','stray-quotes') ?></h2>
+    <div class="wrap"><h2><?php _e('Settings','stray-quotes') ?></h2>
 
-    <p><h3 style="line-height:.1em"><?php echo __('How the quotes look','stray-quotes') ?></h3>
-    <span class="setting-description"><?php echo __('Default settings to change how the quotes appear in your blog.','stray-quotes') ?></span>
+    <p><h3 style="line-height:.1em"><?php _e('How the quotes look','stray-quotes') ?></h3>
+    <span class="setting-description"><?php _e('Default settings to change how the quotes appear in your blog.','stray-quotes') ?></span>
     </p>
 	<table class="form-table"> 
-	<tr valign="top"><th scope="row" width="20%"><?php echo __('The Title','stray-quotes') ?></th>    	
+	<tr valign="top"><th scope="row" width="20%"><?php _e('The Title','stray-quotes') ?></th>    	
         <td width="40%"><input type="text" size="50" name="widget_title" value="<?php echo ($widgetTitle); ?>"class="regular-text" /><span class="setting-description">
     	<?php echo str_replace("%s",get_option('siteurl')."/wp-admin/widgets.php",__('<br/>The default title for all the quote widgets. Single settings can be changed on the <a href="%s">widget page</a>. HTML is not needed here.<br /><strong>Sample value:</strong> <code>Random Quote</code>','stray-quotes')); ?></span></td>
         <td width="40%"><input type="text" size="50" name="regular_title" value="<?php echo (utf8_decode(htmlspecialchars($regularTitle))); ?>"class="regular-text" /><span class="setting-description">
 		<?php echo str_replace("%s",get_option("siteurl").'/wp-admin/admin.php?page=stray_help',__('<br/>The default title for when the widget functionality is not being used. On how to work with the code added to your template, refer to <a href="%s">this page</a>.<br/><strong>Sample value:</strong> <code>&lt;h2&gt;Random Quote&lt;/h2&gt;</code>','stray-quotes')) ?></span>   
 	</td></tr>
-	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Author, Quote and Source','stray-quotes') ?></th>    
+	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php _e('Author, Quote and Source','stray-quotes') ?></th>    
         <td><input type="text" size="50" name="before_all" value="<?php echo (utf8_decode(htmlspecialchars($beforeAll))); ?>"class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements before this whole category, which comes after the title.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;div align=&quot;right&quot;&gt;</code></span></td>
+		<?php _e('<br/>HTML or other elements before this whole category, which comes after the title.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;div align=&quot;right&quot;&gt;</code></span></td>
         <td><input type="text" size="50" name="after_all" value="<?php echo (utf8_decode(htmlspecialchars($afterAll))); ?>"class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements after this category.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/div&gt;</code></span>   
+		<?php _e('<br/>HTML or other elements after this category.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/div&gt;</code></span>   
 	</td></tr>
-	<tr valign="top"><th scope="row"><?php echo __('Quote','stray-quotes') ?></th>    
+	<tr valign="top"><th scope="row"><?php _e('Quote','stray-quotes') ?></th>    
         <td><input type="text" size="50" name="before_quote" value="<?php echo (utf8_decode(htmlspecialchars($beforeQuote))); ?>"class="regular-text" /><span class="setting-description">
-        <?php echo __('<br/>HTML or other elements before the quote.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&amp;#8220;</code></span>
+        <?php _e('<br/>HTML or other elements before the quote.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&amp;#8220;</code></span>
         <td><input type="text" size="50" name="after_quote" value="<?php echo (utf8_decode(htmlspecialchars($afterQuote))); ?>"class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements after the quote.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&amp;#8221;</code></span>    
+		<?php _e('<br/>HTML or other elements after the quote.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&amp;#8221;</code></span>    
     </td></tr>
-	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Author','stray-quotes') ?></th><td>    
+	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php _e('Author','stray-quotes') ?></th><td>    
         <input type="text" size="50" name="before_author" value="<?php echo (utf8_decode(htmlspecialchars($beforeAuthor))); ?>" class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements before the author.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;br/&gt;by&amp;nbsp;</code></span>
+		<?php _e('<br/>HTML or other elements before the author.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;br/&gt;<?php _e('by','stray-quotes'); ?>&amp;nbsp;</code></span>
         <br/>
         <input type="text" size="50" name="after_author" value="<?php echo (utf8_decode(htmlspecialchars($afterAuthor))); ?>" class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements after the author.','stray-quotes') ?></span></td>
+		<?php _e('<br/>HTML or other elements after the author.','stray-quotes') ?></span></td>
         <td><input type="text" size="50" name="link_to" value="<?php if ($linkto) echo (utf8_decode(htmlspecialchars($linkto))); else echo 'http://'; ?>" class="regular-text code" /><span class="setting-description">
-		<?php echo __('<br/>You can link the Author to a website of your choice.
+		<?php _e('<br/>You can link the Author to a website of your choice.
 		<br/>Use this variable in your link: <code>%AUTHOR%</code><br/>
 		<strong>Sample values:</strong>','stray-quotes') ?> <code>http://www.google.com/search?q=&quot;%AUTHOR%&quot;</code><br/> 
 		<code>http://en.wikipedia.org/wiki/%AUTHOR%</code><br />
-        <?php echo __('Replace spaces within %AUTHOR% with ','stray-quotes') ?>
+        <?php _e('Replace spaces within %AUTHOR% with ','stray-quotes') ?>
         <input type="text" size="1" maxlength="1" name="author_spaces" value="<?php echo (utf8_decode(htmlspecialchars($authorspaces))); ?>" /></span>
    	</td></tr>
-	<tr valign="top"><th scope="row"><?php echo __('Source','stray-quotes') ?></th><td>    
+	<tr valign="top"><th scope="row"><?php _e('Source','stray-quotes') ?></th><td>    
         <input type="text" size="50" name="before_source" value="<?php echo (utf8_decode(htmlspecialchars($beforeSource))); ?>" class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements before the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>,&lt;em&gt;&amp;nbsp;</code></span>
+		<?php _e('<br/>HTML or other elements before the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>,&lt;em&gt;&amp;nbsp;</code></span>
         <br/>
         <input type="text" size="50" name="no_author" value="<?php echo (utf8_decode(htmlspecialchars($ifnoauthor))); ?>" class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements before the source <strong>if there is no author</strong>.<br/>Overrides the field above when no author is present.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;br/&gt;source:&amp;nbsp;</code></span>
+		<?php _e('<br/>HTML or other elements before the source <strong>if there is no author</strong>.<br/>Overrides the field above when no author is present.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;br/&gt;source:&amp;nbsp;</code></span>
         <br/>        
         <input type="text" size="50" name="after_source" value="<?php echo (utf8_decode(htmlspecialchars($afterSource))); ?>" class="regular-text" /><span class="setting-description">
-		<?php echo __('<br/>HTML or other elements after the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/em&gt;</code></span></td>
+		<?php _e('<br/>HTML or other elements after the source.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/em&gt;</code></span></td>
         <td><input type="text" size="50" name="source_link_to" value="<?php if ($sourcelinkto) echo (utf8_decode(htmlspecialchars($sourcelinkto))); else echo 'http://'; ?>" class="regular-text code" /><span class="setting-description">
-		<?php echo __('<br/>You can link the Source to a website of your choice.
+		<?php _e('<br/>You can link the Source to a website of your choice.
 		<br/>Use this variable in your link: <code>%SOURCE%</code><br/>
 		<strong>Sample values:</strong>','stray-quotes') ?> <code>http://www.google.com/search?q=&quot;%SOURCE%&quot;</code><br/> 
 		<code>http://en.wikipedia.org/wiki/%SOURCE%</code><br />
-        <?php echo __('Replace spaces within %SOURCE% with ','stray-quotes') ?>
+        <?php _e('Replace spaces within %SOURCE% with ','stray-quotes') ?>
         <input type="text" size="1" maxlength="1" name="source_spaces" value="<?php echo (utf8_decode(htmlspecialchars($sourcespaces))); ?>" />
         </span>
    	</td></tr>
-	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Quote before Author and Source','stray-quotes') ?></th><td>    
+	<tr valign="top" style="background:#F0F0F0"><th scope="row"><?php _e('Quote before Author and Source','stray-quotes') ?></th><td>    
     	<input type="checkbox" name="put_quotes_first" value="Y" <?php echo ($putQuotesFirst_selected); ?> /><span class="setting-description">
-        <?php echo __('If checked, returns the quote before author and source (The opposite is NOT considered by the <code>[all-quotes]</code> shortcode).','stray-quotes') ?></span>
+        <?php _e('If checked, returns the quote before author and source (The opposite is NOT considered by the <code>[all-quotes]</code> shortcode).','stray-quotes') ?></span>
     </td><td></td></tr>
-	<tr valign="top"><th scope="row"><?php echo __('AJAX quote loader','stray-quotes') ?></th>    
-        <td><input type="checkbox" name="stray_ajax" value="Y" <?php echo ($strayajax_selected); ?> onchange="javascript:disable_enable()" /><span class="setting-description"><?php echo __('&nbsp;If checked, <strong>disables the AJAX loader</strong> entirely.','stray-quotes') ?></span><br/><br/>
+	<tr valign="top"><th scope="row"><?php _e('AJAX quote loader','stray-quotes') ?></th>    
+        <td><input type="checkbox" name="stray_ajax" value="Y" <?php echo ($strayajax_selected); ?> onchange="javascript:disable_enable()" /><span class="setting-description"><?php _e('&nbsp;If checked, <strong>disables the AJAX loader</strong> entirely.','stray-quotes') ?></span><br/><br/>
         <input type="text" size="50" name="loader" value="<?php echo (utf8_decode(htmlspecialchars($quoteloader))); ?>" class="regular-text" id="ajaxinput1" /><span class="setting-description"><?php echo str_replace("%s",get_option("siteurl").'/wp-admin/admin.php?page=stray_help',__('<br/>Enter here the <strong>link phrase</strong> used to dynamically load another quote. HTML not allowed. If you leave this empty, the quote will be reloaded by clicking on it. You can <strong>override</strong> this setting in the widget or in the template (see <a href="%s">help page</a>), <strong>only</strong> if you leave this field empty.<br/><strong>Sample value:</strong>','stray-quotes')) ?> <code>New quote &amp;raquo;</code></span></td>        
-        <td><br/><br/><input type="text" size="50" name="before_loader" value="<?php echo (utf8_decode(htmlspecialchars($beforeloader))); ?>" class="regular-text"  id="ajaxinput2" /><span class="setting-description"><?php echo __('<br/>HTML or other elements before the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;p align="left"&gt;</code></span><br/> 
-        <input type="text" size="50" name="after_loader" value="<?php echo (utf8_decode(htmlspecialchars($afterloader))); ?>" class="regular-text"  id="ajaxinput3"  /><span class="setting-description"><?php echo __('<br/>HTML or other elements after the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/p&gt;</code></span> </td>
-        
-        
-        </tr>
-        
-        
-        
-        
+        <td><br/><br/><input type="text" size="50" name="before_loader" value="<?php echo (utf8_decode(htmlspecialchars($beforeloader))); ?>" class="regular-text"  id="ajaxinput2" /><span class="setting-description"><?php _e('<br/>HTML or other elements before the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;p align="left"&gt;</code></span><br/> 
+        <input type="text" size="50" name="after_loader" value="<?php echo (utf8_decode(htmlspecialchars($afterloader))); ?>" class="regular-text"  id="ajaxinput3"  /><span class="setting-description"><?php _e('<br/>HTML or other elements after the quote loader.<br/><strong>Sample value:</strong>','stray-quotes') ?> <code>&lt;/p&gt;</code></span> </td></tr>
     </table>
     <br/>
    	<div class="submit">
     <input type="hidden" name="do" value="Update" />
-    <input type="submit" value="<?php echo __('Update all Settings','stray-quotes') ?> &raquo;" />
+    <input type="submit" value="<?php _e('Update all Settings','stray-quotes') ?> &raquo;" />
     </div>
     
    <p>&nbsp;</p>
    
 	<?php //new quotes ?>
-    <p><h3 style="line-height:.1em"><?php echo __('New quotes','stray-quotes') ?></h3>
-    <span class="setting-description"><?php echo __('Default settings when you create a new quote.','stray-quotes') ?></span>
+    <p><h3 style="line-height:.1em"><?php _e('New quotes','stray-quotes') ?></h3>
+    <span class="setting-description"><?php _e('Default settings when you create a new quote.','stray-quotes') ?></span>
     </p>
     <table class="form-table">
-    <tr valign="top"><th scope="row"><?php echo __('Visibility','stray-quotes') ?></th>       
+    <tr valign="top"><th scope="row"><?php _e('Visibility','stray-quotes') ?></th>       
         <td colspan="2"><input type="checkbox" name="default_visible" value="Y" <?php echo ($defaultVisible_selected); ?> /><span class="setting-description">
-        <?php echo __('If checked, will set "Visible" to "Yes" for all new quotes.','stray-quotes') ?></span>
+        <?php _e('If checked, will set "Visible" to "Yes" for all new quotes.','stray-quotes') ?></span>
     </td></tr> 
-    <tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Default category','stray-quotes') ?></th>       
+    <tr valign="top" style="background:#F0F0F0"><th scope="row"><?php _e('Default category','stray-quotes') ?></th>       
     <td colspan="2"><select name="default_category" style="vertical-align:middle"> 
     <?php $categorylist = make_categories(); 
 	foreach($categorylist as $categoryo){ ?>
@@ -245,27 +238,27 @@ function stray_quotes_options () {
 		<?php echo $categoryo;?></option>
 	<?php } ?>   
     </select><span class="setting-description"> 
-	<?php echo __('This category will be the default for all new quotes.','stray-quotes') ?></span>
+	<?php _e('This category will be the default for all new quotes.','stray-quotes') ?></span>
 	</td></tr>
-    <tr valign="top"><th scope="row"><?php echo __('Clear the form','stray-quotes') ?></th>       
+    <tr valign="top"><th scope="row"><?php _e('Clear the form','stray-quotes') ?></th>       
         <td colspan="2"><input type="checkbox" name="clear_form" value="Y" <?php echo ($clearform_selected); ?> /><span class="setting-description">
-        <?php echo __('If checked, will clear the values from the form after adding a new quote.','stray-quotes') ?></span>
+        <?php _e('If checked, will clear the values from the form after adding a new quote.','stray-quotes') ?></span>
     </td></tr> 
 	</table>
     <br/>
 	<div class="submit">
     <input type="hidden" name="do" value="Update" />
-    <input type="submit" value="<?php echo __('Update all Settings','stray-quotes') ?> &raquo;" />
+    <input type="submit" value="<?php _e('Update all Settings','stray-quotes') ?> &raquo;" />
     </div>
     
     <p>&nbsp;</p>
      
 	<?php //management of quotes ?>    
-    <p><h3 style="line-height:.1em"><?php echo __('Management of the quotes','stray-quotes') ?></h3>
-    <span class="setting-description"><?php echo __('Default settings for the management page.  They can be changed on the management page as well.','stray-quotes') ?></span>
+    <p><h3 style="line-height:.1em"><?php _e('Management of the quotes','stray-quotes') ?></h3>
+    <span class="setting-description"><?php _e('Default settings for the management page.  They can be changed on the management page as well.','stray-quotes') ?></span>
     </p>
     <table class="form-table">
-     <tr valign="top"><th scope="row"><?php echo __('Order by','stray-quotes') ?></th>       
+     <tr valign="top"><th scope="row"><?php _e('Order by','stray-quotes') ?></th>       
         <td><select name="order" style="vertical-align:middle" >
         <option value="quoteID" <?php if ($order == "quoteID") echo 'selected="selected"'; ?> >ID</option>
         <option value="author" <?php if ($order == "author") echo 'selected="selected"'; ?> >Author</option>
@@ -273,15 +266,15 @@ function stray_quotes_options () {
         <option value="category" <?php if ($order == "category") echo 'selected="selected"'; ?> >Category</option>
         <option value="visible" <?php if ($order == "visible") echo 'selected="selected"'; ?> >Visibility</option>
         </select><span class="setting-description">
-        <?php echo __('<br/>The list of quotes in the management page will be ordered by this value.','stray-quotes') ?></span>
+        <?php _e('<br/>The list of quotes in the management page will be ordered by this value.','stray-quotes') ?></span>
       </td>
       <td><select name="sort" style="vertical-align:middle" >
         <option value="ASC" <?php if ($sort == "ASC") echo 'selected="selected"'; ?> >Ascending</option>
         <option value="DESC" <?php if ($sort == "DESC") echo 'selected="selected"'; ?> >Descending</option>
         </select><span class="setting-description">
-        <?php echo __('<br/>The sorting of quotes will take this direction.','stray-quotes') ?></span>
+        <?php _e('<br/>The sorting of quotes will take this direction.','stray-quotes') ?></span>
       </td></tr>
-     <tr valign="top" style="background:#F0F0F0"><th scope="row"><?php echo __('Quotes per page','stray-quotes') ?></th>       
+     <tr valign="top" style="background:#F0F0F0"><th scope="row"><?php _e('Quotes per page','stray-quotes') ?></th>       
         <td colspan="2"><select name="rows" style="vertical-align:middle">
         <option value="10" <?php if ( $rows == 10) echo ' selected';  ?> >10</option>
         <option value="15" <?php if ( $rows == 15) echo ' selected'; ?> >15</option>
@@ -290,12 +283,12 @@ function stray_quotes_options () {
         <option value="50" <?php if ( $rows == 50) echo ' selected'; ?> >50</option>
         <option value="100" <?php if ( $rows == 100) echo ' selected'; ?> >100</option>
         </select><span class="setting-description">
-        <?php echo __('The list of quotes in the management page will display this much quotes per page.','stray-quotes') ?></span>
+        <?php _e('The list of quotes in the management page will display this much quotes per page.','stray-quotes') ?></span>
       </td></tr>
-    <tr valign="top"><th scope="row"><?php echo __('Show categories','stray-quotes') ?></th>       
+    <tr valign="top"><th scope="row"><?php _e('Show categories','stray-quotes') ?></th>       
     <td colspan="2"><select name="categories" style="vertical-align:middle"> 
     <option value="<?php echo $urlcategory.'all'; ?>" 
-	<?php  if ( $categories == '' || $categories == 'all' ) echo ' selected'; ?>><?php echo __('All categories','stray-quotes') ?></option>
+	<?php  if ( $categories == '' || $categories == 'all' ) echo ' selected'; ?>><?php _e('All categories','stray-quotes') ?></option>
     <?php $categorylist = make_categories(); 
 	foreach($categorylist as $categoryo){ ?>
     	<option value="<?php echo $urlcategory.$categoryo; ?>" 
@@ -303,13 +296,13 @@ function stray_quotes_options () {
 		<?php echo $categoryo;?></option>
 	<?php } ?>   
     </select><span class="setting-description"> 
-	<?php echo __('The list of quotes in the management page will present quotes from this category only.','stray-quotes') ?></span>
+	<?php _e('The list of quotes in the management page will present quotes from this category only.','stray-quotes') ?></span>
 	</td></tr>
 	</table>
     <br/>
 	<div class="submit">
     <input type="hidden" name="do" value="Update" />
-    <input type="submit" value="<?php echo __('Update all Settings','stray-quotes') ?> &raquo;" />
+    <input type="submit" value="<?php _e('Update all Settings','stray-quotes') ?> &raquo;" />
     </div>
     <p>&nbsp;</p>
     </div>

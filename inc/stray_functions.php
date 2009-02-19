@@ -137,7 +137,7 @@ function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=N
 		//this trick is for the all-quotes shortcode
 		if ($sequence != 'skip' && $linkphrase !='skip' && $widgetid !='skip') {
 	
-			//click on the quote itself or on the link (part 2)
+			//if you click on the link (part 2)
 			if ($quoteloader) {
 				
 				$output .= $beforeloader;
@@ -189,7 +189,7 @@ function stray_random_quote($categories=NULL,$sequence=NULL,$linkphrase=NULL,$wi
 	//sql the thing
 	$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" .$categoryquery. " ORDER BY `quoteID` ASC";
 	$result = $wpdb->get_results($sql);
-	$sql2 = "SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" . $categoryquery;
+	$sql2 = "SELECT COUNT(`quoteID`) AS 'rows' FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" . $categoryquery;
 	$totalquotes = $wpdb->get_var($sql2);
 	
 	//if the sql has something to say, it should speak now
@@ -262,7 +262,7 @@ function stray_rnd_shortcut($categories=NULL) {
 		//sql the thing
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE `visible`='yes'".$categoryquery;
 		$result = $wpdb->get_results($sql);	
-		$totalquotes = $wpdb->get_var("SELECT COUNT (`quoteID`) FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery);
+		$totalquotes = $wpdb->get_var("SELECT COUNT(`quoteID`) AS 'rows' FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'".$categoryquery);
 		
 		//if the sql has something to say, get to work
 		if ( !empty($result) )	{
@@ -348,9 +348,9 @@ function stray_page_shortcut($atts, $content = NULL) {
 		$offset = ($pages - 1) * $rows;
 		
 		// how many rows we have in database?
-		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . $where);
+		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as 'rows' FROM " . WP_STRAY_QUOTES_TABLE . $where);
 		
-		//temporary workaround for the "division by zero" problem
+		// workaround for the "division by zero" problem
 		if (is_string($rows))$rows=intval($rows);
 		settype($rows, "integer"); 
 		
@@ -393,6 +393,7 @@ function stray_page_shortcut($atts, $content = NULL) {
 		   $next = '&nbsp;'; // we're on the last page, don't print next link
 		   $last = '&nbsp;'; // nor the last page link
 		}		
+		
 		$sql = "SELECT quoteID,quote,author,source,`category` FROM " 
 		. WP_STRAY_QUOTES_TABLE. $where 
 		. " ORDER BY `". $orderby ."`"

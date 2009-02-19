@@ -61,8 +61,7 @@ function stray_new() {
 		
 		//failure message
 		if ( empty($result) || empty($result[0]->quoteID) )	{
-			?><div class="error fade"><p><?php echo __(
-			'<strong>Failure:</strong> Something went wrong when trying to insert the quote. Try again?',
+			?><div class="error fade"><p><?php _e('<strong>Failure:</strong> Something went wrong when trying to insert the quote. Try again?',
 			'stray-quotes'); ?></p></div><?php				
 		}
 			
@@ -79,7 +78,7 @@ function stray_new() {
 	}
 	
 	//making the "add new quote" page
-	?><div class="wrap"><h2><?php echo __('Add new quote','stray-quotes') ?></h2><?php
+	?><div class="wrap"><h2><?php _e('Add new quote','stray-quotes') ?></h2><?php
 	
 		//housecleaning 
 		$quoteID=false;
@@ -89,14 +88,13 @@ function stray_new() {
 		if ( $quoteID !== false ) {
 	
 			if ( intval($quoteID) != $quoteID ) {		
-				?><div class="error fade"><p><?php echo __('The Quote ID seems to be invalid.','stray-quotes') ?></p></div><?php
+				?><div class="error fade"><p><?php _e('The Quote ID seems to be invalid.','stray-quotes') ?></p></div><?php
 				return;
 			}
 			else {
 				$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "' limit 1");
 				if ( empty($data) ) {
-					?><div class="error fade"><p><?php echo __(
-					'Something is wrong. Sorry.','stray-quotes') ?></p></div><?php
+					?><div class="error fade"><p><?php _e('Something is wrong. Sorry.','stray-quotes') ?></p></div><?php
 					return;
 				}
 				$data = $data[0];
@@ -153,24 +151,24 @@ function stray_new() {
 			<input type="hidden" name="action" value="add">
 			<input type="hidden" name="quoteID" value="<?php echo $quoteID; ?>">
 		
-			<p><!--<label><?php echo __('Quote:','stray-quotes') ?></label>-->
+			<p><!--<label><?php _e('Quote:','stray-quotes') ?></label>-->
 			<script type="text/javascript">edToolbar();</script>
 			<textarea id="qeditor" name="quote_quote" <?php echo $styletextarea ?> cols=68 rows=7><?php echo $quote; ?></textarea>
 			<script type="text/javascript">var edCanvas = document.getElementById('qeditor');</script>
-			<p class="setting-description"><small><?php echo __('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
+			<p class="setting-description"><small><?php _e('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
 			
-			<p><label><?php echo __('Author:','stray-quotes') ?></label>
+			<p><label><?php _e('Author:','stray-quotes') ?></label>
 			<input type="text" id="aeditor" name="quote_author" size=58 value="<?php echo htmlspecialchars($author); ?>" <?php echo $styleborder ?> />
 			<script type="text/javascript">edToolbar1();</script>
 			<script type="text/javascript">var edCanvas1 = document.getElementById('aeditor');</script><br />
 		
-			<label><?php echo __('Source:','stray-quotes') ?></label>
+			<label><?php _e('Source:','stray-quotes') ?></label>
 			<input type="text" id="seditor" name="quote_source" size=58 value="<?php echo htmlspecialchars($source); ?>" <?php echo $styleborder ?> />
 			<script type="text/javascript">edToolbar2();</script>
 			<script type="text/javascript">var edCanvas2 = document.getElementById('seditor');</script>
-			<p class="setting-description"><small><?php echo __('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
+			<p class="setting-description"><small><?php _e('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>
 			
-			<p><label><?php echo __('Category:&nbsp;','stray-quotes') ?></label>				
+			<p><label><?php _e('Category:&nbsp;','stray-quotes') ?></label>				
 			<select name="categories" style="vertical-align:middle; width:14em;" > 
 			<?php $categorylist = make_categories(); 
 			foreach($categorylist as $categoryo){ ?>
@@ -179,15 +177,15 @@ function stray_new() {
 			<?php } ?>   
 			</select>
 			  
-			<label><?php echo __('&nbsp;new category:&nbsp;','stray-quotes') ?></label>
+			<label><?php _e('&nbsp;new category:&nbsp;','stray-quotes') ?></label>
 			<input type="text" name="quote_category" size=24 value="" maxlength="24" <?php echo $styleborder ?> /></p>
 			
-			<p><label><?php echo __('Visible:','stray-quotes') ?></label>
-				<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php echo __('Yes','stray-quotes') ?>					
-				<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php echo __('No','stray-quotes') ?></div>
+			<p><label><?php _e('Visible:','stray-quotes') ?></label>
+				<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php _e('Yes','stray-quotes') ?>					
+				<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php _e('No','stray-quotes') ?></div>
 			</p><p>&nbsp;</p>
 		
-			<p><input type="submit" name="save"  class="button-primary" value="<?php echo __('Add quote','stray-quotes') ?> &raquo;" /></p>
+			<p><input type="submit" name="save"  class="button-primary" value="<?php _e('Add quote','stray-quotes') ?> &raquo;" /></p>
 		</form></div>
         
 	</div><?php	
