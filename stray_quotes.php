@@ -187,7 +187,7 @@ function quotes_activation() {
 		//conversion of old pre-1.7 options AND/OR creating new options
 		$var = 'stray_quotes_before_all';
 		$temp = get_option($var);
-		if (false === $temp) $quotesoptions[$var] =  '<div align="right">';
+		if (false === $temp) $quotesoptions[$var] =  '';
 		else $quotesoptions[$var] = $temp;
 		delete_option($var);
 		unset($var);unset($temp);		
@@ -229,7 +229,7 @@ function quotes_activation() {
 		unset($var);unset($temp);
 		$var = 'stray_quotes_after_all';
 		$temp = get_option($var);
-		if (false === $temp) $quotesoptions[$var] =  '</div>';
+		if (false === $temp) $quotesoptions[$var] =  '';
 		else $quotesoptions[$var] = $temp;
 		delete_option($var);		
 		unset($var);unset($temp);

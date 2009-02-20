@@ -36,6 +36,49 @@ Consider answering [this poll](http://www.italyisfalling.com/a-poll-for-the-new-
 2. Activate the plugin on the 'Plugins' page in WordPress.
 3. Now Stray Random Quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
 
+== Frequently Asked Questions ==
+
+= So, how do I display a random quote on my blog? =
+
+Stray Random Quotes comes with **Widgets**. Depending on your preferences, a random quote in a widget could be coming from one or two categories of quotes, or from all the categories. You can use all the widgets you want. Each widget has its own set of options. Just enable one widget at a time on your widget page, and change its settings accordingly. Note: _Your template must be widget compatible._
+ 
+= What if I don't use widgets? =
+
+If your template **does not** use widgets, or you want to display the quotes on your template **elsewhere** other than the sidebar, you can add this piece of code to your template (in the header, the footer etc):
+`<?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2,etc', false, 'another quote &raquo;'); ?>`
+* `'category1,category2,etc'` is where you add a comma separated list of the categories from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the categories will be displayed. 
+* `true` or `false`, without brackets, indicates whether to load the quotes in order (true) or randomly (false). If you don't indicate anything the quotes will be loaded randomly. 
+* `'another quote &raquo;'` allows to optionally indicate a special link phrase for the AJAX loader, or none at all. For this to work, the default link phrase in the settings page must be left empty (and AJAX must be enabled). 
+* A default title, such as 'Random quote', is also set through the settings page. If you want specific titles for different categories, you will have to put that directly in the HTML of the template. For example:`<h2>Random Mark Twain quote:</h2><?php if (function_exists('stray_random_quote')) stray_random_quote('mark twain'); ?>`, you got the idea. 
+                
+= What "categories" are for? =
+
+Categories are groups, or lists into which your random quotes and random words can be divided. They can have all sorts of use, from easily managing a large number of quotes, to displaying different sets of words/quotes from different categories in different areas of the blog. Note: _Categories were called originally "groups", then I decided "group" was lame. I do things like that._
+    
+= What about posts and pages? =
+
+To **insert a random quote** in a post or page, just write in the editor: `[random-quote "category1" "category2"]`. 
+* `"category1" "category2"` is where you add the categories from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the categories will be displayed. At the moment it is not possible to have these quotes loaded in order instead than randomly, the way you can with widgets.
+To **insert a list of many or all the quotes** in a post or page, just write in the editor: `[all-quotes rows=10 orderby="quoteID" sort="ASC" categories="all"]`.
+* _rows_ is how many quotes you want per page; 
+* _orderby_ if you want to order the quotes by "quoteID", "author" "source" or "category"; 
+* _sort_ is whether the quotes will be sorted ascending "ASC" or descending "DESC". 
+* _categories_ is from which category you want the quotes to be. Use "all" for all the categories, or use the names of the categories separated by comma. 
+All these settings are optional. Without them, the values you see in this example are used as defaults.
+    
+= What else can I do? =
+
+Well you could **insert a given quote in a post or a page**, in which case you should just write in the editor: `[quote id=x]`, where `x` is the id number of the quote as it appears on the management page. This will outupt the quote and also a "next quote" link that will let the user browse between quotes of the same category as the first one indicated.
+To insert **a given quote in your template** use the following: `<?php if (function_exists('stray_a_quote')) stray_a_quote(x);?>`, where `x` is the id number of the quote as it appears on the management page. This will outupt the quote and also a "next quote" link that will let the user browse between quotes of the same category as the first one indicated.    
+
+= The IDs of the quotes are getting ridiculously high. Can I do something about it? =
+
+It is the way MySQL works, gaps are not important in an index. Anyway, there is a workaround. On the help page of the plugin menu there is a button to **reset all quoteID numbers in your table**, after which the numbering will look fine again. There is a downside, though: few, or even none, of the old ID numbers will still correspond to the same quotes, which means that if you called a quote in a post **by its ID** (as explained in the previous paragraph on this very page), there's a chance a different quote will be called afterwards. It is up to you to accept this and go and fix it later.  
+
+= Hey. There is a bug! =
+
+I knew it! See, I am not a programmer or anything. There's always a bug. If you want to help me catch it, and for further help, please come and trash the comments [on this post](http://www.italyisfalling.com/stray-random-quotes/). Thanks.
+
 == Credits ==
 
 * For Multi-widget functionality, [Millian's tutorial](http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/)
