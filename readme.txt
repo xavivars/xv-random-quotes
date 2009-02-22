@@ -44,8 +44,7 @@ Stray Random Quotes comes with **Widgets**. Depending on your preferences, a ran
  
 = What if I don't use widgets? =
 
-If your template **does not** use widgets, or you want to display the quotes on your template **elsewhere** other than the sidebar, you can add this piece of code to your template (in the header, the footer etc):
-`<?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2,etc', false, 'another quote &raquo;'); ?>`
+If your template **does not** use widgets, or you want to display the quotes on your template **elsewhere** other than the sidebar, you can add this piece of code to your template (in the header, the footer etc): `<?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2,etc', false, 'another quote &raquo;'); ?>`
 * `'category1,category2,etc'` is where you add a comma separated list of the categories from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the categories will be displayed. 
 * `true` or `false`, without brackets, indicates whether to load the quotes in order (true) or randomly (false). If you don't indicate anything the quotes will be loaded randomly. 
 * `'another quote &raquo;'` allows to optionally indicate a special link phrase for the AJAX loader, or none at all. For this to work, the default link phrase in the settings page must be left empty (and AJAX must be enabled). 
