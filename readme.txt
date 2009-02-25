@@ -22,6 +22,9 @@ The main features:
 * A bookmarklet to create quotes on the fly as you browse and find text worth quoting.
 * A help page where everything you need to know is explained.
 
+**Important note about version 1.8.5**
+The `[random-quote]` shortcodes now works slightly differently, since it accepts more variables. There's a chance that if you used it on your blog with variables before this version, it won't work now. It is not a bug, just a change in functionality that I hope is for the best. Consult the Help page in the menu of the plugin for more.
+
 == Screenshots ==
 
 1. How the management page works.
@@ -57,7 +60,7 @@ _Note for translators: there is a lot to translate with this plugin, expecially 
 
 == Changelog ==
 
-* 1.8.5 Added: bulk editing ability to the management page; added: a dedicated Tools Page where fantastic things can be achieved (such as a bookmarklet and the ability to extend shortcodes to new areas of the blog, which in turn will allow you to have random quotes and words in unexpected locations); added: per-widget and per-tag ability to disable ajax; changed: the way the [random-quote] shortcode works (now accepts much more variables); fixed: pagination of the [all-quotes] shortcodes (thanks to frettsy). There are other enhancements and quite enough minor bugs fixed. So much of the innovation with this version is thanks to the suggestions and requests of the users, to them goes my most sincere gratitude.
+* 1.8.5 Added: bulk editing ability to the management page; added: a dedicated Tools Page where fantastic things can be achieved (such as a bookmarklet and the ability to extend shortcodes to new areas of the blog, which in turn will allow you to have random quotes and words in unexpected locations); added: per-widget and per-tag ability to disable ajax; changed: the way the `[random-quote]` shortcode works (now accepts much more variables); fixed: pagination of the `[all-quotes]` shortcodes (thanks to frettsy). There are other enhancements and quite enough minor bugs fixed. So much of the innovation with this version is thanks to the suggestions and requests of the users, to them goes my most sincere gratitude.
 * 1.8.3 This version comes with German translation, a million thanks to Markus Griesbach for providing it. Also fixed a MYSQL rare bug that caused the `random-quote` shortcode not to work: thanks to Zarban for the help catching it.
 * 1.8.2 Added: the ability to entirely disable the ajax automation in the settings page. Added: the ability for those who add the quotes directly to the template, to also specify a "next quote" link phrase (see help page). Fixed: the loading of new quotes didn't work when no categories were selected. Fixed: Switching from "default" category wouldn't work with new quotes (thanks to AgentSmith for pointing this bug out.) Fixed: weird little things happening when the quotes were loaded not randomly and not from the widget with one category only. Changed: I removed from the set of files of the plugins the "lang" folder since it contained only a copy of the english version. It will be reinstated when someone will finally translate this plugin. 
 * 1.8.1 This version fixes few bugs, mainly concerning the ajax automation where the quotes where loaded twice instead of just once. I also adjusted the transition between quotes, now it should feel a bit better.
