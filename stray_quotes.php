@@ -18,7 +18,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 185);
+define("WP_STRAY_VERSION", 185);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -353,17 +353,17 @@ function quotes_activation() {
 	}
 				
 	// < 1.7.3
-	if( $quotesoptions['stray_quotes_version'] < 173 )$quotesoptions['stray_default_category'] =  'default';
+	if( $quotesoptions['stray_quotes_version'] <= 172 )$quotesoptions['stray_default_category'] =  'default';
 	
 	// < 1.7.6
-	if( $quotesoptions['stray_quotes_version'] < 176 ){
+	if( $quotesoptions['stray_quotes_version'] <= 175 ){
 		//add a new fields
 		$quotesoptions['stray_if_no_author'] =  '';
 		$quotesoptions['stray_clear_form'] =  'Y';	
 	}
 		
 	// < 1.7.9
-	if ( $quotesoptions['stray_quotes_version'] < 179 ){ 
+	if ( $quotesoptions['stray_quotes_version'] <= 178 ){ 
 	
 		//because of the mess caused by 1.7.8, there's a chance that the user has two category columns now! (ugh!)		
 		$categorycol = $wpdb->get_col('SELECT `category` FROM '.WP_STRAY_QUOTES_TABLE);
@@ -425,29 +425,23 @@ function quotes_activation() {
 	}
 
 	// < 1.8.0
-	if ( $quotesoptions['stray_quotes_version'] < 180 ){
+	if ( $quotesoptions['stray_quotes_version'] <= 179 ){
 	
 		//add a new fields
 		$quotesoptions['stray_before_loader'] = '<p>';
 		$quotesoptions['stray_loader'] = '';
 		$quotesoptions['stray_after_loader'] = '</p>';
-		
-		//message
-		if (!$straymessage)$straymessage = $newmessage;
-		$search = array("%s1","%s2");
-		$replace = array($options,$help);
-		$straymessage .=__('<li>* this version introduces for the first time bits of automation that will allow the visitor of your blog to load new quotes without reloading the blog pages. Check out the <a href="%s1">settings</a> and <a href="%s2">help</a> pages for more.</li>','stray-quotes');
 
 	}
 	
 	// < 1.8.2
-	if( $quotesoptions['stray_quotes_version'] < 182 ){
+	if( $quotesoptions['stray_quotes_version'] <= 181 ){
 		//add a new fields
 		$quotesoptions['stray_ajax'] =  '';
 	}
 	
 	// < 1.8.5
-	if(  $quotesoptions['stray_quotes_version'] < 185 ){
+	if(  $quotesoptions['stray_quotes_version'] <= 184 ){
 		//add a new fields
 		$quotesoptions['comment_scode'] =  '';
 		$quotesoptions['title_scode'] =  '';

@@ -11,6 +11,7 @@ function stray_intro() {
 	$options =  get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options";
 	$new = get_option('siteurl')."/wp-admin/admin.php?page=stray_new";
 	$help =  get_option('siteurl')."/wp-admin/admin.php?page=stray_help";
+	$toolspage = get_option('siteurl')."/wp-admin/admin.php?page=stray_tools";
 	$straymessage = $quotesoptions['stray_quotes_first_time'];
 	$totalquotes = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE);
 
@@ -79,9 +80,9 @@ function stray_intro() {
     ?><p><?php
 	
 	//link pages
-    $search = array ("%s1", "%s2","%s3","%s4");
-	$replace = array($new,$management,$options,$help);	
-	echo str_replace($search,$replace,__('To start doing stuff, you can <a href="%s1"><strong>add new quotes</strong></a>;<br />use the <a href="%s2"><strong>manage</strong></a> page to edit or delete existing quotes;<br />change the <a href="%s3"><strong>settings</strong></a> to control how the quotes are displayed on your blog.<br/>If you\'re new to all this, there\'s a <a href="%s4"><strong>help page</strong></a> as well.','stray-quotes')); ?>
+    $search = array ("%s1", "%s2","%s3","%s4","%s5");
+	$replace = array($new,$management,$options,$help,$toolspage);	
+	echo str_replace($search,$replace,__('To start doing stuff, you can <a href="%s1"><strong>add new quotes</strong></a>;<br />use the <a href="%s2"><strong>manage</strong></a> page to edit or delete existing quotes;<br />change the <a href="%s3"><strong>settings</strong></a> to control how the quotes are displayed on your blog.<br/>There\'s also a <a href="%s5"><strong>tools page</strong></a> that might interest you.<br/>If you\'re new to all this, there\'s a <a href="%s4"><strong>help page</strong></a> as well.','stray-quotes')); ?>
 	</p></div>
     <p>This is all in a day's work for <a href="http://www.italyisfalling.com/coding">italyisfalling.com</a>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p><?php
 	
