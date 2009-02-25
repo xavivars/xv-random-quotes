@@ -18,6 +18,7 @@ function stray_new() {
 		
 		$quotesoptions = array();
 		$quotesoptions = get_option('stray_quotes_options');
+		
 
 		$quote = !empty($_REQUEST['quote_quote']) ? stripslashes(trim($_REQUEST['quote_quote'])) : '';
 		if ($quotesoptions['bookmarlet_source'] == 'Y' )$source = !empty($_REQUEST['quote_source']) ? stripslashes(trim($_REQUEST['quote_source'])) : '';
@@ -116,7 +117,7 @@ function stray_new() {
 		//load options
 		$quotesoptions = array();
 		$quotesoptions = get_option('stray_quotes_options');
-	
+
 		//optionally assign the just inserted quote to vaiables
 		if ($quotesoptions['stray_clear_form']!=='Y') {
 			if ( !empty($data) ) { 
@@ -125,7 +126,7 @@ function stray_new() {
 				$source = $data->source;
 				$category = $data->category;
 			}
-		} else $quote = $author = $source = $category = false;
+		} else if($action != 'bookmarklet')$quote = $author = $source = $category = false;
 		
 		//visibility
 		$defaultVisible = $quotesoptions['stray_quotes_default_visible'];
