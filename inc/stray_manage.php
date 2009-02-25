@@ -612,11 +612,11 @@ function stray_manage() {
             echo '<strong>'.  $prev .$first . $nav . $last . $next . '</strong>'; ?></div>
             </div></div></form><?php
 			
-		} else { ?><p><div style="clear:both"> <?php echo str_replace("%s1",get_option('siteurl')."/wp-admin/admin.php?page=stray_manage";,__('<br/>No quotes here. Maybe you want to <a href="%s1">reopen</a> this page.','stray-quotes')); ?> </div></p>
+		} else { ?><p><div style="clear:both"> <?php echo str_replace("%s1",get_option('siteurl')."/wp-admin/admin.php?page=stray_manage",__('<br/>No quotes here. Maybe you want to <a href="%s1">reopen</a> this page.','stray-quotes')); ?> </div></p>
 	
 		</div><?php	}	
 	}
-	
+
 ?></div><?php
 
 }
