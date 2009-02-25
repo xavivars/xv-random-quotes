@@ -100,7 +100,7 @@ function stray_tools(){
     <?php echo $categoryo;?></option>
     <?php } ?>   
     </select><br/>
-    <input type="checkbox" name="websource" value="Y" <?php echo ($websource_selected); ?> />&nbsp;<?php _e('If checked, will add a link to the web page as source for the quote.', 'stray-quotes'); ?><br/><span class="setting-description"><?php _e('Note: no matter how do you change these options, the bookmarklet will stay the same.', 'stray-quotes'); ?>.</span></p>	
+    <input type="checkbox" name="websource" value="Y" <?php echo ($websource_selected); ?> />&nbsp;<?php _e('If checked, will add a link to the web page as source for the quote.', 'stray-quotes'); ?><br/><span class="setting-description"><?php _e('Note: no matter how you change these options, the bookmarklet will stay the same', 'stray-quotes'); ?>.</span></p>	
     <p class="submit"><input type="hidden" name="do" value="Update" />
     <input type="submit" name="boptions" value="<?php _e('Apply bookmarklet options', 'stray-quotes'); ?>">	
 	</p></form>
