@@ -3,31 +3,34 @@ Contributors: corpodibacco
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations
 Requires at least: 2.3
 Tested up to: 2.7.1
-Stable tag: 1.8.3
+Stable tag: 1.8.5
 
 Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
 
 == Description ==
 
-Stray Random Quotes helps you collect and display random quotes everywhere on your blog. Actually, this plugin is so flexible that it can be used to display random words of all sorts: taglines, comments intro (such as "x said"), footer or header sections etc.
+Stray Random Quotes helps you collect and display random quotes everywhere on your blog. Actually, this plugin is so flexible that it can be used to display random words of all sorts: taglines, "leave a response" messages, footer or header sections etc.
 The main features:
 
 * The quotes can be refreshed by the user with **AJAX** automation (without reloading the page). AJAX can be disabled if you like.
 * The plugin is **widget compatible**. You can use as many widgets as you like, each displaying quotes from different categories.
 * The quotes can be rotated randomly, or one by one starting randomly.
-* You can use **shortcodes** to add single quotes or multiple quotes to your posts and pages, and **template tags**. This way random words can really be added everywhere.
+* **Shortcodes** can be used to add single quotes or multiple quotes to your posts and pages, and **template tags** to add them directly to the template pages.
+* Optionally, shortcodes can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
 * The appearance of the quotes can be highly customized with a dedicated option page, and individually with each widget or template tag.
-* The plugin also comes with a easy to use advanced management tool and a help page. 
-
-Consider answering [this poll](http://www.italyisfalling.com/a-poll-for-the-new-stray-random-quotes/) to influence what the new features of the next versions should be!
+* The plugin comes with a easy to use advanced management tool, with bulk actions to change category, delete and toggle visibility of many quotes at once.
+* A bookmarklet to create quotes on the fly as you browse and find text worth quoting.
+* A help page where everything you need to know is explained.
 
 == Screenshots ==
 
 1. How the management page works.
-
 2. How to add a new quote.
-
-3. A random quote appears in the sidebar as one of the widgets.
+3. A random quote in the sidebar.
+4. Bulk editing in the Management page.
+5. The bookmarklet in the Tools page.
+6. The Settings page.
+7. The widget options.
 
 == Installation ==
 
@@ -38,45 +41,7 @@ Consider answering [this poll](http://www.italyisfalling.com/a-poll-for-the-new-
 
 == Frequently Asked Questions ==
 
-= So, how do I display a random quote on my blog? =
-
-Stray Random Quotes comes with **Widgets**. Depending on your preferences, a random quote in a widget could be coming from one or two categories of quotes, or from all the categories. You can use all the widgets you want. Each widget has its own set of options. Just enable one widget at a time on your widget page, and change its settings accordingly. Note: _Your template must be widget compatible._
- 
-= What if I don't use widgets? =
-
-If your template **does not** use widgets, or you want to display the quotes on your template **elsewhere** other than the sidebar, you can add this piece of code to your template (in the header, the footer etc): `<?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2,etc', false, 'another quote &raquo;'); ?>`
-* `'category1,category2,etc'` is where you add a comma separated list of the categories from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the categories will be displayed. 
-* `true` or `false`, without brackets, indicates whether to load the quotes in order (true) or randomly (false). If you don't indicate anything the quotes will be loaded randomly. 
-* `'another quote &raquo;'` allows to optionally indicate a special link phrase for the AJAX loader, or none at all. For this to work, the default link phrase in the settings page must be left empty (and AJAX must be enabled). 
-* A default title, such as 'Random quote', is also set through the settings page. If you want specific titles for different categories, you will have to put that directly in the HTML of the template. For example:`<h2>Random Mark Twain quote:</h2><?php if (function_exists('stray_random_quote')) stray_random_quote('mark twain'); ?>`, you got the idea. 
-                
-= What "categories" are for? =
-
-Categories are groups, or lists into which your random quotes and random words can be divided. They can have all sorts of use, from easily managing a large number of quotes, to displaying different sets of words/quotes from different categories in different areas of the blog. Note: _Categories were called originally "groups", then I decided "group" was lame. I do things like that._
-    
-= What about posts and pages? =
-
-To **insert a random quote** in a post or page, just write in the editor: `[random-quote "category1" "category2"]`. 
-* `"category1" "category2"` is where you add the categories from which to extract the random quote. This setting is optional. If you don't indicate anything, a random quote from all the categories will be displayed. At the moment it is not possible to have these quotes loaded in order instead than randomly, the way you can with widgets.
-To **insert a list of many or all the quotes** in a post or page, just write in the editor: `[all-quotes rows=10 orderby="quoteID" sort="ASC" categories="all"]`.
-* _rows_ is how many quotes you want per page; 
-* _orderby_ if you want to order the quotes by "quoteID", "author" "source" or "category"; 
-* _sort_ is whether the quotes will be sorted ascending "ASC" or descending "DESC". 
-* _categories_ is from which category you want the quotes to be. Use "all" for all the categories, or use the names of the categories separated by comma. 
-All these settings are optional. Without them, the values you see in this example are used as defaults.
-    
-= What else can I do? =
-
-Well you could **insert a given quote in a post or a page**, in which case you should just write in the editor: `[quote id=x]`, where `x` is the id number of the quote as it appears on the management page. This will outupt the quote and also a "next quote" link that will let the user browse between quotes of the same category as the first one indicated.
-To insert **a given quote in your template** use the following: `<?php if (function_exists('stray_a_quote')) stray_a_quote(x);?>`, where `x` is the id number of the quote as it appears on the management page. This will outupt the quote and also a "next quote" link that will let the user browse between quotes of the same category as the first one indicated.    
-
-= The IDs of the quotes are getting ridiculously high. Can I do something about it? =
-
-It is the way MySQL works, gaps are not important in an index. Anyway, there is a workaround. On the help page of the plugin menu there is a button to **reset all quoteID numbers in your table**, after which the numbering will look fine again. There is a downside, though: few, or even none, of the old ID numbers will still correspond to the same quotes, which means that if you called a quote in a post **by its ID** (as explained in the previous paragraph on this very page), there's a chance a different quote will be called afterwards. It is up to you to accept this and go and fix it later.  
-
-= Hey. There is a bug! =
-
-I knew it! See, I am not a programmer or anything. There's always a bug. If you want to help me catch it, and for further help, please come and trash the comments [on this post](http://www.italyisfalling.com/stray-random-quotes/). Thanks.
+= See the Help page in the plugin's menu =
 
 == Credits ==
 
@@ -88,9 +53,12 @@ I knew it! See, I am not a programmer or anything. There's always a bug. If you 
 
 * German, thanks to Markus Griesbach
 
+_Note for translators: there is a lot to translate with this plugin, expecially on account of the help page. If you want to create a localized copy of Stray Random Quotes, consider skipping the help page and translate the rest. This will save you some time._
+
 == Changelog ==
 
-* 1.8.3 This version comes with German translation, a million thanks to Markus Griesbach for providing it. Also fixed a MYSQL rare bug that caused the `random-quote` shortcode not to work: thanks to Zarban for the help catching it. For the new functions, such as images with the quotes or bulk editing, things are will be worked out for the next major release 1.9. A poll is still open on the [plugin page](http://www.italyisfalling.com/stray-random-quotes/) to influence what will be made of this.
+* 1.8.5 Added: bulk editing ability to the management page; added: a dedicated Tools Page where fantastic things can be achieved (such as a bookmarklet and the ability to extend shortcodes to new areas of the blog, which in turn will allow you to have random quotes and words in unexpected locations); added: per-widget and per-tag ability to disable ajax; changed: the way the [random-quote] shortcode works (now accepts much more variables); fixed: pagination of the [all-quotes] shortcodes (thanks to frettsy). There are other enhancements and quite enough minor bugs fixed. So much of the innovation with this version is thanks to the suggestions and requests of the users, to them goes my most sincere gratitude.
+* 1.8.3 This version comes with German translation, a million thanks to Markus Griesbach for providing it. Also fixed a MYSQL rare bug that caused the `random-quote` shortcode not to work: thanks to Zarban for the help catching it.
 * 1.8.2 Added: the ability to entirely disable the ajax automation in the settings page. Added: the ability for those who add the quotes directly to the template, to also specify a "next quote" link phrase (see help page). Fixed: the loading of new quotes didn't work when no categories were selected. Fixed: Switching from "default" category wouldn't work with new quotes (thanks to AgentSmith for pointing this bug out.) Fixed: weird little things happening when the quotes were loaded not randomly and not from the widget with one category only. Changed: I removed from the set of files of the plugins the "lang" folder since it contained only a copy of the english version. It will be reinstated when someone will finally translate this plugin. 
 * 1.8.1 This version fixes few bugs, mainly concerning the ajax automation where the quotes where loaded twice instead of just once. I also adjusted the transition between quotes, now it should feel a bit better.
 * 1.8.0: Not only this version corrects the problems of the previous versions but for the first time it comes with ajax automation. For this achievement, many thanks go to the incredible contribution of [AgentSmith](http://www.matrixagents.org) who with generosity helped to develop this functionality and bypass many problems that it could have caused. In the settings page the user will be able to assign a link to dynamically fetch another quote and display it on the widget, _without reloading the page_. Missing that setting, the quote will be reloaded when the user click on it. Also, fixed in this version: the widget displaying only its title and not the quote. This was a problem that presented itself when only one group was selected in the widget options. Fixed: adding a link to the author or the source broke the ability of the "add new" page to present the same quote again. In general, one or two things could be different so always remember to check the help page before thinking that the plugin is malfunctioning. To do for the next versions: bulk editing and ajax for the manage page!

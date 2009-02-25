@@ -1,7 +1,7 @@
 <?php
 
-//this is called by other functions to output a given quote
-function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=NULL,$widgetid=NULL) {
+//this is the main function, called by other functions to output a given quote
+function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=NULL,$widgetid=NULL,$noajax=NULL) {
 
 	//the variables
 	$quotesoptions = array();
@@ -36,7 +36,7 @@ function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=N
 	settype($sequence, "string"); //this otherwise "0" would be considered as "false", long story
 	
 	//if ajax loader is NOT disabled
-	if ($strayajax != 'Y') {
+	if ($strayajax != 'Y' && $noajax != true) {
 	
 		//override default new quote loader
 		if ($linkphrase)$quoteloader = $linkphrase;
@@ -132,7 +132,7 @@ function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=N
 	$finale = '';
 	
 	//if ajax loader is NOT disabled
-	if ($strayajax != 'Y') {
+	if ($strayajax != 'Y' && $noajax != true) {
 	
 		//this trick is for the all-quotes shortcode
 		if ($sequence != 'skip' && $linkphrase !='skip' && $widgetid !='skip') {
@@ -156,7 +156,7 @@ function stray_output_one($get_one,$categories=NULL,$sequence=NULL,$linkphrase=N
 }
 
 //this prints a random quote from given categories
-function stray_random_quote($categories=NULL,$sequence=NULL,$linkphrase=NULL,$widgetid=NULL) {
+function stray_random_quote($categories=NULL,$sequence=NULL,$linkphrase=NULL,$widgetid=NULL,$noajax=NULL) {
 
 	global $wpdb;
 
@@ -221,44 +221,65 @@ function stray_random_quote($categories=NULL,$sequence=NULL,$linkphrase=NULL,$wi
 		}
 
 		//and echo
-		echo stray_output_one($get_one,$categories,$sequence,$linkphrase,$widgetid);
+		echo stray_output_one($get_one,$categories,$sequence,$linkphrase,$widgetid,$noajax);
 	}
 }
 
-//this replaces "[random-quote "category"]" inside a post with a random quote from a given category
-function stray_rnd_shortcut($categories=NULL) {
+//this replaces "[random-quote]" inside a post with a random quote from a given category
+function stray_rnd_shortcut($atts, $content=NULL) {
 		
 	global $wpdb,$wp_version;
 	
-	//handle the categories
-	if ($categories) {
-	
-		if (is_string($categories))$categories = explode(",", $categories);
-		
-		if (count($categories) == 1) {
-			$categoryquery = ' AND `category`="'. $categories[0] .'"';
-		} else { 
-			$categoryquery = ' AND `category`="';
-		
-			foreach ($categories as $category) {
-				$category = trim($category);
-				$categoryquery .= $category.'" OR `category`="';
-			}
-			$categoryquery = substr($categoryquery,0,-17);
-			$categoryquery .='"';
-		}
-	} else {
-		$categoryquery = '';
-		$categories = '';
-	}			
-	
-	//generate a casual id if the function is not called via a widget
-	if (is_string($widgetid)) settype($widgetid, "integer"); 
-	if (!$widgetid)$widgetid = mt_rand(0,999999);
-
 	//shortcodes are only for WP-2.5+
 	if ($wp_version >= 2.5) {
 		
+		//the beauty of shortcodes
+		extract(shortcode_atts(array(
+		"categories" => NULL,
+		"sequence" => NULL,
+		"linkphrase" => '',
+		"widgetid" => NULL,
+		"noajax" => NULL
+		), $atts));	
+		
+		//generate a casual id if the function is not called via a widget
+		settype($widgetid, "integer"); 
+		$widgetid = mt_rand(0,999999);
+		
+		//no matter how the user passes these variables, they are boolean
+		if (!is_bool($sequence)){ 
+			if ($sequence == 'false')$sequence = false; 
+			else if ($sequence == 'true')$sequence = true;
+			else $sequence = false; 
+		}
+		if (!is_bool($noajax)){ 
+			if ($noajax == 'false')$noajax = false; 
+			else if ($noajax == 'true')$noajax = true;
+			else $noajax = false; 
+		}
+
+		//handle the categories
+		if ($categories) {
+		
+			if (is_string($categories))$categories = explode(",", $categories);
+			
+			if (count($categories) == 1) {
+				$categoryquery = ' AND `category`="'. $categories[0] .'"';
+			} else { 
+				$categoryquery = ' AND `category`="';
+			
+				foreach ($categories as $category) {
+					$category = trim($category);
+					$categoryquery .= $category.'" OR `category`="';
+				}
+				$categoryquery = substr($categoryquery,0,-17);
+				$categoryquery .='"';
+			}
+		} else {
+			$categoryquery = '';
+			$categories = '';
+		}				
+			
 		//sql the thing
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category` FROM " . WP_STRAY_QUOTES_TABLE . " WHERE `visible`='yes'".$categoryquery;
 		$result = $wpdb->get_results($sql);	
@@ -269,7 +290,7 @@ function stray_rnd_shortcut($categories=NULL) {
 							
 			//end of it
 			$get_one = $result[mt_rand(0, ($totalquotes-1))];
-			return stray_output_one($get_one,$categories,false,'',$widgetid);
+			return stray_output_one($get_one,$categories,$sequence,$linkphrase,$widgetid,$noajax);
 			
 		}
 	}
@@ -322,14 +343,16 @@ function stray_id_shortcut($attr='1') {
 }
 
 //this replaces "[all-quotes rows=10, orderby="quoteID", sort="ASC", category="all"]" in a post with all the quotes
-function stray_page_shortcut($atts, $content = NULL) {
+function stray_page_shortcut($atts, $content=NULL) {
 
 	global $wpdb,$wp_version;
-	$quotesoptions = get_option('stray_quotes_options');
 	
 	//shortcodes are only for WP 2.5+
 	if ($wp_version >= 2.5) {
+		
+		$quotesoptions = get_option('stray_quotes_options');
 	
+		//the beauty of shortcodes
 		extract(shortcode_atts(array(
 			"rows" => 10,
 			"orderby" =>'quoteID',
@@ -360,8 +383,8 @@ function stray_page_shortcut($atts, $content = NULL) {
 		
 		// print the link to access each page
 		$nav  = '';		
-		$baseurl = $_SERVER['REQUEST_URI'];
-		if (strpos( $_SERVER['REQUEST_URI'],'?'))$urlpages = $baseurl.'&qp=';
+		$baseurl = remove_querystring_var($_SERVER['REQUEST_URI'], 'qp');
+		if (strpos( $_SERVER['REQUEST_URI'],'?'))$urlpages = $baseurl.'&amp;qp=';
 		else $urlpages = $baseurl.'?qp=';
 		
 		for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
@@ -458,6 +481,24 @@ function mostused($field) {
 		$maxvalue = $keys[0];
 		return $maxvalue;	
 	} else return false;
+}
+
+//this adds or replaces a variable into a querystring. Thanks to http://www.addedbytes.com/php/querystring-functions/ and to Frettsy who suggested this
+function querystrings($url, $key, $value) {
+	$url = preg_replace('/(.*)(\?|&)' . $key . '=[^&]+?(&)(.*)/i', '$1$2$4', $url . '&');
+	$url = substr($url, 0, -1);
+	if (strpos($url, '?') === false) {
+		return ($url . '?' . $key . '=' . $value);
+	} else {
+		return ($url . '&' . $key . '=' . $value);
+	}
+}
+
+//this removes a variable from a querystring. Thanks to http://www.addedbytes.com/php/querystring-functions/ and to Frettsy who suggested this
+function remove_querystring_var($url, $key) {
+	$url = preg_replace('/(.*)(\?|&)' . $key . '=[^&]+?(&)(.*)/i', '$1$2$4', $url . '&');
+	$url = substr($url, 0, -1);
+	return ($url);
 }
 
 ?>

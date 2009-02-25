@@ -58,13 +58,17 @@ class stray_widgets {
 		if ($options["sequence"] == "Y")$sequence = false;
 		else $sequence = true;
 		
+		if ($options["noajax"] == "Y")$noajax = true;
+		else $noajax = false;
+		
 		$linkphrase = $options["linkphrase"];
 		$widgetid = $number;
+		
 
         echo $before_widget.$before_title;
 		echo $options["title"];
         echo $after_title;
-		stray_random_quote(isset($options["groups"]) ? explode(',', $options["groups"]) : array("default"),$sequence,$linkphrase,$widgetid);
+		stray_random_quote(isset($options["groups"]) ? explode(',', $options["groups"]) : array("default"),$sequence,$linkphrase,$widgetid,$noajax);
         echo $after_widget;
     }
 
@@ -106,6 +110,7 @@ class stray_widgets {
                 $options['groups'] = isset($posted['groups']) ? implode(',', $posted['groups']) : ''; 
 				$options['sequence'] =  $posted['sequence'];
 				$options['linkphrase'] =  $posted['linkphrase'];
+				$options['noajax'] =  $posted['noajax'];
                 
                 $options_all[$widget_number] = $options;
             }
@@ -120,7 +125,8 @@ class stray_widgets {
 				'title' => $widgetTitle, 
 				'groups' => implode(",",make_categories()),
 				'sequence' => false,
-				'linkphrase' => $linkphrase
+				'linkphrase' => $linkphrase,
+				'noajax' => false
 		);
 	
 
@@ -134,16 +140,21 @@ class stray_widgets {
 		
 		
 		if ( $values['sequence'] == "Y" ) $random_selected = ' checked="checked"';	
+		if ( $values['noajax'] == "Y" ) $noajax_selected = ' checked="checked"';	
         
-		?><p><label><strong>Title</strong></label>
+		?>
+        
+        <p><label><strong>Title</strong></label>
 		<input class="widefat" id="widget_stray_quotes-<?php echo $number; ?>-title" 
         name="widget_stray_quotes[<?php echo $number; ?>][title]" type="text" 
         value="<?php echo htmlspecialchars($values['title'], ENT_QUOTES); ?>" />
         </p>
         
+        
+        
 		<p><label><strong>Categories</strong><span class="setting-description"> <small>quotes are taken from these. drag the mouse or ctrl-click to multi-select</small></span></label>
 		<select class="widefat" style="width: 100%; height: 70px;" name="widget_stray_quotes[<?php echo $number; ?>][groups][]" 
-        id="widget_stray_quotes-<?php echo $number; ?>-groups" multiple="multiple"></p>
+        id="widget_stray_quotes-<?php echo $number; ?>-groups" multiple="multiple">
         
         
 		<?php 
@@ -159,15 +170,22 @@ class stray_widgets {
                 echo "\n\t<option value='$item'$current>$item</option>";        
             }
         }         
-		?></select>
+		?></select></p>
         
-		<p><label><strong>Link phrase</strong><span class="setting-description"> <small>if left empty, reloading is done by clicking on the quote.</small></span></label>
+		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][sequence]" value="Y" <?php echo $random_selected; ?> /><label><strong>Random</strong><span class="setting-description"><small> leave unckecked to load the quotes in order beginning from a random one.</small></span></label></p>
+        
+        </select>
+		
+        <div style="border:#CCC dotted 1px; margin-bottom:10px; padding:10px">
+        
+		<p><label><strong>AJAX link phrase</strong><span class="setting-description"> <small>if left empty, reloading is done by clicking on the quote.</small></span></label>
 		<input class="widefat" id="widget_stray_quotes-<?php echo $number; ?>-title" 
         name="widget_stray_quotes[<?php echo $number; ?>][linkphrase]" type="text" 
         value="<?php echo htmlspecialchars($values['linkphrase'], ENT_QUOTES); ?>" />
         </p>
+
+		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][noajax]" value="Y" <?php echo $noajax_selected; ?> /><label><strong>Disable AJAX</strong><span class="setting-description"><small> disable any dynamic reloading of the quote for this widget only.</small></span></label></p></div>	
         
-		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][sequence]" value="Y" <?php echo $random_selected; ?> /><label><strong>Random</strong><span class="setting-description"><small> leave unckecked to load the quotes in order beginning from a random one.</small></span></label></p>
 <?php }
     
 }

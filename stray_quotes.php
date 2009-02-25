@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
 Author: Corpodibacco
 Author URI:http://www.italyisfalling.com/coding/
-Version: 1.8.3
+Version: 1.8.5
 License: GPL compatible
 */
 
@@ -18,7 +18,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define ("WP_STRAY_VERSION", 183);
+define ("WP_STRAY_VERSION", 185);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -43,7 +43,42 @@ function stray_quotes_header(){
 	
 		?><script  type='text/javascript'><!-- 
 		function switchpage(select) {var index;for(index=0; index<select.options.length; index++) {if(select.options[index].selected){if(select.options[index].value!="")window.location.href=select.options[index].value;break;}}} 
-		--></script><?php	
+
+		jQuery(document).ready(function($) {
+			$("#straymanage thead tr th:first input:checkbox").click(function() {
+				var checkedStatus = this.checked;
+				$("#straymanage tbody tr td:first-child input:checkbox").each(function() {
+					this.checked = checkedStatus;
+				});
+			});
+	
+		});
+		
+		
+		function disable_enable(){
+			if (document.getElementById('bulkselect').value == 'changecategory')document.getElementById('catselect').disabled=false;
+			else document.getElementById('catselect').disabled=true;
+		}
+		// Multiple onload function created by: Simon Willison
+		// http://simonwillison.net/2004/May/26/addLoadEvent/
+		function addLoadEvent(func) {
+		  var oldonload = window.onload;
+		  if (typeof window.onload != 'function') {
+			window.onload = func;
+		  } else {
+			window.onload = function() {
+			  if (oldonload) {
+				oldonload();
+			  }
+			  func();
+			}
+		  }
+		}
+		addLoadEvent(function() {
+			document.getElementById('catselect').disabled = true;
+		});
+
+        --></script><?php	
 	}
 
 	//header for the settings page
@@ -308,9 +343,6 @@ function quotes_activation() {
 		
 	}
 				
-	//reset the removal option for everyone
-	$quotesoptions['stray_quotes_uninstall'] = "";
-	
 	// < 1.7.3
 	if( $quotesoptions['stray_quotes_version'] < 173 )$quotesoptions['stray_default_category'] =  'default';
 	
@@ -406,7 +438,10 @@ function quotes_activation() {
 	}
 
 	//take care of version number
-	if( $quotesoptions['stray_quotes_version'] != WP_STRAY_VERSION )$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
+	$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
+	
+	//reset the removal option for everyone
+	$quotesoptions['stray_quotes_uninstall'] = "";
 	
 	//insert the feedback message
 	$quotesoptions['stray_quotes_first_time'] = $straymessage;
@@ -448,6 +483,7 @@ include('inc/stray_settings.php');
 include('inc/stray_manage.php');
 include('inc/stray_new.php');
 include('inc/stray_widgets.php');
+include('inc/stray_tools.php');
 include('inc/stray_help.php');
 include('inc/stray_remove.php');
 
@@ -459,6 +495,7 @@ function stray_quotes_add_pages() {
 	add_submenu_page(__FILE__, __('Manage Quotes','stray-quotes'), __('Manage','stray-quotes'), 8, 'stray_manage', 'stray_manage');
 	add_submenu_page(__FILE__, __('Add New Quote','stray-quotes'), __('Add New','stray-quotes'), 8, 'stray_new', 'stray_new');
 	add_submenu_page(__FILE__, __('Settings of the Quotes','stray-quotes'), __('Settings','stray-quotes'), 8, 'stray_quotes_options', 'stray_quotes_options'); 
+	add_submenu_page(__FILE__, __('Tools for your quotes','stray-quotes'), __('Tools','stray-quotes'), 8, 'stray_tools', 'stray_tools');
 	add_submenu_page(__FILE__, __('Help with the Quotes','stray-quotes'), __('Help','stray-quotes'), 8, 'stray_help', 'stray_help');
 	add_submenu_page(__FILE__, __('Remove Stray Random Quotes','stray-quotes'), __('Remove','stray-quotes'), 8, 'stray_remove', 'stray_remove'); 	
 	
@@ -476,5 +513,14 @@ if ($wp_version >= 2.5) {
 }
 register_activation_hook(__FILE__, 'quotes_activation');
 register_deactivation_hook(__FILE__, 'quotes_deactivation');
+
+$quotesoptions = get_option('stray_quotes_options');
+if ($quotesoptions['comment_scode'] == 'Y') add_filter('comment_text', 'do_shortcode');
+if ($quotesoptions['title_scode'] == 'Y') add_filter('the_title', 'do_shortcode');
+if ($quotesoptions['excerpt_scode'] == 'Y') add_filter('the_excerpt', 'do_shortcode');
+if ($quotesoptions['widget_scode'] == 'Y') add_filter('widget_text', 'do_shortcode');
+if ($quotesoptions['categories_scode'] == 'Y') add_filter('the_category', 'do_shortcode');
+if ($quotesoptions['tags_scode'] == 'Y') add_filter('the_tags', 'do_shortcode');
+if ($quotesoptions['bloginfo_scode'] == 'Y') {add_filter('bloginfo', 'do_shortcode');add_filter('bloginfo_rss', 'do_shortcode');}
 
 ?>

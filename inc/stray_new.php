@@ -13,16 +13,26 @@ function stray_new() {
 	$action = !empty($_REQUEST['action']) ? $_REQUEST['action'] : '';
 	$quoteID = !empty($_REQUEST['quoteID']) ? $_REQUEST['quoteID'] : '';
 	
+	//this is for the bookmarklet
+	if ( $action == 'bookmarklet' ) {
+		
+		$quotesoptions = array();
+		$quotesoptions = get_option('stray_quotes_options');
+
+		$quote = !empty($_REQUEST['quote_quote']) ? stripslashes(trim($_REQUEST['quote_quote'])) : '';
+		if ($quotesoptions['bookmarlet_source'] == 'Y' )$source = !empty($_REQUEST['quote_source']) ? stripslashes(trim($_REQUEST['quote_source'])) : '';
+		if ($quotesoptions['bookmarklet_cat']) $category = $quotesoptions['bookmarklet_cat'];
+	}
+	
 	//after adding a new quote
 	if ( $action == 'add' ) {
 	
-		//assign variables
-		$quote = !empty($_REQUEST['quote_quote']) ? $_REQUEST['quote_quote'] : '';
-		$author = !empty($_REQUEST['quote_author']) ? $_REQUEST['quote_author'] : '';
-		$source = !empty($_REQUEST['quote_source']) ? $_REQUEST['quote_source'] : '';
-		$visible = !empty($_REQUEST['quote_visible']) ? $_REQUEST['quote_visible'] : '';
-		
-		if ( $_REQUEST['quote_category'] )$category = $_REQUEST['quote_category'];
+		//assign variables and trim them
+		$quote = !empty($_REQUEST['quote_quote']) ? trim($_REQUEST['quote_quote']) : '';
+		$author = !empty($_REQUEST['quote_author']) ? trim($_REQUEST['quote_author']) : '';
+		$source = !empty($_REQUEST['quote_source']) ? trim($_REQUEST['quote_source']) : '';
+		$visible = !empty($_REQUEST['quote_visible']) ? trim($_REQUEST['quote_visible']) : '';
+		if ( $_REQUEST['quote_category'] )$category = trim($_REQUEST['quote_category']);
 		else $category = $_REQUEST['categories'];
 		
 		//remove spaces from categories
@@ -30,6 +40,8 @@ function stray_new() {
 			$category=preg_replace('/\s+/','-',$category);
 			$plusmessage = "<br/>Note: <strong>The name of the category you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
 		} 
+		
+		if ($category == false || $category == '') $category = 'default';
 		
 		//take care of stupid magic quotes
 		if ( ini_get('magic_quotes_gpc') )	{
@@ -172,17 +184,18 @@ function stray_new() {
 			<select name="categories" style="vertical-align:middle; width:14em;" > 
 			<?php $categorylist = make_categories(); 
 			foreach($categorylist as $categoryo){ ?>
-			<option value="<?php echo $categoryo; ?>" style=" padding-right:5px" <?php if ($categoryo == $category || $categoryo == $defaultcategory) echo ' selected'; ?> >
+			<option value="<?php echo $categoryo; ?>" style=" padding-right:5px" 
+			<?php if ($categoryo == $category || $categoryo == $defaultcategory) echo ' selected'; ?> >
 			<?php echo $categoryo;?></option>
 			<?php } ?>   
 			</select>
 			  
 			<label><?php _e('&nbsp;new category:&nbsp;','stray-quotes') ?></label>
-			<input type="text" name="quote_category" size=24 value="" maxlength="24" <?php echo $styleborder ?> /></p>
+			<input type="text" name="quote_category" size=24 value="" <?php echo $styleborder ?> /></p>
 			
 			<p><label><?php _e('Visible:','stray-quotes') ?></label>
 				<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php _e('Yes','stray-quotes') ?>					
-				<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php _e('No','stray-quotes') ?></div>
+				<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php _e('No','stray-quotes') ?>
 			</p><p>&nbsp;</p>
 		
 			<p><input type="submit" name="save"  class="button-primary" value="<?php _e('Add quote','stray-quotes') ?> &raquo;" /></p>

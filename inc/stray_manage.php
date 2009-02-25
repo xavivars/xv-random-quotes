@@ -2,10 +2,8 @@
 
 //manage page
 function stray_manage() {
-
-	?><div class="wrap"><h2><?php _e('Manage quotes','stray-quotes') ?></h2>
     	
-	<?php global $wpdb;
+	global $wpdb;
 	$quotesoptions = get_option('stray_quotes_options');
 	
 	//decode and intercept
@@ -14,6 +12,7 @@ function stray_manage() {
 	//defaults and gets
 	$action = !empty($_REQUEST['qa']) ? $_REQUEST['qa'] : '';
 	$quoteID = !empty($_REQUEST['qi']) ? $_REQUEST['qi'] : '';
+	
 	$orderby = $quotesoptions['stray_quotes_order'];
 	$pages = 1;
 	$rows = $quotesoptions['stray_quotes_rows']; 
@@ -31,9 +30,9 @@ function stray_manage() {
 		$quotesoptions['stray_quotes_rows'] = $_GET['qr'];	
 	}
 	
-	if(isset($_GET['qg'])){
-		$categories = $_GET['qg'];
-		$quotesoptions['stray_quotes_categories'] = $_GET['qg'];	
+	if(isset($_GET['qc'])){
+		$categories = $_GET['qc'];
+		$quotesoptions['stray_quotes_categories'] = $_GET['qc'];	
 	}
 	
 	if(isset($_GET['qs'])){
@@ -43,15 +42,34 @@ function stray_manage() {
 	
 	$offset = ($pages - 1) * $rows;
 	
+	//check if the category I want exists
+	$ok = false;
+	$categorylist = make_categories(); 
+	foreach($categorylist as $category){ 
+		if ($category == $categories) $ok = true;
+	}		
+	if ($ok == false) {
+		$categories = 'all';
+		$quotesoptions['stray_quotes_categories'] = 'all';
+	}
+	
 	//update options now
 	update_option('stray_quotes_options', $quotesoptions);
 	
-	//urls for different use (primitive, I know)
+	//add variables to the url -- for different uses -- thanks to frettsy who suggested this use
 	$baseurl = get_option("siteurl").'/wp-admin/admin.php?page=stray_manage';
-	$urlaction = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$categories.'&qs='.$sort; 
+	$baseurl = querystrings($baseurl, 'qo', $orderby);
+	$baseurl = querystrings($baseurl, 'qp', $pages);
+	$baseurl = querystrings($baseurl, 'qr', $rows);
+	$baseurl = querystrings($baseurl, 'qc', $categories);
+	$urlaction = querystrings($baseurl, 'qs', $sort);	
+	//the old way
+	/*$urlaction = $baseurl.'&amp;qo='.$orderby.'&amp;qp='.$pages.'&qr='.$rows.'&amp;qc='.$categories.'&amp;qs='.$sort;*/ 
 		
 	//if the page is opened after a edit action
 	if ( $action == 'edit' ) {
+
+		?><div class="wrap"><h2><?php _e('Edit quote '.$quoteID, 'stray-quotes') ?></h2><?php 
 	
 		//check if something went wrong with quote id
 		if ( empty($quoteID) ) {
@@ -137,298 +155,467 @@ function stray_manage() {
                 </select>
                   
                 <label><?php _e('new category:&nbsp;','stray-quotes') ?></label>
-                <input type="text" name="quote_category" size=24 value=""  maxlength="24" <?php echo $styleborder ?> /></p>
+                <input type="text" name="quote_category" size=24 value="" <?php echo $styleborder ?> /></p>
                 
 				<p><label><?php _e('Visible:','stray-quotes') ?></label>
 					<input type="radio" name="quote_visible" class="input" value="yes"<?php echo $visible_yes ?> /> <?php _e('Yes','stray-quotes') ?>					
-					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php _e('No','stray-quotes') ?></div>
+					<input type="radio" name="quote_visible" class="input" value="no"<?php echo $visible_no ?> /> <?php _e('No','stray-quotes') ?>
 				</p><p>&nbsp;</p>
 				<p> <a href=" <?php echo $urlaction ?>"><?php _e('Cancel','stray-quotes') ?></a>&nbsp;
          	   <input type="submit" name="save"  class="button-primary" value="<?php _e('Update quote','stray-quotes') ?> &raquo;" /></p>
 			</form><p>&nbsp;</p></div><?php 
 	
 		}	
-	}	
+		
+	} else { //this "else" separates the edit form from the list of quotes. make it a "else if" below to revert to the old ways
 	
-	//after having saved the quote
-	else if ( $action == 'edit_save' ) {
+		?><div class="wrap"><h2><?php _e('Manage quotes','stray-quotes') ?></h2><?php 
+		
+		$nothingmessage = __('Please select something first.','stray-quotes');
+		$wrongmessage = __('Something went wrong.','stray-quotes');
 	
-		$quote = !empty($_REQUEST['quote_quote']) ? $_REQUEST['quote_quote'] : '';	
-		$author = !empty($_REQUEST['quote_author']) ? $_REQUEST['quote_author'] : '';
-		$source = !empty($_REQUEST['quote_source']) ? $_REQUEST['quote_source'] : '';
-		$visible = !empty($_REQUEST['quote_visible']) ? $_REQUEST['quote_visible'] : '';
+		//action: save the quote
+		if ( $action == 'edit_save' ) {
 		
-		if ($_REQUEST['quote_category'])$category = $_REQUEST['quote_category'];
-		else $category = $_REQUEST['categories'];
-		
-		if (preg_match('/\s+/',$category)>0){
-			$category=preg_replace('/\s+/','-',$category);
-			$plusmessage = "<br/>Note: <strong>The name of the category you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
-		} 
-
-	
-		if ( ini_get('magic_quotes_gpc') )	{
-		
-			$quote = stripslashes($quote);
-			$author = stripslashes($author);
-			$source = stripslashes($source);
-			$category = stripslashes($category);
-			$visible = stripslashes($visible);	
-		}
-		
-		if ( empty($quoteID) )	{
-			?><div id="message" class="error fade"><p><?php _e('<strong>Failure:</strong> No quote ID given.','stray-quotes') ?></p></div><?php
-		}
-		
-		else {		
-			$sql = "UPDATE " . WP_STRAY_QUOTES_TABLE 
-			. " SET `quote`='" . mysql_real_escape_string($quote)
-			. "', `author`='" . mysql_real_escape_string($author) 
-			. "', `source`='" . mysql_real_escape_string($source) 
-			. "', `category`='" . mysql_real_escape_string($category)
-			. "', `visible`='" . mysql_real_escape_string($visible) 
-			. "' WHERE `quoteID`='" . mysql_real_escape_string($quoteID) . "'";		     
-			$wpdb->get_results($sql);
+			//assign variables, trim, replace spaces
+			$quote = !empty($_REQUEST['quote_quote']) ? trim($_REQUEST['quote_quote']) : '';	
+			$author = !empty($_REQUEST['quote_author']) ? trim($_REQUEST['quote_author']) : '';
+			$source = !empty($_REQUEST['quote_source']) ? trim($_REQUEST['quote_source']) : '';
+			$visible = !empty($_REQUEST['quote_visible']) ? trim($_REQUEST['quote_visible']) : '';
+			if ($_REQUEST['quote_category'])$category = trim($_REQUEST['quote_category']);
+			else $category = $_REQUEST['categories'];
 			
-			$sql = "SELECT `quoteID` FROM " . WP_STRAY_QUOTES_TABLE 
-			. " WHERE `quote`='" . mysql_real_escape_string($quote) 
-			. "' AND `author`='" . mysql_real_escape_string($author) 
-			. "' AND `source`='" . mysql_real_escape_string($source) 
-			. "' AND `category`='" . mysql_real_escape_string($category) 
-			. "' AND `visible`='" . mysql_real_escape_string($visible) . "' LIMIT 1";
-			$result = $wpdb->get_results($sql);
+			if (preg_match('/\s+/',$category)>0){
+				$category=preg_replace('/\s+/','-',$category);
+				$plusmessage = "<br/>Note: <strong>The name of the category you created contained spaces</strong>, which are not allowed. <strong>I replaced them with dashes</strong>. I hope it's okay.";
+			} 
+	
+			//magic quotes
+			if ( ini_get('magic_quotes_gpc') )	{
 			
-			if ( empty($result) || empty($result[0]->quoteID) )	{			
-				?><div id="message" class="error fade"><p><?php _e('<strong>Failure:</strong> Something went wrong.','stray-quotes') ?></p></div><?php				
+				$quote = stripslashes($quote);
+				$author = stripslashes($author);
+				$source = stripslashes($source);
+				$category = stripslashes($category);
+				$visible = stripslashes($visible);	
 			}
-			else {			
-				?><div id="message" class="updated fade"><p><?php echo str_replace("%s",$quoteID,__(
-				'Quote <strong>%s</strong> updated.'.$plusmessage,'stray-quotes'));?></p></div><?php
-			}		
+			
+			//negative feedback or UPDATE
+			if ( empty($quoteID) )	{
+				?><div id="message" class="error fade"><p><?php _e('<strong>Failure:</strong> No quote ID given.','stray-quotes') ?></p></div><?php
+			}
+			
+			else {		
+				//update the quote
+				$sql = "UPDATE " . WP_STRAY_QUOTES_TABLE 
+				. " SET `quote`='" . mysql_real_escape_string($quote)
+				. "', `author`='" . mysql_real_escape_string($author) 
+				. "', `source`='" . mysql_real_escape_string($source) 
+				. "', `category`='" . mysql_real_escape_string($category)
+				. "', `visible`='" . mysql_real_escape_string($visible) 
+				. "' WHERE `quoteID`='" . mysql_real_escape_string($quoteID) . "'";		     
+				$wpdb->get_results($sql);
+				
+				//verify what has been udpated
+				$sql = "SELECT `quoteID` FROM " . WP_STRAY_QUOTES_TABLE 
+				. " WHERE `quote`='" . mysql_real_escape_string($quote) 
+				. "' AND `author`='" . mysql_real_escape_string($author) 
+				. "' AND `source`='" . mysql_real_escape_string($source) 
+				. "' AND `category`='" . mysql_real_escape_string($category) 
+				. "' AND `visible`='" . mysql_real_escape_string($visible) . "' LIMIT 1";
+				$result = $wpdb->get_results($sql);
+				
+				//feedback
+				if ( empty($result) || empty($result[0]->quoteID) )	{			
+					?><div id="message" class="error fade"><?php echo $wrongmessage ?></div><?php				
+				}
+				else {			
+					?><div id="message" class="updated fade"><p>
+					<?php echo str_replace("%s",$quoteID,__('Quote <strong>%s</strong> updated.'.$plusmessage,'stray-quotes'));?></p></div><?php
+				}		
+			}
 		}
-	}
-	
-	else if ( $action == 'delete' ) {
-	
-		if ( empty($quoteID) ) {
-			
-			
-			?><div class="error fade"><p><?php _e('<strong>Failure:</strong> No quote ID given. Nothing deleted.','stray-quotes') ?></p></div><?php		
-		}
-			
-		else {
 		
-			$sql = "delete from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "'";
+		//action: delete quote
+		else if ( $action == 'delete' ) {
+		
+			$sql = "delete from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . mysql_real_escape_string($quoteID) . "'";
 			$wpdb->get_results($sql);
 			
-			$sql = "select quoteID from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "'";
+			$sql = "select quoteID from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . mysql_real_escape_string($quoteID) . "'";
 			$result = $wpdb->get_results($sql);
 			
 			if ( empty($result) || empty($result[0]->quoteID) )	{			
-				?><div class="updated"><p><?php echo str_replace("%s",$quoteID,__(
-				'Quote <strong>%s</strong> deleted.','stray-quotes')); ?></p></div><?php
+				?><div class="updated"><p><?php echo str_replace("%s",$quoteID,__('Quote <strong>%s</strong> deleted.','stray-quotes')); ?></p></div><?php
 			}			
 			else {						
-				?><div class="error fade"><p><?php _e('<strong>Failure:</strong> Nothing deleted.','stray-quotes'); ?></p></div><?php	
+				?><div class="error fade"><?php echo $wrongmessage ?></div><?php	
 			}		
 		}
-	}
-		
-	// prepares category for sql
-	$where = '';
-	if (!$categories || $categories == 'all') $where = '';
-	else $where = " WHERE `category`='" . $categories . "'";
-	
-	// how many rows we have in database
-	$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . $where);
-	
-	//temporary workaround for the "division by zero" problem
-	if (is_string($rows))$rows=intval($rows);
-	settype($rows, "integer"); 
-	
-	// how many pages we have when using paging?
-	if ($rows == NULL || $rows < 10) $rows = 10; 
-	$maxPage = ceil($numrows/$rows);		
-	
-	// print the link to access each page
-	$nav  = '';
-	
-	$urlpages = $baseurl.'&qo='.$orderby.'&qr='.$rows.'&qg='.$categories.'&qs='.$sort.'&qp=';
-	
-	for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
-	   if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
-	   else $nav .= ' <a href="'.$urlpages.$quotepage.'">'.$quotepage.'</a> ';
-	}
-	
-	if ($pages > 1) {
-		
-		$quotepage  = $pages - 1;		
-		$prev  = ' <a href="'.$urlpages.$quotepage.'">Previous '.$rows.'</a> | ';		
-		$first = ' <a href="'.$urlpages.'1">First</a> | ';
-	}
-	else {
-	   $prev  = '&nbsp;'; // we're on page one, don't print previous link
-	   $first = '&nbsp;'; // nor the first page link
-	}
-	
-	if ($pages < $maxPage) {
-	
-		$missing = $numrows-($rows*$pages);		
-		if ($missing > $rows) $missing = $rows;
-		
-		$quotepage = $pages + 1;
-		$next = ' | <a href="'.$urlpages.$quotepage.'"> Next '.$missing.'</a> ';
-		
-		$last = ' | <a href="'.$urlpages.$maxPage.'"> Last</a> ';
-	}
-	else {
-	   $next = '&nbsp;'; // we're on the last page, don't print next link
-	   $last = '&nbsp;'; // nor the last page link
-	}		
 
-	//get all the quotes
-	$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category`,`visible` FROM " 
-	. WP_STRAY_QUOTES_TABLE 
-	. $where
-	. " ORDER BY `". $orderby ."`"
-	. $sort 
-	. " LIMIT " . $offset. ", ". $rows;
-	
-	$quotes = $wpdb->get_results($sql);
-	
-	//page number has to be reset to 1 otherwise it would look like you have no quotes left when you are on a page too high for so many quotes.
-	$urlrows = $baseurl.'&qo='.$orderby.'&qp='.'1'/*$pages*/.'&qg='.$categories.'&qs='.$sort.'&qr=';
-	
-	$urlcategory = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qs='.$sort.'&qg='; 
-	$urlorder = $baseurl.'&qp='.$pages.'&qr='.$rows.'&qg='.$categories.'&qs='.$sort.'&qo=';	
-	$urlsort = $baseurl.'&qo='.$orderby.'&qp='.$pages.'&qr='.$rows.'&qg='.$categories.'&qs=';
+		//bulk action: delete
+		else if ( $_POST['bulk'] == 'multidelete' ) {
+		
+			$deleteIds = '';
+			$count = 0;
+			foreach($_POST as $key => $val){
+					
+				if ( substr($key,0,12) == 'check_select' ) {
+					$deleteIds .= "'". $val . "',";
+					$count++;
+				} 
+			}
 
-	//HTML
-	?><p class="subsubsub" style="float:left"> <?php _e('quotes per page:','stray-quotes'); ?> 
-    <select name="lines" onchange="switchpage(this)"  style="vertical-align:middle">
-    <option value=<?php echo $urlrows.'10'; if ( $rows == 10) echo ' selected';  ?> >10</option>
-    <option value=<?php echo $urlrows.'15'; if ( $rows == 15) echo ' selected'; ?> >15</option>
-    <option value=<?php echo $urlrows.'20'; if ( $rows == 20) echo ' selected'; ?> >20</option>
-	<option value=<?php echo $urlrows.'30'; if ( $rows == 30) echo ' selected'; ?> >30</option>
-    <option value=<?php echo $urlrows.'50'; if ( $rows == 50) echo ' selected'; ?> >50</option>
-    <option value=<?php echo $urlrows.'100'; if ( $rows == 100) echo ' selected'; ?> >100</option>
-	</select> | <?php _e('show category: ','stray-quotes'); ?> 
-    
-    <select name="categories" onchange="switchpage(this)"  style="vertical-align:middle"> 
-    <option value="<?php echo $urlcategory.'all'; ?>" 
-	<?php  if ( $categories == '' || $categories == 'all' ) echo ' selected'; ?>>all</option>
-    <?php $categorylist = make_categories(); 
-	foreach($categorylist as $categoryo){ 
-    if (strpos(" ",$categoryo)) $categoryo = str_replace(" ","-",$categoryo);
-    	?><option value="<?php echo $urlcategory.$categoryo; ?>" 
-		<?php  if ( $categories) {if ( $categories == $categoryo) echo ' selected';} ?> >
-		<?php echo $categoryo;?></option>
-	<?php } ?>   
-    </select>
-    </p>
-	<p class="subsubsub" style="float:right"><?php echo $first . $prev . $nav . $next . $last; ?></p><?php
-	
-	//build table
-	if ( !empty($quotes) ) {
-		$imgasc = WP_STRAY_QUOTES_PATH . '/img/s_asc.png';
-		$imgdsc = WP_STRAY_QUOTES_PATH . '/img/s_desc.png';
-		?><table class="widefat">
-        <thead><tr>          
+			$deleteIds = rtrim($deleteIds,',');			
+			$sql = "DELETE FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID` IN(".$deleteIds.")";
+			$wpdb->query($sql);
 			
-            <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'quoteID') { ?>
-            <a href="<?php echo $urlorder . 'quoteID'; ?>" title="Sort"><?php _e('ID','stray-quotes') ?></a>
-			<?php } else { _e('ID','stray-quotes');
-				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
-                <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
-				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
-				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
-			</a>			
-			<?php } }else{ _e('ID','stray-quotes'); }?>            
-            </th>
-            
-			<th scope="col"> <?php _e('Quote','stray-quotes') ?> </th>
-            
-            <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'author') { ?>
-            <a href="<?php echo $urlorder . 'author'; ?>"><?php _e('Author','stray-quotes') ?></a>
-			<?php } else { _e('Author','stray-quotes');
-				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
-                <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
-				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
-				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
-			</a>			
-			<?php } }else{ _e('Author','stray-quotes'); } ?>            
-            </th>
-            
-            <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'source') { ?>
-            <a href="<?php echo $urlorder . 'source'; ?>"><?php _e('Source','stray-quotes') ?></a>
-			<?php } else { _e('Source','stray-quotes');
-				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
-                <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
-				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
-				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
-			</a>			
-			<?php }}else{ _e('Source','stray-quotes'); }  ?>            
-            </th>
-            
-            <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'category') { ?>
-            <a href="<?php echo $urlorder . 'category'; ?>"><?php _e('Category','stray-quotes') ?></a>
-			<?php } else { _e('Category','stray-quotes');
-				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
-                <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
-				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
-				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
-			</a>			
-			<?php } }else{ _e('Category','stray-quotes'); } ?>            
-            </th>
-            
-            <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'visible') { ?>
-            <a href="<?php echo $urlorder . 'visible'; ?>"><?php _e('Visible','stray-quotes') ?></a>
-			<?php } else { _e('Visible','stray-quotes');
-				if ($sort == 'ASC') { ?><a href="<?php echo $urlsort . 'DESC'; ?>">
-                <img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /> <?php }
-				else if ($sort == 'DESC') { ?><a href="<?php echo $urlsort . 'ASC'; ?>">
-				<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /> <?php } ?>
-			</a>			
-			<?php }}else{ _e('Visible','stray-quotes'); }  ?>            
-            </th>
-            
-			<th scope="col">&nbsp;</th>
-			<th scope="col">&nbsp;</th>
+			$sql2 = "SELECT `quoteID` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID` IN(".$deleteIds.")";
+			$result = $wpdb->get_results($sql2);			
 			
-			</tr></thead><tbody><?php
-		
-		$i = 0;
-
-		foreach ( $quotes as $quote ) {
-		
-			$alt = ($i % 2 == 0) ? ' class="alternate"' : '';
-	
-			?> <tr <?php echo($alt); ?>>
+			if ($count == 0) { ?><div class="error fade"><?php echo $nothingmessage ?></div><?php
+			} else {
 				
-				<th scope="row"><?php echo ($quote->quoteID); ?></th>
-				<td><?php echo(nl2br($quote->quote)); ?></td>
-				<td><?php echo($quote->author); ?></td>
-				<td><?php echo($quote->source); ?></td>
-                <td><?php if ($quote->category == 'default')echo('<em>'.$quote->category.'</em>'); else echo $quote->category;?></td>
-				<td align="center"><?php if( $quote->visible == 'yes' ) _e( 'yes', 'stray-quotes' ); else _e( 'no', 'stray-quotes' ); ?></td>
-									
-				<td align="center">
-				<a href="<?php echo $urlaction . '&qa=edit&qi='.$quote->quoteID ; ?>">
-				<?php _e('Edit','stray-quotes') ?></a></td>
-
-				<td align="center">
-				<a href="
-				<?php echo $urlaction . '&qa=delete&qi='.$quote->quoteID; ?>"
-				onclick="if ( confirm('<?php echo __( 'You are about to delete quote ','stray-quotes') . $quote->quoteID . '.\\n\\\'' . __('Cancel','stray-quotes') . '\\\' ' . __('to stop','stray-quotes') . ', \\\'OK\\\' ' . __('to delete','stray-quotes') . '.\''; ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
-			</tr>
-			<?php $i++; 
-		} ?>
-		</tbody></table><p class="subsubsub" style="float:right"><?php
-		echo $first . $prev . $nav . $next . $last; ?></p><?php
+				if ( empty($result) || empty($result[0]->quoteID) )	{			
+					?><div class="updated"><p><?php echo str_replace("%s",$count,__('<strong>%s</strong> quotes deleted.','stray-quotes')); ?></p></div><?php
+				} else { ?><div class="error fade"><?php echo $wrongmessage ?></div><?php	}
+			}
+		}
 		
-	} else { ?><p><div style="clear:both"> <?php _e('<br/>No quotes yet.','stray-quotes') ?> </div></p>
+		//bulk action: toggle visibility
+		else if ( $_POST['bulk'] == 'togglevisible' ) {
+			
+			$toggleyes ='';
+			$toggleno ='';
+			$count = 0;
+			foreach($_POST as $key => $val){
+					
+				if ( substr($key,0,12) == 'check_select' ) {
+					
+					$sql = "SELECT `visible` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID`='".$val."'";
+					$visibility = $wpdb->get_var($sql);
+					if ($visibility=='yes') $toggleyes .= "'". $val . "',";
+					else $toggleno .= "'". $val . "',";
+					
+					$count++;
+				}
+			}
+			
+			$toggleyes = rtrim($toggleyes,',');
+			$toggleno = rtrim($toggleno,',');
+			
+			$sql = "UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `visible`= 'no' WHERE `quoteID` IN(".$toggleyes.")";
+			$wpdb->query($sql);
+			$sql1 = "UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `visible`= 'yes' WHERE `quoteID` IN(".$toggleno.")";
+			$wpdb->query($sql1);
 
-	</div><?php	}	
+			$sql2 = "SELECT `quoteID` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `visible` IN(".$toggleyes.") = 'no'";
+			$result1 = $wpdb->get_results($sql2);
+			$sql3 = "SELECT `quoteID` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `visible` IN(".$toggleno.") = 'yes'";
+			$result2 = $wpdb->get_results($sql3);
+			
+			if ($count == 0) { ?><div class="error fade"><?php echo $nothingmessage ?></div><?php
+			} else {
+
+				if ( $result1 || $result2 )	{			
+					?><div class="updated"><p><?php echo str_replace("%s",$count,__('Visibility toggled for <strong>%s</strong> quotes.','stray-quotes')); ?></p></div><?php
+				}			
+				else {						
+					?><div class="error fade"><?php echo $wrongmessage ?></div><?php	
+				}	
+			}
+		}
+
+		//bulk action: change category
+		else if ( $_POST['bulk'] == 'changecategory' ) {
+			
+			$newcat = $_POST['catselect'];
+			$catlist = '';
+			$count = 0;
+			foreach($_POST as $key => $val){
+					
+				if ( substr($key,0,12) == 'check_select' ) {
+					$catlist .= "'". $val . "',";
+					$count++;
+				}
+			}
+
+			$catlist = rtrim($catlist,',');			
+			$sql = "UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `category`='".$newcat."' WHERE `quoteID` IN(".$catlist.")";
+			$wpdb->query($sql);
+
+			$sql2 = "SELECT DISTINCT `category` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID` IN(".$catlist.")";
+			$result = $wpdb->get_var($sql2);			
+
+			if ($count == 0) { ?><div class="error fade"><?php echo $nothingmessage ?></div><?php
+			} else {
+
+				if ( $result == $newcat )	{			
+					?><div class="updated"><p><?php echo str_replace("%s",$count,__('Category changed for <strong>%s</strong> quotes.','stray-quotes')); ?></p></div><?php
+				}			
+				else {						
+					?><div class="error fade"><?php echo $wrongmessage ?></div><?php	
+				}	
+			}
+		}	
+		
+		//bulk action: no action
+		else if ( $_POST['bulk'] == 'noaction' ){ 
+		
+		 ?><div class="error fade"><?php _e('Please select something in the \'Bulk Actions\' menu first.','stray-quotes'); ?></div><?php 
+		}
+
+		// prepares category for sql
+		$where = '';
+		if (!$categories || $categories == 'all') $where = '';
+		else $where = " WHERE `category`='" . $categories . "'";
+		
+		// how many rows we have in database
+		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . $where);
+		
+		//temporary workaround for the "division by zero" problem
+		if (is_string($rows))$rows=intval($rows);
+		settype($rows, "integer"); 
+		
+		// how many pages we have when using paging?
+		if ($rows == NULL || $rows < 10) $rows = 10; 
+		$maxPage = ceil($numrows/$rows);		
+		
+		// print the link to access each page (thanks to http://www.php-mysql-tutorial.com/wikis/php-tutorial/paging-using-php.aspx)
+		$nav  = '';
+		for($quotepage = 1; $quotepage <= $maxPage; $quotepage++) {
+			
+			//with few pages, print all the links
+			if ($maxPage < 4) {
+				
+				if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
+				else $nav .= ' <a href="'.querystrings($urlaction, 'qp', $quotepage).'">'.$quotepage.'</a> ';
+			
+			//with many pages
+			} else {
+				
+				if ($quotepage == $pages)$nav .= $quotepage; // no need to create a link to current page
+				else if ($quotepage == 1 || $quotepage == $maxPage)$nav .= ''; //no need to create first and last (they are created by the first and last links afterwards)
+				else {
+					
+					//print links that are close to the current page (< 2 steps away)
+					if ( ($quotepage < ($pages+2)) && ($quotepage > ($pages-2)) )$nav .= ' <a href="'.querystrings($urlaction, 'qp', $quotepage).'">'.$quotepage.'</a> ';
+					
+					//otherwise they're dots
+					else {
+						
+						if ($pages > 3) $fdot = '.';
+						if ($pages != ($maxPage-1)) $ldot = '.';
+					}
+					
+				}
+				
+			}
+		   
+		}
+
+		//print first and last, next and previous links
+		if ($pages > 1) {
+			
+			$quotepage  = $pages - 1;		
+			$prev  = ' <a href="'.querystrings($urlaction, 'qp', $quotepage).'" title="Previous '.$rows.'">&laquo;</a> ';		
+			if ($maxPage > 4) $first = ' <a href="'.querystrings($urlaction, 'qp', '1').'">1</a> '.$fdot.' ';
+		}
+		else {
+		   $prev  = '&nbsp;'; // we're on page one, don't print previous link
+		   if ($maxPage > 4) $first = '&nbsp;';  //nor the first page link
+		}
+		
+		if ($pages < $maxPage) {
+		
+			$missing = $numrows-($rows*$pages);		
+			if ($missing > $rows) $missing = $rows;
+			
+			$quotepage = $pages + 1;
+			$next = ' <a href="'.querystrings($urlaction, 'qp', $quotepage).'" title=" Next '.$missing.'">&raquo;</a> ';
+			if ($maxPage > 4) $last = ' ' .$ldot.' <a href="'.querystrings($urlaction, 'qp', $maxPage).'"> '.$maxPage.'</a> ';
+		}
+		else {
+		   $next = '&nbsp;'; // we're on the last page, don't print next link
+		   if ($maxPage > 4) $last = '&nbsp;';  //nor the last page link
+		}		
+	
+		//get all the quotes
+		$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category`,`visible` FROM " 
+		. WP_STRAY_QUOTES_TABLE 
+		. $where
+		. " ORDER BY `". $orderby ."`"
+		. $sort 
+		. " LIMIT " . $offset. ", ". $rows;
+		
+		$quotes = $wpdb->get_results($sql);
+		
+		//page number has to be reset to 1 otherwise it would look like you have no quotes left when you are on a page too high for so many quotes.
+		$urlrows = querystrings($urlaction, 'qp', '1');
+	
+		//HTML		
+		$bulkurl = remove_querystring_var($_SERVER['REQUEST_URI'], 'qa');
+		$bulkurl = remove_querystring_var($bulkurl, 'qi');
+		?><form name="bulkform" id="bulkform" method="post" action="<?php echo $bulkurl ?>">
+        <div class="tablenav">
+        <div class="alignleft actions">      
+		<select name="bulk" id="bulkselect" style="vertical-align:middle;max-width:110px" onchange="javascript:disable_enable()" />
+		<option value="noaction" >Bulk Actions</option>
+		<option value="multidelete">delete</option>
+		<option value="togglevisible">toggle visibility</option>
+		<option value="changecategory">change category	</option>
+		</select>
+		<select name="catselect" id="catselect" style="vertical-align:middle;max-width:120px"> 
+		<?php $categorylist = make_categories(); 
+		foreach($categorylist as $categoryo){ 
+			?><option value="<?php echo $categoryo; ?>" >
+			<?php echo $categoryo;?></option>
+		<?php } ?>   
+		</select>
+		<input type="submit" value="Apply" class="button-secondary action" />
+		</div>
+        
+        <div class="alignleft actions"> 
+		<span style="color:#666; font-size:11px;white-space:nowrap;"><?php _e('display ','stray-quotes'); ?> </span>
+		<select name="lines" onchange="switchpage(this)"  style="vertical-align:middle">
+		<option value=<?php echo querystrings($urlrows, 'qr', '10'); if ( $rows == 10) echo ' selected';  ?> ><?php _e('10 quotes', 'stray-quotes'); ?></option>
+		<option value=<?php echo querystrings($urlrows, 'qr', '15'); if ( $rows == 15) echo ' selected'; ?> ><?php _e('15 quotes', 'stray-quotes'); ?></option>
+		<option value=<?php echo querystrings($urlrows, 'qr', '20'); if ( $rows == 20) echo ' selected'; ?> ><?php _e('20 quotes', 'stray-quotes'); ?></option>
+		<option value=<?php echo querystrings($urlrows, 'qr', '30'); if ( $rows == 30) echo ' selected'; ?> ><?php _e('30 quotes', 'stray-quotes'); ?></option>
+		<option value=<?php echo querystrings($urlrows, 'qr', '50'); if ( $rows == 50) echo ' selected'; ?> ><?php _e('50 quotes', 'stray-quotes'); ?></option>
+		<option value=<?php echo querystrings($urlrows, 'qr', '100'); if ( $rows == 100) echo ' selected'; ?> ><?php _e('100 quotes', 'stray-quotes'); ?></option>
+		</select> <!--<span style="color:#666; font-size:11px;white-space:nowrap;"><?php _e(' from ','stray-quotes'); ?> </span>-->
+		<select name="categories" onchange="switchpage(this)"  style="vertical-align:middle;max-width:120px"> 
+		<option value="<?php echo querystrings($urlaction, 'qc', 'all'); ?>" 
+		<?php  if ( $categories == '' || $categories == 'all' ) echo ' selected'; ?>>all categories</option>
+		<?php $categorylist = make_categories(); 
+		foreach($categorylist as $categoryo){ 
+			if (preg_match('/\s+/',$categoryo)>0)$categoryo = preg_replace('/\s+/','-',$categoryo);
+			?><option value="<?php echo querystrings($urlaction, 'qc', $categoryo); ?>" <?php  if ( $categories) {if ( $categories == $categoryo) echo ' selected';} ?> ><?php echo $categoryo;?></option>
+		<?php } ?>   
+		</select></div>	
+        
+		<div class="tablenav-pages">
+		<?php $search = array("%s1", "%s2");
+		$replace = array($pages,$maxPage);		
+		echo str_replace($search,$replace,__('<span class="displaying-num">Page %s1 of %s2</span>', 'stray-quotes')); 
+		echo '<strong>'.  $prev .$first . $nav . $last . $next . '</strong>'; ?></div>
+		</div>
+		<?php
+		
+		//build table
+		if ( !empty($quotes) ) {
+			$imgasc = WP_STRAY_QUOTES_PATH . '/img/s_asc.png';
+			$imgdsc = WP_STRAY_QUOTES_PATH . '/img/s_desc.png';
+			?><table class="widefat" id="straymanage">
+            
+            <?php //column headers ?>
+			<thead><tr>
+				<th scope="col" style="padding-left: 0; margin-left:0">
+				<input type="checkbox" style="padding-left:0" /></th>   
+				
+				<th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'quoteID') { ?>
+				<a href="<?php echo querystrings($urlaction, 'qo', 'quoteID'); ?>" title="Sort"><?php _e('ID','stray-quotes') ?></a>
+				<?php } else { _e('ID','stray-quotes');
+					if ($sort == 'ASC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'DESC'); ?>">
+					<img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /></a> <?php }
+					else if ($sort == 'DESC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'ASC'); ?>">
+					<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /></a> <?php } ?>
+							
+				<?php } }else{ _e('ID','stray-quotes'); }?>            
+				</th>
+				
+				<th scope="col"> <?php _e('Quote','stray-quotes') ?> </th>
+				
+				<th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'author') { ?>
+				<a href="<?php echo querystrings($urlaction, 'qo', 'author'); ?>"><?php _e('Author','stray-quotes') ?></a>
+				<?php } else { _e('Author','stray-quotes');
+					if ($sort == 'ASC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'DESC'); ?>">
+					<img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /></a> <?php }
+					else if ($sort == 'DESC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'ASC'); ?>">
+					<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /></a> <?php } ?>
+				<?php } }else{ _e('Author','stray-quotes'); } ?>            
+				</th>
+				
+				<th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'source') { ?>
+				<a href="<?php  echo querystrings($urlaction, 'qo', 'source'); ?>"><?php _e('Source','stray-quotes') ?></a>
+				<?php } else { _e('Source','stray-quotes');
+					if ($sort == 'ASC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'DESC'); ?>">
+					<img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /></a> <?php }
+					else if ($sort == 'DESC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'ASC'); ?>">
+					<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /></a> <?php } ?>
+				<?php }}else{ _e('Source','stray-quotes'); }  ?>            
+				</th>
+				
+				<th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'category') { ?>
+				<a href="<?php  echo querystrings($urlaction, 'qo', 'category'); ?>"><?php _e('Category','stray-quotes') ?></a>
+				<?php } else { _e('Category','stray-quotes');
+					if ($sort == 'ASC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'DESC'); ?>">
+					<img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /></a> <?php }
+					else if ($sort == 'DESC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'ASC'); ?>">
+					<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /></a> <?php } ?>
+				<?php } }else{ _e('Category','stray-quotes'); } ?>            
+				</th>
+				
+				<th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'visible') { ?>
+				<a href="<?php  echo querystrings($urlaction, 'qo', 'visible'); ?>"><?php _e('Visible','stray-quotes') ?></a>
+				<?php } else { _e('Visible','stray-quotes');
+					if ($sort == 'ASC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'DESC'); ?>">
+					<img src= <?php echo $imgasc ?> alt="Descending" title="Descending" /></a> <?php }
+					else if ($sort == 'DESC') { ?><a href="<?php echo querystrings($urlaction, 'qs', 'ASC'); ?>">
+					<img src= <?php echo $imgdsc ?> alt="Ascending" title="Ascending" /></a> <?php } ?>
+				<?php }}else{ _e('Visible','stray-quotes'); }  ?>            
+				</th>
+				
+				<th scope="col">&nbsp;</th>
+				<th scope="col">&nbsp;</th>
+				
+			</tr></thead>
+                
+            <?php //table rows ?>
+            <tbody><?php
+			
+			$i = 0;	
+			foreach ( $quotes as $quote ) {
+			
+				$alt = ($i % 2 == 0) ? ' class="alternate"' : ''; ?>		
+				<tr <?php echo($alt); ?>>
+                				
+					<td scope="col" style="white-space: nowrap;"><input type="checkbox" name="<?php echo 'check_select'.$i ?>" value="<?php echo $quote->quoteID ?>" /> </td> 
+					
+					<th scope="row"><?php echo ($quote->quoteID); ?></th>
+					<td><?php echo(nl2br($quote->quote)); ?></td>
+					<td><?php echo($quote->author); ?></td>
+					<td><?php echo($quote->source); ?></td>
+					<td><?php if ($quote->category == 'default')echo('<em>'.$quote->category.'</em>'); else echo $quote->category;?></td>
+					<td align="center"><?php if( $quote->visible == 'yes' ) _e( 'yes', 'stray-quotes' ); else _e( 'no', 'stray-quotes' ); ?></td>
+										
+					<td align="center">
+					<a href="<?php echo querystrings( querystrings($urlaction, 'qa', 'edit'), 'qi', $quote->quoteID ); ?>">
+					<?php _e('Edit','stray-quotes') ?></a></td>
+	
+					<td align="center">
+					<a href="
+					<?php echo querystrings( querystrings($urlaction, 'qa', 'delete'), 'qi', $quote->quoteID );  ?>"
+					onclick="if ( confirm('<?php echo __( 'You are about to delete quote ','stray-quotes') . $quote->quoteID . '.\\n\\\'' . __('Cancel','stray-quotes') . '\\\' ' . __('to stop','stray-quotes') . ', \\\'OK\\\' ' . __('to delete','stray-quotes') . '.\''; ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
+                    
+				</tr>
+				<?php $i++; 
+			} ?>
+			</tbody>
+            
+            <?php //end table and navigation ?>
+            </table><div class="tablenav"><div class="tablenav-pages">
+			<?php $search = array("%s1", "%s2");
+            $replace = array($pages,$maxPage);		
+            echo str_replace($search,$replace,__('<span class="displaying-num">Page %s1 of %s2</span>', 'stray-quotes')); 
+            echo '<strong>'.  $prev .$first . $nav . $last . $next . '</strong>'; ?></div>
+            </div></div></form><?php
+			
+		} else { ?><p><div style="clear:both"> <?php _e('<br/>No quotes here.','stray-quotes') ?> </div></p>
+	
+		</div><?php	}	
+	}
 	
 ?></div><?php
 
