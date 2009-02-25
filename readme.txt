@@ -22,6 +22,8 @@ The main features:
 * A bookmarklet to create quotes on the fly as you browse and find text worth quoting.
 * A help page where everything you need to know is explained.
 
+See [here](http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes/) more cool things you can do with this plugin.
+
 **Important note about version 1.8.5**
 The `[random-quote]` shortcodes now works slightly differently, since it accepts more variables. There's a chance that if you used it on your blog with variables before this version, it won't work now. It is not a bug, just a change in functionality that I hope is for the best. Consult the Help page in the menu of the plugin for more.
 
