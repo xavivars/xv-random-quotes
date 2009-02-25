@@ -335,6 +335,15 @@ function quotes_activation() {
 		$quotesoptions['stray_loader'] = '';
 		$quotesoptions['stray_after_loader'] = '</p>';
 		$quotesoptions['stray_ajax'] =  '';
+		$quotesoptions['comment_scode'] =  '';
+		$quotesoptions['title_scode'] =  '';
+		$quotesoptions['excerpt_scode'] =  '';
+		$quotesoptions['widget_scode'] =  '';
+		$quotesoptions['categories_scode'] =  '';
+		$quotesoptions['tags_scode'] =  '';
+		$quotesoptions['bloginfo_scode'] =  '';		
+		$quotesoptions['bookmarlet_source'] =  '';
+		$quotesoptions['bookmarklet_cat'] =  '';
 				
 		//the message
 		delete_option('stray_quotes_first_time');		
@@ -435,6 +444,20 @@ function quotes_activation() {
 	if( $quotesoptions['stray_quotes_version'] < 182 ){
 		//add a new fields
 		$quotesoptions['stray_ajax'] =  '';
+	}
+	
+	// < 1.8.5
+	if(  $quotesoptions['stray_quotes_version'] < 185 ){
+		//add a new fields
+		$quotesoptions['comment_scode'] =  '';
+		$quotesoptions['title_scode'] =  '';
+		$quotesoptions['excerpt_scode'] =  '';
+		$quotesoptions['widget_scode'] =  '';
+		$quotesoptions['categories_scode'] =  '';
+		$quotesoptions['tags_scode'] =  '';
+		$quotesoptions['bloginfo_scode'] =  '';		
+		$quotesoptions['bookmarlet_source'] =  '';
+		$quotesoptions['bookmarklet_cat'] =  '';
 	}
 
 	//take care of version number
