@@ -12,15 +12,14 @@ Display random words everywhere on your blog. Easy to custom and manage. Ajax en
 Stray Random Quotes helps you collect and display random quotes everywhere on your blog. Actually, this plugin is so flexible that it can be used to display random words of all sorts: taglines, "leave a response" messages, footer or header sections etc.
 The main features:
 
-* The quotes can be refreshed by the user with **AJAX** automation (without reloading the page). AJAX can be disabled if you like.
-* The plugin is **widget compatible**. You can use as many widgets as you like, each displaying quotes from different categories.
-* The quotes can be rotated randomly, or one by one starting randomly.
-* **Shortcodes** can be used to add single quotes or multiple quotes to your posts and pages, and **template tags** to add them directly to the template pages.
-* Optionally, shortcodes can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
-* The appearance of the quotes can be highly customized with a dedicated option page, and individually with each widget or template tag.
-* The plugin comes with a easy to use advanced management tool, with bulk actions to change category, delete and toggle visibility of many quotes at once.
-* A bookmarklet to create quotes on the fly as you browse and find text worth quoting.
-* A help page where everything you need to know is explained.
+* **AJAX** automation so a reader of the blog can get another quote without reloading the page.
+* As many **widgets** as you need, each with its individual set of options, to display quotes from all or some categories, randomly or in sequence, with or without AJAX, etc.
+* **Shortcodes** that can be used to add single quotes or multiple quotes to your posts and pages. Shortcodes come with a set of individual options as well and, if needed, they can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
+* **Template tags** to add quotes --and random words in general-- directly to the template pages.
+* A **Settings page** to customize the appearance of the quotes with little or no knowledge of HTML.
+* A easy to use **management page** where even thousands of quotes can be handled easily, with bulk actions to change category, delete quotes and toggle visibility of many quotes at a time.
+* A **bookmarklet** to create quotes on the fly as you browse the web and find text worth quoting.
+* A **help page** where everything you need to know is explained.
 
 See [here](http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes/) more cool things you can do with this plugin.
 
