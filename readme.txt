@@ -14,7 +14,7 @@ The main features:
 
 * As many **widgets** as you need, each with its individual set of options, to display quotes from all or some categories, randomly or in sequence, with or without AJAX, etc.
 * **AJAX** automation so a reader of the blog can get another quote without reloading the page.
-* **Shortcodes** that can be used to add single quotes or multiple quotes to your posts and pages. Shortcodes come with a set of individual options as well and, if needed, they can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
+MNJh)I7q9nR&* **Shortcodes** that can be used to add single quotes or multiple quotes to your posts and pages. Shortcodes come with a set of individual options as well and, if needed, they can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
 * **Template tags** to add quotes --and random words in general-- directly to the template pages.
 * A **Settings page** to customize the appearance of the quotes with little or no knowledge of HTML.
 * A easy to use **management page** where even thousands of quotes can be handled easily, with bulk actions to change category, delete quotes and toggle visibility of many quotes at a time.
@@ -42,10 +42,6 @@ The `[random-quote]` shortcode now works slightly differently, since it accepts 
 1. Upload the content of stray-quotes.zip to your `/wp-content/plugins/` directory.
 2. Activate the plugin on the 'Plugins' page in WordPress.
 3. Now Stray Random Quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
-
-== Frequently Asked Questions ==
-
-= See the Help page in the plugin's menu =
 
 == Credits ==
 
