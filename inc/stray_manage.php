@@ -66,7 +66,7 @@ function stray_manage() {
 	//the old way
 	/*$urlaction = $baseurl.'&amp;qo='.$orderby.'&amp;qp='.$pages.'&qr='.$rows.'&amp;qc='.$categories.'&amp;qs='.$sort;*/ 
 		
-	//if the page is opened after a edit action
+	//action: edit the quote
 	if ( $action == 'edit' ) {
 
 		?><div class="wrap"><h2><?php _e('Edit quote '.$quoteID, 'stray-quotes') ?></h2><?php 
@@ -122,7 +122,7 @@ function stray_manage() {
 			$styletextarea = 'style="border:1px solid #ccc; font-family: Times New Roman, Times, serif; font-size: 1.4em;"'; ?>
             <div style="width:42em">
 			<script src="<?php echo WP_STRAY_QUOTES_PATH ?>/inc/js_quicktags-mini.js" type="text/javascript"></script>
-            <form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?> ">
+            <form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
 				<input type="hidden" name="qa" value="edit_save">
 				<input type="hidden" name="qi" value="<?php echo $quoteID; ?>">
 			
@@ -169,7 +169,8 @@ function stray_manage() {
 		
 	} else { //this "else" separates the edit form from the list of quotes. make it a "else if" below to revert to the old ways
 	
-		?><div class="wrap"><h2><?php _e('Manage quotes','stray-quotes') ?></h2><?php 
+		?><div class="wrap">
+        <h2><?php _e('Manage quotes','stray-quotes') ?></h2><?php 
 		
 		$nothingmessage = __('Please select something first.','stray-quotes');
 		$wrongmessage = __('Something went wrong.','stray-quotes');

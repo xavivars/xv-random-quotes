@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
 Author: ico@italyisfalling.com
 Author URI:http://www.italyisfalling.com/lines-of-code/
-Version: 1.8.5
+Version: 1.8.6
 License: GPL compatible
 */
 
@@ -18,7 +18,7 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define("WP_STRAY_VERSION", 185);
+define("WP_STRAY_VERSION", 186);
 
 //prepare for local
 $currentLocale = get_locale();
@@ -27,6 +27,16 @@ if(!empty($currentLocale)) {
 	//check if it is a window server and changes path accordingly
 	if ( strpos($moFile, '\\')) $moFile = str_replace('/','\\',$moFile); 
 	if(@file_exists($moFile) && is_readable($moFile)) load_textdomain('stray-quotes', $moFile);
+}
+
+// fix REQUEST_URI for ISS
+if ( !isset($_SERVER['REQUEST_URI']) || ($_SERVER['REQUEST_URI']=='') ) {
+
+	$_SERVER['REQUEST_URI'] = substr($_SERVER['PHP_SELF'],1);
+
+	if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != '') {
+		$_SERVER['REQUEST_URI'] .= '?'.$_SERVER['QUERY_STRING'];
+	}
 }
 
 //add ajax script
@@ -206,7 +216,7 @@ function quotes_activation() {
 		
 		//insert sample quote
 		$wpdb->query("INSERT INTO " . WP_STRAY_QUOTES_TABLE . " (
-		`quote`, `author`, `source`) values ('Always tell the truth. Then you don\'t have to remember anything.', 'Mark Twain', 'Roughin it') ");
+		`quote`, `author`, `source`) values ('Always tell the truth. Then you don\'t have to remember anything.', 'Mark Twain', 'Roughin\' it') ");
 		
 		//message
 		$straymessage = __('Hey. This seems to be your first time with this plugin. I\'ve just created the database table "%s1" to store your quotes, and added one to start you off.','stray-quotes');

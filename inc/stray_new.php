@@ -18,8 +18,6 @@ function stray_new() {
 		
 		$quotesoptions = array();
 		$quotesoptions = get_option('stray_quotes_options');
-		
-
 		$quote = !empty($_REQUEST['quote_quote']) ? stripslashes(trim($_REQUEST['quote_quote'])) : '';
 		if ($quotesoptions['bookmarlet_source'] == 'Y' )$source = !empty($_REQUEST['quote_source']) ? stripslashes(trim($_REQUEST['quote_source'])) : '';
 		if ($quotesoptions['bookmarklet_cat']) $category = $quotesoptions['bookmarklet_cat'];
@@ -160,7 +158,7 @@ function stray_new() {
 		
 		<div style="width:42em">
 		<script src="<?php echo WP_STRAY_QUOTES_PATH ?>/inc/js_quicktags-mini.js" type="text/javascript"></script>
-		<form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?> ">
+		<form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 			<input type="hidden" name="action" value="add">
 			<input type="hidden" name="quoteID" value="<?php echo $quoteID; ?>">
 		

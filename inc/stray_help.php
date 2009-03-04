@@ -4,6 +4,8 @@ function stray_help() {
 	
 	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";
 	$toolspage = get_option('siteurl')."/wp-admin/admin.php?page=stray_tools";
+	$options = get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options"; 
+	$manage = get_option('siteurl')."/wp-admin/admin.php?page=stray_manage"; 
 	
 	// blah blah ?>
 <div class="wrap" style="width:52%"><h2><?php _e('The help page','stray-quotes');?></h2>
