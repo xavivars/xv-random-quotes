@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
 Author: ico@italyisfalling.com
 Author URI:http://www.italyisfalling.com/lines-of-code/
-Version: 1.8.6
+Version: 1.8.9
 License: GPL compatible
 */
 
@@ -18,14 +18,14 @@ if (DIR == 'plugins') $dir = '';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . DIR);
 
 // !!! remember to change this with every new version !!!
-define("WP_STRAY_VERSION", 186);
+define("WP_STRAY_VERSION", 189);
 
-//prepare for local
+//get ready for local
 $currentLocale = get_locale();
 if(!empty($currentLocale)) {
 	$moFile = ABSPATH . 'wp-content/plugins/' . $dir . 'lang/stray-quotes-' . $currentLocale . ".mo";
-	//check if it is a window server and changes path accordingly
-	if ( strpos($moFile, '\\')) $moFile = str_replace('/','\\',$moFile); 
+	//check if it is a window server and change path accordingly
+	/*if ( strpos($moFile, '\\')) $moFile = str_replace('/','\\',$moFile);*/ 
 	if(@file_exists($moFile) && is_readable($moFile)) load_textdomain('stray-quotes', $moFile);
 }
 
@@ -99,12 +99,15 @@ function stray_quotes_header(){
 			var a = document.getElementById('ajaxinput1');
 			var b = document.getElementById('ajaxinput2');
 			var c = document.getElementById('ajaxinput3');
+			var d = document.getElementById('ajaxinput4');
 			if (a.disabled==true)a.disabled=false;
 			else a.disabled=true;
 			if (b.disabled==true)b.disabled=false;
 			else b.disabled=true;
 			if (c.disabled==true)c.disabled=false;
 			else c.disabled=true;
+			if (d.disabled==true)d.disabled=false;
+			else d.disabled=true;
 		}
 		// Multiple onload function created by: Simon Willison
 		// http://simonwillison.net/2004/May/26/addLoadEvent/
@@ -278,18 +281,6 @@ function quotes_activation() {
 		else $quotesoptions[$var] = $temp;
 		delete_option($var);		
 		unset($var);unset($temp);
-		$var = 'stray_quotes_widget_title';
-		$temp = get_option($var);
-		if (false === $temp) $quotesoptions[$var] =  'Random Quote';
-		else $quotesoptions[$var] = $temp;
-		delete_option($var);		
-		unset($var);unset($temp);
-		$var = 'stray_quotes_regular_title';
-		$temp = get_option($var);
-		if (false === $temp) $quotesoptions[$var] =  '<h2>Random Quote</h2>';
-		else $quotesoptions[$var] = $temp;
-		delete_option($var);		
-		unset($var);unset($temp);
 		$var = 'stray_quotes_put_quotes_first';
 		$temp = get_option($var);
 		if (false === $temp) $quotesoptions[$var] =  'Y';
@@ -301,6 +292,16 @@ function quotes_activation() {
 		if (false === $temp) $quotesoptions[$var] =  'Y';
 		else $quotesoptions[$var] = $temp;
 		delete_option($var);
+		unset($var);unset($temp);
+		
+		//only remove
+		$var = 'stray_quotes_widget_title';
+		$temp = get_option($var);
+		if ($temp)delete_option($var);		
+		unset($var);unset($temp);
+		$var = 'stray_quotes_regular_title';
+		$temp = get_option($var);
+		if ($temp)delete_option($var);		
 		unset($var);unset($temp);
 		
 		//special trasformation for how link options work now
@@ -354,6 +355,7 @@ function quotes_activation() {
 		$quotesoptions['bloginfo_scode'] =  '';		
 		$quotesoptions['bookmarlet_source'] =  '';
 		$quotesoptions['bookmarklet_cat'] =  '';
+		$quotesoptions['stray_loading'] =  'loading...';
 				
 		//the message
 		delete_option('stray_quotes_first_time');		
@@ -362,17 +364,17 @@ function quotes_activation() {
 		
 	}
 				
-	// < 1.7.3
+	// <= 1.7.3
 	if( $quotesoptions['stray_quotes_version'] <= 172 )$quotesoptions['stray_default_category'] =  'default';
 	
-	// < 1.7.6
+	// <= 1.7.6
 	if( $quotesoptions['stray_quotes_version'] <= 175 ){
 		//add a new fields
 		$quotesoptions['stray_if_no_author'] =  '';
 		$quotesoptions['stray_clear_form'] =  'Y';	
 	}
 		
-	// < 1.7.9
+	// <= 1.7.9
 	if ( $quotesoptions['stray_quotes_version'] <= 178 ){ 
 	
 		//because of the mess caused by 1.7.8, there's a chance that the user has two category columns now! (ugh!)		
@@ -434,7 +436,7 @@ function quotes_activation() {
 		
 	}
 
-	// < 1.8.0
+	// <= 1.8.0
 	if ( $quotesoptions['stray_quotes_version'] <= 179 ){
 	
 		//add a new fields
@@ -444,13 +446,13 @@ function quotes_activation() {
 
 	}
 	
-	// < 1.8.2
+	// <= 1.8.2
 	if( $quotesoptions['stray_quotes_version'] <= 181 ){
 		//add a new fields
 		$quotesoptions['stray_ajax'] =  '';
 	}
 	
-	// < 1.8.5
+	// <= 1.8.5
 	if(  $quotesoptions['stray_quotes_version'] <= 184 ){
 		//add a new fields
 		$quotesoptions['comment_scode'] =  '';
@@ -462,6 +464,17 @@ function quotes_activation() {
 		$quotesoptions['bloginfo_scode'] =  '';		
 		$quotesoptions['bookmarlet_source'] =  '';
 		$quotesoptions['bookmarklet_cat'] =  '';
+	}
+	
+	// <= 1.8.6
+	if(  $quotesoptions['stray_quotes_version'] <= 186 ){
+		
+		//add a new fields
+		$quotesoptions['stray_loading'] =  'loading...';
+		
+		//remove obsolete fields
+		unset($quotesoptions['stray_quotes_widget_title']);
+		unset($quotesoptions['stray_quotes_regular_title']);
 	}
 
 	//take care of version number

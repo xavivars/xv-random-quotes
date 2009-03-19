@@ -1,9 +1,10 @@
 === Stray Random Quotes ===
 Contributors: ico@italyisfalling.com
+Donate link: http://www.italyisfalling.com/lines-of-code#donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations
 Requires at least: 2.3
 Tested up to: 2.7.1
-Stable tag: 1.8.6
+Stable tag: 1.8.9
 
 Display random words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
 
@@ -12,19 +13,17 @@ Display random words everywhere on your blog. Easy to custom and manage. Ajax en
 Stray Random Quotes helps you collect and display random quotes everywhere on your blog. Actually, this plugin is so flexible that it can be used to display random words of all sorts: taglines, "leave a response" messages, footer or header sections etc.
 The main features:
 
-* As many **widgets** as you need, each with its individual set of options, to display quotes from all or some categories, randomly or in sequence, with or without AJAX, etc.
+* As many **widgets** as you need, each with its individual set of options, to display one or more quotes from all or some categories, randomly or in sequence, with or without AJAX, etc.
 * **AJAX** automation so a reader of the blog can get another quote without reloading the page.
-* **Shortcodes** that can be used to add single quotes or multiple quotes to your posts and pages. Shortcodes come with a set of individual options as well and, if needed, they can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
-* **Template tags** to add quotes --and random words in general-- directly to the template pages.
+* Optional **automatic rotation** of the quotes within a given interval of seconds.
+* **Shortcodes** that can be used to add one quote or series of quotes to your posts and pages. The shortcodes come with a set of individual options as well and, if needed, they can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
+* **Template tags** to add one or more quotes -- random words in general -- directly to the template pages. Template tags support many variables as well.
 * A **Settings page** to customize the appearance of the quotes with little or no knowledge of HTML.
 * A easy to use **management page** where even thousands of quotes can be handled easily, with bulk actions to change category, delete quotes and toggle visibility of many quotes at a time.
 * A **bookmarklet** to create quotes on the fly as you browse the web and find text worth quoting.
 * A **help page** where everything you need to know is explained.
 
 See [more cool things you can do with Stray Random Quotes](http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes/).
-
-**Important note after version 1.8.5**
-The `[random-quote]` shortcode now works slightly differently, since it accepts more variables. There's a chance that if you used it on your blog with variables before this version, it won't work now. It is not a bug, just a change in functionality that I hope is for the best. Consult the Help page in the menu of the plugin for more.
 
 == Screenshots ==
 
@@ -52,11 +51,14 @@ The `[random-quote]` shortcode now works slightly differently, since it accepts 
 
 * German, thanks to Markus Griesbach
 * Chinese, thanks to [WGMking](http://2say.hi.cn/)
+* Croatian, thanks to [Rajic](http://stepinac.karmel.hr)
 
 _Note for translators: there is a lot to translate with this plugin, expecially on account of the help page. If you want to create a localized copy of Stray Random Quotes, consider skipping the help page and translate the rest. This will save you some time._
+_The best way to submit new translations, or updates to old ones, is to include a direct link to the localization files in a comment to [this post](http://www.italyisfalling.com/stray-random-quotes#comments). This way the files are made available to the users sooner, and without waiting for a new release._
 
 == Changelog ==
 
+* 1.8.9 Fixed a few bugs to version 1.8.8 that included the following: Added: the quotes can now rotate automatically after a given interval of seconds. Added: widgets and template tags can load more than one quote a time; Added: the loading message can now be customized in the settings page; Added: Croatian translation thanks to [Rajic](http://stepinac.karmel.hr); Changed: the help page has been rewritten in large part. Changed: the widget options; Changed: removed the title options in the settings page, that were useless. Fixed: the loading message does not cause the collapsing of the quote area anymore. Fixed: many minor bugs. This version rewrites most of the code of the core functions, merging a great deal of lines and hopefully making the plugin more efficient.
 * 1.8.6 Added: Chinese translation thanks to [WGMking](http://2say.hi.cn/); fixed: a rare bug caused by IIS-enabled servers (thanks to Tool).
 * 1.8.5 Added: bulk editing ability to the management page; added: a dedicated Tools Page where fantastic things can be achieved (such as a bookmarklet and the ability to extend shortcodes to new areas of the blog, which in turn will allow you to have random quotes and words in unexpected locations); added: per-widget and per-tag ability to disable ajax; changed: the way the `[random-quote]` shortcode works (now accepts much more variables); fixed: pagination of the `[all-quotes]` shortcodes (thanks to frettsy). There are other enhancements and quite enough minor bugs fixed. So much of the innovation with this version is thanks to the suggestions and requests of the users, to them goes my most sincere gratitude.
 * 1.8.3 This version comes with German translation, a million thanks to Markus Griesbach for providing it. Also fixed a MYSQL rare bug that caused the `random-quote` shortcode not to work: thanks to Zarban for the help catching it.

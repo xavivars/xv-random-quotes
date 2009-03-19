@@ -1,26 +1,25 @@
-function newQuote(categories, id, url, linkphrase, sequence)
-{
+function newQuote(categories, linkphrase, id, url, multi, offset, sequence, timer, loading){
 	
 	jQuery(document).ready
 	(
 		
-		function($)
-		{
+		function($){
+		
+			var divheight = $("div.stray_quote-" + id).height();
+			$("div.stray_quote-" + id).height(divheight/2);
+			$("div.stray_quote-" + id).css('text-align','center');
+			$("div.stray_quote-" + id).css('padding-top',divheight/2);
 			$("div.stray_quote-" + id).fadeOut('slow');
-			$("div.stray_quote-" + id).empty(); //needed to avoid the creation of two divs one inside the other
-			
-			$("div.stray_quote-" + id).html('<div align="center">loading...</div>').fadeIn('slow', function () {
+			$("div.stray_quote-" + id).html(loading).fadeIn('slow', function () {
 																											 
 				$.ajax({
 						type:	"POST",
 						url:	url + "/inc/stray_ajax.php",
-						data:	"action=newquote&categories=" + categories + "&sequence=" + sequence + "&linkphrase=" + linkphrase + "&widgetid=" + id,
-						success: function(html)
-						{	
-							//needed to avoid the creation of two divs one inside the other
-							if ($("div.stray_quote-" + id).parent().is("div.stray_quote-" + id)==false) { 
-								$("div.stray_quote-" + id).html(html);
-							}
+						data:	"action=newquote&categories=" + categories + "&sequence=" + sequence + "&linkphrase=" + linkphrase + "&widgetid=" + id + "&multi=" + multi + "&offset=" + offset+ "&timer=" + timer,
+						success: function(html){
+							$("div.stray_quote-" + id).css('padding-top',null);
+							$("div.stray_quote-" + id).css('height', null);
+							$("div.stray_quote-" + id).after(html).remove();
 						}
 				});
 				

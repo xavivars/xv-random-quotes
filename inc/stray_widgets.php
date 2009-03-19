@@ -11,7 +11,7 @@ class stray_widgets {
             $options = array();
             
         $widget_ops = array('classname' => 'widget_stray_quotes', 'description' => '');
-        $control_ops = array('width' => 250, 'height' => 100, 'id_base' => 'stray_widgets');
+        $control_ops = array('width' => 450, 'height' => 100, 'id_base' => 'stray_widgets');
         $name = 'Quotes';
         
         $registered = false;
@@ -25,10 +25,8 @@ class stray_widgets {
 			global $wpdb;		
 			$sql = "SELECT option_value FROM $wpdb->options WHERE option_name = 'sidebars_widgets' AND option_value like '%".$id."%'";
 			$var = $wpdb->get_var( $sql );
-			/*$var = is_active_widget($id);*/
+			//do this to keep the size of the array down
 			if (!$var)unset($options[$o]);
-			
-			/*delete_option('widget_stray_quotes');*/			
 			
             $registered = true;
             wp_register_sidebar_widget($id, $name, array(&$this, 'widget'), $widget_ops, array( 'number' => $o ) );
@@ -63,26 +61,31 @@ class stray_widgets {
 		
 		$linkphrase = $options["linkphrase"];
 		$widgetid = $number;
+		$multi = $options["multi"];settype($multi, "integer");
+		$categories = isset($options["groups"]) ? explode(',', $options["groups"]) : array("default");
+		$offset = 0;
+		$timer =  $options["timer"];
+		$fullpage = false;
 		
-
+		//output the quote(s)
         echo $before_widget.$before_title;
 		echo $options["title"];
         echo $after_title;
-		stray_random_quote(isset($options["groups"]) ? explode(',', $options["groups"]) : array("default"),$sequence,$linkphrase,$widgetid,$noajax);
+		echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,$offset,$widgetid,$fullpage,'quoteID','ASC','');
         echo $after_widget;
     }
 
     function control($widget_args = 1) {
         global $wp_registered_widgets;
         static $updated = false;
-
-        if ( is_numeric($widget_args) )
-            $widget_args = array('number' => $widget_args);
+		
+		//extract widget arguments
+        if ( is_numeric($widget_args) )$widget_args = array('number' => $widget_args);
         $widget_args = wp_parse_args($widget_args, array('number' => -1));
         extract($widget_args, EXTR_SKIP);
+		
         $options_all = get_option('widget_stray_quotes');
-        if (!is_array($options_all))
-            $options_all = array();  
+        if (!is_array($options_all))$options_all = array();  
             
         if (!$updated && !empty($_POST['sidebar'])) {
             $sidebar = (string)$_POST['sidebar'];
@@ -110,7 +113,9 @@ class stray_widgets {
                 $options['groups'] = isset($posted['groups']) ? implode(',', $posted['groups']) : ''; 
 				$options['sequence'] =  $posted['sequence'];
 				$options['linkphrase'] =  $posted['linkphrase'];
+				$options['timer'] =  $posted['timer'];
 				$options['noajax'] =  $posted['noajax'];
+				$options['multi'] =  $posted['multi'];
                 
                 $options_all[$widget_number] = $options;
             }
@@ -119,13 +124,13 @@ class stray_widgets {
         }
 		
 		$quotesoptions = get_option('stray_quotes_options');
-		$widgetTitle = $quotesoptions['stray_quotes_widget_title'];
-		$linkphrase = $quotesoptions['stray_loader'];
 		$default_options = array(
-				'title' => $widgetTitle, 
+				'title' => __('Random Quote', 'stray-quotes'), 
 				'groups' => implode(",",make_categories()),
-				'sequence' => false,
-				'linkphrase' => $linkphrase,
+				'sequence' => true,
+				'multi' => '1',
+				'linkphrase' => $quotesoptions['stray_loader'],
+				'timer' => '0',
 				'noajax' => false
 		);
 	
@@ -138,25 +143,22 @@ class stray_widgets {
             $values = $options_all[$number];
         }
 		
-		
 		if ( $values['sequence'] == "Y" ) $random_selected = ' checked="checked"';	
-		if ( $values['noajax'] == "Y" ) $noajax_selected = ' checked="checked"';	
+		if ( $values['noajax'] == "Y" ) $noajax_selected = ' checked="checked"';
+		if ( $values['timer'] == '' )$values['timer'] = '0';
+		if ( $values['multi'] == '' )$values['multi'] = '1';
         
-		?>
-        
-        <p><label><strong>Title</strong></label>
+		// widget options form ?>
+        <p><label><strong><?php _e('Title', 'stray-quotes')?></strong></label>
 		<input class="widefat" id="widget_stray_quotes-<?php echo $number; ?>-title" 
         name="widget_stray_quotes[<?php echo $number; ?>][title]" type="text" 
         value="<?php echo htmlspecialchars($values['title'], ENT_QUOTES); ?>" />
         </p>
         
-        
-        
-		<p><label><strong>Categories</strong><span class="setting-description"> <small>quotes are taken from these. drag the mouse or ctrl-click to multi-select</small></span></label>
-		<select class="widefat" style="width: 100%; height: 70px;" name="widget_stray_quotes[<?php echo $number; ?>][groups][]" 
+        <div style="float:left; width:210px">
+		<p><label><strong><?php _e('Categories', 'stray-quotes')?></strong><br/><span class="setting-description"><small><?php _e('Quotes are taken from these categories. Drag the mouse or ctrl-click to multi-select', 'stray-quotes')?></small></span></label>
+		<select class="widefat" style="width: 100%; height: 80px;" name="widget_stray_quotes[<?php echo $number; ?>][groups][]" 
         id="widget_stray_quotes-<?php echo $number; ?>-groups" multiple="multiple">
-        
-        
 		<?php 
 		$items = make_categories();
 		$groups = explode(',', $values['groups']);
@@ -172,22 +174,21 @@ class stray_widgets {
         }         
 		?></select></p>
         
-		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][sequence]" value="Y" <?php echo $random_selected; ?> /><label><strong>Random</strong><span class="setting-description"><small> leave unckecked to load the quotes in order beginning from a random one.</small></span></label></p>
+		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][sequence]" value="Y" <?php echo $random_selected; ?> /><label><strong><?php _e('Random', 'stray-quotes')?></strong><br/><span class="setting-description"><small><?php _e('Leave unckecked to load the quotes in order beginning from a random one.', 'stray-quotes')?></small></span></label></p>
+ 
+		<p><strong><?php _e('Show', 'stray-quotes')?></strong>&nbsp;<input type="text" style="border: 1px solid #ccc;width:40px" name="widget_stray_quotes[<?php echo $number; ?>][multi]" value="<?php echo $values['multi']; ?>" maxlength="4" />&nbsp;<strong><?php _e('quotes at a time', 'stray-quotes')?></strong></p></div>
         
-        </select>
-		
-        <div style="border:#CCC dotted 1px; margin-bottom:10px; padding:10px">
-        
-		<p><label><strong>AJAX link phrase</strong><span class="setting-description"> <small>if left empty, reloading is done by clicking on the quote.</small></span></label>
+        <div style="float:right; width:210px; border-left:1px #ccc solid; padding-left:10px"><p><?php _e('AJAX functionality:', 'stray-quotes')?></p>
+		<p><label><strong><?php _e('Link phrase', 'stray-quotes')?></strong><br/><span class="setting-description"> <small> <?php _e('if left empty, reloading is done by clicking on the quote area.', 'stray-quotes')?></small></span></label>
 		<input class="widefat" id="widget_stray_quotes-<?php echo $number; ?>-title" 
         name="widget_stray_quotes[<?php echo $number; ?>][linkphrase]" type="text" 
-        value="<?php echo htmlspecialchars($values['linkphrase'], ENT_QUOTES); ?>" />
-        </p>
-
-		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][noajax]" value="Y" <?php echo $noajax_selected; ?> /><label><strong>Disable AJAX</strong><span class="setting-description"><small> disable any dynamic reloading of the quote for this widget only.</small></span></label></p></div>	
+        value="<?php echo htmlspecialchars($values['linkphrase'], ENT_QUOTES); ?>" /></p>
         
-<?php }
-    
+        <p><strong><?php _e('Rotate every', 'stray-quotes')?></strong>&nbsp;<input type="text" style="border: 1px solid #ccc;width:30px" name="widget_stray_quotes[<?php echo $number; ?>][timer]" value="<?php echo $values['timer']; ?>" />&nbsp;<strong><?php _e('seconds', 'stray-quotes')?></strong><br/><span class="setting-description"><small> <?php _e('Reloads the quote after the set interval. Hides the link phrase. Leave this empty or enter 0 to disable.', 'stray-quotes')?></small></span></p>
+
+		<p><input type="checkbox" name="widget_stray_quotes[<?php echo $number; ?>][noajax]" value="Y" <?php echo $noajax_selected; ?> /><label><strong><?php _e('Disable AJAX', 'stray-quotes')?></strong><br/><span class="setting-description"><small> <?php _e('Check to disable any dynamic reloading of the quote (for this widget only).', 'stray-quotes')?></small></span></label></p></div><div style="clear:both;">&nbsp;</div><?php	
+        
+	}
 }
 
 $gdm = new stray_widgets();

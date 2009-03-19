@@ -32,9 +32,9 @@ function stray_remove() {
 		//execute and feedback the removal
 		$quotesoptions = get_option('stray_quotes_options');
 		?><div class="wrap"><h2><?php _e('Remove and deactivate', 'stray-quotes') ?></h2>
-		<p><strong><a href=" <?php echo $deactivate_url ?>" >
+		<p><strong><a href="<?php echo $deactivate_url ?>" >
 		<?php _e('Click Here</a> to deactivate Stray Random Quotes.', 'stray-quotes'); ?>
-		</strong></p><p style="#990000"><?php			
+		</a></strong></p><p style="#990000"><?php			
 		if( $quotesoptions['stray_quotes_uninstall'] ==  'both' ) _e('The <strong>quotes</strong> AND the <strong>options</strong> will be removed.', 'stray-quotes').'<br />';
 		else if( $quotesoptions['stray_quotes_uninstall'] ==  'options' ) _e('The <strong>plugin options</strong> will be removed.', 'stray-quotes').'<br />';
 		else if( $quotesoptions['stray_quotes_uninstall'] ==  'table' ) _e('The <strong>quotes</strong> will be removed.', 'stray-quotes').'<br />';

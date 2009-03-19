@@ -13,8 +13,13 @@ if($_POST['action'] == 'newquote'){
 	$sequence = isset($_POST['sequence'])?$_POST['sequence']:'';
 	$linkphrase = isset($_POST['linkphrase'])?$_POST['linkphrase']:'';
 	$widgetid = isset($_POST['widgetid'])?$_POST['widgetid']:'';
-	
-	echo stray_random_quote($categories,$sequence,$linkphrase,$widgetid );
+	$multi = isset($_POST['multi'])?$_POST['multi']:'';
+	$offset = isset($_POST['offset'])?$_POST['offset']:'';
+	$timer = isset($_POST['timer'])?$_POST['timer']:'';
+	$sort = isset($_POST['sort'])?$_POST['sort']:'';
+	$orderby = isset($_POST['orderby'])?$_POST['orderby']:'';
+
+	echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,false,$offset,$widgetid,false,$orderby,$sort,'');
 }
 
 ?>
