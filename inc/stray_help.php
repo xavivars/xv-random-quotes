@@ -109,6 +109,10 @@ function stray_help() {
     <?php // What about other areas of the blog, such as post titles, or even the blog title? ?>
     <h3><?php _e('What about other areas of the blog, such as post titles, or even the blog title?','stray-quotes');?></h3>
     <blockquote><p><?php echo str_replace("%s1",$toolspage,__('Well, actually, on the <a href="%s1">tools page</a> you can enable shortcodes for a number of extra areas where shortcodes aren\'t normally allowed. This will entitle you to some pretty extraordinary things, such as random taglines or random category names. It is <strong>highly recommended to disable AJAX</strong> for all these unconventional uses. Note that this will enable all shortcodes and not only those of Stray Random Quotes. More examples can be found <a href="http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes">here</a>.', 'stray-quotes'));?></p></blockquote>
+    
+        <?php //How do I change the appearance of the quotes?  ?>
+    <h3><?php _e('How do I change the appearance of the quotes?','stray-quotes');?></h3>
+    <blockquote><p><?php echo str_replace("%s1",$options,__('To change how the quotes look, you can use the <a href="%s1">settings page</a>. Here you will be able to set what comes before and after every part of the quote area (source, author, the quote etc). With little HTML, all sorts of customizations are possible, such as assigning styles, set the alignment of text, specify font or font color, adding images, quotation marks and many other entities. Just remember to close all the tags you opened before a part.', 'stray-quotes'));?></p></blockquote>
             
     <?php // The IDs of the quotes are getting ridiculously high ?>
     <h3><?php _e('The IDs of the quotes are getting ridiculously high. Can I do something about it?','stray-quotes');?></h3>
