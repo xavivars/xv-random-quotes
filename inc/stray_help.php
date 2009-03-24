@@ -104,7 +104,21 @@ function stray_help() {
     <li><strong><code>noajax=true</code></strong> <?php _e('Disables AJAX for the present shortcode if "true".', 'stray-quotes');?></li>
     
     <li><strong><code>timer=5</code></strong> <?php _e('Reloads the quotes automatically after the given interval (in seconds). Hides the linkphrase. ', 'stray-quotes');?></li></ul>   
-    <br/><?php _e('All these settings are optional. Without them, AJAX is disabled in the shortcode and the values you see in this example are used as defaults.', 'stray-quotes');?></p></blockquote>
+    
+    <br/><?php _e('All these settings are optional. Without them, AJAX is disabled in the shortcode and the values you see in this example are used as defaults.', 'stray-quotes');?><br/><br/></p>
+    
+    
+    <p><?php _e('To <strong>insert a specific quote</strong> in a post or page (with AJAX, a sequence of quotes starting from a given one) use:', 'stray-quotes');?> <code><strong>[quote id=x]</strong></code>
+    
+    <br/><br/><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?><br/>
+    
+    <ul><li><strong><code>id=12</code></strong> <?php _e('The ID of the quote to be retrieved. This number appears in the first column on the management page.', 'stray-quotes');?></li>
+    
+    <li><strong><code>noajax=true</code></strong> <?php _e('Disables AJAX for the present shortcode if "true". Default is true.', 'stray-quotes');?></li>
+    
+    <li><strong><code>linkphrase=<?php _e('"another quote &amp;raquo;"', 'stray-quotes');?></code></strong> <?php _e('The phrase to dynamically load another quote (overrides the one in the settings). Without this value, clicking on the quote area will reload the quote.', 'stray-quotes');?></li></ul>
+    
+    </blockquote>
     
     <?php // What about other areas of the blog, such as post titles, or even the blog title? ?>
     <h3><?php _e('What about other areas of the blog, such as post titles, or even the blog title?','stray-quotes');?></h3>
