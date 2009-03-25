@@ -10,7 +10,7 @@ Display random quotes and words everywhere on your blog. Easy to custom and mana
 
 == Description ==
 
-Stray Random Quotes helps you collect and display random quotes and words everywhere on your blog. Actually, this plugin is so flexible that it can be used to display random words of all sorts: taglines, "leave a response" messages, footer or header sections etc.
+Stray Random Quotes helps you collect and display random quotes everywhere on your blog. The plugin is so flexible that it can be used to display random words of all sorts: taglines, "leave a response" messages, footer or header sections etc.
 The main features:
 
 * As many **widgets** as you need, each with its individual set of options, to display one or more quotes from all or some categories, randomly or in sequence, with or without AJAX, etc.
