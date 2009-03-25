@@ -41,7 +41,7 @@ See [more cool things you can do with Stray Random Quotes](http://www.italyisfal
 2. Activate the plugin on the 'Plugins' page in WordPress.
 3. Stray Random Quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
 
-_Note when upgrading: If you are not automatically upgrading via Wordpress, always **deactivate the older version** first and **delete the old 'stray-quotes' folder**. It is not normally necessary to backup the quotes in the database unless so advised in the changelog or on the [plugin page](http://www.italyisfalling.com/stray-random-quotes/)._
+_Note when upgrading: If you are not automatically upgrading via Wordpress, always **deactivate the older version** first and **delete the old 'stray-quotes' folder**. It is not normally necessary to backup the quotes in the database unless so advised in the changelog or on the [plugin feed](http://www.italyisfalling.com/category/wordpress-things/feed/)._
 
 == Credits ==
 
