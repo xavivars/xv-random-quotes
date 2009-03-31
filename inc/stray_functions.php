@@ -225,8 +225,12 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 				if ($get_one->quoteID == $thisid) {
 					
 					$specificresult = $get_one;
-					$sequence = array_search($get_one,$result);
 					settype($sequence,"integer");
+					for ($i=0; $i<count($result); ++$i) {
+						if ($get_one==$result[$i]) $sequence = $i;
+					}
+					/*$sequence = array_search($get_one,$result);
+					settype($sequence,"integer");*/
 					$sequence = $sequence-1;
 				
 				}
