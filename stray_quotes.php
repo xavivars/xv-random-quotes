@@ -2,7 +2,7 @@
 /*
 Plugin Name: Stray Random Quotes
 Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
-Description: Display random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled. Compatible with WP 2.7.
+Description: Display and rotate random quotes and random words everywhere on your blog. Easy to custom and manage. Ajax enabled.
 Author: ico@italyisfalling.com
 Author URI:http://www.italyisfalling.com/lines-of-code/
 Version: 1.9.0
