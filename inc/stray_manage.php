@@ -462,7 +462,7 @@ function stray_manage() {
         <div class="alignleft actions">      
 		<select name="bulk" id="bulkselect" style="vertical-align:middle;max-width:110px" onchange="javascript:disable_enable()" />
 		<option value="noaction" >Bulk Actions</option>
-		<option value="multidelete">delete</option>
+		<?php if(current_user_can('manage_options'))echo '<option value="multidelete">delete</option>'; ?>
 		<option value="togglevisible">toggle visibility</option>
 		<option value="changecategory">change category	</option>
 		</select>
@@ -595,10 +595,10 @@ function stray_manage() {
 					<a href="<?php echo querystrings( querystrings($urlaction, 'qa', 'edit'), 'qi', $quote->quoteID ); ?>">
 					<?php _e('Edit','stray-quotes') ?></a></td>
 	
-					<td align="center">
+					<?php if(current_user_can('manage_options')) { ?><td align="center">
 					<a href="
 					<?php echo querystrings( querystrings($urlaction, 'qa', 'delete'), 'qi', $quote->quoteID );  ?>"
-					onclick="if ( confirm('<?php echo __( 'You are about to delete quote ','stray-quotes') . $quote->quoteID . '.\\n\\\'' . __('Cancel','stray-quotes') . '\\\' ' . __('to stop','stray-quotes') . ', \\\'OK\\\' ' . __('to delete','stray-quotes') . '.\''; ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
+					onclick="if ( confirm('<?php echo __( 'You are about to delete quote ','stray-quotes') . $quote->quoteID . '.\\n\\\'' . __('Cancel','stray-quotes') . '\\\' ' . __('to stop','stray-quotes') . ', \\\'OK\\\' ' . __('to delete','stray-quotes') . '.\''; ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td><?php } ?>			
                     
 				</tr>
 				<?php $i++; 
