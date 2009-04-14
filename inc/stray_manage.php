@@ -590,8 +590,8 @@ function stray_manage() {
                 
 				<th scope="col">&nbsp;</th>
 				<th scope="col">&nbsp;</th>
-				
-				<?php if(current_user_can('manage_options')) { ?>
+
+				<?php if(current_user_can('manage_options') && $quotesoptions['stray_multiuser'] == true) { ?>
                 <th scope="col" style="white-space: nowrap;"> <?php if ($numrows != 1) { if ( $orderby != 'user') { ?>
 				<a href="<?php  echo querystrings($urlaction, 'qo', 'user'); ?>"><?php _e('User','stray-quotes') ?></a>
 				<?php } else { _e('User','stray-quotes');
@@ -632,7 +632,7 @@ function stray_manage() {
 					<?php echo querystrings( querystrings($urlaction, 'qa', 'delete'), 'qi', $quote->quoteID );  ?>"
 					onclick="if ( confirm('<?php echo __( 'You are about to delete quote ','stray-quotes') . $quote->quoteID . '.\\n\\\'' . __('Cancel','stray-quotes') . '\\\' ' . __('to stop','stray-quotes') . ', \\\'OK\\\' ' . __('to delete','stray-quotes') . '.\''; ?>) ) { return true;}return false;"><?php echo __('Delete','stray-quotes') ?></a></td>			
                     
-                    <?php if(current_user_can('manage_options')) { ?>
+                    <?php if(current_user_can('manage_options') && $quotesoptions['stray_multiuser'] == true) { ?>
 					<td><?php if( $quote->user == $current_user->user_nicename )echo ''; else echo $quote->user; ?></td>
                     <?php } ?>
                     
