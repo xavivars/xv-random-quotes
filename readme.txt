@@ -4,7 +4,7 @@ Donate link: http://www.italyisfalling.com/lines-of-code#donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words
 Requires at least: 2.3
 Tested up to: 2.7.1
-Stable tag: 1.9.2
+Stable tag: 1.9.4
 
 Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled.
 
@@ -16,6 +16,7 @@ The main features:
 * As many **widgets** as you need, each with its individual set of options, to display one or more quotes from all or some categories, randomly or in sequence, with or without AJAX, etc.
 * **AJAX** automation so a reader of the blog can get another quote without reloading the page.
 * Optional **automatic rotation** of the quotes within a given interval of seconds.
+* **Multiuser** ready (contributors to the blog can access a limited version of the plugin, adding and managing their own sets of quotes)
 * **Shortcodes** that can be used to add one quote or series of quotes to your posts and pages. The shortcodes come with a set of individual options as well and, if needed, they can be extended to apply everywhere on the blog, allowing random words for the tagline, the category names, the post titles etc.
 * **Template tags** to add one or more quotes -- random words in general -- directly to the template pages. Template tags support many variables as well.
 * A **Settings page** to customize the appearance of the quotes with little or no knowledge of HTML.
@@ -45,7 +46,7 @@ _Note when upgrading: If you are not automatically upgrading via Wordpress, alwa
 
 == Changelog ==
 
-* 1.9.2 Added: ability to reset the settings to factory defaults (in the Tools page). Changed: parts of the settings page. Also changed and expanded: the help page (much more readable now) (You must know at this point that there is NOT another wordpress plugin with such a exhaustive embedded help page). Fixed: the `[quote]` shortcode and the `stray_a_quote` template tag wouldn't work with PHP 4. Thanks to Kathryn and Nathan for poiting out this bug and testing the fix. Fixed: Nasty bug that caused the settings in the tools page (such as the bookmarklet options or the shortcode extensions) to be reset whenever the user updated the options in the settings page.
+* 1.9.4 Added: Stray Random quotes is now **multiuser**, which means that a contributor to the blog can access a restricted version of the plugin, add quotes, manage them and little else. _Please note: this feature will need a one-time manipulation of the quotes table to add a 'user' field to it. It is a safe operation but you might want to backup before upgrading._ Added: the ability to disable the aspect settings for a given widget, shortcode or template tag, so that where needed (such as with random taglines) the default layout of the quotes can be ignored (more on the help page). Added: Danish localization, thanks to [Georg](http://wordpress.blogos.dk/). Fixed: a nasty bug that broke AJAX in firefox, when Stray Random Quotes was the only plugin to load jQuery. Fixed: many more little bugs. A big thank you as always to the users that pointed the bugs out.
 
 Read the complete changelog [here](http://www.italyisfalling.com/stray-random-quotes).
 
@@ -59,8 +60,10 @@ Read the complete changelog [here](http://www.italyisfalling.com/stray-random-qu
 * German, thanks to Markus Griesbach
 * Chinese, thanks to [WGMking](http://2say.hi.cn/)
 * Croatian, thanks to [Rajic](http://stepinac.karmel.hr)
-(as of version 1.9.0, these localizations need partial updating from the maintainers)
+* Danish, thanks to [Georg](http://wordpress.blogos.dk/)
 
-_Note for translators: there is a lot to translate with this plugin, expecially on account of the help page. If you want to create a localized copy of Stray Random Quotes, consider skipping the help page and translate the rest. This will save you some time._
+(Some of this translations might not be updated to the latest version, depending on the maintainer.)
 
-_Note that the best way to submit new translations, or updates to old ones, is to include a direct link to the localization files in a comment to [this post](http://www.italyisfalling.com/stray-random-quotes#comments). This way the files are made available to the users sooner, and without waiting for a new release._
+The best way to **submit new or updated translations** is to include a direct link to the localization files in a comment to [this post](http://www.italyisfalling.com/stray-random-quotes#comments). This way the files are made available to the users sooner, and without waiting for a new release.
+
+_Please note: there is a lot to translate with this plugin, expecially on account of the help page. If you want to create a localized copy of Stray Random Quotes, consider skipping the help page and translate the rest. This will save you some time._

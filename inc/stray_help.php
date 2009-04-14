@@ -20,7 +20,7 @@
         
         <p><strong><?php _e('To get one or more random quotes: ', 'stray-quotes');?>
         
-        <code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2',false,'another quote &amp;raquo;',false,1,0,'quoteID','ASC'); ?&gt;</code></strong><br/><br/>
+        <code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2',false,'another quote &amp;raquo;',false,1,0,'quoteID','ASC', false); ?&gt;</code></strong><br/><br/>
         
         <?php _e('Variables :', 'stray-quotes');?><br/>
         
@@ -42,11 +42,13 @@
         
         <li>8. <strong><code>ASC</code></strong> <?php _e('Sorts the quotes ascending "ASC" or descending "DESC". Default is "ASC".', 'stray-quotes');?></li>
         
+        <li>9. <strong><code>true/false</code></strong> <?php _e('Disables the aspect settings (how the quotes look) if "true". default is "false".', 'stray-quotes');?></li>
+        
         </ul></p>
         
         <p><strong><?php _e('To get a specific quote: ', 'stray-quotes');?>
         
-        <code>&lt;?php if (function_exists('stray_a_quote')) stray_a_quote(31,'Next quote &amp;raquo;',false); ?&gt;</code></strong><br/><br/>
+        <code>&lt;?php if (function_exists('stray_a_quote')) stray_a_quote(31,'Next quote &amp;raquo;',false, false); ?&gt;</code></strong><br/><br/>
         
         <?php _e('Variables :', 'stray-quotes');?><br/>
         
@@ -57,6 +59,9 @@
         <li>2. <strong><code><?php _e('Next quote &amp;raquo;', 'stray-quotes');?></code></strong> : <?php _e('The phrase to dynamically load the next quote in sequence. If this value is empty, and the one in the settings is empty too, clicking on the quote area will reload the quote. Default is empty.', 'stray-quotes');?></li>
         
         <li>3. <strong><code>true/false</code></strong> <?php _e('Disables AJAX for the present template tag if "true". default is "false".', 'stray-quotes');?></li>
+        
+        <li>4. <strong><code>true/false</code></strong> <?php _e('Disables the aspect settings (how the quotes look) if "true". default is "false".', 'stray-quotes');?></li>
+        
         
         </ul></p><p><?php _e('Unlike widgets, template tags do not generate a title for the quote area. If you want specific titles for different tags, enter them directly in the template HTML, before the tag.' , 'stray-quotes'); ?>
         </p></blockquote></div>
@@ -85,7 +90,11 @@
         
         <li><strong><code>noajax=true</code></strong> <?php _e('Disables AJAX for the present shortcode if "true".', 'stray-quotes');?></li>
         
-        <li><strong><code>timer=5</code></strong> <?php _e('Reloads the quote automatically after the given interval (in seconds). Hides the linkphrase. ', 'stray-quotes');?></li></ul>
+        <li><strong><code>timer=5</code></strong> <?php _e('Reloads the quote automatically after the given interval (in seconds). Hides the linkphrase. ', 'stray-quotes');?></li>
+        
+        <li><strong><code>disableaspect=false</code></strong> <?php _e('Disable the aspect settings if "true". Default is "false"', 'stray-quotes');?></li>
+        
+        </ul>
         
         <br/><?php _e('All these settings are optional. If you don\'t indicate anything, a random quote from all the categories will be displayed, with ajax according to the general settings.<br/><br/>', 'stray-quotes');?></p>
         
@@ -109,7 +118,11 @@
         
         <li><strong><code>noajax=true</code></strong> <?php _e('Disables AJAX for the present shortcode if "true".', 'stray-quotes');?></li>
         
-        <li><strong><code>timer=5</code></strong> <?php _e('Reloads the quotes automatically after the given interval (in seconds). Hides the linkphrase. ', 'stray-quotes');?></li></ul>   
+        <li><strong><code>timer=5</code></strong> <?php _e('Reloads the quotes automatically after the given interval (in seconds). Hides the linkphrase. ', 'stray-quotes');?></li>
+
+        <li><strong><code>disableaspect=false</code></strong> <?php _e('Disable the aspect settings if "true". Default is "false"', 'stray-quotes');?></li>
+        
+        </ul>   
         
         <br/><?php _e('All these settings are optional. Without them, AJAX is disabled in the shortcode and the values you see in this example are used as defaults.', 'stray-quotes');?><br/><br/></p>
         
@@ -122,7 +135,11 @@
         
         <li><strong><code>noajax=true</code></strong> <?php _e('Disables AJAX for the present shortcode if "true". Default is true.', 'stray-quotes');?></li>
         
-        <li><strong><code>linkphrase=<?php _e('"another quote &amp;raquo;"', 'stray-quotes');?></code></strong> <?php _e('The phrase to dynamically load another quote (overrides the one in the settings). Without this value, clicking on the quote area will reload the quote.', 'stray-quotes');?></li></ul>
+        <li><strong><code>linkphrase=<?php _e('"another quote &amp;raquo;"', 'stray-quotes');?></code></strong> <?php _e('The phrase to dynamically load another quote (overrides the one in the settings). Without this value, clicking on the quote area will reload the quote.', 'stray-quotes');?></li>
+                
+        <li><strong><code>disableaspect=false</code></strong> <?php _e('Disable the aspect settings if "true". Default is "false"', 'stray-quotes');?></li>
+        
+        </ul>
         
         </p></blockquote></div>
         
@@ -134,7 +151,7 @@
         
         <?php //How do I change the appearance of the quotes? ?> 
         <h3 style="cursor:pointer" onclick="expand('text5', this);"><?php _e('How do I change the appearance of the quotes?','stray-quotes');?></h3>
-        <div id="text5" style="display:none;"><blockquote><p><?php echo str_replace("%s1",$options,__('To change how the quotes look, you can use the <a href="%s1">settings page</a>. Here you will be able to set what comes before and after every part of the quote area (source, author, the quote etc). With little HTML, all sorts of customizations are possible, such as assigning styles, set the alignment of text, specify font or font color, adding images, quotation marks and many other entities. Just remember to close all the tags you opened before a part.<br/><br/><em><strong>Please note:</strong></em> the aspect options in the settings page apply to <em>ALL</em> quotes, regardless of category, widget or shortcode or tag. If you need to apply styles or add elements only to quotes in a given widget or other areas, you\'ll have to insert those in the template HTML or directly in the quote, when adding it or editing it. Sorry about this limitation. I might find a reasonable way around it one day.', 'stray-quotes'));?></p></blockquote></div>
+        <div id="text5" style="display:none;"><blockquote><p><?php echo str_replace("%s1",$options,__('To change how the quotes look, you can use the <a href="%s1">settings page</a>. Here you will be able to set what comes before and after every part of the quote area (source, author, the quote etc). With little HTML, all sorts of customizations are possible, such as assigning styles, set the alignment of text, specify font or font color, adding images, quotation marks and many other entities. Just remember to close all the tags you opened before a part.<br/><br/><em><strong>Please note:</strong></em> the aspect options in the settings page normally apply to <em>ALL</em> quotes in every area of your blog, but they can be disabled within each widget, shortcode or template tag. When aspect settings are disabled, the only element added is a whitespace between the quote and the author or source.', 'stray-quotes'));?></p></blockquote></div>
                 
         <?php // The IDs of the quotes are getting ridiculously high ?>
         <h3 style="cursor:pointer" onclick="expand('text6', this);"><?php _e('The IDs of the quotes are getting ridiculously high. Can I do something about it?','stray-quotes');?></h3>
@@ -150,9 +167,9 @@
         
         <?php } ?>
     
-        <?php // Hey. There is a bug ?>
-        <h3 style="cursor:pointer" onclick="expand('text8', this);"><?php _e('Hey. There is a bug!','stray-quotes');?></h3>
-        <div id="text8" style="display:none;"><blockquote><p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('I knew it... See, I am not a programmer or anything. There\'s always a bug. If you want to help me catch it, and for further help, please come and trash the comments <a href="%s1">on this post</a>. Thanks.', 'stray-quotes')); ?></p></blockquote></div>
+        <?php // Hey. Something isn\'t working! ?>
+        <h3 style="cursor:pointer" onclick="expand('text8', this);"><?php _e('Hey. Something isn\'t working!','stray-quotes');?></h3>
+        <div id="text8" style="display:none;"><blockquote><p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('Well, that figures. See, I am not a professional developer... I work on this plugin on my free time. So there\'s always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href="%s1">on this post</a>. Before you do, though, check if the problem you are experiencing isn\'t caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks.', 'stray-quotes')); ?></p></blockquote></div>
         
         <?php // DONATION ?>
         <h3 style="cursor:pointer" onclick="expand('text9', this);"><?php _e('Anything I can do to help?','stray-quotes');?></h3>
