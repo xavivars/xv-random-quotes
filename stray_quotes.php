@@ -24,9 +24,6 @@ if (STRAY_DIR == 'plugins') $dir = '';
 else $dir = STRAY_DIR . '/';
 define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . STRAY_DIR);
 
-// !!! remember to change this with every new version !!!
-define("WP_STRAY_VERSION", 194);
-
 //get ready for local
 $currentLocale = get_locale();
 if(!empty($currentLocale)) {
@@ -506,7 +503,7 @@ function quotes_activation() {
 	if(  $quotesoptions['stray_quotes_version'] <= 186 ){
 		
 		//add a new fields
-		$quotesoptions['stray_loading'] =  'loading...';
+		$quotesoptions['stray_loading'] =  __('loading...','stray-quotes');
 		
 		//remove obsolete fields
 		unset($quotesoptions['stray_quotes_widget_title']);
@@ -532,8 +529,8 @@ function quotes_activation() {
 	
 	}
 
-	//take care of version number
-	$quotesoptions['stray_quotes_version'] = WP_STRAY_VERSION; 
+	//!!!!!  CHANGE THIS EVERY NEW VERSION !!!!
+	$quotesoptions['stray_quotes_version'] = 194; 
 	
 	//reset the removal option for everyone
 	$quotesoptions['stray_quotes_uninstall'] = "";
