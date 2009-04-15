@@ -1,4 +1,4 @@
-jQuery(document).ready();  //needed because FF is stupid
+jQuery(document).ready(function(){});  //needed because FF is stupid
 
 function newQuote(categories, linkphrase, id, strayurl, multi, offset, sequence, timer, disableaspect, loading){
 	

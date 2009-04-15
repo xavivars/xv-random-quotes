@@ -1,12 +1,12 @@
 === Stray Random Quotes ===
 Contributors: ico@italyisfalling.com
 Donate link: http://www.italyisfalling.com/lines-of-code#donate
-Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words
+Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
 Requires at least: 2.3
 Tested up to: 2.7.1
-Stable tag: 1.9.4
+Stable tag: 1.9.5
 
-Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled.
+Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Multiuser. Ajax enabled.
 
 == Description ==
 
@@ -46,6 +46,7 @@ _Note when upgrading: If you are not automatically upgrading via Wordpress, alwa
 
 == Changelog ==
 
+* 1.9.5 Fixed: small bug in the JS AJAX file that caused a error in IE.
 * 1.9.4 Added: Stray Random quotes is now **multiuser**, which means that a contributor to the blog can access a restricted version of the plugin, add quotes, manage them and little else. _Please note: this feature will need a one-time manipulation of the quotes table to add a 'user' field to it. It is a safe operation but you might want to backup before upgrading._ Added: the ability to disable the aspect settings for a given widget, shortcode or template tag, so that where needed (such as with random taglines) the default layout of the quotes can be ignored (more on the help page). Added: Danish localization, thanks to [Georg](http://wordpress.blogos.dk/). Fixed: a nasty bug that broke AJAX in firefox, when Stray Random Quotes was the only plugin to load jQuery. Fixed: many more little bugs. A big thank you as always to the users that pointed the bugs out.
 
 Read the complete changelog [here](http://www.italyisfalling.com/stray-random-quotes).
