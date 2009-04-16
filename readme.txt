@@ -60,7 +60,7 @@ Read the complete changelog [here](http://www.italyisfalling.com/stray-random-qu
 
 * German, thanks to Markus Griesbach
 * Chinese, thanks to [WGMking](http://2say.hi.cn/)
-* Croatian, thanks to [Rajic](http://stepinac.karmel.hr)
+* Croatian, thanks to [Rajic](http://www.atrium.hr/)
 * Danish, thanks to [Georg](http://wordpress.blogos.dk/)
 
 (Some of this translations might not be updated to the latest version, depending on the maintainer.)
