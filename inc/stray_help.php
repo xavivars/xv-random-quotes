@@ -76,11 +76,11 @@
         <?php } ?>
         <div id="text3" style="display:none;"><blockquote><p>
         
-        <?php _e('Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order.<br/> They go like this:', 'stray-quotes');?><code>[sample-shortcode-name variable=value anothervariable=anothervalue]</code><br/><br/>
+        <?php echo str_replace("%s1",'http://codex.wordpress.org/Shortcode_API',__('Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order. More informations about the use of shortcodes are on <a href="%s1">this page</a>.', 'stray-quotes'));?><br/><br/><br/>
         
-        <?php _e('To <strong>insert a random quote</strong> in a post or page use:', 'stray-quotes');?> <code><strong>[random-quote]</strong></code>   
+        <?php _e('To <strong>insert a random quote</strong> in a post or page use:', 'stray-quotes');?> <code><strong>[stray-random]</strong></code>   
         
-        <br/><br/><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?><br/>
+        <br/><br/><em><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?></em><br/>
         
         <ul><li><strong><code>categories=cat1,cat2,etc</code></strong> <?php _e('A comma-separated list of the categories from which to extract the random quote. If none is set, quotes will be taken from all categories.', 'stray-quotes');?></li>
         
@@ -96,11 +96,11 @@
         
         </ul>
         
-        <br/><?php _e('All these settings are optional. If you don\'t indicate anything, a random quote from all the categories will be displayed, with ajax according to the general settings.<br/><br/>', 'stray-quotes');?></p>
+        <br/><?php _e('All these settings are optional. If you don\'t indicate anything, a random quote from all the categories will be displayed, with ajax according to the general settings.<br/><br/>', 'stray-quotes');?></p><br/>
         
-        <p><?php _e('To <strong>insert more than one or all the quotes</strong> in a post or page use:', 'stray-quotes');?> <code><strong>[all-quotes]</strong></code>
+        <p><?php _e('To <strong>insert more than one or all the quotes</strong> in a post or page use:', 'stray-quotes');?> <code><strong>[stray-all]</strong></code>
         
-        <br/><br/><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?><br/>
+        <br/><br/><em><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?></em><br/>
         
         <ul><li><strong><code>categories="cat1,cat2,etc"</code></strong> <?php _e('A comma-separated list of the categories from which to extract the random quote. If none is set, quotes will be taken from all categories.', 'stray-quotes');?></li>
         
@@ -124,12 +124,12 @@
         
         </ul>   
         
-        <br/><?php _e('All these settings are optional. Without them, AJAX is disabled in the shortcode and the values you see in this example are used as defaults.', 'stray-quotes');?><br/><br/></p>
+        <br/><?php _e('All these settings are optional. Without them, AJAX is disabled in the shortcode and the values you see in this example are used as defaults.', 'stray-quotes');?><br/><br/></p><br/>
         
         
-        <p><?php _e('To <strong>insert a specific quote</strong> in a post or page (with AJAX, a sequence of quotes starting from a given one) use:', 'stray-quotes');?> <code><strong>[quote id=x]</strong></code>
+        <p><?php _e('To <strong>insert a specific quote</strong> in a post or page (with AJAX, a sequence of quotes starting from a given one) use:', 'stray-quotes');?> <code><strong>[stray-id id=x]</strong></code>
         
-        <br/><br/><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?><br/>
+        <br/><br/><em><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?></em><br/>
         
         <ul><li><strong><code>id=12</code></strong> <?php _e('The ID of the quote to be retrieved. This number appears in the first column on the management page.', 'stray-quotes');?></li>
         
@@ -147,7 +147,7 @@
 			
 		// What about other areas of the blog, such as post titles, or even the blog title? ?>
         <h3 style="cursor:pointer" onclick="expand('text4', this);"><?php _e('What about other areas of the blog, such as post titles, or even the blog title?','stray-quotes');?></h3>
-        <div id="text4" style="display:none;"><blockquote><p><?php echo str_replace("%s1",$toolspage,__('Well, actually, on the <a href="%s1">tools page</a> you can enable shortcodes for a number of extra areas where shortcodes aren\'t normally allowed. This will entitle you to some quite extraordinary things, such as random taglines or random category names. Cool examples can be found <a href="http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes">here</a>.<br/><br/><strong><em>Please Note:</em></strong> it is <strong>highly recommended to disable AJAX</strong> for all these unconventional uses. This take it easy on your server, plus AJAX adds a DIV tag around the quotes that would mess with your layout in most cases where the random word is inline with the text.<br/><br/> <strong><em>Please Note:</em></strong> This trick will apply to all shortcodes, not just those of Stray Random Quotes: so pay attention before you enable it for areas where the user has access, such as the comments.', 'stray-quotes'));?></p></blockquote></div>
+        <div id="text4" style="display:none;"><blockquote><p><?php echo str_replace("%s1",$toolspage,__('Well, actually, on the <a href="%s1">tools page</a> you can enable shortcodes for a number of extra areas where shortcodes aren\'t normally allowed. This will entitle you to some quite extraordinary things, such as random taglines or random category names. Cool examples can be found <a href="http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes">here</a>.<br/><br/><strong><em>Please Note:</em></strong> it is <strong>highly recommended to disable AJAX</strong> for all these unconventional uses. This will lessen a potential impact on your hosting server caused by a excessive refreshing of quotes, plus AJAX adds a DIV tag around the quotes that would mess with your layout in most cases where the random word is inline with the text.<br/><br/> <strong><em>Please Note:</em></strong> This trick will apply to all shortcodes, not just those of Stray Random Quotes: so pay attention before you enable it for areas where the user has access, such as the comments.', 'stray-quotes'));?></p></blockquote></div>
         
         <?php //How do I change the appearance of the quotes? ?> 
         <h3 style="cursor:pointer" onclick="expand('text5', this);"><?php _e('How do I change the appearance of the quotes?','stray-quotes');?></h3>
@@ -169,7 +169,7 @@
     
         <?php // Hey. Something isn\'t working! ?>
         <h3 style="cursor:pointer" onclick="expand('text8', this);"><?php _e('Hey. Something isn\'t working!','stray-quotes');?></h3>
-        <div id="text8" style="display:none;"><blockquote><p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('Well, that figures. See, I am not a professional developer... I work on this plugin on my free time. So there\'s always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href="%s1">on this post</a>. Before you do, though, check if the problem you are experiencing isn\'t caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks.', 'stray-quotes')); ?></p></blockquote></div>
+        <div id="text8" style="display:none;"><blockquote><p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('Well, that figures. See, there\'s always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href="%s1">on this post</a>. Before you do, though, check if the problem you are experiencing isn\'t caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks.', 'stray-quotes')); ?></p></blockquote></div>
         
         <?php // DONATION ?>
         <h3 style="cursor:pointer" onclick="expand('text9', this);"><?php _e('Anything I can do to help?','stray-quotes');?></h3>

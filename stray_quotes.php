@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled.
 Author: ico@italyisfalling.com
 Author URI:http://www.italyisfalling.com/lines-of-code/
-Version: 1.9.5
+Version: 1.9.6
 License: GPL compatible
 */
 
@@ -47,7 +47,7 @@ function stray_quotes_add_js() {
 	
 	$quotesoptions = get_option('stray_quotes_options');
 	if ($quotesoptions['stray_ajax'] !='Y') {
-		wp_enqueue_script('stray_ajax.js', WP_STRAY_QUOTES_PATH.'/inc/stray_ajax.js', array('jquery', 'jquery-form'));
+		wp_enqueue_script('stray_ajax.js', WP_STRAY_QUOTES_PATH.'/inc/stray_ajax.js', array('jquery'));
 	}
 }
 
@@ -522,9 +522,17 @@ function quotes_activation() {
 		$quotesoptions['stray_multiuser'] = false;
 	
 	}
+	
+	if(  $quotesoptions['stray_quotes_version'] <= 195 ){
+		
+		//message
+		if (!$straymessage)$straymessage = $newmessage;
+		$straymessage .= __('<li> for compatibility reasons, Stray Random Quotes shortcodes have changed their names. Please take note: <code>random-quote</code> is now <code>stray-random</code>, <code>all-quotes</code> is now <code>stray-all</code> and <code>quote</code> is now <code>stray-id</code>. Please update them wherever they have been used on your blog. Thanks.</li>','stray-quotes');
+		
+	}
 
-	//!!!!!  CHANGE THIS EVERY NEW VERSION !!!!
-	$quotesoptions['stray_quotes_version'] = 195; 
+	//!!!!!  CHANGE THIS WITH EVERY NEW VERSION !!!!
+	$quotesoptions['stray_quotes_version'] = 196; 
 	
 	//reset the removal option for everyone
 	$quotesoptions['stray_quotes_uninstall'] = "";
@@ -597,10 +605,12 @@ add_action('wp_print_scripts', 'stray_quotes_add_js');
 add_action('admin_head', 'stray_quotes_header');
 
 if (function_exists(add_shortcode)) {
-	add_shortcode('quote', 'stray_id_shortcut');
-	add_shortcode('random-quote', 'stray_rnd_shortcut');
-	add_shortcode('all-quotes', 'stray_page_shortcut');
+	
+	add_shortcode('stray-id', 'stray_id_shortcode');		
+	add_shortcode('stray-random', 'stray_random_shortcode');			
+	add_shortcode('stray-all', 'stray_all_shortcode');
 }
+
 register_activation_hook(__FILE__, 'quotes_activation');
 register_deactivation_hook(__FILE__, 'quotes_deactivation');
 
@@ -611,6 +621,9 @@ if ($quotesoptions['excerpt_scode'] == 'Y') add_filter('the_excerpt', 'do_shortc
 if ($quotesoptions['widget_scode'] == 'Y') add_filter('widget_text', 'do_shortcode');
 if ($quotesoptions['categories_scode'] == 'Y') add_filter('the_category', 'do_shortcode');
 if ($quotesoptions['tags_scode'] == 'Y') add_filter('the_tags', 'do_shortcode');
-if ($quotesoptions['bloginfo_scode'] == 'Y') {add_filter('bloginfo', 'do_shortcode');add_filter('bloginfo_rss', 'do_shortcode');}
+if ($quotesoptions['bloginfo_scode'] == 'Y') {
+	add_filter('bloginfo', 'do_shortcode');
+	add_filter('bloginfo_rss', 'do_shortcode');	
+}
 
 ?>

@@ -36,7 +36,6 @@ function stray_intro() {
 	}	
 	
 	?><div class="wrap"><h2>Stray Random Quotes: <?php _e('Overview','stray-quotes'); ?></h2><?php 
-	
     if ($totalquotes > 0) { 
 	
 		//quotes and categories
@@ -101,7 +100,7 @@ function stray_intro() {
     
 	</p>
     
-    <p>This is all in a day's work for <a href="http://www.italyisfalling.com/coding">italyisfalling.com</a>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p><br/>
+    <p><?php _e('Brought to you by <a href="http://www.italyisfalling.com/coding">italyisfalling.com</a>','stray-quotes'); ?>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p><br/>
     
     <?php //donate ?>
 	<p><form action="https://www.paypal.com/cgi-bin/webscr" method="post">

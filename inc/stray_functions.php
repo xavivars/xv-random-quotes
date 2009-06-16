@@ -386,8 +386,8 @@ function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
 	echo get_stray_quotes('',true,$linkphrase,'','',$noajax,'','','','','',$id,$disableaspect);
 }
 
-//this is a SHORTCODE [random-quote]
-function stray_rnd_shortcut($atts, $content=NULL) {
+//this is a SHORTCODE [stray-random]
+function stray_random_shortcode($atts, $content=NULL) {
 	
 	extract(shortcode_atts(array(
 	"categories" => 'all',
@@ -405,8 +405,8 @@ function stray_rnd_shortcut($atts, $content=NULL) {
 	return get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,$offset,$widgetid,$fullpage,'quoteID','ASC','',$disableaspect);
 }
 
-//this is a SHORTCODE [all-quotes]
-function stray_page_shortcut($atts, $content=NULL) {
+//this is a SHORTCODE [stray-all]
+function stray_all_shortcode($atts, $content=NULL) {
 
 	extract(shortcode_atts(array(
 	"categories" => 'all',
@@ -426,8 +426,8 @@ function stray_page_shortcut($atts, $content=NULL) {
 	return get_stray_quotes($categories,$sequence,$linkphrase,$rows,$timer,$noajax,$offset,$widgetid,$fullpage,$orderby,$sort,'',$disableaspect);
 }
 
-//this is a SHORTCODE [quote id=X]
-function stray_id_shortcut($atts, $content=NULL) {
+//this is a SHORTCODE [stray-id]
+function stray_id_shortcode($atts, $content=NULL) {
 
 	extract(shortcode_atts(array(
 	"id" => '1',
@@ -614,9 +614,9 @@ function remove_querystring_var($url, $key) {
 	return ($url);
 }
 
-//this is for compatibility with old function names
+//this is for compatibility with 2.3 function names
 function wp_quotes_random() {return stray_random_quote();}
 function wp_quotes($id) {return stray_a_quote($id);}
-function wp_quotes_page($data) {return stray_page_shortcut();}
+function wp_quotes_page($data) {return stray_all_shortcode();}
 
 ?>

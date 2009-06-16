@@ -3,8 +3,8 @@ Contributors: ico@italyisfalling.com
 Donate link: http://www.italyisfalling.com/lines-of-code#donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
 Requires at least: 2.3
-Tested up to: 2.7.1
-Stable tag: 1.9.5
+Tested up to: 2.8
+Stable tag: 1.9.6
 
 Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Multiuser. Ajax enabled.
 
@@ -46,15 +46,14 @@ _Note when upgrading: If you are not automatically upgrading via Wordpress, alwa
 
 == Changelog ==
 
-* 1.9.5 Fixed: small bug in the JS AJAX file that caused a error in IE.
-* 1.9.4 Added: Stray Random quotes is now **multiuser**, which means that a contributor to the blog can access a restricted version of the plugin, add quotes, manage them and little else. _Please note: this feature will need a one-time manipulation of the quotes table to add a 'user' field to it. It is a safe operation but you might want to backup before upgrading._ Added: the ability to disable the aspect settings for a given widget, shortcode or template tag, so that where needed (such as with random taglines) the default layout of the quotes can be ignored (more on the help page). Added: Danish localization, thanks to [Georg](http://wordpress.blogos.dk/). Fixed: a nasty bug that broke AJAX in firefox, when Stray Random Quotes was the only plugin to load jQuery. Fixed: many more little bugs. A big thank you as always to the users that pointed the bugs out.
+* 1.9.6 **Changed**: For compatibility with other plugins that use similar or too common name for their shortcodes (above all NextGen gallery), the shortcodes of Stray Random Quotes have changed name. Please take note before you complain about malfunctions: `random-quote` is now `stray-random`,` all-quotes` is now `stray-all` and `quote` is now `stray-id`. Please make the appropriate changes *everywhere in your blog* where Stray Random Quotes shortcodes are used, or they won't work anymore. Sorry about this, I hoped and tried to implement a more clever automatic check on the active shortcodes but unfortunatley many plugins don't register theirs correctly and it is not possible from inside a wordpress plugin to identify them with certainty. **Fixed**: a compatibility issue with Wordpress 2.8 in conjunction with other plugins that loaded jquery (as experienced by many with Ozh Admin Drop Menu+Stray Random Quotes). I welcome anyone's feedback on this since I haven't tested the fix in all possible scenarios and other problems might be lurking around.
 
 Read the complete changelog [here](http://www.italyisfalling.com/stray-random-quotes).
 
 == Credits ==
 
 * For Multi-widget functionality, [Millian's tutorial](http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/)
-* For the essential help in developing user-end AJAX functionality, [AgentSmith](http://www.matrixagents.org)
+* For help in developing user-end AJAX functionality, [AgentSmith](http://www.matrixagents.org)
 
 == Localization ==
 

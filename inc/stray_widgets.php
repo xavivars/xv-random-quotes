@@ -155,7 +155,7 @@ class stray_widgets {
 		if ( $values['multi'] == '' )$values['multi'] = '1';
         
 		// widget options form ?>
-        <p align="right"><span class="setting-description"><small><?php _e('all settings are for this Quotes widget only.', 'stray-quotes')?></small></span></p>
+        <p align="right"><span class="setting-description"><small><?php _e('all settings are for this widget only.', 'stray-quotes')?></small></span></p>
         <p><label><strong><?php _e('Title', 'stray-quotes')?></strong></label>
 		<input class="widefat" id="widget_stray_quotes-<?php echo $number; ?>-title" 
         name="widget_stray_quotes[<?php echo $number; ?>][title]" type="text" 
