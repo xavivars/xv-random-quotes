@@ -390,7 +390,9 @@ function quotes_activation() {
 		delete_option('stray_quotes_first_time');		
 		
 	}
-				
+	
+	settype($quotesoptions['stray_quotes_version'], "integer");		
+			
 	// <= 1.7.3
 	if( $quotesoptions['stray_quotes_version'] <= 172 )$quotesoptions['stray_default_category'] =  'default';
 	
@@ -523,7 +525,8 @@ function quotes_activation() {
 	
 	}
 	
-	if(  $quotesoptions['stray_quotes_version'] <= 195 ){
+	// <= 1.9.5
+	if( $quotesoptions['stray_quotes_version'] <= 195 ){
 		
 		//message
 		if (!$straymessage)$straymessage = $newmessage;
@@ -531,8 +534,8 @@ function quotes_activation() {
 		
 	}
 
-	//!!!!!  CHANGE THIS WITH EVERY NEW VERSION !!!!
-	$quotesoptions['stray_quotes_version'] = 196; 
+	//!!  CHANGE THIS WITH EVERY NEW VERSION !!
+	$quotesoptions['stray_quotes_version'] = 196;
 	
 	//reset the removal option for everyone
 	$quotesoptions['stray_quotes_uninstall'] = "";
