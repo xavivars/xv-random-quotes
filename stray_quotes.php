@@ -390,14 +390,16 @@ function quotes_activation() {
 		delete_option('stray_quotes_first_time');		
 		
 	}
+		
+	settype($quotesoptions['stray_quotes_version'], "integer");
 	
-	settype($quotesoptions['stray_quotes_version'], "integer");		
-			
-	// <= 1.7.3
-	if( $quotesoptions['stray_quotes_version'] <= 172 )$quotesoptions['stray_default_category'] =  'default';
+	/*// <= 1.7.2
+	if( $quotesoptions['stray_quotes_version'] < 172 ){
+		$quotesoptions['stray_default_category'] = 'default';
+	}
 	
-	// <= 1.7.6
-	if( $quotesoptions['stray_quotes_version'] <= 175 ){
+	// <= 1.7.5
+	if( $quotesoptions['stray_quotes_version'] < 175 ){
 		//add a new fields
 		$quotesoptions['stray_if_no_author'] =  '';
 		$quotesoptions['stray_clear_form'] =  'Y';	
@@ -505,6 +507,7 @@ function quotes_activation() {
 		unset($quotesoptions['stray_quotes_widget_title']);
 		unset($quotesoptions['stray_quotes_regular_title']);
 	}
+	*/
 	
 	// <= 1.9.2
 	if(  $quotesoptions['stray_quotes_version'] <= 192 ){
@@ -514,14 +517,14 @@ function quotes_activation() {
 		if ($checkuser == false){
 			$addgroup = $wpdb->query('ALTER TABLE `' . WP_STRAY_QUOTES_TABLE . '` ADD COLUMN `user` VARCHAR( 255 ) NOT NULL AFTER `visible`');
 			$setvalue = $wpdb->query("UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `user`= '".$current_user->user_nicename."'");
-		}
 		
-		//message
-		if (!$straymessage)$straymessage = $newmessage;
-		if ($addgroup && $setvalue)$straymessage .= str_replace('%s1',get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options",__('<li> Stray Random Quotes is now multiuser, which means that multiple contributors can have individual sets of quotes. Administrators are obviously enabled to manage, edit and delete everyone\'s quotes. All the other users will deal with their own. To enable multiuser capabilites, use the <a href="%s1">settings page</a>.</li>','stray-quotes'));
-																													
-		//add new field
-		$quotesoptions['stray_multiuser'] = false;
+			//message
+			if (!$straymessage)$straymessage = $newmessage;
+			if ($addgroup && $setvalue)$straymessage .= str_replace('%s1',get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options",__('<li> Stray Random Quotes is now multiuser, which means that multiple contributors can have individual sets of quotes. Administrators are obviously enabled to manage, edit and delete everyone\'s quotes. All the other users will deal with their own. To enable multiuser capabilites, use the <a href="%s1">settings page</a>.</li>','stray-quotes'));
+																														
+			//add new field
+			$quotesoptions['stray_multiuser'] = false;
+		}
 	
 	}
 	
