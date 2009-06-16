@@ -44,9 +44,10 @@ See [more cool things you can do with Stray Random Quotes](http://www.italyisfal
 
 _Note when upgrading: If you are not automatically upgrading via Wordpress, always **deactivate the older version** first and **delete the old 'stray-quotes' folder**. It is not normally necessary to backup the quotes in the database unless so advised in the changelog or on the [plugin feed](http://www.italyisfalling.com/category/wordpress-things/feed/)._
 
-== Changelog ==
+== Changelog - version 1.9.6 ==
 
-* 1.9.6 **Changed**: For compatibility with other plugins that use similar or too common name for their shortcodes (above all NextGen gallery), the shortcodes of Stray Random Quotes have changed name. Please take note before you complain about malfunctions: `random-quote` is now `stray-random`,` all-quotes` is now `stray-all` and `quote` is now `stray-id`. Please make the appropriate changes *everywhere in your blog* where Stray Random Quotes shortcodes are used, or they won't work anymore. Sorry about this, I hoped and tried to implement a more clever automatic check on the active shortcodes but unfortunatley many plugins don't register theirs correctly and it is not possible from inside a wordpress plugin to identify them with certainty. **Fixed**: a compatibility issue with Wordpress 2.8 in conjunction with other plugins that loaded jquery (as experienced by many with Ozh Admin Drop Menu+Stray Random Quotes). I welcome anyone's feedback on this since I haven't tested the fix in all possible scenarios and other problems might be lurking around.
+* **Changed**: For compatibility with other plugins that use similar or too common names for their shortcodes (above all NextGen gallery), the shortcodes of Stray Random Quotes have changed names. Please take note before you complain about malfunctions: `random-quote` is now `stray-random`, `all-quotes` is now `stray-all` and `quote` is now `stray-id`. Please make the appropriate changes *everywhere in your blog* where Stray Random Quotes shortcodes are used, or they won't work anymore. Sorry about this, I hoped and tried to implement a more clever automatic check on the active shortcodes but unfortunatley many plugins don't register theirs correctly and it is not possible from inside a wordpress plugin to identify them with certainty. 
+* **Fixed**: a compatibility issue with Wordpress 2.8 in conjunction with other plugins that loaded jquery (as experienced by many with Ozh Admin Drop Menu+Stray Random Quotes). I welcome anyone's feedback on this since I haven't tested the fix in all possible scenarios and other problems might be lurking around.
 
 Read the complete changelog [here](http://www.italyisfalling.com/stray-random-quotes).
 
@@ -62,7 +63,7 @@ Read the complete changelog [here](http://www.italyisfalling.com/stray-random-qu
 * Croatian, thanks to [Rajic](http://www.atrium.hr/)
 * Danish, thanks to [Georg](http://wordpress.blogos.dk/)
 
-(Some of this translations might not be updated to the latest version, depending on the maintainer.)
+(Some of these translations might not be updated to the latest version, depending on the maintainer.)
 
 The best way to **submit new or updated translations** is to include a direct link to the localization files in a comment to [this post](http://www.italyisfalling.com/stray-random-quotes#comments). This way the files are made available to the users sooner, and without waiting for a new release.
 
