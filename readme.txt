@@ -44,7 +44,9 @@ See [more cool things you can do with Stray Random Quotes](http://www.italyisfal
 
 _Note when upgrading: If you are not automatically upgrading via Wordpress, always **deactivate the older version** first and **delete the old 'stray-quotes' folder**. It is not normally necessary to backup the quotes in the database unless so advised in the changelog or on the [plugin feed](http://www.italyisfalling.com/category/wordpress-things/feed/)._
 
-== Changelog - version 1.9.6 ==
+== Changelog ==
+
+= 1.9.6 =
 
 * **Changed**: For compatibility with other plugins that use similar or too common names for their shortcodes (above all NextGen gallery), the shortcodes of Stray Random Quotes have (reluctantly) changed names. Please take note before worrying about malfunctions: `random-quote` is now `stray-random`, `all-quotes` is now `stray-all` and `quote` is now `stray-id`. Please make the appropriate changes *everywhere in your blog* where Stray Random Quotes shortcodes are used, or they won't work anymore. I am sorry about this, I hoped and tried to implement a more clever automatic check on the active shortcodes but unfortunatley many plugins don't register theirs correctly and it is not possible from inside a wordpress plugin to identify them with certainty. 
 * **Fixed**: some of the settings got reset upon activation because of a comparison based on version number that for unkown reasons did not work. Possibly a PHP bug. I disabled the comparison and the problem should not present itself anymore, although it might cause issues to users who upgrade from very old versions of the plugin.
