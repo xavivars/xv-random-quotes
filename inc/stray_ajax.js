@@ -1,6 +1,6 @@
 jQuery(document).ready(function(){});  //needed because FF is stupid
 
-function newQuote(categories, linkphrase, id, strayurl, multi, offset, sequence, timer, disableaspect, loading){
+function newQuote(categories, linkphrase, id, strayurl, multi, offset, sequence, timer, disableaspect, contributor, loading){
 	
 	jQuery(document).ready
 	(
@@ -16,7 +16,7 @@ function newQuote(categories, linkphrase, id, strayurl, multi, offset, sequence,
 					$.ajax({
 							type: "POST",
 							url: strayurl + "/inc/stray_ajax.php",
-							data: "action=newquote&categories=" + categories + "&sequence=" + sequence + "&linkphrase=" + linkphrase + "&widgetid=" + id + "&multi=" + multi + "&offset=" + offset + "&disableaspect=" + disableaspect + "&timer=" + timer,
+							data: "action=newquote&categories=" + categories + "&sequence=" + sequence + "&linkphrase=" + linkphrase + "&widgetid=" + id + "&multi=" + multi + "&offset=" + offset + "&disableaspect=" + disableaspect + "&timer=" + timer + "&contributor=" + contributor,
 							success: function(html){
 								$("div.stray_quote-" + id).css('padding-top',null);
 								$("div.stray_quote-" + id).css('height', null);

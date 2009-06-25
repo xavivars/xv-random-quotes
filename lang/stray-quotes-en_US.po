@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stray-quotes\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-17 00:24+0100\n"
+"POT-Creation-Date: 2009-06-16 04:29+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: ico <ico@italyisfalling.com>\n"
@@ -59,65 +59,69 @@ msgstr "<li> spaces are not allowed within categories names, because they create
 msgid "<li> Stray Random Quotes is now multiuser, which means that multiple contributors can have individual sets of quotes. Administrators are obviously enabled to manage, edit and delete everyone's quotes. All the other users will deal with their own. To enable multiuser capabilites, use the <a href=\"%s1\">settings page</a>.</li>"
 msgstr "<li> Stray Random Quotes is now multiuser, which means that multiple contributors can have individual sets of quotes. Administrators are obviously enabled to manage, edit and delete everyone's quotes. All the other users will deal with their own. To enable multiuser capabilites, use the <a href=\"%s1\">settings page</a>.</li>"
 
-#: ../stray_quotes.php:583
+#: ../stray_quotes.php:530
+msgid "<li> for compatibility reasons, Stray Random Quotes shortcodes have changed their names. Please take note: <code>random-quote</code> is now <code>stray-random</code>, <code>all-quotes</code> is now <code>stray-all</code> and <code>quote</code> is now <code>stray-id</code>. Please update them wherever they have been used on your blog. Thanks.</li>"
+msgstr "<li> for compatibility reasons, Stray Random Quotes shortcodes have changed their names. Please take note: <code>random-quote</code> is now <code>stray-random</code>, <code>all-quotes</code> is now <code>stray-all</code> and <code>quote</code> is now <code>stray-id</code>. Please update them wherever they have been used on your blog. Thanks.</li>"
+
+#: ../stray_quotes.php:591
 msgid "Quotes"
 msgstr "Quotes"
 
-#: ../stray_quotes.php:584
+#: ../stray_quotes.php:592
 msgid "Overview for the Quotes"
 msgstr "Overview for the Quotes"
 
-#: ../stray_quotes.php:584
+#: ../stray_quotes.php:592
 #: ../inc/stray_overview.php:38
 msgid "Overview"
 msgstr "Overview"
 
-#: ../stray_quotes.php:585
+#: ../stray_quotes.php:593
 msgid "Manage Quotes"
 msgstr "Manage Quotes"
 
-#: ../stray_quotes.php:585
+#: ../stray_quotes.php:593
 msgid "Manage"
 msgstr "Manage"
 
-#: ../stray_quotes.php:586
+#: ../stray_quotes.php:594
 msgid "Add New Quote"
 msgstr "Add New Quote"
 
-#: ../stray_quotes.php:586
+#: ../stray_quotes.php:594
 msgid "Add New"
 msgstr "Add New"
 
-#: ../stray_quotes.php:587
+#: ../stray_quotes.php:595
 msgid "Settings of the Quotes"
 msgstr "Settings of the Quotes"
 
-#: ../stray_quotes.php:587
+#: ../stray_quotes.php:595
 #: ../inc/stray_settings.php:167
 msgid "Settings"
 msgstr "Settings"
 
-#: ../stray_quotes.php:588
+#: ../stray_quotes.php:596
 msgid "Tools for your quotes"
 msgstr "Tools for your quotes"
 
-#: ../stray_quotes.php:588
+#: ../stray_quotes.php:596
 msgid "Tools"
 msgstr "Tools"
 
-#: ../stray_quotes.php:589
+#: ../stray_quotes.php:597
 msgid "Help with the Quotes"
 msgstr "Help with the Quotes"
 
-#: ../stray_quotes.php:589
+#: ../stray_quotes.php:597
 msgid "Help"
 msgstr "Help"
 
-#: ../stray_quotes.php:590
+#: ../stray_quotes.php:598
 msgid "Remove Stray Random Quotes"
 msgstr "Remove Stray Random Quotes"
 
-#: ../stray_quotes.php:590
+#: ../stray_quotes.php:598
 msgid "Remove"
 msgstr "Remove"
 
@@ -237,8 +241,9 @@ msgid "How do I add quotes to posts and pages?"
 msgstr "How do I add quotes to posts and pages?"
 
 #: ../inc/stray_help.php:79
-msgid "Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order.<br/> They go like this:"
-msgstr "Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order.<br/> They go like this:"
+#, php-format
+msgid "Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order. More informations about the use of shortcodes are on <a href=\"%s1\">this page</a>."
+msgstr "Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order. More informations about the use of shortcodes are on <a href=\"%s1\">this page</a>."
 
 #: ../inc/stray_help.php:81
 msgid "To <strong>insert a random quote</strong> in a post or page use:"
@@ -331,8 +336,8 @@ msgstr "What about other areas of the blog, such as post titles, or even the blo
 
 #: ../inc/stray_help.php:150
 #, php-format
-msgid "Well, actually, on the <a href=\"%s1\">tools page</a> you can enable shortcodes for a number of extra areas where shortcodes aren't normally allowed. This will entitle you to some quite extraordinary things, such as random taglines or random category names. Cool examples can be found <a href=\"http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes\">here</a>.<br/><br/><strong><em>Please Note:</em></strong> it is <strong>highly recommended to disable AJAX</strong> for all these unconventional uses. This take it easy on your server, plus AJAX adds a DIV tag around the quotes that would mess with your layout in most cases where the random word is inline with the text.<br/><br/> <strong><em>Please Note:</em></strong> This trick will apply to all shortcodes, not just those of Stray Random Quotes: so pay attention before you enable it for areas where the user has access, such as the comments."
-msgstr "Well, actually, on the <a href=\"%s1\">tools page</a> you can enable shortcodes for a number of extra areas where shortcodes aren't normally allowed. This will entitle you to some quite extraordinary things, such as random taglines or random category names. Cool examples can be found <a href=\"http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes\">here</a>.<br/><br/><strong><em>Please Note:</em></strong> it is <strong>highly recommended to disable AJAX</strong> for all these unconventional uses. This take it easy on your server, plus AJAX adds a DIV tag around the quotes that would mess with your layout in most cases where the random word is inline with the text.<br/><br/> <strong><em>Please Note:</em></strong> This trick will apply to all shortcodes, not just those of Stray Random Quotes: so pay attention before you enable it for areas where the user has access, such as the comments."
+msgid "Well, actually, on the <a href=\"%s1\">tools page</a> you can enable shortcodes for a number of extra areas where shortcodes aren't normally allowed. This will entitle you to some quite extraordinary things, such as random taglines or random category names. Cool examples can be found <a href=\"http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes\">here</a>.<br/><br/><strong><em>Please Note:</em></strong> it is <strong>highly recommended to disable AJAX</strong> for all these unconventional uses. This will lessen a potential impact on your hosting server caused by a excessive refreshing of quotes, plus AJAX adds a DIV tag around the quotes that would mess with your layout in most cases where the random word is inline with the text.<br/><br/> <strong><em>Please Note:</em></strong> This trick will apply to all shortcodes, not just those of Stray Random Quotes: so pay attention before you enable it for areas where the user has access, such as the comments."
+msgstr "Well, actually, on the <a href=\"%s1\">tools page</a> you can enable shortcodes for a number of extra areas where shortcodes aren't normally allowed. This will entitle you to some quite extraordinary things, such as random taglines or random category names. Cool examples can be found <a href=\"http://www.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes\">here</a>.<br/><br/><strong><em>Please Note:</em></strong> it is <strong>highly recommended to disable AJAX</strong> for all these unconventional uses. This will lessen a potential impact on your hosting server caused by a excessive refreshing of quotes, plus AJAX adds a DIV tag around the quotes that would mess with your layout in most cases where the random word is inline with the text.<br/><br/> <strong><em>Please Note:</em></strong> This trick will apply to all shortcodes, not just those of Stray Random Quotes: so pay attention before you enable it for areas where the user has access, such as the comments."
 
 #: ../inc/stray_help.php:153
 msgid "How do I change the appearance of the quotes?"
@@ -376,8 +381,8 @@ msgstr "Hey. Something isn't working!"
 
 #: ../inc/stray_help.php:172
 #, php-format
-msgid "Well, that figures. See, I am not a professional developer... I work on this plugin on my free time. So there's always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href=\"%s1\">on this post</a>. Before you do, though, check if the problem you are experiencing isn't caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks."
-msgstr "Well, that figures. See, I am not a professional developer... I work on this plugin on my free time. So there's always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href=\"%s1\">on this post</a>. Before you do, though, check if the problem you are experiencing isn't caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks."
+msgid "Well, that figures. See, there's always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href=\"%s1\">on this post</a>. Before you do, though, check if the problem you are experiencing isn't caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks."
+msgstr "Well, that figures. See, there's always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href=\"%s1\">on this post</a>. Before you do, though, check if the problem you are experiencing isn't caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks."
 
 #: ../inc/stray_help.php:175
 msgid "Anything I can do to help?"
@@ -673,62 +678,66 @@ msgstr "&nbsp;new category:&nbsp;"
 msgid "Add quote"
 msgstr "Add quote"
 
-#: ../inc/stray_overview.php:44
+#: ../inc/stray_overview.php:43
 msgid "one category"
 msgstr "one category"
 
-#: ../inc/stray_overview.php:47
+#: ../inc/stray_overview.php:46
 msgid "categories"
 msgstr "categories"
 
-#: ../inc/stray_overview.php:52
+#: ../inc/stray_overview.php:51
 msgid ", distributed as follows:"
 msgstr ", distributed as follows:"
 
-#: ../inc/stray_overview.php:56
+#: ../inc/stray_overview.php:55
 #, php-format
 msgid "<p>Right now you have <strong>%s1 quotes</strong> in <strong>%s2</strong>%s3</p>"
 msgstr "<p>Right now you have <strong>%s1 quotes</strong> in <strong>%s2</strong>%s3</p>"
 
-#: ../inc/stray_overview.php:77
+#: ../inc/stray_overview.php:76
 msgid "All your quotes "
 msgstr "All your quotes "
 
-#: ../inc/stray_overview.php:78
+#: ../inc/stray_overview.php:77
 #, php-format
 msgid "<p><strong>%s3</strong> are visible.</p>"
 msgstr "<p><strong>%s3</strong> are visible.</p>"
 
-#: ../inc/stray_overview.php:82
+#: ../inc/stray_overview.php:81
 #, php-format
 msgid "<p>Your most quoted author is <strong>%s5</strong>.</p>"
 msgstr "<p>Your most quoted author is <strong>%s5</strong>.</p>"
 
-#: ../inc/stray_overview.php:86
+#: ../inc/stray_overview.php:85
 #, php-format
 msgid "<p>Your most used source is <strong>%s5</strong>.</p>"
 msgstr "<p>Your most used source is <strong>%s5</strong>.</p>"
 
-#: ../inc/stray_overview.php:88
+#: ../inc/stray_overview.php:87
 msgid "There is nothing to report."
 msgstr "There is nothing to report."
 
-#: ../inc/stray_overview.php:94
+#: ../inc/stray_overview.php:93
 #, php-format
 msgid "To start doing stuff, you can <a href=\"%s1\"><strong>add new quotes</strong></a>;<br />use the <a href=\"%s2\"><strong>manage</strong></a> page to edit or delete existing quotes;"
 msgstr "To start doing stuff, you can <a href=\"%s1\"><strong>add new quotes</strong></a>;<br />use the <a href=\"%s2\"><strong>manage</strong></a> page to edit or delete existing quotes;"
 
-#: ../inc/stray_overview.php:96
+#: ../inc/stray_overview.php:95
 #, php-format
 msgid "<br />change the <a href=\"%s3\"><strong>settings</strong></a> to control how the quotes are displayed on your blog;"
 msgstr "<br />change the <a href=\"%s3\"><strong>settings</strong></a> to control how the quotes are displayed on your blog;"
 
-#: ../inc/stray_overview.php:100
+#: ../inc/stray_overview.php:99
 #, php-format
 msgid "<br/>a <a href=\"%s5\"><strong>tools page</strong></a> can help you do more;<br/>if you're new to all this, visit the <a href=\"%s4\"><strong>help page</strong></a>."
 msgstr "<br/>a <a href=\"%s5\"><strong>tools page</strong></a> can help you do more;<br/>if you're new to all this, visit the <a href=\"%s4\"><strong>help page</strong></a>."
 
-#: ../inc/stray_overview.php:104
+#: ../inc/stray_overview.php:103
+msgid "Brought to you by <a href=\"http://www.italyisfalling.com/coding\">italyisfalling.com</a>"
+msgstr "Brought to you by <a href=\"http://www.italyisfalling.com/coding\">italyisfalling.com</a>"
+
+#: ../inc/stray_overview.php:103
 msgid "Happy quoting."
 msgstr "Happy quoting."
 
@@ -1181,8 +1190,8 @@ msgid "Random Quote"
 msgstr "Random Quote"
 
 #: ../inc/stray_widgets.php:158
-msgid "all settings are for this Quotes widget only."
-msgstr "all settings are for this Quotes widget only."
+msgid "all settings are for this widget only."
+msgstr "all settings are for this widget only."
 
 #: ../inc/stray_widgets.php:159
 msgid "Title"

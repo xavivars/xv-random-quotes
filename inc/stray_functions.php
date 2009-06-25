@@ -1,7 +1,7 @@
 <?php
 
 //MAIN FUNCTION. this RETURNS one or more random quotes.
-function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$multi=NULL,$timer=NULL,$noajax=NULL,$myoffset=0,$widgetid=NULL,$fullpage=NULL,$orderby='quoteID',$sort='ASC',$thisid=NULL,$disableaspect=NULL) {
+function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$multi=NULL,$timer=NULL,$noajax=NULL,$myoffset=0,$widgetid=NULL,$fullpage=NULL,$orderby='quoteID',$sort='ASC',$thisid=NULL,$disableaspect=NULL,$contributor=NULL) {
 
 	global $wpdb;
 
@@ -36,8 +36,8 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 	} else {
 		$categoryquery = '';
 		$categories = '';
-	}			
-
+	}
+	
 	//generate a casual id if the function is not called via a widget
 	if (is_string($widgetid)) settype($widgetid, "integer"); 
 	if (!$widgetid)$widgetid = mt_rand(0,999999);
@@ -95,11 +95,22 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 		}
 	}
 	
+	//handle contributors
+	$multiuser = $quotesoptions['stray_multiuser'];
+	if ( $contributor && $multiuser == 'Y' ) {
+		
+		if ($categoryquery != '')
+			$userquery = ' AND `user`=\''. $contributor.'\'';
+		else
+			$userquery = ' WHERE `user`=\''. $contributor.'\'';
+	
+	}
+
 	//sql for more than one quote
 	if ($multi > 1){
 		
 		// how many rows we have in database?
-		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as 'rows' FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" . $categoryquery);
+		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as 'rows' FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" . $categoryquery . $userquery);
 		
 		// workaround for the "division by zero" problem
 		$rows = $multi;
@@ -207,7 +218,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 		
 		//retrieve the quotes
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source` FROM `" 
-		. WP_STRAY_QUOTES_TABLE . "` WHERE `visible`='yes'" . $categoryquery 
+		. WP_STRAY_QUOTES_TABLE . "` WHERE `visible`='yes'" . $categoryquery . $userquery
 		. " ORDER BY ". $orderby . $sort 
 		. " LIMIT " . $offset. ", ". $multi;
 		$offset = $myoffset+$multi;
@@ -223,7 +234,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 		//sql the quotes
 		$offset=0;		
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source` FROM `" 
-		. WP_STRAY_QUOTES_TABLE . "` WHERE `visible`='yes'" .$categoryquery
+		. WP_STRAY_QUOTES_TABLE . "` WHERE `visible`='yes'" .$categoryquery . $userquery
 		. " ORDER BY ". "`".$orderby."` " . $sort ;
 
 		$result = $wpdb->get_results($sql);
@@ -309,6 +320,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 			$sequence.'\',\''.
 			$timer.'\',\''.
 			$disableaspect.'\',\''.
+			$contributor.'\',\''.
 			$loading.'\')';
 			
 			$event = 'onclick="'.$jaction.'"';
@@ -377,8 +389,8 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 }
 
 //this is a TEMPLATE TAG. It ECHOES one or more random quotes.
-function stray_random_quote($categories='all',$sequence=false,$linkphrase='',$noajax=false,$multi=1,$timer=0,$orderby='quoteID',$sort='ASC',$disableaspect=NULL) {
-	echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,0,'',false,$orderby,$sort,'',$disableaspect);	
+function stray_random_quote($categories='all',$sequence=false,$linkphrase='',$noajax=false,$multi=1,$timer=0,$orderby='quoteID',$sort='ASC',$disableaspect=NULL, $contributor=NULL) {
+	echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,0,'',false,$orderby,$sort,'',$disableaspect, $contributor);	
 }
 
 //this is a TEMPLATE TAG. It ECHOES a specific quote.
@@ -399,10 +411,11 @@ function stray_random_shortcode($atts, $content=NULL) {
 	"timer" => '',
 	"offset" => 0,
 	"fullpage" => '',
-	"disableaspect" => false
+	"disableaspect" => false,
+	"user" => ''
 	), $atts));	
 	
-	return get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,$offset,$widgetid,$fullpage,'quoteID','ASC','',$disableaspect);
+	return get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,$offset,$widgetid,$fullpage,'quoteID','ASC','',$disableaspect, $user);
 }
 
 //this is a SHORTCODE [stray-all]
@@ -420,10 +433,11 @@ function stray_all_shortcode($atts, $content=NULL) {
 	"fullpage" => true,
 	"orderby" =>'quoteID',
 	"sort" => 'ASC',
-	"disableaspect" => false
+	"disableaspect" => false,
+	"user" => ''
 	), $atts));	
 	
-	return get_stray_quotes($categories,$sequence,$linkphrase,$rows,$timer,$noajax,$offset,$widgetid,$fullpage,$orderby,$sort,'',$disableaspect);
+	return get_stray_quotes($categories,$sequence,$linkphrase,$rows,$timer,$noajax,$offset,$widgetid,$fullpage,$orderby,$sort,'',$disableaspect, $user);
 }
 
 //this is a SHORTCODE [stray-id]

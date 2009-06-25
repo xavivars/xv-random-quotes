@@ -164,7 +164,7 @@ function stray_quotes_options() {
 	<form name="frm_options" method="post" action="<?php echo ($_SERVER['REQUEST_URI']); ?>">
 
     <?php //quote aspect ?>
-    <div class="wrap"><h2><?php _e('Settings','stray-quotes') ?></h2>
+    <div class="wrap"><h2><?php _e('Settings','stray-quotes'); ?></h2>
 
     <p><h3 style="line-height:.1em"><?php _e('How the quotes look','stray-quotes') ?></h3>
     <span class="setting-description"><?php _e('Default settings to change how the quotes appear in your blog. These settings apply to ALL widgets, shortcodes or template tags, but they can be disabled from those if needed.','stray-quotes') ?></span>

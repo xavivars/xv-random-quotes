@@ -6,7 +6,7 @@
 	$manage = get_option('siteurl')."/wp-admin/admin.php?page=stray_manage"; ?>
     
     <div class="wrap" style="width:52%"><h2><?php _e('The help page','stray-quotes');?></h2>
-    <span class="setting-description"><?php _e(' ~ where <strong>ico</strong> answers questions, as you click on them.','stray-quotes');?></span>
+    <!--<span class="setting-description"><?php _e(' ~ where <strong>ico</strong> answers questions, as you click on them.','stray-quotes');?></span>-->
        
         <?php if(current_user_can('manage_options')) {
 		
@@ -20,7 +20,7 @@
         
         <p><strong><?php _e('To get one or more random quotes: ', 'stray-quotes');?>
         
-        <code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2',false,'another quote &amp;raquo;',false,1,0,'quoteID','ASC', false); ?&gt;</code></strong><br/><br/>
+        <code>&lt;?php if (function_exists('stray_random_quote')) stray_random_quote('category1,category2',false,'another quote &amp;raquo;',false,1,0,'quoteID','ASC', false, ''); ?&gt;</code></strong><br/><br/>
         
         <?php _e('Variables :', 'stray-quotes');?><br/>
         
@@ -43,6 +43,8 @@
         <li>8. <strong><code>ASC</code></strong> <?php _e('Sorts the quotes ascending "ASC" or descending "DESC". Default is "ASC".', 'stray-quotes');?></li>
         
         <li>9. <strong><code>true/false</code></strong> <?php _e('Disables the aspect settings (how the quotes look) if "true". default is "false".', 'stray-quotes');?></li>
+        
+        <li>10. <strong><code>''</code></strong> <?php _e('Contributor whose quotes have to be used exclusively. A empty value by default takes quotes from all contributors.', 'stray-quotes');?></li>
         
         </ul></p>
         
@@ -94,6 +96,8 @@
         
         <li><strong><code>disableaspect=false</code></strong> <?php _e('Disable the aspect settings if "true". Default is "false"', 'stray-quotes');?></li>
         
+        <li><strong><code>user=<em>user-name-goes-here</em></code></strong>  <?php _e('Contributor whose quotes have to be used exclusively. Without this setting, quotes are taken from all contributors.', 'stray-quotes');?></li>
+        
         </ul>
         
         <br/><?php _e('All these settings are optional. If you don\'t indicate anything, a random quote from all the categories will be displayed, with ajax according to the general settings.<br/><br/>', 'stray-quotes');?></p><br/>
@@ -120,7 +124,9 @@
         
         <li><strong><code>timer=5</code></strong> <?php _e('Reloads the quotes automatically after the given interval (in seconds). Hides the linkphrase. ', 'stray-quotes');?></li>
 
-        <li><strong><code>disableaspect=false</code></strong> <?php _e('Disable the aspect settings if "true". Default is "false"', 'stray-quotes');?></li>
+        <li><strong><code>disableaspect=false</code></strong> <?php _e('Disable the aspect settings if "true". Default is "false"', 'stray-quotes');?></li>        
+        
+        <li><strong><code>user=<em>user-name-goes-here</em></code></strong>  <?php _e('Contributor whose quotes have to be used exclusively. Without this setting, quotes are taken from all contributors.', 'stray-quotes');?></li>
         
         </ul>   
         

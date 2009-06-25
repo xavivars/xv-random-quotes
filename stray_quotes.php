@@ -5,7 +5,7 @@ Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
 Description: Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled.
 Author: ico@italyisfalling.com
 Author URI:http://www.italyisfalling.com/lines-of-code/
-Version: 1.9.6
+Version: 1.9.7
 License: GPL compatible
 */
 
@@ -165,7 +165,7 @@ function quotes_activation() {
 	
 	//set the messages
 	$straymessage = "";
-	$newmessage = str_replace("%1","http://www.italyisfalling.com/stray-random-quotes/#changelog",__('<p>You just installed a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href="%1">changelog</a>, but you should know that: </p>','stray-quotes'));
+	$newmessage = str_replace("%1","http://www.italyisfalling.com/stray-random-quotes/#changelog",__('<p>You installed a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href="%1">changelog</a>, but you should know that: </p>','stray-quotes'));
 	
 	//in case we have to point to other pages in the messages
 	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";
@@ -538,7 +538,7 @@ function quotes_activation() {
 	}
 
 	//!!  CHANGE THIS WITH EVERY NEW VERSION !!
-	$quotesoptions['stray_quotes_version'] = 196;
+	$quotesoptions['stray_quotes_version'] = 197;
 	
 	//reset the removal option for everyone
 	$quotesoptions['stray_quotes_uninstall'] = "";

@@ -138,12 +138,12 @@ function stray_manage() {
                 <p class="setting-description"><small><?php _e('* Other than the few offered in the toolbar above, many HTML and non-HTML formatting elements can be used for the quote. Lines can be broken traditionally or using <code>&lt;br/&gt;</code>, etcetera.','stray-quotes'); ?></small></p></p>
                 
 				<p><label><?php _e('Author:','stray-quotes') ?></label>
-                <input type="text" name="quote_author" size=58 value="<?php echo $author ?>" <?php echo $styleborder ?> />
+                <input type="text" id="aeditor" name="quote_author" size=58 value="<?php echo $author ?>" <?php echo $styleborder ?> />
 				<script type="text/javascript">edToolbar1();</script>
                 <script type="text/javascript">var edCanvas1 = document.getElementById('aeditor');</script><br />
 				
 				<label><?php _e('Source:','stray-quotes') ?></label>
-                <input type="text" name="quote_source" size=58 value="<?php echo $source ?>" <?php echo $styleborder ?> />
+                <input type="text" id="seditor" name="quote_source" size=58 value="<?php echo $source ?>" <?php echo $styleborder ?> />
 				<script type="text/javascript">edToolbar2();</script>
                 <script type="text/javascript">var edCanvas2 = document.getElementById('seditor');</script>
                 <p class="setting-description"><small><?php _e('* By adding a link to the author or the source, the default links specified on the settings page are ignored. Make sure the link is closed by a <code>&lt;/a&gt;</code> tag.','stray-quotes'); ?></small></p></p>

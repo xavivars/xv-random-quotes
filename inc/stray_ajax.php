@@ -18,6 +18,7 @@ if($_POST['action'] == 'newquote'){
 	$sort = isset($_POST['sort'])?$_POST['sort']:'';
 	$orderby = isset($_POST['orderby'])?$_POST['orderby']:'';
 	$disableaspect = isset($_POST['disableaspect'])?$_POST['disableaspect']:'';
+	$contributor = isset($_POST['contributor'])?$_POST['contributor']:'';
 
 	echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,false,$offset,$widgetid,false,$orderby,$sort,'',$disableaspect);
 }

@@ -4,7 +4,7 @@ Donate link: http://www.italyisfalling.com/lines-of-code#donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
 Requires at least: 2.3
 Tested up to: 2.8
-Stable tag: 1.9.6
+Stable tag: 1.9.7
 
 Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Multiuser. Ajax enabled.
 
@@ -46,11 +46,11 @@ _Note when upgrading: If you are not automatically upgrading via Wordpress, alwa
 
 == Changelog ==
 
-= 1.9.6 =
+= 1.9.7 =
 
-* **Changed**: For compatibility with other plugins that use similar or too common names for their shortcodes (above all NextGen gallery), the shortcodes of Stray Random Quotes have (reluctantly) changed names. Please take note before worrying about malfunctions: `random-quote` is now `stray-random`, `all-quotes` is now `stray-all` and `quote` is now `stray-id`. Please make the appropriate changes *everywhere in your blog* where Stray Random Quotes shortcodes are used, or they won't work anymore. I am sorry about this, I hoped and tried to implement a more clever automatic check on the active shortcodes but unfortunatley many plugins don't register theirs correctly and it is not possible from inside a wordpress plugin to identify them with certainty. 
-* **Fixed**: some of the settings got reset upon activation because of a comparison based on version number that for unkown reasons did not work. Possibly a PHP bug. I disabled the comparison and the problem should not present itself anymore, although it might cause issues to users who upgrade from very old versions of the plugin.
-* **Fixed**: a compatibility issue with Wordpress 2.8 in conjunction with other plugins that loaded jquery (as experienced by many with Ozh Admin Drop Menu+Stray Random Quotes). I welcome anyone's feedback on this since I haven't tested the fix in all possible scenarios and other problems might be lurking around.
+* Added: if contributors are allowed to add and manage quotes, it is now possible to specify whether a widget, a shortcode or a tag should display quotes only from a given contributor. See the help page for more.
+* Changed: Widget layout.
+* Fixed: the link buttons for the author and source fields on the edit page would not work.
 
 Read the complete changelog [here](http://www.italyisfalling.com/stray-random-quotes).
 
