@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: Stray Random Quotes
-Plugin URI: http://www.italyisfalling.com/stray-random-quotes/
+Plugin URI: http://code.italyisfalling.com/stray-random-quotes
 Description: Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled.
 Author: ico@italyisfalling.com
-Author URI:http://www.italyisfalling.com/lines-of-code/
+Author URI:http://code.italyisfalling.com/
 Version: 1.9.7
 License: GPL compatible
 */
