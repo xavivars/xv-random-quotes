@@ -18,14 +18,23 @@ function stray_quotes_options() {
 
 		// check URLs
 		if ($_POST['link_to'] == 'http://') unset($_POST['link_to']);				
-		else if (false === strpos($_POST['link_to'],'%AUTHOR%')) {  
+		/*else if (false === strpos($_POST['link_to'],'%AUTHOR%')) {  
 			unset($_POST['link_to']);
 			$msgvar1 = 1;
+		} */		
+		else if ( !preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",$_POST['link_to'])		
+		/*( false === filter_var($_POST['link_to'], FILTER_VALIDATE_URL)*/){
+			unset($_POST['link_to']);
+			$msgvar3 = 1;
 		}				
 		if ($_POST['source_link_to'] == 'http://') unset($_POST['source_link_to']);				
-		else if (false === strpos($_POST['source_link_to'],'%SOURCE%')) {  
+		/*else if (false === strpos($_POST['source_link_to'],'%SOURCE%')) {  
 			unset($_POST['source_link_to']);
 			$msgvar2 = 1;
+		} */		
+		else if ( !preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",$_POST['source_link_to'])){
+			unset($_POST['source_link_to']);
+			$msgvar3 = 1;
 		}
 		
 		//check loader
@@ -80,22 +89,26 @@ function stray_quotes_options() {
 		//update options
 		$update_quotes_options = update_option('stray_quotes_options', $quotesoptions);			
 		
-		//positive feedback
-		if ($update_quotes_options) { ?>
-		<div id="message" class="updated fade below-h2"><p>
-		<?php _e('<strong>Options saved...</strong> ','stray-quotes');
-		if ($msgvar1 == 1 && $msgvar2 == 1) _e('No problems. Well,  except that the links you provided for the author and source were invalid. I had to discard them.', 'stray-quotes');
-		else if ($msgvar1 == 1) _e('No problems. Well, except that there was no variable in the author link. I discared it.', 'stray-quotes');
-		else if ($msgvar2 == 1) _e('No problems. Well,  except that there was no variable in the source link. I discared it.', 'stray-quotes');	
-		else _e('No problems.', 'stray-quotes'); ?></p></div><?php } else {
+		if ($update_quotes_options) {
+        
+            //positive feedback
+             ?><div id="message" class="updated fade below-h2"><p>
+            <?php _e('<strong>Options saved...</strong> ','stray-quotes');
+            if ( $msgvar3 == 1) _e('No problems. Well, except for one or more invalid urls that I discarded.', 'stray-quotes');
+            /*else if ($msgvar1 == 1) _e('No problems. Well, except that there was no variable in the author link. I discared it.', 'stray-quotes');
+            else if ($msgvar2 == 1) _e('No problems. Well,  except that there was no variable in the source link. I discared it.', 'stray-quotes');*/
+            else _e('No problems.', 'stray-quotes'); ?></p></div><?php 
 		
-		//negative feedback		
-		?><div id="message" class="error fade below-h2"><p>
-		<?php if ( $msgvar1 == 1 && $msgvar2 == 1) _e('<strong>Something went wrong!</strong> The links you provided for the Author and Source had no variables.</strong> ','stray-quotes'); 
-		else if ( $msgvar1 == 1 ) _e('<strong>Something went wrong!</strong> There was no variable in the author link. I discared it. ','stray-quotes'); 
-		else if ( $msgvar2 == 1 )  _e('<strong>Something went wrong!</strong> There was no variable in the source link. I discared it. ','stray-quotes'); 
-		else  _e('<strong>The options could not be saved</strong>. Either the operation went wrong, or you didn\'t make any changes.</strong> ','stray-quotes'); 
-		?></p></div><?php }
+		} else {
+		
+			//negative feedback		
+			?><div id="message" class="error fade below-h2"><p>
+            <?php if ( $msgvar3 == 1 /*|| $msgvar1 == 1|| $msgvar2 == 1*/) 
+				_e('The operation failed because of one or more invalid urls that I discarded.', 'stray-quotes');
+			else 
+				_e('<strong>The options could not be saved</strong>. Either the operation went wrong, or you didn\'t make any changes.</strong> ','stray-quotes'); 
+			?></p></div><?php 
+		}			
 		
 	}	
 	

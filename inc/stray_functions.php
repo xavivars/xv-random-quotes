@@ -320,8 +320,8 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 			$sequence.'\',\''.
 			$timer.'\',\''.
 			$disableaspect.'\',\''.
-			$contributor.'\',\''.
-			$loading.'\')';
+			$loading.'\',\''.
+			$contributor.'\')';
 			
 			$event = 'onclick="'.$jaction.'"';
 			
@@ -486,29 +486,35 @@ function stray_output_one($get_one,$multi=NULL,$disableaspect=NULL) {
 		
 	//make or not the author link
 	if ( $get_one->author ) {
-		if (!$linkto || strpos('<a href=',$get_one->author))$Author = $get_one->author;
+		if ( !$linkto || preg_match("/^[a-zA-Z]+[:\/\/]+[A-Za-z0-9\-_]+\\.+[A-Za-z0-9\.\/%&=\?\-_]+$/i",$get_one->author) )
+			$Author = $get_one->author;
 		else {
 			$Author = $get_one->author;
 			if ($authorspaces)$Author =str_replace(" ",$authorspaces,$Author);
 			
 			$search = array('"', '&', '%AUTHOR%');
-			$replace = array('%22','%26', $Author);
+			$replace = array('%22','&amp;', $Author);
 			$linkto = str_replace($search,$replace,$linkto);
-			$Author = '<a href="'.htmlentities($linkto).'">' . $get_one->author . '</a>';
+			
+			/*$linkto = str_replace('%AUTHOR%',$Author,$linkto);*/
+			$Author = '<a href="'.$linkto.'">' . $get_one->author . '</a>';
 		}
 	}
 	
 	//make or not the source link
 	if ( $get_one->source ) {
-		if (!$sourcelinkto || strpos('<a href=',$get_one->source))$Source = $get_one->source;
+		if ( !$sourcelinkto || preg_match("/^[a-zA-Z]+[:\/\/]+[A-Za-z0-9\-_]+\\.+[A-Za-z0-9\.\/%&=\?\-_]+$/i",$get_one->source) )
+			$Source = $get_one->source;
 		else {
 			$Source = $get_one->source;
 			if ($sourcespaces)$Source =str_replace(" ",$sourcespaces,$Source);
 			
 			$search = array('"', '&', '%SOURCE%');
-			$replace = array('%22','%26', $Source);
+			$replace = array('%22','&amp;', $Source);
 			$sourcelinkto = str_replace($search,$replace,$sourcelinkto);
-			$Source = '<a href="'.htmlentities($sourcelinkto).'">' . $get_one->source . '</a>';
+			
+			/*$sourcelinkto = str_replace('%SOURCE%',$Source,$sourcelinkto);*/
+			$Source = '<a href="'.$sourcelinkto.'">' . $get_one->source . '</a>';
 		}
 	}
 	

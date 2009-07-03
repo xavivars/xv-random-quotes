@@ -1,35 +1,37 @@
 <?php
 /*
 Plugin Name: Stray Random Quotes
-Plugin URI: http://code.italyisfalling.com/stray-random-quotes
+Plugin URI: http://code.italyisfalling.com/stray-random-quotes/
 Description: Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled.
 Author: ico@italyisfalling.com
 Author URI:http://code.italyisfalling.com/
-Version: 1.9.7
+Version: 1.9.8
 License: GPL compatible
 */
 
 global $wpdb, $wp_version;
 
 //few definitions
+if ( ! defined( 'WP_CONTENT_URL' ) ) {	
+	if ( ! defined( 'WP_SITEURL' ) ) define( 'WP_SITEURL', get_option("siteurl") );
+	define( 'WP_CONTENT_URL', WP_SITEURL . '/wp-content' );
+}
+if ( ! defined( 'WP_SITEURL' ) ) define( 'WP_SITEURL', get_option("siteurl") );
+if ( ! defined( 'WP_CONTENT_DIR' ) ) define( 'WP_CONTENT_DIR', ABSPATH . 'wp-content' );
+if ( ! defined( 'WP_PLUGIN_URL' ) ) define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
+if ( ! defined( 'WP_PLUGIN_DIR' ) ) define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
+
 define("WP_STRAY_QUOTES_TABLE", $wpdb->prefix . "stray_quotes");
-define ("STRAY_DIR",basename(dirname(__FILE__)));
-if (STRAY_DIR == 'plugins') $dir = '';
-else $dir = STRAY_DIR . '/';
-define("WP_STRAY_QUOTES_PATH", get_option("siteurl") . "/wp-content/plugins/" . STRAY_DIR);
+if ( basename(dirname(__FILE__)) == 'plugins' )
+	define("STRAY_DIR",'');
+else define("STRAY_DIR" , basename(dirname(__FILE__)) . '/');
+define("WP_STRAY_QUOTES_PATH", WP_PLUGIN_URL . "/" . STRAY_DIR);
 
 //get ready for local
 $currentLocale = get_locale();
 if(!empty($currentLocale)) {
-	
-	//absolute path to mo file
-	$moFile = ABSPATH . 'wp-content/plugins/' . $dir . 'lang/stray-quotes-' . $currentLocale . ".mo";
-	
-	//check if it is a window server and change path accordingly : will it work with ISS?
-	if ( strpos($moFile, '\\')) $moFile = str_replace('/','\\',$moFile);
-	
 	//load local
-	if(@file_exists($moFile) && is_readable($moFile)) load_textdomain('stray-quotes', $moFile);
+	load_plugin_textdomain( 'stray-quotes', WP_STRAY_QUOTES_PATH . 'lang', STRAY_DIR . 'lang' );
 }
 
 // fix REQUEST_URI for ISS
@@ -47,7 +49,7 @@ function stray_quotes_add_js() {
 	
 	$quotesoptions = get_option('stray_quotes_options');
 	if ($quotesoptions['stray_ajax'] !='Y') {
-		wp_enqueue_script('stray_ajax.js', WP_STRAY_QUOTES_PATH.'/inc/stray_ajax.js', array('jquery'));
+		wp_enqueue_script('stray_ajax.js', WP_STRAY_QUOTES_PATH.'inc/stray_ajax.js', array('jquery'));
 	}
 }
 
@@ -538,7 +540,7 @@ function quotes_activation() {
 	}
 
 	//!!  CHANGE THIS WITH EVERY NEW VERSION !!
-	$quotesoptions['stray_quotes_version'] = 197;
+	$quotesoptions['stray_quotes_version'] = 198;
 	
 	//reset the removal option for everyone
 	$quotesoptions['stray_quotes_uninstall'] = "";
@@ -594,7 +596,7 @@ function stray_quotes_add_pages() {
 	if($quotesoptions['stray_multiuser'] == true) $straycan = 'edit_posts';
 	else $straycan = 'manage_options';
 
-	add_menu_page('Stray Random Quotes', __('Quotes','stray-quotes'), $straycan, __FILE__, 'stray_intro', WP_STRAY_QUOTES_PATH.'/img/lightbulb.png');
+	add_menu_page('Stray Random Quotes', __('Quotes','stray-quotes'), $straycan, __FILE__, 'stray_intro', WP_STRAY_QUOTES_PATH.'img/lightbulb.png');
 	add_submenu_page(__FILE__, __('Overview for the Quotes','stray-quotes'), __('Overview','stray-quotes'), $straycan, __FILE__, 'stray_intro');
 	add_submenu_page(__FILE__, __('Manage Quotes','stray-quotes'), __('Manage','stray-quotes'), $straycan, 'stray_manage', 'stray_manage');
 	add_submenu_page(__FILE__, __('Add New Quote','stray-quotes'), __('Add New','stray-quotes'), $straycan, 'stray_new', 'stray_new');

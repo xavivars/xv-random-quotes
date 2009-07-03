@@ -20,7 +20,7 @@ if($_POST['action'] == 'newquote'){
 	$disableaspect = isset($_POST['disableaspect'])?$_POST['disableaspect']:'';
 	$contributor = isset($_POST['contributor'])?$_POST['contributor']:'';
 
-	echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,false,$offset,$widgetid,false,$orderby,$sort,'',$disableaspect);
+	echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,false,$offset,$widgetid,false,$orderby,$sort,'',$disableaspect,$contributor);
 }
 
 ?>

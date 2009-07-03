@@ -12,7 +12,7 @@
 		
 		// how do I display random quotes on this blog? ?>
         <h3 style="cursor:pointer" onclick="expand('text1', this);"><?php _e('So, how do I display a random quote on this blog?','stray-quotes');?></h3>
-        <div id="text1" style="display:none;"><blockquote><p><!--<img src="<?php echo WP_STRAY_QUOTES_PATH . "/screenshot-7.png" ?>" style="border:1px solid #ccc" /><br/>--><?php echo str_replace("%s1",$widgetpage,__('Stray Random Quotes comes with <strong>Widgets</strong>. You can use all the widgets you want. Each widget has its own set of options. Just drag a "Quotes" widget to the sidebar on the <a href="%s1">widget page</a>, and change its settings accordingly.<br />Note: <em>Your template must be widget compatible.</em></p>','stray-quotes')); ?></p></blockquote></div>
+        <div id="text1" style="display:none;"><blockquote><p><?php echo str_replace("%s1",$widgetpage,__('Stray Random Quotes comes with <strong>Widgets</strong>. You can use all the widgets you want. Each widget has its own set of options. Just drag a "Quotes" widget to the sidebar on the <a href="%s1">widget page</a>, and change its settings accordingly.<br />Note: <em>Your template must be widget compatible.</em></p>','stray-quotes')); ?></p></blockquote></div>
      
         <?php // What if I don\'t use widgets?' ?>
         <h3 style="cursor:pointer" onclick="expand('text2', this);"><?php _e('Can I add quotes directly to the template?','stray-quotes');?></h3>

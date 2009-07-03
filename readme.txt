@@ -1,6 +1,6 @@
 === Stray Random Quotes ===
 Contributors: ico@italyisfalling.com
-Donate link: http://code.italyisfalling.com/donate
+Donate link: http://www.italyisfalling.com/lines-of-code#donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
 Requires at least: 2.3
 Tested up to: 2.8
@@ -46,9 +46,21 @@ _Note when upgrading: If you are not automatically upgrading via Wordpress, alwa
 
 == Changelog ==
 
+= 1.9.9 =
+
+* Changed: the way locale files are loaded
+* Changed: the way the settings page has to check validity of the URLs (hopefully more accurate now)
+* Changed: it is now not mandatory to include the variables in author or source links on the settings page
+* Fixed: submenu functionality when HTTPS is used (thanks to Andy for poiting this bug out, and testing the solution, plus making a donation on the way!)
+* Fixed: replacement of `&` char in the links (thanks to Ian for pointing this out)
+
+= 1.9.8 =
+
+* Fixed: a small bug caused contributors not to be considered when using AJAX.
+
 = 1.9.7 =
 
-* Added: if contributors are allowed to add and manage quotes, it is now possible to specify whether a widget, a shortcode or a tag should display quotes only from a given contributor. See the help page for more.
+* Added: when contributors are allowed to add and manage quotes, it is now possible to specify whether a widget, a shortcode or a tag should display quotes only from a given contributor. See the help page for more.
 * Changed: Widget layout.
 * Fixed: the link buttons for the author and source fields on the edit page would not work.
 

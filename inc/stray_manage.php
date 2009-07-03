@@ -125,7 +125,7 @@ function stray_manage() {
 			$styleborder = 'style="border:1px solid #ccc"';
 			$styletextarea = 'style="border:1px solid #ccc; font-family: Times New Roman, Times, serif; font-size: 1.4em;"'; ?>
             <div style="width:42em">
-			<script src="<?php echo WP_STRAY_QUOTES_PATH ?>/inc/stray_quicktags.js" type="text/javascript"></script>
+			<script src="<?php echo WP_STRAY_QUOTES_PATH ?>inc/stray_quicktags.js" type="text/javascript"></script>
             <form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
 				<input type="hidden" name="qa" value="edit_save">
 				<input type="hidden" name="qi" value="<?php echo $quoteID; ?>">
@@ -526,8 +526,8 @@ function stray_manage() {
 		
 		//build table
 		if ( !empty($quotes) ) {
-			$imgasc = WP_STRAY_QUOTES_PATH . '/img/s_asc.png';
-			$imgdsc = WP_STRAY_QUOTES_PATH . '/img/s_desc.png';
+			$imgasc = WP_STRAY_QUOTES_PATH . 'img/s_asc.png';
+			$imgdsc = WP_STRAY_QUOTES_PATH . 'img/s_desc.png';
 			?><table class="widefat" id="straymanage">
             
             <?php //column headers ?>

@@ -165,7 +165,7 @@ function stray_new() {
 		$styletextarea = 'style="border:1px solid #ccc; font-family: Times New Roman, Times, serif; font-size: 1.4em;"'; ?>
 		
 		<div style="width:42em">
-		<script src="<?php echo WP_STRAY_QUOTES_PATH ?>/inc/stray_quicktags.js" type="text/javascript"></script>
+		<script src="<?php echo WP_STRAY_QUOTES_PATH ?>inc/stray_quicktags.js" type="text/javascript"></script>
 		<form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
 			<input type="hidden" name="action" value="add">
 			<input type="hidden" name="quoteID" value="<?php echo $quoteID; ?>">

@@ -35,7 +35,16 @@ function stray_intro() {
 		update_option('stray_quotes_options', $quotesoptions);
 	}	
 	
-	?><div class="wrap"><h2>Stray Random Quotes: <?php _e('Overview','stray-quotes'); ?></h2><?php 
+	?><div class="wrap"><h2>Stray Random Quotes: <?php _e('Overview','stray-quotes'); ?></h2><?php
+	
+	echo STRAY_DIR . '=stray_dir<br/>'. WP_STRAY_QUOTES_PATH . '=WP_STRAY_QUOTES_PATH<br/>';
+	echo WP_CONTENT_URL . '=WP_CONTENT_URL<br/>'. WP_SITEURL . '=WP_SITEURL<br/>' 
+. WP_PLUGIN_URL . '=WP_PLUGIN_URL<br/>' . WP_PLUGIN_DIR . '=WP_PLUGIN_DIR<br/><br/>';
+echo ABSPATH . 'wp-content/plugins/' . STRAY_DIR . 'lang<br/>';
+echo WP_PLUGIN_DIR. '/'. STRAY_DIR . 'lang<br/>';
+	
+	
+	
     if ($totalquotes > 0) { 
 	
 		//quotes and categories
@@ -100,7 +109,7 @@ function stray_intro() {
     
 	</p>
     
-    <p><?php _e('Brought to you by <a href="http://www.italyisfalling.com/coding">italyisfalling.com</a>','stray-quotes'); ?>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p><br/>
+    <p><?php _e('Brought to you by <a href="http://code.italyisfalling.com">lines of code</a>','stray-quotes'); ?>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p><br/>
     
     <?php //donate ?>
 	<p><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
