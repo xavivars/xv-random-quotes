@@ -78,11 +78,11 @@
         <?php } ?>
         <div id="text3" style="display:none;"><blockquote><p>
         
-        <?php echo str_replace("%s1",'http://codex.wordpress.org/Shortcode_API',__('Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order. More informations about the use of shortcodes are on <a href="%s1">this page</a>.', 'stray-quotes'));?><br/><br/><br/>
+        <?php echo str_replace("%s1",'http://codex.wordpress.org/Shortcode_API',__('Posts and pages accept <strong>shortcodes</strong>. Wordpress shortcodes can have many variables, in no particular order. More informations about the use of shortcodes are on <a href="%s1">this page</a>.', 'stray-quotes'));?><br/><br/>
         
         <?php _e('To <strong>insert a random quote</strong> in a post or page use:', 'stray-quotes');?> <code><strong>[stray-random]</strong></code>   
         
-        <br/><br/><em><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?></em><br/>
+        <br/><br/><?php _e('Variables (use quotations if there are spaces in the value):', 'stray-quotes');?><br/>
         
         <ul><li><strong><code>categories=cat1,cat2,etc</code></strong> <?php _e('A comma-separated list of the categories from which to extract the random quote. If none is set, quotes will be taken from all categories.', 'stray-quotes');?></li>
         
@@ -100,7 +100,7 @@
         
         </ul>
         
-        <br/><?php _e('All these settings are optional. If you don\'t indicate anything, a random quote from all the categories will be displayed, with ajax according to the general settings.<br/><br/>', 'stray-quotes');?></p><br/>
+        <br/><?php _e('All these settings are optional. If you don\'t indicate anything, a random quote from all the categories will be displayed, with ajax according to the general settings.<br/><br/>', 'stray-quotes');?></p>
         
         <p><?php _e('To <strong>insert more than one or all the quotes</strong> in a post or page use:', 'stray-quotes');?> <code><strong>[stray-all]</strong></code>
         
@@ -130,7 +130,7 @@
         
         </ul>   
         
-        <br/><?php _e('All these settings are optional. Without them, AJAX is disabled in the shortcode and the values you see in this example are used as defaults.', 'stray-quotes');?><br/><br/></p><br/>
+        <br/><?php _e('All these settings are optional. Without them, AJAX is disabled in the shortcode and the values you see in this example are used as defaults.', 'stray-quotes');?><br/><br/></p>
         
         
         <p><?php _e('To <strong>insert a specific quote</strong> in a post or page (with AJAX, a sequence of quotes starting from a given one) use:', 'stray-quotes');?> <code><strong>[stray-id id=x]</strong></code>
@@ -169,10 +169,15 @@
         
         <?php // upgrading ?>
         <h3 style="cursor:pointer" onclick="expand('text10', this);"><?php _e('I am about to upgrade and I am scared. Should I backup my quotes?','stray-quotes');?></h3>
-        <div id="text10" style="display:none;"><blockquote><p><?php echo str_replace(array("%s1","%s2"),array('http://wordpress.org/extend/plugins/stray-quotes/other_notes/','http://www.italyisfalling.com/category/wordpress-things/feed/'),__('It is normally not necessary to backup the quotes before a upgrade. Usually when a new version of Stray Random Quotes is activated the database table that contains the quotes is untouched. Exceptionally it may be necessary to manipulate it, in which case a backup is probably advisable. To know when this rare case applies you can check the changelog on <a href="%s1">this page</a>, or, more simply, you can follow the <a href="%s2">plugins feed</a> on my blog.<br/>How to backup, you ask? There are exceptional plugins out there to do that.', 'stray-quotes')); ?></p></blockquote></div>
+        <div id="text10" style="display:none;"><blockquote><p><?php echo str_replace(array("%s1","%s2"),array('http://wordpress.org/extend/plugins/stray-quotes/other_notes/','http://code.italyisfalling.com/feed/'),__('It is normally not necessary to backup the quotes before a upgrade. Usually when a new version of Stray Random Quotes is activated the database table that contains the quotes is untouched. Exceptionally it may be necessary to manipulate it, in which case a backup is probably advisable. To know when this rare case applies you can check the changelog on <a href="%s1">this page</a>, or, more simply, you can follow the <a href="%s2">plugins feed</a> on my blog.<br/>How to backup, you ask? There are exceptional plugins out there to do that.', 'stray-quotes')); ?></p></blockquote></div>
         
         <?php } ?>
-    
+        
+        <?php // HTTPS ?>
+        <h3 style="cursor:pointer" onclick="expand('text11', this);"><?php _e('I am running Stray Random Quotes on a HTTPS server and some of the links in the menu redirect to regular HTTP.','stray-quotes');?></h3>
+        <div id="text11" style="display:none;"><blockquote><p>
+        <?php _e('It is not entirely clear why this can happen, anyway there is workaround. Add to your wp-config.php file this line: <code>define(\'FORCE_SSL_ADMIN\', true);</code>. This will force all admin links to stay within your https boundaries. Also consider looking in the Wordpress Repository for plugins dedicated to enforcing HTTPS on wordpress, there\'s more than one.'); ?></p></blockquote></div>
+        
         <?php // Hey. Something isn\'t working! ?>
         <h3 style="cursor:pointer" onclick="expand('text8', this);"><?php _e('Hey. Something isn\'t working!','stray-quotes');?></h3>
         <div id="text8" style="display:none;"><blockquote><p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('Well, that figures. See, there\'s always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href="%s1">on this post</a>. Before you do, though, check if the problem you are experiencing isn\'t caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks.', 'stray-quotes')); ?></p></blockquote></div>
