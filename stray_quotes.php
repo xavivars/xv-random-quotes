@@ -44,6 +44,23 @@ if ( !isset($_SERVER['REQUEST_URI']) || ($_SERVER['REQUEST_URI']=='') ) {
 	}
 }
 
+//What if server is HTTPS? Thanks to the "https for wordpress" plugin by Chris Black, http://cjbonline.org
+add_filter('option_siteurl', 'sslForStore');
+add_filter('option_home', 'sslForStore');
+add_filter('option_url', 'sslForStore');
+add_filter('option_wpurl', 'sslForStore');
+add_filter('option_stylesheet_url', 'sslForStore');
+add_filter('option_template_url', 'sslForStore');
+
+function sslForStore($value) {
+	if($_SERVER["HTTPS"] == "on") {
+		$value = preg_replace('|/+$|', '', $value);
+		$value = preg_replace('|http://|', 'https://', $value);
+	}
+
+	return $value;
+}
+
 //add ajax script
 function stray_quotes_add_js() {
 	
