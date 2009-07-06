@@ -95,7 +95,7 @@ function stray_new() {
 			$search = array("%s1", "%s2");
 			$replace = array($result[0]->quoteID, get_option("siteurl").'/wp-admin/admin.php?page=stray_manage');
 			echo str_replace($search,$replace,__(
-			'Quote no. <strong>%s1</strong> was added to the database. To insert it in a post use: <code>[quote id=%s1]</code>. To review use the <a href="%s2">Manage page</a>.'.$plusmessage,'stray-quotes')); ?></p></div><?php			
+			'Quote no. <strong>%s1</strong> was added to the database. To insert it in a post use: <code>[stray-id id=%s1]</code>. To review use the <a href="%s2">Manage page</a>.'.$plusmessage,'stray-quotes')); ?></p></div><?php			
 		}
 	
 	}
