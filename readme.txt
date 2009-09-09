@@ -1,5 +1,5 @@
 === Stray Random Quotes ===
-Contributors: ico@italyisfalling.com
+Contributors: unalignedcoder
 Donate link: http://code.italyisfalling.com/donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
 Requires at least: 2.3
