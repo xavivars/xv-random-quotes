@@ -1,6 +1,6 @@
 === Stray Random Quotes ===
 Contributors: unalignedcoder
-Donate link: http://code.italyisfalling.com/donate
+Donate link: http://unalignedcode.wordpress.com/donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
 Requires at least: 2.3
 Tested up to: 2.8
