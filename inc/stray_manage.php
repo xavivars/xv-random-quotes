@@ -3,7 +3,7 @@
 //manage page
 function stray_manage() {
     	
-	global $wpdb,$current_user;
+	global $wpdb, $wp_version, $current_user; /* zL: added: $wp_version */
 	
 	//load options
 	$quotesoptions = get_option('stray_quotes_options');
@@ -45,7 +45,11 @@ function stray_manage() {
 		$sort = $_GET['qs'];
 		$quotesoptions['stray_quotes_sort'] = $_GET['qs'];		
 	}
-	
+
+	/* zL: added: search keyword */
+	// get search keyword, if any ('l' in 'ql' stands for 'look');
+	$keyword = isset($_GET['ql']) ? $_GET['ql'] : ''; // escaped later
+
 	$offset = ($pages - 1) * $rows;
 	
 	//check if the category I want exists
@@ -196,8 +200,8 @@ function stray_manage() {
 			} 
 	
 			//magic quotes
-			if ( ini_get('magic_quotes_gpc') )	{
-			
+			if (ini_get('magic_quotes_gpc') || $wp_version > '2.8.5') /* zL: added: version check for handling unstripped slashes */
+			{
 				$quote = stripslashes($quote);
 				$author = stripslashes($author);
 				$source = stripslashes($source);
@@ -386,8 +390,17 @@ function stray_manage() {
 			else $where = " WHERE `category`='" . $categories . "'";
 			
 		}
-			
-		
+		/* zL: added: search by keyword */
+		// add search criteria to WHERE clause
+		if (!empty($keyword)) {
+            $moreWhere = " `quote` LIKE '%" . $wpdb->escape($keyword) . "%'";
+            if (!empty($where)) {
+				$where .= " AND " . $moreWhere;
+			} else {
+                $where = " WHERE " . $moreWhere;
+			}
+		}
+
 		// how many rows we have in database
 		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . $where);
 		
@@ -515,7 +528,13 @@ function stray_manage() {
 			?><option value="<?php echo querystrings($urlaction, 'qc', $categoryo); ?>" <?php  if ( $categories) {if ( $categories == $categoryo) echo ' selected';} ?> ><?php echo $categoryo;?></option>
 		<?php } ?>   
 		</select></div>	
-        
+
+        <div class="alignleft actions"><?php /* zL: added: search form */ ?>
+        <input type="input" value="<?php echo stripslashes(htmlentities($keyword, ENT_COMPAT, get_bloginfo('charset'))); ?>" id="straySearch" onkeypress="return handleEnterKey(event, 'strayDoSearch');" />
+        <input type="button" value="<?php _e('Search', 'stray-quotes'); ?>" id="strayDoSearch" class="button-secondary" onclick="window.location.href='<?php echo querystrings($urlrows, 'ql', '\' + document.getElementById(\'straySearch\').value + \''); ?>';" />
+        <input type="button" value="<?php _e('Reset', 'stray-quotes'); ?>" class="button-secondary" onclick="window.location.href='<?php echo querystrings($urlrows, 'ql', ''); ?>';" />
+		</div>
+
 		<div class="tablenav-pages">
 		<?php $search = array("%s1", "%s2");
 		$replace = array($pages,$maxPage);		

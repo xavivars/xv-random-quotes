@@ -1,12 +1,12 @@
 === Stray Random Quotes ===
-Contributors: unalignedcoder
-Donate link: http://unalignedcode.wordpress.com/donate
+Contributors: ico@italyisfalling.com, Sergey Sirotkin
+Donate link: http://code.italyisfalling.com/donate
 Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
 Requires at least: 2.3
-Tested up to: 2.8
-Stable tag: 1.9.9
+Tested up to: 2.9.2
+Stable tag: 1.9.9.z3
 
-Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Multiuser. Ajax enabled.
+Displays and rotates quotes and expressions anywhere on your blog. Easy to customize and manage. Multiuser-powered. Ajax enabled.
 
 == Description ==
 
@@ -42,7 +42,7 @@ See [more cool things you can do with Stray Random Quotes](http://code.italyisfa
 2. Activate the plugin on the 'Plugins' page in WordPress.
 3. Stray Random Quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
 
-_Please note:_: If you are not automatically upgrading via Wordpress, always **deactivate the older version** first and **delete the old 'stray-quotes' folder**. It is not normally necessary to backup the quotes in the database unless so advised in the changelog or on the [plugin feed](http://code.italyisfalling.com/feed/).
+_Please note:_ If you are not automatically upgrading via Wordpress, always **deactivate the older version** first and **delete the old 'stray-quotes' folder**. It is not normally necessary to backup the quotes in the database unless so advised in the changelog or on the [plugin feed](http://code.italyisfalling.com/feed/).
 
 == Changelog ==
 
@@ -66,10 +66,30 @@ _Please note:_: If you are not automatically upgrading via Wordpress, always **d
 
 Read the complete changelog [here](http://www.italyisfalling.com/stray-random-quotes).
 
+== Z-Changelog ==
+
+This is the changelog of adjustemnts to version 1.9.9 made by [Sergey Sirotkin](http://www.zeyalabs.ch/). To find the changes in the code, diff it against original files or search for comments starting with "zL:".
+
+= 1.9.9.z3 =
+
+* Fixed: displaying of invisible quotes when using multiple categories in `stray-all` shortcode.
+* Fixed: corrupted character encoding in search box after search request submission (affected accented, Cyrillic and other "non-A-Z" letters).
+* Fixed: notice about undefined variable `userquery`.
+
+= 1.9.9.z2 =
+
+* Fixed: problem with escaping backslashes with WP 2.9.
+* Fixed: notice about undefined constant `add_shortcode`.
+
+= 1.9.9.z1 =
+
+* Added: search form to "Manage" page (enables search by a single keyword or phrase on the quote body).
+
 == Credits ==
 
 * For Multi-widget functionality, [Millian's tutorial](http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/)
 * For help in developing user-end AJAX functionality, [AgentSmith](http://www.matrixagents.org)
+* For Z-adjustemnts, [Sergey Sirotkin](http://www.zeyalabs.ch/)
 
 == Localization ==
 

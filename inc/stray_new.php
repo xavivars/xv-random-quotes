@@ -2,7 +2,7 @@
 
 function stray_new() {	
 
-	global $wpdb,$current_user;
+	global $wpdb, $wp_version, $current_user; /* zL: added: $wp_version */
 	
 	//load options
 	$quotesoptions = array();
@@ -51,14 +51,14 @@ function stray_new() {
 		if ($category == false || $category == '') $category = 'default';
 		
 		//take care of stupid magic quotes
-		if ( ini_get('magic_quotes_gpc') )	{
-		
+		if (ini_get('magic_quotes_gpc') || $wp_version > '2.8.5') /* zL: added: version check for handling unstripped slashes */
+		{
 			$quote = stripslashes($quote);
 			$author = stripslashes($author);
 			$source = stripslashes($source);
 			$category = stripslashes($category);
 			$visible = stripslashes($visible);	
-		}	
+		}
 		
 		//insert the quote into the database!!
 		$sql = "insert into " . WP_STRAY_QUOTES_TABLE

@@ -16,6 +16,9 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 	$strayajax = $quotesoptions['stray_ajax'];
 	$loading =  utf8_decode($quotesoptions['stray_loading']);
 
+ 	$categoryquery = ''; /* zL: added: variable initalization */
+	$userquery = ''; /* zL: added: variable initalization */
+
 	//handle the categories
 	if ( $categories && ($categories !='' && $categories !='all') ) {
 	
@@ -24,14 +27,14 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 		if (count($categories) == 1) {
 			$categoryquery = ' AND `category`=\''. $categories[0] .'\'';
 		} else { 
-			$categoryquery = ' AND `category`=\'';
+			$categoryquery = ' AND (`category`=\''; /* zL: added: opening round bracket */
 		
 			foreach ($categories as $category) {
 				$category = trim($category);
 				$categoryquery .= $category.'\' OR `category`=\'';
 			}
 			$categoryquery = substr($categoryquery,0,-17);
-			$categoryquery .='\'';
+			$categoryquery .='\')'; /* zL: added: closing round bracket */
 		}
 	} else {
 		$categoryquery = '';
@@ -108,7 +111,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 
 	//sql for more than one quote
 	if ($multi > 1){
-		
+
 		// how many rows we have in database?
 		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as 'rows' FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" . $categoryquery . $userquery);
 		
@@ -215,14 +218,14 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 		} else {
 			$orderby ="`".$orderby."` ";
 		}
-		
+
 		//retrieve the quotes
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source` FROM `" 
 		. WP_STRAY_QUOTES_TABLE . "` WHERE `visible`='yes'" . $categoryquery . $userquery
 		. " ORDER BY ". $orderby . $sort 
 		. " LIMIT " . $offset. ", ". $multi;
 		$offset = $myoffset+$multi;
-		
+
 		$result = $wpdb->get_results($sql);
 		$totalquotes = count($result)-1;
 	

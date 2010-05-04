@@ -1,12 +1,12 @@
 <?php
 /*
-Plugin Name: Stray Random Quotes
-Plugin URI: http://unalignedcode.wordpress.com/stray-random-quotes/
-Description: Display and rotate random quotes and words everywhere on your blog. Easy to custom and manage. Ajax enabled.
-Author: unalignedcoder
-Author URI:http://unalignedcode.wordpress.com
-Version: 1.9.9
-License: GPL compatible
+Plugin Name: Stray Quotes Z
+Plugin URI: http://www.zeyalabs.ch/posts/stray-quotes/
+Description: This is an adjusted version of Stray Random Quotes plugin (v1.9.9) originally written by <a href="http://code.italyisfalling.com/">ico</a> for displaying and rotating quotes and expressions anywhere on your blog. Check <a href="http://www.zeyalabs.ch/posts/stray-quotes/">plugin page</a> and the changelog section in <code>readme.txt</code> for adjustment details.
+Author: Sergey Sirotkin
+Author URI: http://www.zeyalabs.ch/
+Version: 1.9.9.z2
+License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
 
 global $wpdb, $wp_version;
@@ -95,6 +95,37 @@ function stray_quotes_header(){
 		addLoadEvent(function() {
 			document.getElementById('catselect').disabled = true;
 		});
+
+		/* zL: added: handleEnterKey() */
+		/**
+		 * Prevents form submission when an Enter key is hit. If the second
+		 * parameter is specified, a button with that ID is "clicked" instead.
+		 *
+		 * Call example (notice the 'return' keyword):
+		 * <... onkeypressed="return handleEnterKey(event, 'myButton');" ...>
+		 *
+		 * @author Sergey Sirotkin <devlab@zeyalabs.ch>
+		 *
+		 * @param e - element event (Firefox only)
+		 * @param btnId - ID of the button to replace submit
+		 *
+		 * @return true if the pessed key was not Enter, false otherwise
+		 */
+		function handleEnterKey(e, btnId)
+		{
+		    var key;
+
+		    if (window.event) {key = window.event.keyCode;} // IE
+		    else {key = e.which;} // Firefox
+
+			if (key == 13) { // Enter
+			    if (btnId) {document.getElementById(btnId).click();}
+				return false; // no form submission
+			}
+			else {
+				return true;
+			}
+		}
 
         --></script><?php	
 	}
@@ -612,7 +643,7 @@ add_action('admin_menu', 'stray_quotes_add_pages');
 add_action('wp_print_scripts', 'stray_quotes_add_js');
 add_action('admin_head', 'stray_quotes_header');
 
-if (function_exists(add_shortcode)) {
+if (function_exists('add_shortcode')) { /* zL: added: missing quotes around 'add_shortcode' */
 	
 	add_shortcode('stray-id', 'stray_id_shortcode');		
 	add_shortcode('stray-random', 'stray_random_shortcode');			
