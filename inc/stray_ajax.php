@@ -1,13 +1,13 @@
 <?php
 
 // If your 'wp-content' directory is not in the default location you have to enter the path to your blog here. Example: '/home/www/public_html/wp'
-$changedDir = ''; 
+$changedDir = '';
 
 if($_POST['action'] == 'newquote'){
 
 	if (!$changedDir)$changedDir = preg_replace('|wp-content.*$|','', __FILE__);
 	include_once($changedDir.'/wp-config.php');
-	
+
 	$categories = isset($_POST['categories'])?$_POST['categories']:'';
 	$sequence = isset($_POST['sequence'])?$_POST['sequence']:'';
 	$linkphrase = isset($_POST['linkphrase'])?$_POST['linkphrase']:'';

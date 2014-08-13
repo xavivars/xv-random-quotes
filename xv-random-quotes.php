@@ -1,11 +1,10 @@
 <?php
 /*
-Plugin Name: Stray Quotes Z
-Plugin URI: http://www.zeyalabs.ch/posts/stray-quotes/
+Plugin Name: XV Random Quotes
 Description: This is an adjusted version of Stray Random Quotes plugin (v1.9.9) originally written by <a href="http://code.italyisfalling.com/">ico</a> for displaying and rotating quotes and expressions anywhere on your blog. Check <a href="http://www.zeyalabs.ch/posts/stray-quotes/">plugin page</a> and the changelog section in <code>readme.txt</code> for adjustment details.
-Author: Sergey Sirotkin
-Author URI: http://www.zeyalabs.ch/
-Version: 1.9.9.z2
+Author: Xavi Ivars
+Author URI: http://xavi.ivars.me/
+Version: 1.10
 License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
 

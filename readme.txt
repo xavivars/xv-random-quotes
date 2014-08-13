@@ -1,16 +1,22 @@
-=== Stray Random Quotes ===
-Contributors: ico@italyisfalling.com, Sergey Sirotkin
-Donate link: http://code.italyisfalling.com/donate
-Tags: quotes, random, widget, sidebar, AJAX, random quotes, random words, quotations, words, multiuser, randomness, shortcodes
+=== XV Random Quotes ===
+Contributors: xavivars
+Old contributors: ico@italyisfalling.com, Sergey Sirotkin, 
+Tags: quotes, random, widget, sidebar, random quotes, random words, quotations, words, randomness, shortcodes
 Requires at least: 2.3
-Tested up to: 2.9.2
-Stable tag: 1.9.9.z3
+Tested up to: 3.9.2
+Stable tag: 1.10
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Author URI: http://xavi.ivars.me
 
 Displays and rotates quotes and expressions anywhere on your blog. Easy to customize and manage. Multiuser-powered. Ajax enabled.
 
 == Description ==
 
-Stray Random Quotes helps you collect and display random quotes everywhere on your blog. The plugin is so flexible that it can be used to display random words of all sorts: taglines, "leave a response" messages, footer or header sections etc.
+XV Random Quotes helps you collect and display random quotes everywhere on your blog. The plugin is so flexible that it can be used to display random words of all sorts: taglines, "leave a response" messages, footer or header sections etc.
+
+It's based on the work of previous (abandoned) plugins: Stray Quotes Z, which was based on top of Stray Quotes, which was based on top of ZombieRobot's Random Quotes.
+
 The main features:
 
 * As many **widgets** as you need, each with its individual set of options, to display one or more quotes from all or some categories, randomly or in sequence, with or without AJAX, etc.
@@ -24,7 +30,7 @@ The main features:
 * A **bookmarklet** to create quotes on the fly as you browse the web and find text worth quoting.
 * A **help page** where everything you need to know is explained.
 
-See [more cool things you can do with Stray Random Quotes](http://code.italyisfalling.com/cool-things-you-can-do-with-stray-random-quotes/).
+See [more cool things you can do with XV Random Quotes](http://xavi.ivars.me/).
 
 == Screenshots ==
 
@@ -40,53 +46,18 @@ See [more cool things you can do with Stray Random Quotes](http://code.italyisfa
 
 1. Upload the content of stray-quotes.zip to a dedicated folder in your `/wp-content/plugins/` directory.
 2. Activate the plugin on the 'Plugins' page in WordPress.
-3. Stray Random Quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
+3. XV Random Quotes has its own menu. Check the overview page in "Quotes" > "Overview". All the rest will come naturally.
 
 _Please note:_ If you are not automatically upgrading via Wordpress, always **deactivate the older version** first and **delete the old 'stray-quotes' folder**. It is not normally necessary to backup the quotes in the database unless so advised in the changelog or on the [plugin feed](http://code.italyisfalling.com/feed/).
 
 == Changelog ==
 
-= 1.9.9 =
+See changelog.txt
 
-* Changed: the way locale files are loaded
-* Changed: the way the settings page has to check validity of the URLs (hopefully more accurate now)
-* Changed: it is now *not* mandatory to include the variables in author or source links on the settings page
-* Added: chapter in the Help page dedicated to solving potential HTTPS problems (thanks to Andy for helping with this).
-* Fixed: replacement of `&` char in the links (thanks to Ian for pointing this out)
-
-= 1.9.8 =
-
-* Fixed: a small bug caused contributors not to be considered when using AJAX.
-
-= 1.9.7 =
-
-* Added: when contributors are allowed to add and manage quotes, it is now possible to specify whether a widget, a shortcode or a tag should display quotes only from a given contributor. See the help page for more.
-* Changed: Widget layout.
-* Fixed: the link buttons for the author and source fields on the edit page would not work.
-
-Read the complete changelog [here](http://www.italyisfalling.com/stray-random-quotes).
-
-== Z-Changelog ==
-
-This is the changelog of adjustemnts to version 1.9.9 made by [Sergey Sirotkin](http://www.zeyalabs.ch/). To find the changes in the code, diff it against original files or search for comments starting with "zL:".
-
-= 1.9.9.z3 =
-
-* Fixed: displaying of invisible quotes when using multiple categories in `stray-all` shortcode.
-* Fixed: corrupted character encoding in search box after search request submission (affected accented, Cyrillic and other "non-A-Z" letters).
-* Fixed: notice about undefined variable `userquery`.
-
-= 1.9.9.z2 =
-
-* Fixed: problem with escaping backslashes with WP 2.9.
-* Fixed: notice about undefined constant `add_shortcode`.
-
-= 1.9.9.z1 =
-
-* Added: search form to "Manage" page (enables search by a single keyword or phrase on the quote body).
 
 == Credits ==
 
+* For main development of Stray Quotes, [Ico](http://unalignedcode.wordpress.com/my-wordpress-plugins/stray-random-quotes/)
 * For Multi-widget functionality, [Millian's tutorial](http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/)
 * For help in developing user-end AJAX functionality, [AgentSmith](http://www.matrixagents.org)
 * For Z-adjustemnts, [Sergey Sirotkin](http://www.zeyalabs.ch/)
@@ -101,6 +72,12 @@ This is the changelog of adjustemnts to version 1.9.9 made by [Sergey Sirotkin](
 Actually, these translations are not updated to the latest version.
 I am looking for new localizers, all languages welcome!
 
-_Please note:_ the best way to **submit new or updated translations** is to include a direct link to the localization files in a comment to [this post](http://code.italyisfalling.com/stray-random-quotes#comments). This way the files are made available to the users sooner, and without waiting for a new release.
+_Please note:_ the best way to **submit new or updated translations** is to send me a direct link to the localization files in [the contact page](http://xavi.ivars.me/contacta/) of my website. This way the files are made available to the users sooner, and without waiting for a new release.
 
-_Please note:_ If you want to create a localized copy of Stray Random Quotes, consider skipping the help page and translate the rest. This will save you quite some time. The help page has a lot of text.
+_Please note:_ If you want to create a localized copy of XV Random Quotes, consider skipping the help page and translate the rest. This will save you quite some time. The help page has a lot of text.
+
+
+== Known Issues ==
+
+* Search keyword is reset when bulk actions are executed or display criteria is changed.
+* International button labels (search, reset) are not implemented.
