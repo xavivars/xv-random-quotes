@@ -21,10 +21,18 @@ if ( ! defined( 'WP_PLUGIN_URL' ) ) define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/p
 if ( ! defined( 'WP_PLUGIN_DIR' ) ) define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 
 define("WP_STRAY_QUOTES_TABLE", $wpdb->prefix . "stray_quotes");
-if ( basename(dirname(__FILE__)) == 'plugins' )
-	define("STRAY_DIR",'');
-else define("STRAY_DIR" , basename(dirname(__FILE__)) . '/');
-define("WP_STRAY_QUOTES_PATH", WP_PLUGIN_URL . "/" . STRAY_DIR);
+if ( basename(dirname(__FILE__)) == 'plugins' ){
+    define("STRAY_DIR",'');
+} else {
+    define("STRAY_DIR" , basename(dirname(__FILE__)) . '/');
+}
+
+if ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' )
+{
+    define("WP_STRAY_QUOTES_PATH", str_replace('http://', 'https://', WP_PLUGIN_URL) . "/" . STRAY_DIR);
+} else {
+    define("WP_STRAY_QUOTES_PATH", WP_PLUGIN_URL . "/" . STRAY_DIR);
+}
 
 //get ready for local
 $currentLocale = get_locale();
