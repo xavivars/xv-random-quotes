@@ -217,23 +217,23 @@ function stray_manage() {
 			else {
 				//update the quote
 				$sql = "UPDATE " . WP_STRAY_QUOTES_TABLE
-				. " SET `quote`='" . mysql_real_escape_string($quote)
-				. "', `author`='" . mysql_real_escape_string($author)
-				. "', `source`='" . mysql_real_escape_string($source)
-				. "', `category`='" . mysql_real_escape_string($category)
-				. "', `visible`='" . mysql_real_escape_string($visible)
-				. "', `user`='" . mysql_real_escape_string($current_user->user_nicename)
-				. "' WHERE `quoteID`='" . mysql_real_escape_string($quoteID) . "'";
+				. " SET `quote`='" . esc_sql($quote)
+				. "', `author`='" . esc_sql($author)
+				. "', `source`='" . esc_sql($source)
+				. "', `category`='" . esc_sql($category)
+				. "', `visible`='" . esc_sql($visible)
+				. "', `user`='" . esc_sql($current_user->user_nicename)
+				. "' WHERE `quoteID`='" . esc_sql($quoteID) . "'";
 				$wpdb->get_results($sql);
 
 				//verify what has been udpated
 				$sql = "SELECT `quoteID` FROM " . WP_STRAY_QUOTES_TABLE
-				. " WHERE `quote`='" . mysql_real_escape_string($quote)
-				. "' AND `author`='" . mysql_real_escape_string($author)
-				. "' AND `source`='" . mysql_real_escape_string($source)
-				. "' AND `category`='" . mysql_real_escape_string($category)
-				. "' AND `visible`='" . mysql_real_escape_string($visible)
-				. "' AND `user`='" . mysql_real_escape_string($current_user->user_nicename)
+				. " WHERE `quote`='" . esc_sql($quote)
+				. "' AND `author`='" . esc_sql($author)
+				. "' AND `source`='" . esc_sql($source)
+				. "' AND `category`='" . esc_sql($category)
+				. "' AND `visible`='" . esc_sql($visible)
+				. "' AND `user`='" . esc_sql($current_user->user_nicename)
 				. "' LIMIT 1";
 				$result = $wpdb->get_results($sql);
 
@@ -251,10 +251,10 @@ function stray_manage() {
 		//action: delete quote
 		else if ( $action == 'delete' ) {
 
-			$sql = "delete from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . mysql_real_escape_string($quoteID) . "'";
+			$sql = "delete from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . esc_sql($quoteID) . "'";
 			$wpdb->get_results($sql);
 
-			$sql = "select quoteID from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . mysql_real_escape_string($quoteID) . "'";
+			$sql = "select quoteID from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . esc_sql($quoteID) . "'";
 			$result = $wpdb->get_results($sql);
 
 			if ( empty($result) || empty($result[0]->quoteID) )	{

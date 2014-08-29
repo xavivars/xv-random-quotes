@@ -62,23 +62,23 @@ function stray_new() {
 
 		//insert the quote into the database!!
 		$sql = "insert into " . WP_STRAY_QUOTES_TABLE
-		. " set `quote`='" . mysql_real_escape_string($quote)
-		. "', `author`='" . mysql_real_escape_string($author)
-		. "', `source`='" . mysql_real_escape_string($source)
-		. "', `category`='" . mysql_real_escape_string($category)
-		. "', `visible`='" . mysql_real_escape_string($visible)
-		. "', `user`='" . mysql_real_escape_string($current_user->user_nicename)
+		. " set `quote`='" . esc_sql($quote)
+		. "', `author`='" . esc_sql($author)
+		. "', `source`='" . esc_sql($source)
+		. "', `category`='" . esc_sql($category)
+		. "', `visible`='" . esc_sql($visible)
+		. "', `user`='" . esc_sql($current_user->user_nicename)
 		. "'";
 		$wpdb->get_results($sql);
 
 		//check: go and get the quote just inserted
 		$sql2 = "select `quoteID` from " . WP_STRAY_QUOTES_TABLE
-		. " where `quote`='" . mysql_real_escape_string($quote)
-		. "' and `author`='" . mysql_real_escape_string($author)
-		. "' and `source`='" . mysql_real_escape_string($source)
-		. "' and `category`='" . mysql_real_escape_string($category)
-		. "' and `visible`='" . mysql_real_escape_string($visible)
-		. "' and `user`='" . mysql_real_escape_string($current_user->user_nicename)
+		. " where `quote`='" . esc_sql($quote)
+		. "' and `author`='" . esc_sql($author)
+		. "' and `source`='" . esc_sql($source)
+		. "' and `category`='" . esc_sql($category)
+		. "' and `visible`='" . esc_sql($visible)
+		. "' and `user`='" . esc_sql($current_user->user_nicename)
 		. "' limit 1";
 		$result = $wpdb->get_results($sql2);
 
@@ -115,7 +115,7 @@ function stray_new() {
 				return;
 			}
 			else {
-				$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . mysql_real_escape_string($quoteID) . "' limit 1");
+				$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . esc_sql($quoteID) . "' limit 1");
 				if ( empty($data) ) {
 					?><div class="error fade"><p><?php _e('Something is wrong. Sorry.','stray-quotes') ?></p></div><?php
 					return;
