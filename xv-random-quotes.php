@@ -4,7 +4,7 @@ Plugin Name: XV Random Quotes
 Description: This is an adjusted version of Stray Random Quotes plugin (v1.9.9) originally written by <a href="http://code.italyisfalling.com/">ico</a> for displaying and rotating quotes and expressions anywhere on your blog. Check <a href="http://www.zeyalabs.ch/posts/stray-quotes/">plugin page</a> and the changelog section in <code>readme.txt</code> for adjustment details.
 Author: Xavi Ivars
 Author URI: http://xavi.ivars.me/
-Version: 1.10
+Version: 1.11
 License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
 
@@ -626,6 +626,7 @@ include('inc/stray_widgets.php');
 include('inc/stray_tools.php');
 include('inc/stray_help.php');
 include('inc/stray_remove.php');
+include('inc/stray_ajax.php');
 
 //build submenu entries
 function stray_quotes_add_pages() {
@@ -671,5 +672,3 @@ if ($quotesoptions['bloginfo_scode'] == 'Y') {
 	add_filter('bloginfo', 'do_shortcode');
 	add_filter('bloginfo_rss', 'do_shortcode');	
 }
-
-?>

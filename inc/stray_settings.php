@@ -384,4 +384,3 @@ function stray_quotes_options() {
 
 }
 
-?>

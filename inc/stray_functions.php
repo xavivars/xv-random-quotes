@@ -372,7 +372,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 			}
 
 			//the javascript event with all the variables
-			$jaction = 'newQuote(\''.
+			$jaction = 'xv_random_quotes.newQuote(\''.
 			$categories .'\',\''.
 			urlencode($quoteloader).'\',\''.
 			$widgetid.'\',\''.
@@ -715,4 +715,3 @@ function wp_quotes_random() {return stray_random_quote();}
 function wp_quotes($id) {return stray_a_quote($id);}
 function wp_quotes_page($data) {return stray_all_shortcode();}
 
-?>

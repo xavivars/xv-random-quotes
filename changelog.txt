@@ -1,5 +1,9 @@
 == XV Random Quotes ==
 
+= 1.11 =
+* Change AJAX quote loader
+** Now it uses proper AJAX calls
+
 = 1.10 =
 
 * Updating plugin to Wordpress 3.9 & PHP 5+

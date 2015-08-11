@@ -121,4 +121,4 @@ echo WP_PLUGIN_DIR. '/'. STRAY_DIR . 'lang<br/>';
 </form></p></div><?php
 
 }
-?>
+

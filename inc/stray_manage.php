@@ -677,4 +677,3 @@ function stray_manage() {
 }
 
 
-?>

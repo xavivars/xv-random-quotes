@@ -210,4 +210,4 @@ function stray_new() {
 
 	</div><?php
 }
-?>
+

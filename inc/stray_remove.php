@@ -68,4 +68,3 @@ function stray_remove() {
 	}
 }
 
-?>
