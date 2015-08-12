@@ -17,7 +17,7 @@ function stray_intro() {
 	$management = get_option('siteurl')."/wp-admin/admin.php?page=stray_manage";
 	$options =  get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options";
 	$new = get_option('siteurl')."/wp-admin/admin.php?page=stray_new";
-	$help =  get_option('siteurl')."/wp-admin/admin.php?page=stray_help";
+	$help =  get_option('siteurl')."/wp-admin/admin.php?page=xv_random_quotes_help";
 	$toolspage = get_option('siteurl')."/wp-admin/admin.php?page=stray_tools";
 	$straymessage = $quotesoptions['stray_quotes_first_time'];
 

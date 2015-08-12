@@ -1,4 +1,5 @@
-<?php function stray_help() {
+<?php
+    function xv_random_quotes_show_help() {
 
 	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";
 	$toolspage = get_option('siteurl')."/wp-admin/admin.php?page=stray_tools";
@@ -181,20 +182,6 @@
         <?php // Hey. Something isn\'t working! ?>
         <h3 style="cursor:pointer" onclick="expand('text8', this);"><?php _e('Hey. Something isn\'t working!','stray-quotes');?></h3>
         <div id="text8" style="display:none;"><blockquote><p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('Well, that figures. See, there\'s always going to be a bug. If you want to help me catch it, and to get further help, you are welcome to trash the comments <a href="%s1">on this post</a>. Before you do, though, check if the problem you are experiencing isn\'t caused by a conflicting plugin or some other issue of which Stray Random Quotes itself might not be responsible. Thanks.', 'stray-quotes')); ?></p></blockquote></div>
-
-        <?php // DONATION ?>
-        <h3 style="cursor:pointer" onclick="expand('text9', this);"><?php _e('Anything I can do to help?','stray-quotes');?></h3>
-        <div id="text9" style="display:none;"><blockquote><p><?php echo str_replace("%s1","http://www.italyisfalling.com/stray-random-quotes/",__('Well, yeah. If you have some spare change...', 'stray-quotes')); ?>
-
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-    <input type="hidden" name="cmd" value="_s-xclick">
-    <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-    ">
-    <input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-    <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1"style="padding:0;border:none">
-    </form>
-        </p></blockquote></div>
-
     </div><?php
 
 } 
