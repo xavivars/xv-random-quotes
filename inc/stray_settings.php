@@ -14,31 +14,32 @@ function stray_quotes_options() {
 	}
 
 	//handle the post event
-	if(!empty($_POST['do'])) {
-
+	if(!empty(sanitize_text_field($_POST['do']))) {
+        $link_to = sanitize_text_field($_POST['link_to']);
+        
 		// check URLs
-		if ($_POST['link_to'] == 'http://') unset($_POST['link_to']);
+		if ($link_to == 'http://') unset($link_to);
 		/*else if (false === strpos($_POST['link_to'],'%AUTHOR%')) {
 			unset($_POST['link_to']);
 			$msgvar1 = 1;
 		} */
-		else if ( !preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",$_POST['link_to'])
+		else if ( !preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",$link_to)
 		/*( false === filter_var($_POST['link_to'], FILTER_VALIDATE_URL)*/){
-			unset($_POST['link_to']);
+			unset($link_to);
 			$msgvar3 = 1;
 		}
-		if ($_POST['source_link_to'] == 'http://') unset($_POST['source_link_to']);
+        
+        
+        $source_link_to = sanitize_text_field($_POST['source_link_to']);
+		if ($source_link_to == 'http://') unset($source_link_to);
 		/*else if (false === strpos($_POST['source_link_to'],'%SOURCE%')) {
 			unset($_POST['source_link_to']);
 			$msgvar2 = 1;
 		} */
-		else if ( !preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",$_POST['source_link_to'])){
-			unset($_POST['source_link_to']);
+		else if ( !preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#ie",$source_link_to)){
+			unset($source_link_to);
 			$msgvar3 = 1;
 		}
-
-		//check loader
-		if ($_POST['loader'])$_POST['loader'] = strip_tags($_POST['loader']);
 
 		//get existing options
 		$existingoptions = get_option('stray_quotes_options');
@@ -46,33 +47,33 @@ function stray_quotes_options() {
 		//create array of values *ALL VALUES MUST BE INCLUDED HERE
 		$quotesoptions = array(
 
-		'stray_quotes_before_all' => $_POST['before_all'],
-		'stray_quotes_after_all' => $_POST['after_all'],
-		'stray_quotes_before_quote' => $_POST['before_quote'],
-		'stray_quotes_after_quote' => $_POST['after_quote'],
-		'stray_quotes_before_author' => $_POST['before_author'],
-		'stray_quotes_after_author' => $_POST['after_author'],
-		'stray_quotes_before_source' => $_POST['before_source'],
-		'stray_quotes_after_source' => $_POST['after_source'],
-		'stray_quotes_put_quotes_first' => $_POST['put_quotes_first'],
-		'stray_quotes_default_visible' => $_POST['default_visible'],
-		'stray_quotes_linkto' => $_POST['link_to'],
-		'stray_quotes_sourcelinkto' => $_POST['source_link_to'],
-		'stray_quotes_authorspaces' => $_POST['author_spaces'],
-		'stray_quotes_sourcespaces' => $_POST['source_spaces'],
-		'stray_quotes_order' => $_POST['order'],
-		'stray_quotes_rows' => $_POST['rows'],
-		'stray_quotes_categories' => $_POST['categories'],
-		'stray_quotes_sort' => $_POST['sort'],
-		'stray_default_category' => $_POST['default_category'],
-		'stray_if_no_author'=> $_POST['no_author'],
-		'stray_clear_form'=> $_POST['clear_form'],
-		'stray_ajax'=> $_POST['stray_ajax'],
-		'stray_before_loader'=> $_POST['before_loader'],
-		'stray_loader'=> $_POST['loader'],
-		'stray_after_loader'=> $_POST['after_loader'],
-		'stray_loading'=> $_POST['stray_loading'],
-		'stray_multiuser'=> $_POST['stray_multiuser'],
+		'stray_quotes_before_all' => sanitize_text_field($_POST['before_all']),
+		'stray_quotes_after_all' => sanitize_text_field($_POST['after_all']),
+		'stray_quotes_before_quote' => sanitize_text_field($_POST['before_quote']),
+		'stray_quotes_after_quote' => sanitize_text_field($_POST['after_quote']),
+		'stray_quotes_before_author' => sanitize_text_field($_POST['before_author']),
+		'stray_quotes_after_author' => sanitize_text_field($_POST['after_author']),
+		'stray_quotes_before_source' => sanitize_text_field($_POST['before_source']),
+		'stray_quotes_after_source' => sanitize_text_field($_POST['after_source']),
+		'stray_quotes_put_quotes_first' => sanitize_text_field($_POST['put_quotes_first']),
+		'stray_quotes_default_visible' => sanitize_text_field($_POST['default_visible']),
+		'stray_quotes_linkto' => $link_to,
+		'stray_quotes_sourcelinkto' => $source_link_to,
+		'stray_quotes_authorspaces' => sanitize_text_field($_POST['author_spaces']),
+		'stray_quotes_sourcespaces' => sanitize_text_field($_POST['source_spaces']),
+		'stray_quotes_order' => sanitize_text_field($_POST['order']),
+		'stray_quotes_rows' => sanitize_text_field($_POST['rows']),
+		'stray_quotes_categories' => sanitize_text_field($_POST['categories']),
+		'stray_quotes_sort' => sanitize_text_field($_POST['sort']),
+		'stray_default_category' => sanitize_text_field($_POST['default_category']),
+		'stray_if_no_author'=> sanitize_text_field($_POST['no_author']),
+		'stray_clear_form'=> sanitize_text_field($_POST['clear_form']),
+		'stray_ajax'=> sanitize_text_field($_POST['stray_ajax']),
+		'stray_before_loader'=> sanitize_text_field($_POST['before_loader']),
+		'stray_loader'=> sanitize_text_field($_POST['loader']),
+		'stray_after_loader'=> sanitize_text_field($_POST['after_loader']),
+		'stray_loading'=> sanitize_text_field($_POST['stray_loading']),
+		'stray_multiuser'=> sanitize_text_field($_POST['stray_multiuser']),
 
 		'comment_scode'=> $existingoptions['comment_scode'],
 		'title_scode'=> $existingoptions['title_scode'],

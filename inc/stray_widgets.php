@@ -96,8 +96,10 @@ class stray_widgets {
         $options_all = get_option('widget_stray_quotes');
         if (!is_array($options_all))$options_all = array();
 
-        if (!$updated && !empty($_POST['sidebar'])) {
-            $sidebar = (string)$_POST['sidebar'];
+        $sidebar = sanitize_text_field($_POST['sidebar']);
+
+        
+        if (!$updated && !empty($sidebar)) {
 
             $sidebars_widgets = wp_get_sidebars_widgets();
             if (isset($sidebars_widgets[$sidebar]))
@@ -108,25 +110,32 @@ class stray_widgets {
             foreach ($this_sidebar as $_widget_id) {
                 if ('widget_stray_quotes' == $wp_registered_widgets[$_widget_id]['callback'] && isset($wp_registered_widgets[$_widget_id]['params'][0]['number'])) {
                     $widget_number = $wp_registered_widgets[$_widget_id]['params'][0]['number'];
-                    if (!in_array("stray_widgets-$widget_number", $_POST['widget-id']))
+                    
+                    $widget_id = sanitize_text_field($_POST['widget-id']);
+                    
+                    if (!in_array("stray_widgets-$widget_number", $widget_id))
                         unset($options_all[$widget_number]);
                 }
             }
-            foreach ((array)$_POST['widget_stray_quotes'] as $widget_number => $posted) {
+            
+            // Good idea to make sure things are set before using them
+            $widgets = isset( $_POST['widget_stray_quotes'] ) ? (array) $_POST['widget_stray_quotes'] : array();
+
+            foreach ($widgets as $widget_number => $posted) {
                 if (!isset($posted['title']) && isset($options_all[$widget_number]))
                     continue;
 
                 $options = array();
 
-                $options['title'] = $posted['title'];
-                $options['groups'] = isset($posted['groups']) ? implode(',', $posted['groups']) : '';
-				$options['sequence'] =  $posted['sequence'];
-				$options['linkphrase'] =  $posted['linkphrase'];
-				$options['timer'] =  $posted['timer'];
-				$options['noajax'] =  $posted['noajax'];
-				$options['multi'] =  $posted['multi'];
-				$options['disableaspect'] =  $posted['disableaspect'];
-				$options['contributor'] =  $posted['contributor'];
+                $options['title'] = sanitize_text_field($posted['title']);
+                $options['groups'] = isset($posted['groups']) ? implode(',', sanitize_text_field($posted['groups'])) : '';
+				$options['sequence'] =  sanitize_text_field($posted['sequence']);
+				$options['linkphrase'] =  sanitize_text_field($posted['linkphrase']);
+				$options['timer'] =  sanitize_text_field($posted['timer']);
+				$options['noajax'] =  sanitize_text_field($posted['noajax']);
+				$options['multi'] =  sanitize_text_field($posted['multi']);
+				$options['disableaspect'] =  sanitize_text_field($posted['disableaspect']);
+				$options['contributor'] =  sanitize_text_field($posted['contributor']);
 
                 $options_all[$widget_number] = $options;
             }

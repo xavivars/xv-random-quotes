@@ -266,7 +266,7 @@ function stray_manage() {
 		}
 
 		//bulk action: delete
-		else if ( $_POST['bulk'] == 'multidelete' ) {
+		else if ( sanitize_text_field($_POST['bulk']) == 'multidelete' ) {
 
 			$deleteIds = '';
 			$count = 0;
@@ -295,7 +295,7 @@ function stray_manage() {
 		}
 
 		//bulk action: toggle visibility
-		else if ( $_POST['bulk'] == 'togglevisible' ) {
+		else if ( sanitize_text_field($_POST['bulk']) == 'togglevisible' ) {
 
 			$toggleyes ='';
 			$toggleno ='';
@@ -339,15 +339,16 @@ function stray_manage() {
 		}
 
 		//bulk action: change category
-		else if ( $_POST['bulk'] == 'changecategory' ) {
+		else if ( sanitize_text_field($_POST['bulk']) == 'changecategory' ) {
 
-			$newcat = $_POST['catselect'];
+			$newcat = sanitize_text_field($_POST['catselect']);
 			$catlist = '';
 			$count = 0;
 			foreach($_POST as $key => $val){
-
+                $key = sanitize_text_field($key);
+                
 				if ( substr($key,0,12) == 'check_select' ) {
-					$catlist .= "'". $val . "',";
+					$catlist .= "'". sanitize_text_field($val) . "',";
 					$count++;
 				}
 			}
@@ -372,7 +373,7 @@ function stray_manage() {
 		}
 
 		//bulk action: no action
-		else if ( $_POST['bulk'] == 'noaction' ){
+		else if ( sanitize_text_field($_POST['bulk']) == 'noaction' ){
 
 		 ?><div class="error fade"><?php _e('Please select something in the \'Bulk Actions\' menu first.','stray-quotes'); ?></div><?php
 		}

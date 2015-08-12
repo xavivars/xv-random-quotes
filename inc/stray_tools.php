@@ -2,6 +2,7 @@
 
 	global $current_user;
 
+    
 	//get the options
 	$quotesoptions = array();
 	$quotesoptions = get_option('stray_quotes_options');
@@ -10,15 +11,17 @@
 	if( $quotesoptions['stray_multiuser'] == false && !current_user_can('manage_options') )
 		die('Access Denied');
 
-	if(!empty($_POST['do'])) {
+    $post_do = sanitize_text_field($_POST['do']);
+
+	if(!empty($post_do)) {
 
 		//function to change bookmarklet options
 		if(isset($_POST['boptions'])){
 
 			$quotesoptions = array();
 			$quotesoptions = get_option('stray_quotes_options');
-			$quotesoptions['bookmarklet_cat'] = $_POST['categories'];
-			$quotesoptions['bookmarlet_source'] = $_POST['websource'];
+			$quotesoptions['bookmarklet_cat'] = sanitize_text_field($_POST['categories']);
+			$quotesoptions['bookmarlet_source'] = sanitize_text_field($_POST['websource']);
 
 			$update_shortcodes = update_option('stray_quotes_options', $quotesoptions);
 
@@ -38,13 +41,13 @@
 			$quotesoptions = array();
 			$quotesoptions = get_option('stray_quotes_options');
 
-			$quotesoptions['comment_scode'] = $_POST['comment_scode'];
-			$quotesoptions['title_scode'] = $_POST['title_scode'];
-			$quotesoptions['excerpt_scode'] = $_POST['excerpt_scode'];
-			$quotesoptions['widget_scode'] = $_POST['widget_scode'];
-			$quotesoptions['categories_scode'] = $_POST['categories_scode'];
-			$quotesoptions['tags_scode'] = $_POST['tags_scode'];
-			$quotesoptions['bloginfo_scode'] = $_POST['bloginfo_scode'];
+			$quotesoptions['comment_scode'] = sanitize_text_field($_POST['comment_scode']);
+			$quotesoptions['title_scode'] = sanitize_text_field($_POST['title_scode']);
+			$quotesoptions['excerpt_scode'] = sanitize_text_field($_POST['excerpt_scode']);
+			$quotesoptions['widget_scode'] = sanitize_text_field($_POST['widget_scode']);
+			$quotesoptions['categories_scode'] = sanitize_text_field($_POST['categories_scode']);
+			$quotesoptions['tags_scode'] = sanitize_text_field($_POST['tags_scode']);
+			$quotesoptions['bloginfo_scode'] = sanitize_text_field($_POST['bloginfo_scode']);
 
 			$update_shortcodes = update_option('stray_quotes_options', $quotesoptions);
 

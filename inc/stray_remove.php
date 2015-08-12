@@ -14,11 +14,11 @@ function stray_remove() {
 	}
 
 	//handle the post event
-	if(!empty($_POST['do'])) {
+	if(!empty(sanitize_text_field($_POST['do']))) {
 
 		//update options
-		$removeoptions =  $_POST['remove'];
-		$removetable = $_POST['removequotes'];
+		$removeoptions =  sanitize_text_field($_POST['remove']);
+		$removetable = sanitize_text_field($_POST['removequotes']);
 		$quotesoptions = get_option('stray_quotes_options');
 		if ($removeoptions == 1 && $removetable == 1)$quotesoptions['stray_quotes_uninstall'] = 'both';
 		else if ($removeoptions == 1)$quotesoptions['stray_quotes_uninstall'] = 'options';

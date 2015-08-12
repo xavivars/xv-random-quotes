@@ -1,4 +1,5 @@
 <?php
+
     function xv_random_quotes_show_help() {
 
 	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";

@@ -22,17 +22,17 @@ function xv_random_quotes_new_quote() {
 	
     if($_POST['xv_random_quote_action'] == 'newquote'){
 
-        $categories = isset($_POST['categories'])?$_POST['categories']:'';
-        $sequence = isset($_POST['sequence'])?$_POST['sequence']:'';
-        $linkphrase = isset($_POST['linkphrase'])?$_POST['linkphrase']:'';
-        $widgetid = isset($_POST['widgetid'])?$_POST['widgetid']:'';
-        $multi = isset($_POST['multi'])?$_POST['multi']:'';
-        $offset = isset($_POST['offset'])?$_POST['offset']:'';
-        $timer = isset($_POST['timer'])?$_POST['timer']:'';
-        $sort = isset($_POST['sort'])?$_POST['sort']:'';
-        $orderby = isset($_POST['orderby'])?$_POST['orderby']:'';
-        $disableaspect = isset($_POST['disableaspect'])?$_POST['disableaspect']:'';
-        $contributor = isset($_POST['contributor'])?$_POST['contributor']:'';
+        $categories = isset($_POST['categories'])?sanitize_text_field($_POST['categories']):'';
+        $sequence = isset($_POST['sequence'])?sanitize_text_field($_POST['sequence']):'';
+        $linkphrase = isset($_POST['linkphrase'])?sanitize_text_field($_POST['linkphrase']):'';
+        $widgetid = isset($_POST['widgetid'])?sanitize_text_field($_POST['widgetid']):'';
+        $multi = isset($_POST['multi'])?sanitize_text_field($_POST['multi']):'';
+        $offset = isset($_POST['offset'])?sanitize_text_field($_POST['offset']):'';
+        $timer = isset($_POST['timer'])?sanitize_text_field($_POST['timer']):'';
+        $sort = isset($_POST['sort'])?sanitize_text_field($_POST['sort']):'';
+        $orderby = isset($_POST['orderby'])?sanitize_text_field($_POST['orderby']):'';
+        $disableaspect = isset($_POST['disableaspect'])?sanitize_text_field($_POST['disableaspect']):'';
+        $contributor = isset($_POST['contributor'])?sanitize_text_field($_POST['contributor']):'';
         
         ob_clean();
         $output = get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,false,$offset,$widgetid,false,$orderby,$sort,'',$disableaspect,$contributor);
