@@ -109,16 +109,9 @@ echo WP_PLUGIN_DIR. '/'. STRAY_DIR . 'lang<br/>';
 
 	</p>
 
-    <p><?php _e('Brought to you by <a href="http://code.italyisfalling.com">lines of code</a>','stray-quotes'); ?>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p><br/>
+    <p><?php _e('Brought to you by <a href="http://xavi.ivars.me">Xavi Ivars</a>','stray-quotes'); ?>, <?php echo date('Y'); ?>.<br/><?php _e('Happy quoting.','stray-quotes'); ?></p>
 
-    <?php //donate ?>
-	<p><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
-">
-<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1"style="padding:0;border:none">
-</form></p></div><?php
+    </div><?php
 
 }
 
