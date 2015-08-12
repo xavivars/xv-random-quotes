@@ -2,10 +2,10 @@
 
     function xv_random_quotes_show_help() {
 
-	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";
-	$toolspage = get_option('siteurl')."/wp-admin/admin.php?page=stray_tools";
-	$options = get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options";
-	$manage = get_option('siteurl')."/wp-admin/admin.php?page=stray_manage"; ?>
+	$widgetpage = admin_url('widgets.php');
+	$toolspage = admin_url('admin.php?page=stray_tools');
+	$options = admin_url('admin.php?page=stray_quotes_options');
+	$manage = admin_url('admin.php?page=stray_manage'); ?>
 
     <div class="wrap" style="width:52%"><h2><?php _e('The help page','stray-quotes');?></h2>
     <!--<span class="setting-description"><?php _e(' ~ where <strong>ico</strong> answers questions, as you click on them.','stray-quotes');?></span>-->

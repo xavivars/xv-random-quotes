@@ -13,12 +13,12 @@ function stray_intro() {
 	if( $quotesoptions['stray_multiuser'] == false && !current_user_can('manage_options') )
 		die('Access Denied');
 
-	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";
-	$management = get_option('siteurl')."/wp-admin/admin.php?page=stray_manage";
-	$options =  get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options";
-	$new = get_option('siteurl')."/wp-admin/admin.php?page=stray_new";
-	$help =  get_option('siteurl')."/wp-admin/admin.php?page=xv_random_quotes_help";
-	$toolspage = get_option('siteurl')."/wp-admin/admin.php?page=stray_tools";
+	$widgetpage = admin_url('widgets.php');
+	$management = admin_url('admin.php?page=stray_manage');
+	$options =  admin_url('admin.php?page=stray_quotes_options');
+	$new = admin_url('admin.php?page=stray_new');
+	$help =  admin_url('admin.php?page=xv_random_quotes_help');
+	$toolspage = admin_url('admin.php?page=stray_tools');
 	$straymessage = $quotesoptions['stray_quotes_first_time'];
 
 	//get total quotes

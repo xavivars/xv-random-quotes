@@ -208,11 +208,11 @@ function quotes_activation() {
 	$newmessage = str_replace("%1","http://www.italyisfalling.com/stray-random-quotes/#changelog",__('<p>You installed a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href="%1">changelog</a>, but you should know that: </p>','stray-quotes'));
 	
 	//in case we have to point to other pages in the messages
-	$widgetpage = get_option('siteurl')."/wp-admin/widgets.php";
-	$management = get_option('siteurl')."/wp-admin/admin.php?page=stray_manage";
-	$options =  get_option('siteurl')."/wp-admin/admin.php?page=stray_quotes_options";
-	$new = get_option('siteurl')."/wp-admin/admin.php?page=stray_new";
-	$help =  get_option('siteurl')."/wp-admin/admin.php?page=xv_random_quotes_help";
+	$widgetpage = admin_url('widgets.php');
+	$management = admin_url('admin.php?page=stray_manage');
+	$options =  admin_url('admin.php?page=stray_quotes_options');
+	$new = admin_url('admin.php?page=stray_new');
+	$help =  admin_url('admin.php?page=xv_random_quotes_help');
 
 	//check if table exists and alter it if necessary	
 	$straytableExists = false;
@@ -259,7 +259,7 @@ function quotes_activation() {
 					
 					//message
 					$search = array("%s1", "%s2");
-					$replace = array(WP_STRAY_QUOTES_TABLE,  get_option('siteurl')."/wp-admin/admin.php?page=stray_manage");
+					$replace = array(WP_STRAY_QUOTES_TABLE,  admin_url('admin.php?page=stray_manage'));
 					if (!$straymessage) $straymessage = $newmessage;
 					$straymessage .= str_replace($search,$replace,__('<li>This plugin now comes with "categories", which should make for a more intelligent way to organize, maintain and display quotes on your blog. I updated the table "%s1" but all your quotes <a href="%s2">are still there</a>.</li>','stray-quotes')); 
 	
