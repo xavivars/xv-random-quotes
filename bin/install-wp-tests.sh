@@ -32,16 +32,10 @@ install_wp() {
 
 	mkdir -p $WP_CORE_DIR
 
-	if [ $WP_VERSION == 'latest' ]; then
-		local ARCHIVE_NAME='latest'
-	else
-		local ARCHIVE_NAME="wordpress-$WP_VERSION"
-	fi
-
-	download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  /tmp/wordpress.tar.gz
-	tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
-
-	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+	git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ $WP_CORE_DIR
+    mv $WP_CORE_DIR/src/* $WP_CORE_DIR
+	
+	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php "${WP_CORE_DIR}wp-content/db.php"
 }
 
 install_test_suite() {
