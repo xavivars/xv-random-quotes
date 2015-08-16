@@ -14,7 +14,7 @@ function stray_quotes_options() {
 	}
 
 	//handle the post event
-	if(!empty(sanitize_text_field($_POST['do']))) {
+	if(isset($_POST['do']) && sanitize_text_field($_POST['do'])) {
         $link_to = sanitize_text_field($_POST['link_to']);
         
 		// check URLs

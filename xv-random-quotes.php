@@ -205,7 +205,8 @@ function quotes_activation() {
 	
 	//set the messages
 	$straymessage = "";
-	$newmessage = str_replace("%1","http://www.italyisfalling.com/stray-random-quotes/#changelog",__('<p>You installed a new version of <strong>Stray Random Quotes</strong>. All changes are addressed in the <a href="%1">changelog</a>, but you should know that: </p>','stray-quotes'));
+	$newmessage = str_replace("%1","https://github.com/xavivars/xv-random-quotes/blob/master/changelog.txt",
+            __('<p>You installed a new version of <strong>XV Random Quotes</strong>. All changes are addressed in the <a href="%1">changelog</a>, but you should know that: </p>','stray-quotes'));
 	
 	//in case we have to point to other pages in the messages
 	$widgetpage = admin_url('widgets.php');

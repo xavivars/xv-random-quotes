@@ -18,16 +18,16 @@ function stray_new() {
 	}
 
 	// control the requests
-	$action = !empty($_REQUEST['action']) ? $_REQUEST['action'] : '';
-	$quoteID = !empty($_REQUEST['quoteID']) ? $_REQUEST['quoteID'] : '';
+	$action = !empty($_REQUEST['action']) ? sanitize_text_field($_REQUEST['action']) : '';
+	$quoteID = !empty($_REQUEST['quoteID']) ? sanitize_text_field($_REQUEST['quoteID']) : '';
 
 	//this is for the bookmarklet
 	if ( $action == 'bookmarklet' ) {
 
 		$quotesoptions = array();
 		$quotesoptions = get_option('stray_quotes_options');
-		$quote = !empty($_REQUEST['quote_quote']) ? stripslashes(trim($_REQUEST['quote_quote'])) : '';
-		if ($quotesoptions['bookmarlet_source'] == 'Y' )$source = !empty($_REQUEST['quote_source']) ? stripslashes(trim($_REQUEST['quote_source'])) : '';
+		$quote = !empty($_REQUEST['quote_quote']) ? sanitize_text_field(trim($_REQUEST['quote_quote'])) : '';
+		if ($quotesoptions['bookmarlet_source'] == 'Y' )$source = !empty($_REQUEST['quote_source']) ? sanitize_text_field(trim($_REQUEST['quote_source'])) : '';
 		if ($quotesoptions['bookmarklet_cat']) $category = $quotesoptions['bookmarklet_cat'];
 	}
 
@@ -35,12 +35,12 @@ function stray_new() {
 	if ( $action == 'add' ) {
 
 		//assign variables and trim them
-		$quote = !empty($_REQUEST['quote_quote']) ? trim($_REQUEST['quote_quote']) : '';
-		$author = !empty($_REQUEST['quote_author']) ? trim($_REQUEST['quote_author']) : '';
-		$source = !empty($_REQUEST['quote_source']) ? trim($_REQUEST['quote_source']) : '';
-		$visible = !empty($_REQUEST['quote_visible']) ? trim($_REQUEST['quote_visible']) : '';
-		if ( $_REQUEST['quote_category'] )$category = trim($_REQUEST['quote_category']);
-		else $category = $_REQUEST['categories'];
+		$quote = !empty($_REQUEST['quote_quote']) ? sanitize_text_field($_REQUEST['quote_quote']) : '';
+		$author = !empty($_REQUEST['quote_author']) ? sanitize_text_field($_REQUEST['quote_author']) : '';
+		$source = !empty($_REQUEST['quote_source']) ? sanitize_text_field($_REQUEST['quote_source']) : '';
+		$visible = !empty($_REQUEST['quote_visible']) ? sanitize_text_field($_REQUEST['quote_visible']) : '';
+		if ( $_REQUEST['quote_category'] )$category = sanitize_text_field($_REQUEST['quote_category']);
+		else $category = sanitize_text_field($_REQUEST['categories']);
 
 		//remove spaces from categories
 		if (preg_match('/\s+/',$category)>0){

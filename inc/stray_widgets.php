@@ -96,10 +96,7 @@ class stray_widgets {
         $options_all = get_option('widget_stray_quotes');
         if (!is_array($options_all))$options_all = array();
 
-        $sidebar = sanitize_text_field($_POST['sidebar']);
-
-        
-        if (!$updated && !empty($sidebar)) {
+        if (isset($_POST['sidebar']) && !$updated && sanitize_text_field($_POST['sidebar'])) {
 
             $sidebars_widgets = wp_get_sidebars_widgets();
             if (isset($sidebars_widgets[$sidebar]))

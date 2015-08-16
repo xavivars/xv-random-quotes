@@ -14,7 +14,7 @@ function stray_remove() {
 	}
 
 	//handle the post event
-	if(!empty(sanitize_text_field($_POST['do']))) {
+	if(isset($_POST['do']) && sanitize_text_field($_POST['do'])) {
 
 		//update options
 		$removeoptions =  sanitize_text_field($_POST['remove']);

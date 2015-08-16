@@ -11,10 +11,10 @@
 	if( $quotesoptions['stray_multiuser'] == false && !current_user_can('manage_options') )
 		die('Access Denied');
 
-    $post_do = sanitize_text_field($_POST['do']);
-
-	if(!empty($post_do)) {
-
+    if(isset($_POST['do']) && sanitize_text_field($_POST['do'])) {
+        
+        $post_do = sanitize_text_field($_POST['do']);
+        
 		//function to change bookmarklet options
 		if(isset($_POST['boptions'])){
 

@@ -16,8 +16,8 @@ function stray_manage() {
 	foreach($_POST as $key => $val)$_POST[$key] = stripslashes($val);
 
 	//defaults and gets
-	$action = !empty($_REQUEST['qa']) ? $_REQUEST['qa'] : '';
-	$quoteID = !empty($_REQUEST['qi']) ? $_REQUEST['qi'] : '';
+	$action = !empty($_REQUEST['qa']) ? sanitize_text_field($_REQUEST['qa']) : '';
+	$quoteID = !empty($_REQUEST['qi']) ? sanitize_text_field($_REQUEST['qi']) : '';
 
 	$orderby = $quotesoptions['stray_quotes_order'];
 	$pages = 1;
