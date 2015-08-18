@@ -7,7 +7,6 @@ Tested up to: 4.2.4
 Stable tag: 1.20
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Author URI: http://xavi.ivars.me
 
 Displays and rotates quotes and expressions anywhere on your blog. Easy to customize and manage. Multiuser-powered. Ajax enabled.
 
