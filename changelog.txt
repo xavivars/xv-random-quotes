@@ -1,4 +1,9 @@
 == XV Random Quotes ==
+= 1.20 =
+First version published of XV Random Quotes
+* Cleanup of help page
+* Added unit test framework
+* Removed old paypal buttons and URL references
 
 = 1.11 =
 * Change AJAX quote loader
