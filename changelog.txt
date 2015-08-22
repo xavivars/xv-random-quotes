@@ -1,4 +1,10 @@
 == XV Random Quotes ==
+= 1.24 =
+Fix released extension at WordPress.org
+
+= 1.21 =
+Fix incorrect escaping when saving settings 
+
 = 1.20 =
 First version published of XV Random Quotes
 * Cleanup of help page
