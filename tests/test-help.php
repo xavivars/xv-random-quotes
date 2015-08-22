@@ -5,7 +5,9 @@ class HelpTests extends WP_UnitTestCase {
     function get_help_content() {
         ob_start();
         
-        xv_random_quotes_show_help();
+        $help = new XV_RandomQuotes_Help();
+        
+        $help->show_help();
         
         $output = ob_get_clean();
         

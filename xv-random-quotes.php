@@ -625,7 +625,7 @@ include('inc/stray_manage.php');
 include('inc/stray_new.php');
 include('inc/stray_widgets.php');
 include('inc/stray_tools.php');
-include('inc/help.php');
+include('admin/class.help.php');
 include('inc/stray_remove.php');
 include('inc/stray_ajax.php');
 
@@ -635,6 +635,8 @@ function stray_quotes_add_pages() {
 	$quotesoptions = get_option('stray_quotes_options');
 	if($quotesoptions['stray_multiuser'] == true) $straycan = 'edit_posts';
 	else $straycan = 'manage_options';
+    
+    $_options_page = new XV_RandomQuotes_Help();
 
 	add_menu_page('Stray Random Quotes', __('Quotes','stray-quotes'), $straycan, __FILE__, 'stray_intro', WP_STRAY_QUOTES_PATH.'img/lightbulb.png');
 	add_submenu_page(__FILE__, __('Overview for the Quotes','stray-quotes'), __('Overview','stray-quotes'), $straycan, __FILE__, 'stray_intro');
@@ -642,7 +644,7 @@ function stray_quotes_add_pages() {
 	add_submenu_page(__FILE__, __('Add New Quote','stray-quotes'), __('Add New','stray-quotes'), $straycan, 'stray_new', 'stray_new');
 	add_submenu_page(__FILE__, __('Settings of the Quotes','stray-quotes'), __('Settings','stray-quotes'), 'manage_options', 'stray_quotes_options', 'stray_quotes_options'); 
 	add_submenu_page(__FILE__, __('Tools for your quotes','stray-quotes'), __('Tools','stray-quotes'), $straycan, 'stray_tools', 'stray_tools');
-	add_submenu_page(__FILE__, __('Help with the Quotes','stray-quotes'), __('Help','stray-quotes'), $straycan, 'xv_random_quotes_help', 'xv_random_quotes_show_help');
+	add_submenu_page(__FILE__, __('Help with the Quotes','stray-quotes'), __('Help','stray-quotes'), $straycan, 'xv_random_quotes_help', array( $_options_page, 'show_help'));
 	add_submenu_page(__FILE__, __('Remove Stray Random Quotes','stray-quotes'), __('Remove','stray-quotes'), 'manage_options', 'stray_remove', 'stray_remove'); 	
 	
 }
