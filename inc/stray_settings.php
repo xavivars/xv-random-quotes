@@ -47,14 +47,14 @@ function stray_quotes_options() {
 		//create array of values *ALL VALUES MUST BE INCLUDED HERE
 		$quotesoptions = array(
 
-		'stray_quotes_before_all' => sanitize_text_field($_POST['before_all']),
-		'stray_quotes_after_all' => sanitize_text_field($_POST['after_all']),
-		'stray_quotes_before_quote' => sanitize_text_field($_POST['before_quote']),
-		'stray_quotes_after_quote' => sanitize_text_field($_POST['after_quote']),
-		'stray_quotes_before_author' => sanitize_text_field($_POST['before_author']),
-		'stray_quotes_after_author' => sanitize_text_field($_POST['after_author']),
-		'stray_quotes_before_source' => sanitize_text_field($_POST['before_source']),
-		'stray_quotes_after_source' => sanitize_text_field($_POST['after_source']),
+		'stray_quotes_before_all' => wp_kses_post($_POST['before_all']),
+		'stray_quotes_after_all' => wp_kses_post($_POST['after_all']),
+		'stray_quotes_before_quote' => wp_kses_post($_POST['before_quote']),
+		'stray_quotes_after_quote' => wp_kses_post($_POST['after_quote']),
+		'stray_quotes_before_author' => wp_kses_post($_POST['before_author']),
+		'stray_quotes_after_author' => wp_kses_post($_POST['after_author']),
+		'stray_quotes_before_source' => wp_kses_post($_POST['before_source']),
+		'stray_quotes_after_source' => wp_kses_post($_POST['after_source']),
 		'stray_quotes_put_quotes_first' => sanitize_text_field($_POST['put_quotes_first']),
 		'stray_quotes_default_visible' => sanitize_text_field($_POST['default_visible']),
 		'stray_quotes_linkto' => $link_to,
