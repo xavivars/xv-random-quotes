@@ -59,7 +59,8 @@ See changelog.txt
 * For main development of Stray Quotes, [Ico](http://unalignedcode.wordpress.com/my-wordpress-plugins/stray-random-quotes/)
 * For Multi-widget functionality, [Millian's tutorial](http://wp.gdragon.info/2008/07/06/create-multi-instances-widget/)
 * For help in developing user-end AJAX functionality, [AgentSmith](http://www.matrixagents.org)
-* For Z-adjustemnts, [Sergey Sirotkin](http://www.zeyalabs.ch/)
+* For search functionality and bugfixing, [Sergey Sirotkin](http://www.zeyalabs.ch/posts/2010/stray-quotes-z/)
+
 
 == Localization ==
 
