@@ -1,9 +1,6 @@
 == XV Random Quotes ==
 
-= 1.26 =
-Fix release at WP.org
-
-= 1.25 =
+= 1.27 =
 Add charset and collation when creating table
 
 = 1.24 =
