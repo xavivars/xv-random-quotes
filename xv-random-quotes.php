@@ -4,7 +4,7 @@ Plugin Name: XV Random Quotes
 Description: Displays and rotatse quotes and expressions anywhere in your blog.
 Author: Xavi Ivars
 Author URI: http://xavi.ivars.me/
-Version: 1.24
+Version: 1.25
 License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
 
@@ -246,7 +246,7 @@ function quotes_activation() {
 			}
 			
 			//takes care of the new table
-			if ( $value == WP_STRAY_QUOTES_TABLE ){			
+			if ( $value == WP_STRAY_QUOTES_TABLE ){
 				
 				$categoryCol = $wpdb->get_col('SELECT `category` FROM '.WP_STRAY_QUOTES_TABLE);
 				$groupCol = $wpdb->get_col('SELECT `group` FROM '.WP_STRAY_QUOTES_TABLE);
@@ -284,7 +284,7 @@ function quotes_activation() {
 		`category` varchar( 255 ) NOT NULL  DEFAULT 'default',
 		`visible` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes',
 		`user` varchar( 255 ) NOT NULL ,
-		PRIMARY KEY ( `quoteID` ) )
+		PRIMARY KEY ( `quoteID` ) ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 		");
 		
 		//insert sample quote

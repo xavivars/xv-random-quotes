@@ -1,4 +1,8 @@
 == XV Random Quotes ==
+
+= 1.25 =
+Add charset and collation when creating table
+
 = 1.24 =
 Fix released extension at WordPress.org
 
