@@ -4,7 +4,7 @@ Plugin Name: XV Random Quotes
 Description: Displays and rotatse quotes and expressions anywhere in your blog.
 Author: Xavi Ivars
 Author URI: http://xavi.ivars.me/
-Version: 1.29
+Version: 1.30
 License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
 
