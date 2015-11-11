@@ -629,7 +629,9 @@ include('inc/stray_manage.php');
 include('inc/stray_new.php');
 include('inc/stray_widgets.php');
 include('inc/stray_tools.php');
+include('lib/class.repository.php');
 include('admin/class.help.php');
+include('admin/class.widget.php');
 include('inc/stray_remove.php');
 include('inc/stray_ajax.php');
 
