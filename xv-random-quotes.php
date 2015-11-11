@@ -4,7 +4,7 @@ Plugin Name: XV Random Quotes
 Description: Displays and rotatse quotes and expressions anywhere in your blog.
 Author: Xavi Ivars
 Author URI: http://xavi.ivars.me/
-Version: 1.28
+Version: 1.29
 License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
 
@@ -24,7 +24,7 @@ if ( ! defined( 'WP_CONTENT_DIR' ) ) define( 'WP_CONTENT_DIR', ABSPATH . 'wp-con
 if ( ! defined( 'WP_PLUGIN_URL' ) ) define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
 if ( ! defined( 'WP_PLUGIN_DIR' ) ) define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 
-define("XV_RANDOMQUOTES_TABLE", $wpdb->prefix . "stray_quotes");
+if ( ! defined( 'XV_RANDOMQUOTES_TABLE' ) ) define("XV_RANDOMQUOTES_TABLE", $wpdb->prefix . "stray_quotes");
 if ( basename(dirname(__FILE__)) == 'plugins' ){
     define("STRAY_DIR",'');
 } else {

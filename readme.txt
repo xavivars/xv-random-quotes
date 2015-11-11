@@ -4,7 +4,7 @@ Old contributors: ico@italyisfalling.com, Sergey Sirotkin,
 Tags: quotes, random, widget, sidebar, random quotes, random words, quotations, words, randomness, shortcodes
 Requires at least: 2.3
 Tested up to: 4.2.4
-Stable tag: 1.28
+Stable tag: 1.29
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
