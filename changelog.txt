@@ -1,5 +1,10 @@
 == XV Random Quotes ==
 
+= 1.28 =
+Fix issues in widget handling
+* Error in SQL query
+* Wrong sanitize applied
+
 = 1.27 =
 Add charset and collation when creating table
 
