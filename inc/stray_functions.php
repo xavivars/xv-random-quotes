@@ -130,7 +130,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 	if ($multi > 1){
 
 		// how many rows we have in database?
-		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as 'rows' FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes'" . $categoryquery . $userquery);
+		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as 'rows' FROM " . XV_RANDOMQUOTES_TABLE . " WHERE visible='yes'" . $categoryquery . $userquery);
 
 		// workaround for the "division by zero" problem
 		$rows = $multi;
@@ -267,7 +267,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 
 		//retrieve the quotes
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source` FROM `"
-		. WP_STRAY_QUOTES_TABLE . "` WHERE `visible`='yes'" . $categoryquery . $userquery
+		. XV_RANDOMQUOTES_TABLE . "` WHERE `visible`='yes'" . $categoryquery . $userquery
 		. " ORDER BY ". $orderby . $sort
 		. " LIMIT " . $offset. ", ". $multi;
 		$offset = $myoffset+$multi;
@@ -283,7 +283,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 		//sql the quotes
 		$offset=0;
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source` FROM `"
-		. WP_STRAY_QUOTES_TABLE . "` WHERE `visible`='yes'" .$categoryquery . $userquery
+		. XV_RANDOMQUOTES_TABLE . "` WHERE `visible`='yes'" .$categoryquery . $userquery
 		. " ORDER BY ". "`".$orderby."` " . $sort ;
 
 		$result = $wpdb->get_results($sql);
@@ -651,7 +651,7 @@ function make_categories($user=NULL) {
 		$where = '';
 	}
 
-	$allcategories = $wpdb->get_col("SELECT `category` FROM `" . WP_STRAY_QUOTES_TABLE . $where );
+	$allcategories = $wpdb->get_col("SELECT `category` FROM `" . XV_RANDOMQUOTES_TABLE . "`" . $where );
 	if ($allcategories == false) {
 		$allcategories = array($defaultcategory);
 	}
@@ -663,7 +663,7 @@ function mostused($field) {
 
 	global $wpdb,$current_user;
 
-	$sql = "SELECT `".$field."` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `".$field."` IS NOT NULL AND `".$field."` !='' AND `user`='".$current_user->user_nicename."'" ;
+	$sql = "SELECT `".$field."` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `".$field."` IS NOT NULL AND `".$field."` !='' AND `user`='".$current_user->user_nicename."'" ;
 	$all = $wpdb->get_col($sql);
 	$array = array_count_values($all);
 

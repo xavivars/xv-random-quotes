@@ -125,7 +125,7 @@ class stray_widgets {
                 $options = array();
 
                 $options['title'] = sanitize_text_field($posted['title']);
-                $options['groups'] = isset($posted['groups']) ? implode(',', sanitize_text_field($posted['groups'])) : '';
+                $options['groups'] = isset($posted['groups']) ? sanitize_text_field(implode(',', $posted['groups'])) : '';
 				$options['sequence'] =  sanitize_text_field($posted['sequence']);
 				$options['linkphrase'] =  sanitize_text_field($posted['linkphrase']);
 				$options['timer'] =  sanitize_text_field($posted['timer']);

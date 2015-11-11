@@ -66,8 +66,8 @@
 		else if( isset($_POST['submit']) &&  current_user_can('manage_options') ){
 
 			global $wpdb;
-			$query1 = $wpdb->query("ALTER TABLE `".WP_STRAY_QUOTES_TABLE."` DROP `quoteID`");
-			$query2 = $wpdb->query("ALTER TABLE `".WP_STRAY_QUOTES_TABLE."` ADD COLUMN `quoteID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST");
+			$query1 = $wpdb->query("ALTER TABLE `".XV_RANDOMQUOTES_TABLE."` DROP `quoteID`");
+			$query2 = $wpdb->query("ALTER TABLE `".XV_RANDOMQUOTES_TABLE."` ADD COLUMN `quoteID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST");
 
 			if ($query1 && $query2) { ?>
                 <div id="message" class="updated fade below-h2"><p>

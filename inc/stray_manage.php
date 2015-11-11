@@ -87,7 +87,7 @@ function stray_manage() {
 		else {
 
 			//query
-			$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . esc_sql($quoteID) . "' limit 1");
+			$data = $wpdb->get_results("select * from " . XV_RANDOMQUOTES_TABLE . " where quoteID='" . esc_sql($quoteID) . "' limit 1");
 
 			//bad feedback
 			if ( empty($data) ) {
@@ -216,7 +216,7 @@ function stray_manage() {
 
 			else {
 				//update the quote
-				$sql = "UPDATE " . WP_STRAY_QUOTES_TABLE
+				$sql = "UPDATE " . XV_RANDOMQUOTES_TABLE
 				. " SET `quote`='" . esc_sql($quote)
 				. "', `author`='" . esc_sql($author)
 				. "', `source`='" . esc_sql($source)
@@ -227,7 +227,7 @@ function stray_manage() {
 				$wpdb->get_results($sql);
 
 				//verify what has been udpated
-				$sql = "SELECT `quoteID` FROM " . WP_STRAY_QUOTES_TABLE
+				$sql = "SELECT `quoteID` FROM " . XV_RANDOMQUOTES_TABLE
 				. " WHERE `quote`='" . esc_sql($quote)
 				. "' AND `author`='" . esc_sql($author)
 				. "' AND `source`='" . esc_sql($source)
@@ -251,10 +251,10 @@ function stray_manage() {
 		//action: delete quote
 		else if ( $action == 'delete' ) {
 
-			$sql = "delete from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . esc_sql($quoteID) . "'";
+			$sql = "delete from `" . XV_RANDOMQUOTES_TABLE . "` where quoteID='" . esc_sql($quoteID) . "'";
 			$wpdb->get_results($sql);
 
-			$sql = "select quoteID from `" . WP_STRAY_QUOTES_TABLE . "` where quoteID='" . esc_sql($quoteID) . "'";
+			$sql = "select quoteID from `" . XV_RANDOMQUOTES_TABLE . "` where quoteID='" . esc_sql($quoteID) . "'";
 			$result = $wpdb->get_results($sql);
 
 			if ( empty($result) || empty($result[0]->quoteID) )	{
@@ -279,10 +279,10 @@ function stray_manage() {
 			}
 
 			$deleteIds = rtrim($deleteIds,',');
-			$sql = "DELETE FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID` IN(".$deleteIds.")";
+			$sql = "DELETE FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `quoteID` IN(".$deleteIds.")";
 			$wpdb->query($sql);
 
-			$sql2 = "SELECT `quoteID` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID` IN(".$deleteIds.")";
+			$sql2 = "SELECT `quoteID` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `quoteID` IN(".$deleteIds.")";
 			$result = $wpdb->get_results($sql2);
 
 			if ($count == 0) { ?><div class="error fade"><?php echo $nothingmessage ?></div><?php
@@ -304,7 +304,7 @@ function stray_manage() {
 
 				if ( substr($key,0,12) == 'check_select' ) {
 
-					$sql = "SELECT `visible` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID`='".$val."'";
+					$sql = "SELECT `visible` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `quoteID`='".$val."'";
 					$visibility = $wpdb->get_var($sql);
 					if ($visibility=='yes') $toggleyes .= "'". $val . "',";
 					else $toggleno .= "'". $val . "',";
@@ -316,14 +316,14 @@ function stray_manage() {
 			$toggleyes = rtrim($toggleyes,',');
 			$toggleno = rtrim($toggleno,',');
 
-			$sql = "UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `visible`= 'no' WHERE `quoteID` IN(".$toggleyes.")";
+			$sql = "UPDATE `" . XV_RANDOMQUOTES_TABLE . "` SET `visible`= 'no' WHERE `quoteID` IN(".$toggleyes.")";
 			$wpdb->query($sql);
-			$sql1 = "UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `visible`= 'yes' WHERE `quoteID` IN(".$toggleno.")";
+			$sql1 = "UPDATE `" . XV_RANDOMQUOTES_TABLE . "` SET `visible`= 'yes' WHERE `quoteID` IN(".$toggleno.")";
 			$wpdb->query($sql1);
 
-			$sql2 = "SELECT `quoteID` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `visible` IN(".$toggleyes.") = 'no'";
+			$sql2 = "SELECT `quoteID` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `visible` IN(".$toggleyes.") = 'no'";
 			$result1 = $wpdb->get_results($sql2);
-			$sql3 = "SELECT `quoteID` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `visible` IN(".$toggleno.") = 'yes'";
+			$sql3 = "SELECT `quoteID` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `visible` IN(".$toggleno.") = 'yes'";
 			$result2 = $wpdb->get_results($sql3);
 
 			if ($count == 0) { ?><div class="error fade"><?php echo $nothingmessage ?></div><?php
@@ -354,10 +354,10 @@ function stray_manage() {
 			}
 
 			$catlist = rtrim($catlist,',');
-			$sql = "UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `category`='".$newcat."' WHERE `quoteID` IN(".$catlist.")";
+			$sql = "UPDATE `" . XV_RANDOMQUOTES_TABLE . "` SET `category`='".$newcat."' WHERE `quoteID` IN(".$catlist.")";
 			$wpdb->query($sql);
 
-			$sql2 = "SELECT DISTINCT `category` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `quoteID` IN(".$catlist.")";
+			$sql2 = "SELECT DISTINCT `category` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `quoteID` IN(".$catlist.")";
 			$result = $wpdb->get_var($sql2);
 
 			if ($count == 0) { ?><div class="error fade"><?php echo $nothingmessage ?></div><?php
@@ -403,7 +403,7 @@ function stray_manage() {
 		}
 
 		// how many rows we have in database
-		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . $where);
+		$numrows = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . XV_RANDOMQUOTES_TABLE . $where);
 
 		//temporary workaround for the "division by zero" problem
 		if (is_string($rows))$rows=intval($rows);
@@ -474,7 +474,7 @@ function stray_manage() {
 
 		//get all the quotes
 		$sql = "SELECT `quoteID`,`quote`,`author`,`source`,`category`,`visible`, `user` FROM "
-		. WP_STRAY_QUOTES_TABLE
+		. XV_RANDOMQUOTES_TABLE
 		. $where
 		. " ORDER BY `". $orderby ."`"
 		. $sort

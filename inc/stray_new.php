@@ -61,7 +61,7 @@ function stray_new() {
 		}
 
 		//insert the quote into the database!!
-		$sql = "insert into " . WP_STRAY_QUOTES_TABLE
+		$sql = "insert into " . XV_RANDOMQUOTES_TABLE
 		. " set `quote`='" . esc_sql($quote)
 		. "', `author`='" . esc_sql($author)
 		. "', `source`='" . esc_sql($source)
@@ -72,7 +72,7 @@ function stray_new() {
 		$wpdb->get_results($sql);
 
 		//check: go and get the quote just inserted
-		$sql2 = "select `quoteID` from " . WP_STRAY_QUOTES_TABLE
+		$sql2 = "select `quoteID` from " . XV_RANDOMQUOTES_TABLE
 		. " where `quote`='" . esc_sql($quote)
 		. "' and `author`='" . esc_sql($author)
 		. "' and `source`='" . esc_sql($source)
@@ -115,7 +115,7 @@ function stray_new() {
 				return;
 			}
 			else {
-				$data = $wpdb->get_results("select * from " . WP_STRAY_QUOTES_TABLE . " where quoteID='" . esc_sql($quoteID) . "' limit 1");
+				$data = $wpdb->get_results("select * from " . XV_RANDOMQUOTES_TABLE . " where quoteID='" . esc_sql($quoteID) . "' limit 1");
 				if ( empty($data) ) {
 					?><div class="error fade"><p><?php _e('Something is wrong. Sorry.','stray-quotes') ?></p></div><?php
 					return;

@@ -22,7 +22,7 @@ function stray_intro() {
 	$straymessage = $quotesoptions['stray_quotes_first_time'];
 
 	//get total quotes
-	$totalsql = "SELECT COUNT(`quoteID`) AS `Rows` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `user`='".$current_user->user_nicename."'";
+	$totalsql = "SELECT COUNT(`quoteID`) AS `Rows` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `user`='".$current_user->user_nicename."'";
 	$totalquotes = $wpdb->get_var($totalsql);
 
 	//feedback following activation (see main file)
@@ -55,7 +55,7 @@ echo WP_PLUGIN_DIR. '/'. STRAY_DIR . 'lang<br/>';
 				$howmanycategories = $howmanycategories . ' ' . __('categories','stray-quotes');
 				$categorymost = mostused("category");
 		}
-		$sql = "SELECT COUNT( `category` ) AS `Rows` , `category` FROM `" . WP_STRAY_QUOTES_TABLE . "` WHERE `user`='".$current_user->user_nicename."' GROUP BY `category` ORDER BY `Rows` DESC";
+		$sql = "SELECT COUNT( `category` ) AS `Rows` , `category` FROM `" . XV_RANDOMQUOTES_TABLE . "` WHERE `user`='".$current_user->user_nicename."' GROUP BY `category` ORDER BY `Rows` DESC";
 		$howmany = $wpdb->get_results($sql);
 		if ( count($howmany) > 1) $as = __(', distributed as follows:','stray-quotes');
 		else $as = '.';
@@ -81,7 +81,7 @@ echo WP_PLUGIN_DIR. '/'. STRAY_DIR . 'lang<br/>';
 		}
 
 		//visible quotes
-		$visiblequotes = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . WP_STRAY_QUOTES_TABLE . " WHERE visible='yes' AND `user`='".$current_user->user_nicename."'");
+		$visiblequotes = $wpdb->get_var("SELECT COUNT(`quoteID`) as rows FROM " . XV_RANDOMQUOTES_TABLE . " WHERE visible='yes' AND `user`='".$current_user->user_nicename."'");
 		if($visiblequotes == $totalquotes)$visiblequotes = __('All your quotes ','stray-quotes');
 		echo str_replace ('%s3',$visiblequotes, __('<p><strong>%s3</strong> are visible.</p>','stray-quotes'));
 

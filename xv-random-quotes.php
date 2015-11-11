@@ -4,9 +4,13 @@ Plugin Name: XV Random Quotes
 Description: Displays and rotatse quotes and expressions anywhere in your blog.
 Author: Xavi Ivars
 Author URI: http://xavi.ivars.me/
-Version: 1.27
+Version: 1.28
 License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
+
+ define( 'XV_RANDOM_QUOTES', true);
+
+include('lib/class.constants.php');
 
 global $wpdb, $wp_version;
 
@@ -20,7 +24,7 @@ if ( ! defined( 'WP_CONTENT_DIR' ) ) define( 'WP_CONTENT_DIR', ABSPATH . 'wp-con
 if ( ! defined( 'WP_PLUGIN_URL' ) ) define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
 if ( ! defined( 'WP_PLUGIN_DIR' ) ) define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 
-define("WP_STRAY_QUOTES_TABLE", $wpdb->prefix . "stray_quotes");
+define("XV_RANDOMQUOTES_TABLE", $wpdb->prefix . "stray_quotes");
 if ( basename(dirname(__FILE__)) == 'plugins' ){
     define("STRAY_DIR",'');
 } else {
@@ -234,11 +238,11 @@ function quotes_activation() {
 				//and fill in default values
 				$wpdb->query('UPDATE '. $wp_quotes . ' SET `category`="default"');
 				$wpdb->query("UPDATE `" . $wp_quotes . "` SET `user`= '".$current_user->user_nicename."'");
-				$wpdb->query('RENAME TABLE ' . $wp_quotes . ' TO ' . WP_STRAY_QUOTES_TABLE);
+				$wpdb->query('RENAME TABLE ' . $wp_quotes . ' TO ' . XV_RANDOMQUOTES_TABLE);
 				
 				//message
 				$search = array("%s1", "%s2");
-				$replace = array($wp_quotes, WP_STRAY_QUOTES_TABLE);
+				$replace = array($wp_quotes, XV_RANDOMQUOTES_TABLE);
 				if (!$straymessage) $straymessage = $newmessage;
 				$straymessage .= str_replace($search,$replace,__('<li>I changed the old table "%s1" into a new one called "%s2" but don\'t worry, all your quotes are still there.</li>','stray-quotes')); 
 				
@@ -246,21 +250,21 @@ function quotes_activation() {
 			}
 			
 			//takes care of the new table
-			if ( $value == WP_STRAY_QUOTES_TABLE ){
+			if ( $value == XV_RANDOMQUOTES_TABLE ){
 				
-				$categoryCol = $wpdb->get_col('SELECT `category` FROM '.WP_STRAY_QUOTES_TABLE);
-				$groupCol = $wpdb->get_col('SELECT `group` FROM '.WP_STRAY_QUOTES_TABLE);
+				$categoryCol = $wpdb->get_col('SELECT `category` FROM '.XV_RANDOMQUOTES_TABLE);
+				$groupCol = $wpdb->get_col('SELECT `group` FROM '.XV_RANDOMQUOTES_TABLE);
 				if (!$categoryCol && !$groupCol) {
 				
 					//add new field
-					$wpdb->query('ALTER TABLE ' . WP_STRAY_QUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `source`');
+					$wpdb->query('ALTER TABLE ' . XV_RANDOMQUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `source`');
 					
 					//and fill in default values
-					$wpdb->query('UPDATE '. WP_STRAY_QUOTES_TABLE . ' SET `category`="default"');
+					$wpdb->query('UPDATE '. XV_RANDOMQUOTES_TABLE . ' SET `category`="default"');
 					
 					//message
 					$search = array("%s1", "%s2");
-					$replace = array(WP_STRAY_QUOTES_TABLE,  admin_url('admin.php?page=stray_manage'));
+					$replace = array(XV_RANDOMQUOTES_TABLE,  admin_url('admin.php?page=stray_manage'));
 					if (!$straymessage) $straymessage = $newmessage;
 					$straymessage .= str_replace($search,$replace,__('<li>This plugin now comes with "categories", which should make for a more intelligent way to organize, maintain and display quotes on your blog. I updated the table "%s1" but all your quotes <a href="%s2">are still there</a>.</li>','stray-quotes')); 
 	
@@ -276,7 +280,7 @@ function quotes_activation() {
 	if ( !$straytableExists ) {
 		
 		$wpdb->query("
-		CREATE TABLE IF NOT EXISTS `". WP_STRAY_QUOTES_TABLE . "` (
+		CREATE TABLE IF NOT EXISTS `". XV_RANDOMQUOTES_TABLE . "` (
 		`quoteID` INT NOT NULL AUTO_INCREMENT ,
 		`quote` TEXT NOT NULL ,
 		`author` varchar( 255 ) NOT NULL ,
@@ -288,11 +292,11 @@ function quotes_activation() {
 		");
 		
 		//insert sample quote
-		$wpdb->query("INSERT INTO " . WP_STRAY_QUOTES_TABLE . " (
+		$wpdb->query("INSERT INTO " . XV_RANDOMQUOTES_TABLE . " (
 		`quote`, `author`, `source`) values ('Always tell the truth. Then you don\'t have to remember anything.', 'Mark Twain', 'Roughin\' it') ");
 		
 		//message
-		$straymessage = str_replace("%s1", WP_STRAY_QUOTES_TABLE,__('<p>Hey. This seems to be your first time with this plugin. I\'ve just created the database table "%s1" to store your quotes, and added one to start you off.</p>','stray-quotes'));
+		$straymessage = str_replace("%s1", XV_RANDOMQUOTES_TABLE,__('<p>Hey. This seems to be your first time with this plugin. I\'ve just created the database table "%s1" to store your quotes, and added one to start you off.</p>','stray-quotes'));
 	}
 	
 	$quotesoptions = get_option('stray_quotes_options');
@@ -450,17 +454,17 @@ function quotes_activation() {
 	if ( $quotesoptions['stray_quotes_version'] <= 178 ){ 
 	
 		//because of the mess caused by 1.7.8, there's a chance that the user has two category columns now! (ugh!)		
-		$categorycol = $wpdb->get_col('SELECT `category` FROM '.WP_STRAY_QUOTES_TABLE);
-		$groupcol = $wpdb->get_col('SELECT `group` FROM '.WP_STRAY_QUOTES_TABLE);
+		$categorycol = $wpdb->get_col('SELECT `category` FROM '.XV_RANDOMQUOTES_TABLE);
+		$groupcol = $wpdb->get_col('SELECT `group` FROM '.XV_RANDOMQUOTES_TABLE);
 		
 		//if there are two columns
 		if ($categorycol && $groupcol) {
 		
 			//make sure the two columns are identical (this will loose changes made to this field after 178, but it is the less painful way.)
-			$wpdb->query('UPDATE ' . WP_STRAY_QUOTES_TABLE . ' SET `category` = `group`');
+			$wpdb->query('UPDATE ' . XV_RANDOMQUOTES_TABLE . ' SET `category` = `group`');
 			
 			//drop the old one
-			$wpdb->query("ALTER TABLE `".WP_STRAY_QUOTES_TABLE."` DROP COLUMN `group`");
+			$wpdb->query("ALTER TABLE `".XV_RANDOMQUOTES_TABLE."` DROP COLUMN `group`");
 			
 			//message
 			if (!$straymessage)$straymessage = $newmessage;
@@ -472,13 +476,13 @@ function quotes_activation() {
 		else if ($groupcol && !$categorycol) {
 			
 			//add new field
-			$wpdb->query('ALTER TABLE ' . WP_STRAY_QUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `group`');
+			$wpdb->query('ALTER TABLE ' . XV_RANDOMQUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `group`');
 			
 			// copy values
-			$wpdb->query('UPDATE ' . WP_STRAY_QUOTES_TABLE . ' SET `category` = `group`');
+			$wpdb->query('UPDATE ' . XV_RANDOMQUOTES_TABLE . ' SET `category` = `group`');
 			
 			//drop the old one
-			$wpdb->query("ALTER TABLE `".WP_STRAY_QUOTES_TABLE."` DROP COLUMN `group`");
+			$wpdb->query("ALTER TABLE `".XV_RANDOMQUOTES_TABLE."` DROP COLUMN `group`");
 			
 			//message
 			if (!$straymessage)$straymessage = $newmessage;
@@ -489,7 +493,7 @@ function quotes_activation() {
 		if ($needed == true)$straymessage .=__('<li> hopefully the mess caused by version 1.7.8 has now been corrected... If you changed the categories assigned to quotes using the 1.7.8 version, you might find now that the changes made are lost. All the rest will stay the same, including that "groups" are now called "categories".</li>','stray-quotes');
 	
 		//if there are spaces in category (corrected in 1.7.6, might have slipped because of the mess of 1.7.8!)
-		$removal = $wpdb->query("UPDATE `".WP_STRAY_QUOTES_TABLE."` SET `category`= REPLACE(`category`, ' ', '-') WHERE `category` LIKE '% %'");
+		$removal = $wpdb->query("UPDATE `".XV_RANDOMQUOTES_TABLE."` SET `category`= REPLACE(`category`, ' ', '-') WHERE `category` LIKE '% %'");
 		if ($removal)$straymessage .=__('<li> spaces are not allowed within categories names, because they created all sorts of problems. I replaced them with dashes. I hope it\'s okay.</li>','stray-quotes');
 	
 		//options that have changed their names (operation missing in 1.7.8)
@@ -554,10 +558,10 @@ function quotes_activation() {
 	if(  $quotesoptions['stray_quotes_version'] <= 192 ){
 		
 		//alter table and set initial values
-		$checkuser = $wpdb->get_col('SELECT `user` FROM '.WP_STRAY_QUOTES_TABLE);
+		$checkuser = $wpdb->get_col('SELECT `user` FROM '.XV_RANDOMQUOTES_TABLE);
 		if ($checkuser == false){
-			$addgroup = $wpdb->query('ALTER TABLE `' . WP_STRAY_QUOTES_TABLE . '` ADD COLUMN `user` VARCHAR( 255 ) NOT NULL AFTER `visible`');
-			$setvalue = $wpdb->query("UPDATE `" . WP_STRAY_QUOTES_TABLE . "` SET `user`= '".$current_user->user_nicename."'");
+			$addgroup = $wpdb->query('ALTER TABLE `' . XV_RANDOMQUOTES_TABLE . '` ADD COLUMN `user` VARCHAR( 255 ) NOT NULL AFTER `visible`');
+			$setvalue = $wpdb->query("UPDATE `" . XV_RANDOMQUOTES_TABLE . "` SET `user`= '".$current_user->user_nicename."'");
 		
 			//message
 			if (!$straymessage)$straymessage = $newmessage;
@@ -598,7 +602,7 @@ function quotes_deactivation() {
 	global $wpdb;
 
 	$quotesoptions = get_option('stray_quotes_options');
-	$sql = "DROP TABLE IF EXISTS ".WP_STRAY_QUOTES_TABLE;
+	$sql = "DROP TABLE IF EXISTS ".XV_RANDOMQUOTES_TABLE;
 
 	//delete the options
 	if($quotesoptions['stray_quotes_uninstall'] == 'options') {
