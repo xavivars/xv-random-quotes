@@ -24,7 +24,9 @@ if ( ! defined( 'WP_CONTENT_DIR' ) ) define( 'WP_CONTENT_DIR', ABSPATH . 'wp-con
 if ( ! defined( 'WP_PLUGIN_URL' ) ) define( 'WP_PLUGIN_URL', WP_CONTENT_URL. '/plugins' );
 if ( ! defined( 'WP_PLUGIN_DIR' ) ) define( 'WP_PLUGIN_DIR', WP_CONTENT_DIR . '/plugins' );
 
+
 if ( ! defined( 'XV_RANDOMQUOTES_TABLE' ) ) define("XV_RANDOMQUOTES_TABLE", $wpdb->prefix . "stray_quotes");
+
 if ( basename(dirname(__FILE__)) == 'plugins' ){
     define("STRAY_DIR",'');
 } else {
@@ -629,6 +631,7 @@ include('inc/stray_manage.php');
 include('inc/stray_new.php');
 include('inc/stray_widgets.php');
 include('inc/stray_tools.php');
+include('lib/class.quoterenderer.php');
 include('lib/class.repository.php');
 include('admin/class.help.php');
 include('admin/class.widget.php');

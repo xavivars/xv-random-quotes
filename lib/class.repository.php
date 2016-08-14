@@ -87,8 +87,6 @@ class XV_RandomQuotes_Repository {
 		foreach ( $results as $result ) {
 			$quote = new XV_RandomQuotes_Quote( $result->quoteID, $result->quote, $result->author, $result->source );
 			
-			$quote = $this->add_formatting_info( $quote );
-			
 			array_push( $quotes, $quote );
 		}
 		
@@ -185,22 +183,4 @@ class XV_RandomQuotes_Repository {
 		// Call $wpdb->prepare passing the values of the array as separate arguments
 		return call_user_func_array( array( $wpdb, 'prepare' ), array_merge( array( $base_sql ), $values) );
 	}
-
-	public function add_formatting_info( $quote ) {
-		if ($this->plugin_options == NULL){
-				$this->plugin_options = get_option(XV_RandomQuotes_Constants::PLUGIN_OPTIONS);
-		}
-		
-		$quote->set_before_quote( $this->plugin_options['stray_quotes_before_quote'] );
-		$quote->set_after_quote( $this->plugin_options['stray_quotes_after_quote'] );
-		
-		$quote->set_before_author( $this->plugin_options['stray_quotes_before_author'] );
-		$quote->set_after_author( $this->plugin_options['stray_quotes_after_author'] );
-		
-		$quote->set_before_source( $this->plugin_options['stray_quotes_before_source'] );
-		$quote->set_after_source( $this->plugin_options['stray_quotes_after_source'] );
-		
-		return $quote;
-	}
-
 }

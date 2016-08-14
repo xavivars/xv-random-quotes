@@ -10,7 +10,7 @@ global $wpdb;
 if ( !defined ( 'WPDB_PREFIX' ) ) {
 	define ( 'WPDB_PREFIX' , $wpdb->prefix );
 }
-define("XV_RANDOMQUOTES_TABLE", $wpdb->prefix . "stray_quotes");
+
 define("XV_RANDOMQUOTES_TABLE", $wpdb->prefix . "stray_quotes");
 
 class XV_RandomQuotes_Constants {

@@ -23,6 +23,7 @@ class XV_RandomQuotes_Widget extends WP_Widget {
 		parent::__construct('xv_randomquotes', __('XV Random Quotes', 'xv-random-quotes') );
 		$this->DEFAULT_WIDGET_TITLE = __( 'XV Random Quotes', 'xv-random-quotes');
 		$this->_repository = new XV_RandomQuotes_Repository();
+		$this->_renderer = new XV_RandomQuotes_QuoteRenderer();
 	}
 
 	public function widget( $args, $instance ) {
@@ -48,7 +49,7 @@ class XV_RandomQuotes_Widget extends WP_Widget {
 		
         $quote = $this->_repository->get_quote( $args );
 		
-		$quote->render();
+		$this->_renderer->render( $quote );
 		
         echo $after_widget;
 	}
