@@ -17,7 +17,7 @@ class XV_RandomQuotes_Widget extends WP_Widget {
 
 	private $DEFAULT_WIDGET_TITLE;
 	private $_repository;
-	
+	private $_renderer;
 	
 	public function __construct() {
 		parent::__construct('xv_randomquotes', __('XV Random Quotes', 'xv-random-quotes') );

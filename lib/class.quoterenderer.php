@@ -76,6 +76,16 @@ class XV_RandomQuotes_QuoteRenderer
         $this->after_source = $after_source;
     }
 
+    function get_rendered_content($quote) {
+        ob_start();
+
+        $this->render($quote);
+
+        $output = ob_get_clean();
+
+        return $output;
+    }
+
     public function render( $quote ) {
 
         ?>

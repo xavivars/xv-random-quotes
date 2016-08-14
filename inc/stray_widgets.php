@@ -107,14 +107,14 @@ class stray_widgets {
             foreach ($this_sidebar as $_widget_id) {
                 if ('widget_stray_quotes' == $wp_registered_widgets[$_widget_id]['callback'] && isset($wp_registered_widgets[$_widget_id]['params'][0]['number'])) {
                     $widget_number = $wp_registered_widgets[$_widget_id]['params'][0]['number'];
-                    
+
                     $widget_id = sanitize_text_field($_POST['widget-id']);
-                    
+
                     if (!in_array("stray_widgets-$widget_number", $widget_id))
                         unset($options_all[$widget_number]);
                 }
             }
-            
+
             // Good idea to make sure things are set before using them
             $widgets = isset( $_POST['widget_stray_quotes'] ) ? (array) $_POST['widget_stray_quotes'] : array();
 
@@ -241,7 +241,7 @@ class stray_widgets {
 	}
 }
 
-$gdm = new stray_widgets();
-add_action('widgets_init', array($gdm, 'init'));
+//$gdm = new stray_widgets();
+//add_action('widgets_init', array($gdm, 'init'));
 
 ?>

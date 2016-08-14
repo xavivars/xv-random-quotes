@@ -95,7 +95,7 @@ class XV_RandomQuotes_Repository {
 	
 	private function prepare_args( $args ) {
 		
-		if ( ! is_array( $args['categories'] ) ) {
+		if ( isset($args['categories']) && ! is_array( $args['categories'] ) ) {
 				$args['categories'] = array( $args['categories'] );
 		}
 		
@@ -122,22 +122,13 @@ class XV_RandomQuotes_Repository {
 		$conditions = array();
 		
 		/**
-		 * 'categories' => 
-							isset($plugin_options[XV_RandomQuotes_Constants::DEFAULT_CATEGORY_OPTION]) ? 
-									$plugin_options[XV_RandomQuotes_Constants::DEFAULT_CATEGORY_OPTION] : array('default'),
-				'random' => $true,
+		 *
 				'reloadtext' =>
 							isset($plugin_options[XV_RandomQuotes_Constants::DEFAULT_RELOAD_TEXT_OPTION]) ? 
 									$plugin_options[XV_RandomQuotes_Constants::DEFAULT_RELOAD_TEXT_OPTION] : '',
-				'amount' => 1,
 				'timer' => 0,
 				'ajax' => true,
-				'offset' => 0,
 				'widgetid' => null,
-				'fullpage' => null,
-				'orderby' => 'quoteID',
-				'sort' => 'ASC',
-				'quoteId' => null,
 				'disableaspect' => true,
 				'contributor' => null,
 				'visible' => true
@@ -148,7 +139,11 @@ class XV_RandomQuotes_Repository {
 		if( isset( $args['categories']) ) {
 			$conditions[] =	$this->create_in_condition( 'category', $args['categories'] );
 		}
-		
+
+		if( isset($args['quoteId']) && is_array($args['quoteId']) ) {
+			$conditions[] = $this->create_in_condition('quoteId', $args['quoteId']);
+		}
+
 		if ( count( $conditions ) > 0) {
 			$sql_conditions = ' AND ' . implode( ' AND ' , $conditions);
 		} else {
@@ -160,9 +155,11 @@ class XV_RandomQuotes_Repository {
 		} else {
 			$orderby = " ORDER BY `${args['orderby']}` ${args['sort']} ";
 		}
-		
-		if ( $amount > 1 ) {
-			$limit = ' LIMIT 2, 1 ';
+
+		if ( $args['amount'] > 1 && $args['offset'] > 0) {
+			$limit = " LIMIT ${args['offset']}, ${args['amount']}";
+		} else if ( $args['amount'] > 1) {
+				$limit = " LIMIT ${args['amount']}";
 		} else {
 			$limit = ' LIMIT 1 ';
 		}

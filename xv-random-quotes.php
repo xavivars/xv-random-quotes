@@ -439,123 +439,7 @@ function quotes_activation() {
 	}
 		
 	settype($quotesoptions['stray_quotes_version'], "integer");
-	
-	/*// <= 1.7.2
-	if( $quotesoptions['stray_quotes_version'] < 172 ){
-		$quotesoptions['stray_default_category'] = 'default';
-	}
-	
-	// <= 1.7.5
-	if( $quotesoptions['stray_quotes_version'] < 175 ){
-		//add a new fields
-		$quotesoptions['stray_if_no_author'] =  '';
-		$quotesoptions['stray_clear_form'] =  'Y';	
-	}
-		
-	// <= 1.7.9
-	if ( $quotesoptions['stray_quotes_version'] <= 178 ){ 
-	
-		//because of the mess caused by 1.7.8, there's a chance that the user has two category columns now! (ugh!)		
-		$categorycol = $wpdb->get_col('SELECT `category` FROM '.XV_RANDOMQUOTES_TABLE);
-		$groupcol = $wpdb->get_col('SELECT `group` FROM '.XV_RANDOMQUOTES_TABLE);
-		
-		//if there are two columns
-		if ($categorycol && $groupcol) {
-		
-			//make sure the two columns are identical (this will loose changes made to this field after 178, but it is the less painful way.)
-			$wpdb->query('UPDATE ' . XV_RANDOMQUOTES_TABLE . ' SET `category` = `group`');
-			
-			//drop the old one
-			$wpdb->query("ALTER TABLE `".XV_RANDOMQUOTES_TABLE."` DROP COLUMN `group`");
-			
-			//message
-			if (!$straymessage)$straymessage = $newmessage;
-			$needed = true;
-			
-		}
-		
-		//if there is only "group"
-		else if ($groupcol && !$categorycol) {
-			
-			//add new field
-			$wpdb->query('ALTER TABLE ' . XV_RANDOMQUOTES_TABLE . ' ADD COLUMN `category` VARCHAR( 255 ) NOT NULL DEFAULT "default" AFTER `group`');
-			
-			// copy values
-			$wpdb->query('UPDATE ' . XV_RANDOMQUOTES_TABLE . ' SET `category` = `group`');
-			
-			//drop the old one
-			$wpdb->query("ALTER TABLE `".XV_RANDOMQUOTES_TABLE."` DROP COLUMN `group`");
-			
-			//message
-			if (!$straymessage)$straymessage = $newmessage;
-			$needed = true;
-		}
-		
-		//feedback the above
-		if ($needed == true)$straymessage .=__('<li> hopefully the mess caused by version 1.7.8 has now been corrected... If you changed the categories assigned to quotes using the 1.7.8 version, you might find now that the changes made are lost. All the rest will stay the same, including that "groups" are now called "categories".</li>','stray-quotes');
-	
-		//if there are spaces in category (corrected in 1.7.6, might have slipped because of the mess of 1.7.8!)
-		$removal = $wpdb->query("UPDATE `".XV_RANDOMQUOTES_TABLE."` SET `category`= REPLACE(`category`, ' ', '-') WHERE `category` LIKE '% %'");
-		if ($removal)$straymessage .=__('<li> spaces are not allowed within categories names, because they created all sorts of problems. I replaced them with dashes. I hope it\'s okay.</li>','stray-quotes');
-	
-		//options that have changed their names (operation missing in 1.7.8)
-		if ($quotesoptions['stray_quotes_groups'] !== false) {
-			$quotesoptions['stray_quotes_categories'] = $quotesoptions['stray_quotes_groups'];
-		}else $quotesoptions['stray_quotes_categories'] = "all";	
-		unset($quotesoptions['stray_quotes_groups']);
-		
-		if ($quotesoptions['stray_default_group'] !== false) {
-			$quotesoptions['stray_default_category'] = $quotesoptions['stray_default_group'];
-		} else $quotesoptions['stray_default_category'] = "default";
-		unset($quotesoptions['stray_default_group']);
-			
-		//also make sure this value is not "group"
-		if ($quotesoptions['stray_quotes_order'] == 'group')$quotesoptions['stray_quotes_order'] = 'category';
-		
-	}
 
-	// <= 1.8.0
-	if ( $quotesoptions['stray_quotes_version'] <= 179 ){
-	
-		//add a new fields
-		$quotesoptions['stray_before_loader'] = '<p>';
-		$quotesoptions['stray_loader'] = '';
-		$quotesoptions['stray_after_loader'] = '</p>';
-
-	}
-	
-	// <= 1.8.2
-	if( $quotesoptions['stray_quotes_version'] <= 181 ){
-		//add a new fields
-		$quotesoptions['stray_ajax'] =  '';
-	}
-	
-	// <= 1.8.5
-	if(  $quotesoptions['stray_quotes_version'] <= 184 ){
-		//add a new fields
-		$quotesoptions['comment_scode'] =  '';
-		$quotesoptions['title_scode'] =  '';
-		$quotesoptions['excerpt_scode'] =  '';
-		$quotesoptions['widget_scode'] =  '';
-		$quotesoptions['categories_scode'] =  '';
-		$quotesoptions['tags_scode'] =  '';
-		$quotesoptions['bloginfo_scode'] =  '';		
-		$quotesoptions['bookmarlet_source'] =  '';
-		$quotesoptions['bookmarklet_cat'] =  '';
-	}
-	
-	// <= 1.8.6
-	if(  $quotesoptions['stray_quotes_version'] <= 186 ){
-		
-		//add a new fields
-		$quotesoptions['stray_loading'] =  __('loading...','stray-quotes');
-		
-		//remove obsolete fields
-		unset($quotesoptions['stray_quotes_widget_title']);
-		unset($quotesoptions['stray_quotes_regular_title']);
-	}
-	*/
-	
 	// <= 1.9.2
 	if(  $quotesoptions['stray_quotes_version'] <= 192 ){
 		
@@ -629,10 +513,10 @@ include('inc/stray_overview.php');
 include('inc/stray_settings.php');
 include('inc/stray_manage.php');
 include('inc/stray_new.php');
-include('inc/stray_widgets.php');
 include('inc/stray_tools.php');
 include('lib/class.quoterenderer.php');
 include('lib/class.repository.php');
+include('lib/class.shortcode.php');
 include('admin/class.help.php');
 include('admin/class.widget.php');
 include('inc/stray_remove.php');
@@ -662,13 +546,6 @@ function stray_quotes_add_pages() {
 add_action('admin_menu', 'stray_quotes_add_pages');
 add_action('wp_print_scripts', 'stray_quotes_add_js');
 add_action('admin_head', 'stray_quotes_header');
-
-if (function_exists('add_shortcode')) { /* zL: added: missing quotes around 'add_shortcode' */
-	
-	add_shortcode('stray-id', 'stray_id_shortcode');		
-	add_shortcode('stray-random', 'stray_random_shortcode');			
-	add_shortcode('stray-all', 'stray_all_shortcode');
-}
 
 register_activation_hook(__FILE__, 'quotes_activation');
 register_deactivation_hook(__FILE__, 'quotes_deactivation');
