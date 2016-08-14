@@ -1,6 +1,6 @@
 <?php
 
-class QuoteTests extends WP_UnitTestCase {
+class RendererTests extends WP_UnitTestCase {
 
 	const ARBITRARY_TEXT = "ARBITRARY TEXT";
 	const ARBITRARY_AUTHOR = "John Smith";
@@ -23,5 +23,5 @@ class QuoteTests extends WP_UnitTestCase {
 		$this->assertContains(self::ARBITRARY_AUTHOR, $this->get_render_content($quote));
 	}
 
-}
 
+}
