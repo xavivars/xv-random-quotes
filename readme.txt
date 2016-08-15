@@ -7,6 +7,7 @@ Tested up to: 4.6
 Stable tag: 1.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Donate link: http://xavi.ivars.me/codi/xv-random-quotes-wordpress-plugin-english/
 
 Displays and rotates quotes and expressions anywhere on your blog. Easy to customize and manage. Multiuser-powered. Ajax enabled.
 
