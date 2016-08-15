@@ -1,5 +1,9 @@
 == XV Random Quotes ==
 
+= 1.34 =
+Fixes problem when sequence goes back to 0
+* See https://github.com/xavivars/xv-random-quotes/issues/9
+
 = 1.28 =
 Fix issues in widget handling
 * Error in SQL query
