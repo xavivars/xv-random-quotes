@@ -241,7 +241,7 @@ class stray_widgets {
 	}
 }
 
-//$gdm = new stray_widgets();
-//add_action('widgets_init', array($gdm, 'init'));
+$gdm = new stray_widgets();
+add_action('widgets_init', array($gdm, 'init'));
 
 ?>

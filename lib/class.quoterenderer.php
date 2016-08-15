@@ -86,7 +86,30 @@ class XV_RandomQuotes_QuoteRenderer
         return $output;
     }
 
-    public function render( $quote ) {
+    public function render($quotes)
+    {
+        if (is_a($quotes, 'XV_RandomQuotes_Quote')) {
+            $this->render_single($quotes);
+        } else if (is_array($quotes)) {
+            $this->render_multi($quotes);
+        }
+    }
+
+    private function render_multi($quotes) {
+        echo '<ul>';
+
+        foreach ($quotes as $quote) {
+            echo '<li>';
+
+            $this->render_single($quote);
+
+            echo '</li>';
+        }
+
+        echo '</ul>';
+    }
+
+    private function render_single( $quote ) {
 
         ?>
         <div id="wp_quotes">
@@ -130,7 +153,4 @@ class XV_RandomQuotes_QuoteRenderer
 
         return $author;
     }
-
-
-
 }

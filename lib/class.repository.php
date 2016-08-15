@@ -24,7 +24,7 @@ class XV_RandomQuotes_Repository {
 		$this->plugin_options = NULL;
 	}
 	
-	private function get_default_args() {
+	private function get_default_args($create = false) {
 		if($this->default_args == NULL) {
 			
 			if ($this->plugin_options == NULL){
@@ -32,9 +32,6 @@ class XV_RandomQuotes_Repository {
 			}
 		
 			$this->default_args  = array(
-				'categories' => 
-							isset($plugin_options[XV_RandomQuotes_Constants::DEFAULT_CATEGORY_OPTION]) ? 
-									$plugin_options[XV_RandomQuotes_Constants::DEFAULT_CATEGORY_OPTION] : array('default'),
 				'random' => true,
 				'reloadtext' =>
 							isset($plugin_options[XV_RandomQuotes_Constants::DEFAULT_RELOAD_TEXT_OPTION]) ? 
@@ -52,12 +49,15 @@ class XV_RandomQuotes_Repository {
 				'contributor' => null,
 				'visible' => true
 			);
-			
-			if ( ! is_array( $this->default_args['categories'] ) ) {
+
+            if ($create) {
+                $this->default_args['categories'] = isset($plugin_options[XV_RandomQuotes_Constants::DEFAULT_CATEGORY_OPTION]) ?
+                                $plugin_options[XV_RandomQuotes_Constants::DEFAULT_CATEGORY_OPTION] : array('default');
+            }
+
+			if ( isset($this->default_args['categories']) && !is_array( $this->default_args['categories'] )) {
 				$this->default_args['categories'] = array( $this->default_args['categories'] );
 			}
-
-			
 		}
 		
 		return $this->default_args;
@@ -99,20 +99,17 @@ class XV_RandomQuotes_Repository {
 				$args['categories'] = array( $args['categories'] );
 		}
 		
-		if ( count($args['categories']) == 0 ) {
+		if ( isset($args['categories']) && count($args['categories']) == 0 ) {
 			unset ( $args['categories'] );
 		}
-		
+
+		if ( isset($args['quoteId']) && !is_array($args['quoteId']) && is_numeric($args['quoteId'])) {
+		    $args['quoteId'] = array( $args['quoteId']);
+        }
+
 		$args = array_merge ( $this->get_default_args(), $args );
 		
 		return $args;
-	}
-	
-	private function get_single_sql() {
-		$query = "SELECT `quoteID`,`quote`,`author`,`source` FROM " 
-			. XV_RandomQuotes_Constants::DB_TABLE 
-			
-			. " LIMIT 1";
 	}
 	
 	private function get_sql_query($args) {
@@ -141,7 +138,7 @@ class XV_RandomQuotes_Repository {
 		}
 
 		if( isset($args['quoteId']) && is_array($args['quoteId']) ) {
-			$conditions[] = $this->create_in_condition('quoteId', $args['quoteId']);
+			$conditions[] = $this->create_in_condition('quoteID', $args['quoteId']);
 		}
 
 		if ( count( $conditions ) > 0) {
@@ -160,7 +157,9 @@ class XV_RandomQuotes_Repository {
 			$limit = " LIMIT ${args['offset']}, ${args['amount']}";
 		} else if ( $args['amount'] > 1) {
 				$limit = " LIMIT ${args['amount']}";
-		} else {
+		} else if ($args['amount'] == -1) {
+		    $limit = '';
+        } else {
 			$limit = ' LIMIT 1 ';
 		}
 		
@@ -171,11 +170,16 @@ class XV_RandomQuotes_Repository {
 		. $limit;
 	}
 	
-	private function create_in_condition( $key, $values ) {
+	private function create_in_condition( $key, $values, $numeric = false ) {
 		
 		global $wpdb;
-		
-		$base_sql = $key . ' IN ( ' . implode( ', ', array_fill( 0, count( $values ), '%s') ) . ' ) ';
+
+        if ($numeric) {
+            $base_sql = $key . ' IN ( ' . implode( ', ', array_fill( 0, count( $values ), '%d') ) . ' ) ';
+        } else {
+            $base_sql = $key . ' IN ( ' . implode( ', ', array_fill( 0, count( $values ), '%s') ) . ' ) ';
+        }
+
 
 		// Call $wpdb->prepare passing the values of the array as separate arguments
 		return call_user_func_array( array( $wpdb, 'prepare' ), array_merge( array( $base_sql ), $values) );

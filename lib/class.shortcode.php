@@ -13,13 +13,14 @@ class XV_RandomQuotes_Shortcode {
 
 	public function __construct() {
 
-		$this->_repository = new XV_RandomQuotes_Repository();
+        $this->_repository = new XV_RandomQuotes_Repository();
 		$this->_renderer = new XV_RandomQuotes_QuoteRenderer();
 
 
 		if ( function_exists( 'add_shortcode' ) ) {
 
-			add_shortcode('random-quote', array($this, 'random_quote'));
+			add_shortcode('random-quotes', array($this, 'random_quotes'));
+            add_shortcode('random-quote', array($this, 'random_quote'));
 
 
 			// Legacy shortcodes
@@ -42,10 +43,44 @@ class XV_RandomQuotes_Shortcode {
 
 	// [random-quote]
 	public function random_quote($atts) {
-		$quote = $this->_repository->get_quote(array( 'random' => true));
+
+		$quote = $this->_repository->get_quote(array('random' => true));
 
 		return $this->_renderer->get_rendered_content($quote);
 	}
+
+	// [random-quotes show="random|all|id"]
+	public function random_quotes($atts) {
+
+	    $atts = $this->consolidate_atts($atts);
+
+        if (isset($atts['amount']) && $atts['amount'] == 1) {
+            $quote = $this->_repository->get_quote($atts);
+        } else {
+            $quote = $this->_repository->get_quotes($atts);
+        }
+
+        return $this->_renderer->get_rendered_content($quote);
+	}
+
+	private function consolidate_atts( $atts ) {
+
+	    $default_atts = array('random' => true, 'amount' => 1);
+
+	    if (!isset($atts['show'])) {
+	        return $default_atts;
+        }
+
+	    if(($atts['show'] == 'all')) {
+            $atts = array( 'amount' => -1);
+        } else if (is_numeric($atts['show']) && ((int)$atts['show'])>0){
+            $atts = array( 'random' => false, 'quoteId' => (int)$atts['show'], 'amount' => 1);
+        } else {
+            return $default_atts;
+        }
+
+        return $atts;
+    }
 
 	// [stray-random]
 	public function stray_random_shortcode($atts) {
@@ -92,6 +127,8 @@ class XV_RandomQuotes_Shortcode {
 
 		return get_stray_quotes( '', true, $linkphrase, '', '', $noajax, '', '', '', '', '', $id, $disableaspect );
 	}
+
+
 }
 
 new XV_RandomQuotes_Shortcode();

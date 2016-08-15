@@ -514,6 +514,7 @@ include('inc/stray_settings.php');
 include('inc/stray_manage.php');
 include('inc/stray_new.php');
 include('inc/stray_tools.php');
+include('inc/stray_widgets.php');
 include('lib/class.quoterenderer.php');
 include('lib/class.repository.php');
 include('lib/class.shortcode.php');
