@@ -335,7 +335,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 			}
 
 			//check and make the random/not random thing
-			if ($sequence) {
+			if ($sequence || $sequence === '0') {
 
 				//if $sequence=true bool, make it a random number
 				if ($sequence === true){
@@ -417,7 +417,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 			//if it is not a specific quote
 			else {
 
-				if ($sequence) {
+				if (is_numeric($sequence) || $sequence === '0') {
 					//get the next quote in sequence
 					$get_one = $result[$sequence];
 				} else {
