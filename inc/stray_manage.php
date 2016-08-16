@@ -187,9 +187,9 @@ function stray_manage() {
 		if ( $action == 'edit_save' ) {
 
 			//assign variables, trim, replace spaces
-			$quote = !empty($_REQUEST['quote_quote']) ? trim($_REQUEST['quote_quote']) : '';
-			$author = !empty($_REQUEST['quote_author']) ? trim($_REQUEST['quote_author']) : '';
-			$source = !empty($_REQUEST['quote_source']) ? trim($_REQUEST['quote_source']) : '';
+			$quote = !empty($_REQUEST['quote_quote']) ? wp_kses_post($_REQUEST['quote_quote']) : '';
+			$author = !empty($_REQUEST['quote_author']) ? wp_kses_post($_REQUEST['quote_author']) : '';
+			$source = !empty($_REQUEST['quote_source']) ? wp_kses_post($_REQUEST['quote_source']) : '';
 			$visible = !empty($_REQUEST['quote_visible']) ? trim($_REQUEST['quote_visible']) : '';
 			if ($_REQUEST['quote_category'])$category = trim($_REQUEST['quote_category']);
 			else $category = $_REQUEST['categories'];

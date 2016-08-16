@@ -35,9 +35,9 @@ function stray_new() {
 	if ( $action == 'add' ) {
 
 		//assign variables and trim them
-		$quote = !empty($_REQUEST['quote_quote']) ? sanitize_text_field($_REQUEST['quote_quote']) : '';
-		$author = !empty($_REQUEST['quote_author']) ? sanitize_text_field($_REQUEST['quote_author']) : '';
-		$source = !empty($_REQUEST['quote_source']) ? sanitize_text_field($_REQUEST['quote_source']) : '';
+		$quote = !empty($_REQUEST['quote_quote']) ? wp_kses_post($_REQUEST['quote_quote']) : '';
+		$author = !empty($_REQUEST['quote_author']) ? wp_kses_post($_REQUEST['quote_author']) : '';
+		$source = !empty($_REQUEST['quote_source']) ? wp_kses_post($_REQUEST['quote_source']) : '';
 		$visible = !empty($_REQUEST['quote_visible']) ? sanitize_text_field($_REQUEST['quote_visible']) : '';
 		if ( $_REQUEST['quote_category'] )$category = sanitize_text_field($_REQUEST['quote_category']);
 		else $category = sanitize_text_field($_REQUEST['categories']);
