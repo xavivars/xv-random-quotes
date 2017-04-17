@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/xavivars/xv-random-quotes.png?label=ready&title=Ready)](https://waffle.io/xavivars/xv-random-quotes)
 XV Random Quotes
 ======================
 
