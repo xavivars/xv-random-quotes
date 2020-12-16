@@ -1,4 +1,6 @@
 == XV Random Quotes ==
+= 1.36 =
+Fixes category list
 
 = 1.35 =
 Fixes and consolidates sanitization across ADD + EDIT quotes

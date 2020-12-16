@@ -646,12 +646,12 @@ function make_categories($user=NULL) {
 	$defaultcategory = $quotesoptions['stray_default_category'];
 
 	if($user) {
-		$where = "` WHERE `user`='$user'";
+		$where = " WHERE `user`='$user'";
 	} else {
 		$where = '';
 	}
 
-	$allcategories = $wpdb->get_col("SELECT `category` FROM `" . XV_RANDOMQUOTES_TABLE . "`" . $where );
+	$allcategories = $wpdb->get_col("SELECT DISTINCT `category` FROM `" . XV_RANDOMQUOTES_TABLE . "`" . $where );
 	if ($allcategories == false) {
 		$allcategories = array($defaultcategory);
 	}
