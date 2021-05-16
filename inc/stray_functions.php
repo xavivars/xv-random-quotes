@@ -374,7 +374,7 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 			//the javascript event with all the variables
 			$jaction = 'xv_random_quotes.newQuote(\''.
 			$categories .'\',\''.
-			urlencode($quoteloader).'\',\''.
+			addslashes($quoteloader).'\',\''.
 			$widgetid.'\',\''.
 			WP_STRAY_QUOTES_PATH.'\',\''.
 			$multi.'\',\''.

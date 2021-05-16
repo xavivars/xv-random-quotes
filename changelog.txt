@@ -1,4 +1,7 @@
 == XV Random Quotes ==
+= 1.37 =
+Properly escapes when "get next quote" text contains whitespaces
+
 = 1.36 =
 Fixes category list
 
