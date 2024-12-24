@@ -1,4 +1,8 @@
 == XV Random Quotes ==
+= 1.40 =
+Increases length of source
+* See https://wordpress.org/support/topic/when-a-source-has-a-long-url/
+
 = 1.38 =
 Fixes unnecessary logging
 * See https://wordpress.org/support/topic/php-errors-overwhelm-log-file/

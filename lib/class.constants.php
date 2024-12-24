@@ -15,7 +15,7 @@ define("XV_RANDOMQUOTES_TABLE", $wpdb->prefix . "stray_quotes");
 class XV_RandomQuotes_Constants {
 
 	const PLUGIN_OPTIONS = 'stray_quotes_options';
-	const VERSION = '1.38';
+	const VERSION = '1.40';
 	const DEFAULT_CATEGORY_OPTION	 = 'stray_default_category';
 	const DEFAULT_RELOAD_TEXT_OPTION	 = 'stray_loader';
 	

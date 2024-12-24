@@ -4,7 +4,7 @@ Plugin Name: XV Random Quotes
 Description: Displays and rotatse quotes and expressions anywhere in your blog.
 Author: Xavi Ivars
 Author URI: http://xavi.ivars.me/
-Version: 1.38
+Version: 1.40
 License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 */
 
@@ -582,8 +582,13 @@ function quotes_activation() {
 		
 	}
 
+	// <= 1.40
+	if( $quotesoptions['stray_quotes_version'] < 1400) {
+		$wpdb->query('ALTER TABLE `' . XV_RANDOMQUOTES_TABLE . '` MODIFY `source` TEXT NOT NULL');
+	}
+
 	//!!  CHANGE THIS WITH EVERY NEW VERSION !!
-	$quotesoptions['stray_quotes_version'] = 199;
+	$quotesoptions['stray_quotes_version'] = 1400;
 	
 	//reset the removal option for everyone
 	$quotesoptions['stray_quotes_uninstall'] = "";

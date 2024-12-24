@@ -3,8 +3,8 @@ Contributors: xavivars
 Old contributors: ico@italyisfalling.com, Sergey Sirotkin, 
 Tags: quotes, random, widget, sidebar, random quotes, random words, quotations, words, randomness, shortcodes
 Requires at least: 2.3
-Tested up to: 6.3
-Stable tag: 1.38
+Tested up to: 6.7
+Stable tag: 1.40
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://xavi.ivars.me/codi/xv-random-quotes-wordpress-plugin-english/
