@@ -26,14 +26,14 @@ function stray_remove() {
 		/*else $quoteoptions['stray_quotes_uninstall'] = 'none';*/
 		update_option('stray_quotes_options', $quotesoptions);
 
-		$deactivate_url = get_option("siteurl"). '/wp-admin/plugins.php?action=deactivate&amp;plugin='.STRAY_DIR.'/stray_quotes.php';
-		if(function_exists('wp_nonce_url'))	$deactivate_url = urldecode(wp_nonce_url($deactivate_url, 'deactivate-plugin_'.STRAY_DIR.'/stray_quotes.php'));
+		$deactivate_url = get_option("siteurl"). '/wp-admin/plugins.php?action=deactivate&amp;plugin='.STRAY_DIR.'/xv-random-quotes.php';
+		if(function_exists('wp_nonce_url'))	$deactivate_url = urldecode(wp_nonce_url($deactivate_url, 'deactivate-plugin_'.STRAY_DIR.'/xv-random-quotes.php'));
 
 		//execute and feedback the removal
 		$quotesoptions = get_option('stray_quotes_options');
 		?><div class="wrap"><h2><?php _e('Remove and deactivate', 'stray-quotes') ?></h2>
 		<p><strong><a href="<?php echo $deactivate_url ?>" >
-		<?php _e('Click Here</a> to deactivate Stray Random Quotes.', 'stray-quotes'); ?>
+		<?php _e('Click Here</a> to deactivate XV Random Quotes.', 'stray-quotes'); ?>
 		</a></strong></p><p style="#990000"><?php
 		if( $quotesoptions['stray_quotes_uninstall'] ==  'both' ) _e('The <strong>quotes</strong> AND the <strong>options</strong> will be removed.', 'stray-quotes').'<br />';
 		else if( $quotesoptions['stray_quotes_uninstall'] ==  'options' ) _e('The <strong>plugin options</strong> will be removed.', 'stray-quotes').'<br />';
@@ -49,7 +49,7 @@ function stray_remove() {
 		<span class="setting-description"><?php _e('"Patch grief with proverbs." ~ William Shakespeare','stray-quotes') ?></span>
 		<br/><br/>
 		<table class="form-table">
-		<tr valign="top"><th scope="row"><?php _e('When deactivating Stray Random Quotes', 'stray-quotes'); ?></th>
+		<tr valign="top"><th scope="row"><?php _e('When deactivating XV Random Quotes', 'stray-quotes'); ?></th>
 		<td>
 		<input type="checkbox" name="remove" value="1" />
 		<?php _e('Remove the options from the database.','stray-quotes') ?><br />
@@ -60,7 +60,7 @@ function stray_remove() {
 		<br/>
 		<div class="submit">
 		<input type="hidden" name="do" value="Deactivate" />
-		<input type="submit" value="<?php _e('Deactivate Stray Random Quotes &raquo;','stray-quotes') ?>"  style="color:#990000"/>
+		<input type="submit" value="<?php _e('Deactivate XV Random Quotes &raquo;','stray-quotes') ?>"  style="color:#990000"/>
 		</div>
 		<p>&nbsp;</p>
 		</form><?php

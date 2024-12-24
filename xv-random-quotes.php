@@ -669,13 +669,15 @@ register_activation_hook(__FILE__, 'quotes_activation');
 register_deactivation_hook(__FILE__, 'quotes_deactivation');
 
 $quotesoptions = get_option('stray_quotes_options');
-if ($quotesoptions['comment_scode'] == 'Y') add_filter('comment_text', 'do_shortcode');
-if ($quotesoptions['title_scode'] == 'Y') add_filter('the_title', 'do_shortcode');
-if ($quotesoptions['excerpt_scode'] == 'Y') add_filter('the_excerpt', 'do_shortcode');
-if ($quotesoptions['widget_scode'] == 'Y') add_filter('widget_text', 'do_shortcode');
-if ($quotesoptions['categories_scode'] == 'Y') add_filter('the_category', 'do_shortcode');
-if ($quotesoptions['tags_scode'] == 'Y') add_filter('the_tags', 'do_shortcode');
-if ($quotesoptions['bloginfo_scode'] == 'Y') {
-	add_filter('bloginfo', 'do_shortcode');
-	add_filter('bloginfo_rss', 'do_shortcode');	
+if ($quotesoptions) {
+	if ($quotesoptions['comment_scode'] == 'Y') add_filter('comment_text', 'do_shortcode');
+	if ($quotesoptions['title_scode'] == 'Y') add_filter('the_title', 'do_shortcode');
+	if ($quotesoptions['excerpt_scode'] == 'Y') add_filter('the_excerpt', 'do_shortcode');
+	if ($quotesoptions['widget_scode'] == 'Y') add_filter('widget_text', 'do_shortcode');
+	if ($quotesoptions['categories_scode'] == 'Y') add_filter('the_category', 'do_shortcode');
+	if ($quotesoptions['tags_scode'] == 'Y') add_filter('the_tags', 'do_shortcode');
+	if ($quotesoptions['bloginfo_scode'] == 'Y') {
+		add_filter('bloginfo', 'do_shortcode');
+		add_filter('bloginfo_rss', 'do_shortcode');
+	}
 }

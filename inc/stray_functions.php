@@ -530,6 +530,8 @@ function stray_output_one($get_one,$multi=NULL,$disableaspect=NULL) {
 	//the variables
 	$quotesoptions = array();
 	$quotesoptions = get_option('stray_quotes_options');
+	$beforeAll = '';
+	$afterAll = '';
 	if(!$disableaspect || $disableaspect == '' || $disableaspect == false){
 		if($multi == 1 || $multi == '' || $multi==false){
 			$beforeAll =  utf8_decode($quotesoptions['stray_quotes_before_all']);
@@ -547,9 +549,17 @@ function stray_output_one($get_one,$multi=NULL,$disableaspect=NULL) {
 		$authorspaces = utf8_decode($quotesoptions['stray_quotes_authorspaces']);
 		$ifnoauthor = utf8_decode($quotesoptions['stray_if_no_author']);
 	} else {
-		$beforeAuthor = ' ';
-		$ifnoauthor = ' ';
-		$beforeSource = ' ';
+		$beforeQuote = '';
+		$afterQuote = '';
+		$beforeAuthor = '';
+		$afterAuthor = '';
+		$beforeSource = '';
+		$afterSource = '';
+		$linkto = '';
+		$sourcelinkto = '';
+		$sourcespaces = '';
+		$authorspaces = '';
+		$ifnoauthor = '';
 	}
 
 	$putQuotesFirst = utf8_decode($quotesoptions['stray_quotes_put_quotes_first']);
