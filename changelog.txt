@@ -1,4 +1,9 @@
 == XV Random Quotes ==
+= 1.38 =
+Fixes unnecessary logging
+* See https://wordpress.org/support/topic/php-errors-overwhelm-log-file/
+Fixes deactivation
+
 = 1.37 =
 Properly escapes when "get next quote" text contains whitespaces
 
