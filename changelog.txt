@@ -1,4 +1,7 @@
 == XV Random Quotes ==
+= 1.41 =
+Some bugfixes
+
 = 1.40 =
 Increases length of source
 * See https://wordpress.org/support/topic/when-a-source-has-a-long-url/
