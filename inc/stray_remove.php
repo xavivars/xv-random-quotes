@@ -16,6 +16,11 @@ function stray_remove() {
 	//handle the post event
 	if(isset($_POST['do']) && sanitize_text_field($_POST['do'])) {
 
+		if ( !wp_verify_nonce($_POST['xv_random_quotes_remove'],'xv_random_quotes') )
+		{
+			die('Access Denied. Invalid nonce');
+		}
+
 		//update options
 		$removeoptions =  sanitize_text_field($_POST['remove']);
 		$removetable = sanitize_text_field($_POST['removequotes']);
@@ -44,6 +49,7 @@ function stray_remove() {
 
 		// the deactivation form ?>
 		<form method="post" action="<?php $_SERVER['REQUEST_URI'] ?>">
+		<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_remove'); ?>
 		<div class="wrap">
 		<h2><?php _e('Remove and deactivate','stray-quotes') ?></h2>
 		<span class="setting-description"><?php _e('"Patch grief with proverbs." ~ William Shakespeare','stray-quotes') ?></span>

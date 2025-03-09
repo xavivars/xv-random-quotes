@@ -13,6 +13,11 @@
 
     if(isset($_POST['do']) && sanitize_text_field($_POST['do'])) {
         
+		if ( !wp_verify_nonce($_POST['xv_random_quotes_tools'],'xv_random_quotes') )
+		{
+			die('Access Denied. Invalid nonce');
+		}
+
         $post_do = sanitize_text_field($_POST['do']);
         
 		//function to change bookmarklet options
@@ -169,6 +174,7 @@
     <input type="checkbox" name="websource" value="Y" <?php echo ($websource_selected); ?> />&nbsp;<?php _e('If checked, will add a link to the web page as source for the quote.', 'stray-quotes'); ?><br/><span class="setting-description"><?php _e('Note: no matter how you change these options, the bookmarklet will stay the same', 'stray-quotes'); ?>.</span></p>
     <p class="submit"><input type="hidden" name="do" value="Update" />
     <input type="submit" name="boptions" value="<?php _e('Apply bookmarklet options', 'stray-quotes'); ?>">
+	<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_tools'); ?>
 	</p></form><?php } ?>
 
 	<?php if(!current_user_can('manage_options'))die(''); ?>
@@ -196,6 +202,7 @@
 	<?php _e('Enable shortcodes in <strong>text widgets</strong>', 'stray-quotes'); ?></li></ul>
     <p class="submit">&nbsp;<input type="hidden" name="do" value="Update" /><input type="submit" name="enable" value="<?php _e('Toggle shortcodes', 'stray-quotes'); ?>">
     </p>
+	<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_tools'); ?>
 	</form></blockquote>
 
 	<?php //the index reset ?>
@@ -205,6 +212,7 @@
     <br/><span class="setting-description"><?php _e('Note that after this some (or all) IDs might not correspond to the same quotes.', 'stray-quotes'); ?></span></p>
     <p class="submit">&nbsp;<input type="hidden" name="do" value="Update" /><input type="submit" name="submit" value="<?php _e('Reset index', 'stray-quotes'); ?>">
     </p>
+	<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_tools'); ?>
     </form></blockquote>
 
 	 <?php //reset options ?>
@@ -216,6 +224,7 @@
 
     <p class="submit">&nbsp;<input type="hidden" name="do" value="Update" /><input type="submit" name="resetsettings" value="<?php _e('Reset Settings', 'stray-quotes'); ?>">
     </p>
+	<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_tools'); ?>
 	</form></blockquote>
 
 	</div><?php

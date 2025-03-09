@@ -12,6 +12,13 @@ function stray_manage() {
 	if( $quotesoptions['stray_multiuser'] == false && !current_user_can('manage_options') )
 		die('Access Denied');
 
+        
+	if ( !empty($_REQUEST['qa']) && !wp_verify_nonce($_POST['xv_random_quotes_tools'],'xv_random_quotes') )
+	{
+		die('Access Denied. Invalid nonce');
+	}
+
+
 	//decode and intercept
 	foreach($_POST as $key => $val)$_POST[$key] = stripslashes($val);
 
@@ -131,6 +138,7 @@ function stray_manage() {
             <div style="width:42em">
 			<script src="<?php echo WP_STRAY_QUOTES_PATH ?>inc/stray_quicktags.js" type="text/javascript"></script>
             <form name="quoteform" id="quoteform" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
+				<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_manage'); ?>
 				<input type="hidden" name="qa" value="edit_save">
 				<input type="hidden" name="qi" value="<?php echo $quoteID; ?>">
 
@@ -489,6 +497,7 @@ function stray_manage() {
 		$bulkurl = remove_querystring_var($_SERVER['REQUEST_URI'], 'qa');
 		$bulkurl = remove_querystring_var($bulkurl, 'qi');
 		?><form name="bulkform" id="bulkform" method="post" action="<?php echo $bulkurl ?>">
+		<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_manage'); ?>
         <div class="tablenav">
         <div class="alignleft actions" style="margin-right:10px">
 		<select name="bulk" id="bulkselect" style="vertical-align:middle;max-width:110px" onchange="javascript:disable_enable()" />

@@ -12,6 +12,12 @@ function stray_new() {
 	if( $quotesoptions['stray_multiuser'] == false && !current_user_can('manage_options') )
 		die('Access Denied');
 
+
+	if ( !empty($_REQUEST['action']) && !wp_verify_nonce($_POST['xv_random_quotes_new'],'xv_random_quotes') )
+	{
+		die('Access Denied. Invalid nonce');
+	}
+
 	//decode and intercept
 	foreach($_POST as $key => $val) {
 		$_POST[$key] = stripslashes($val);
@@ -206,6 +212,7 @@ function stray_new() {
 			</p><p>&nbsp;</p>
 
 			<p><input type="submit" name="save"  class="button-primary" value="<?php _e('Add quote','stray-quotes') ?> &raquo;" /></p>
+			<?php wp_nonce_field('xv_random_quotes','xv_random_quotes_new'); ?>
 		</form></div>
 
 	</div><?php
