@@ -26,29 +26,29 @@ function stray_manage() {
 	$sort = $quotesoptions['stray_quotes_sort'];
 
 	if(isset($_GET['qo'])){
-		$orderby = $_GET['qo'];
-		$quotesoptions['stray_quotes_order'] = $_GET['qo'];
+		$orderby = sanitize_text_field($_GET['qo']);
+		$quotesoptions['stray_quotes_order'] = sanitize_text_field($_GET['qo']);
 	}
-	if(isset($_GET['qp']))$pages = $_GET['qp'];
+	if(isset($_GET['qp']))$pages = sanitize_text_field($_GET['qp']);
 
 	if(isset($_GET['qr'])){
 		$rows = $_GET['qr'];
-		$quotesoptions['stray_quotes_rows'] = $_GET['qr'];
+		$quotesoptions['stray_quotes_rows'] = sanitize_text_field($_GET['qr']);
 	}
 
 	if(isset($_GET['qc'])){
 		$categories = $_GET['qc'];
-		$quotesoptions['stray_quotes_categories'] = $_GET['qc'];
+		$quotesoptions['stray_quotes_categories'] = sanitize_text_field($_GET['qc']);
 	}
 
 	if(isset($_GET['qs'])){
-		$sort = $_GET['qs'];
-		$quotesoptions['stray_quotes_sort'] = $_GET['qs'];
+		$sort = sanitize_text_field($_GET['qs']);
+		$quotesoptions['stray_quotes_sort'] = sanitize_text_field($_GET['qs']);
 	}
 
 	/* zL: added: search keyword */
 	// get search keyword, if any ('l' in 'ql' stands for 'look');
-	$keyword = isset($_GET['ql']) ? $_GET['ql'] : ''; // escaped later
+	$keyword = isset($_GET['ql']) ? sanitize_text_field($_GET['ql']) : ''; // escaped later
 
 	$offset = ($pages - 1) * $rows;
 
