@@ -124,8 +124,13 @@ class QuoteMigrator {
 			return false;
 		}
 
+		// Get total count for date calculation
+		$total_quotes = (int) $this->wpdb->get_var(
+			"SELECT COUNT(*) FROM {$this->old_table}"
+		);
+
 		// Prepare post data
-		$post_data = $this->prepare_post_data( $quote_data );
+		$post_data = $this->prepare_post_data( $quote_data, $total_quotes );
 
 		// Insert the post
 		$post_id = wp_insert_post( $post_data, true );
@@ -341,21 +346,32 @@ class QuoteMigrator {
 	 * Prepare post data from old quote
 	 *
 	 * @param object $quote_data Old quote data.
+	 * @param int    $total_quotes Total number of quotes (for date calculation).
 	 * @return array Post data for wp_insert_post.
 	 */
-	private function prepare_post_data( $quote_data ) {
+	private function prepare_post_data( $quote_data, $total_quotes = 0 ) {
 		// Map visible field to post_status
 		$post_status = ( 'yes' === $quote_data->visible ) ? 'publish' : 'draft';
 
 		// Convert user nicename to user ID
 		$post_author = $this->get_user_id_from_nicename( $quote_data->user );
 
+		// Create timestamps based on legacy ID to preserve original order
+		// Start from (now - total_quotes) and add 1 second per quote ID
+		// This keeps dates recent while preserving order
+		$base_timestamp = time() - $total_quotes;
+		$post_timestamp = $base_timestamp + $quote_data->quoteID;
+		$post_date      = gmdate( 'Y-m-d H:i:s', $post_timestamp );
+		$post_date_gmt  = gmdate( 'Y-m-d H:i:s', $post_timestamp );
+
 		return array(
-			'post_type'    => self::POST_TYPE,
-			'post_content' => $quote_data->quote,
-			'post_title'   => wp_trim_words( $quote_data->quote, 10, '...' ),
-			'post_status'  => $post_status,
-			'post_author'  => $post_author,
+			'post_type'     => self::POST_TYPE,
+			'post_content'  => $quote_data->quote,
+			'post_title'    => wp_trim_words( $quote_data->quote, 10, '...' ),
+			'post_status'   => $post_status,
+			'post_author'   => $post_author,
+			'post_date'     => $post_date,
+			'post_date_gmt' => $post_date_gmt,
 		);
 	}
 

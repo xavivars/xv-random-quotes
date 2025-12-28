@@ -26,6 +26,10 @@ class QuotePostType {
 	 */
 	public function init() {
 		add_action( 'init', array( $this, 'register' ) );
+		add_filter( 'manage_' . self::POST_TYPE . '_posts_columns', array( $this, 'add_custom_columns' ) );
+		add_action( 'manage_' . self::POST_TYPE . '_posts_custom_column', array( $this, 'render_custom_column' ), 10, 2 );
+		add_filter( 'manage_edit-' . self::POST_TYPE . '_sortable_columns', array( $this, 'make_sortable_columns' ) );
+		add_action( 'pre_get_posts', array( $this, 'sort_by_custom_column' ) );
 	}
 
 	/**
@@ -79,5 +83,76 @@ class QuotePostType {
 		);
 
 		register_post_type( self::POST_TYPE, $args );
+	}
+
+	/**
+	 * Add custom columns to the post type list table
+	 *
+	 * @param array $columns Existing columns.
+	 * @return array Modified columns.
+	 */
+	public function add_custom_columns( $columns ) {
+		// Insert source column after author (taxonomy)
+		$new_columns = array();
+		foreach ( $columns as $key => $value ) {
+			$new_columns[ $key ] = $value;
+			if ( 'taxonomy-quote_author' === $key ) {
+				$new_columns['quote_source'] = __( 'Quote Source', 'stray-quotes' );
+			}
+		}
+		return $new_columns;
+	}
+
+	/**
+	 * Render custom column content
+	 *
+	 * @param string $column  Column name.
+	 * @param int    $post_id Post ID.
+	 */
+	public function render_custom_column( $column, $post_id ) {
+		if ( 'quote_source' === $column ) {
+			$source = get_post_meta( $post_id, '_quote_source', true );
+			if ( $source ) {
+				// Display the source with HTML rendered
+				echo wp_kses_post( $source );
+			} else {
+				echo '<span class="na">—</span>';
+			}
+		}
+	}
+
+	/**
+	 * Make custom columns sortable
+	 *
+	 * @param array $columns Sortable columns.
+	 * @return array Modified sortable columns.
+	 */
+	public function make_sortable_columns( $columns ) {
+		$columns['quote_source'] = 'quote_source';
+		return $columns;
+	}
+
+	/**
+	 * Handle sorting for custom columns
+	 *
+	 * @param WP_Query $query The WordPress query.
+	 */
+	public function sort_by_custom_column( $query ) {
+		// Only modify admin queries for our post type
+		if ( ! is_admin() || ! $query->is_main_query() ) {
+			return;
+		}
+
+		// Check if we're on the right post type
+		if ( self::POST_TYPE !== $query->get( 'post_type' ) ) {
+			return;
+		}
+
+		// Check if sorting by our custom column
+		$orderby = $query->get( 'orderby' );
+		if ( 'quote_source' === $orderby ) {
+			$query->set( 'meta_key', '_quote_source' );
+			$query->set( 'orderby', 'meta_value' );
+		}
 	}
 }
