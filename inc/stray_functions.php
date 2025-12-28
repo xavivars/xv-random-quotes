@@ -469,24 +469,9 @@ function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
 	echo get_stray_quotes('',true,$linkphrase,'','',$noajax,'','','','','',$id,$disableaspect);
 }
 
-//this is a SHORTCODE [stray-random]
-function stray_random_shortcode($atts, $content=NULL) {
-
-	extract(shortcode_atts(array(
-	"categories" => 'all',
-	"sequence" => false,
-	"linkphrase" => '',
-	"widgetid" => '',
-	"noajax" => '',
-	"multi" => 1,
-	"timer" => '',
-	"offset" => 0,
-	"fullpage" => '',
-	"disableaspect" => false,
-	"user" => ''
-	), $atts));
-
-	return get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,$offset,$widgetid,$fullpage,'quoteID','ASC','',$disableaspect, $user);
+//this is a SHORTCODE [stray-random] - Wrapper for backwards compatibility
+function stray_random_shortcode($atts, $content = NULL) {
+	return \XVRandomQuotes\Legacy\stray_random_shortcode($atts, $content);
 }
 
 //this is a SHORTCODE [stray-all] - Wrapper for backwards compatibility
@@ -494,17 +479,9 @@ function stray_all_shortcode($atts, $content = NULL) {
 	return \XVRandomQuotes\Legacy\stray_all_shortcode($atts, $content);
 }
 
-//this is a SHORTCODE [stray-id]
-function stray_id_shortcode($atts, $content=NULL) {
-
-	extract(shortcode_atts(array(
-	"id" => '1',
-	"linkphrase" => '',
-	"noajax" => true,
-	"disableaspect" => false
-	), $atts));
-
-	return get_stray_quotes('',true,$linkphrase,'','',$noajax,'','','','','',$id,$disableaspect);
+//this is a SHORTCODE [stray-id] - Wrapper for backwards compatibility
+function stray_id_shortcode($atts, $content = NULL) {
+	return \XVRandomQuotes\Legacy\stray_id_shortcode($atts, $content);
 }
 
 //this FORMATS a given quote according to the settings

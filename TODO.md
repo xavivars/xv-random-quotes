@@ -2,7 +2,7 @@
 
 This document tracks the complete roadmap for refactoring XV Random Quotes from v1.40 to v2.0, migrating from a custom database table to WordPress Custom Post Types.
 
-**Progress:** 20/74 tasks completed (27.0%)
+**Progress:** 24/74 tasks completed (32.4%)
 
 ## Phase 1: Foundation & Setup
 
@@ -141,17 +141,53 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 ## Phase 6: Shortcodes Refactor
 
-- [ ] **Task 25:** Write Tests for [stray-random] Shortcode
+- [x] **Task 25:** Write Tests for [stray-random] Shortcode
   - Create tests for random quote shortcode: verify shortcode registered, test category filtering, validate AJAX parameter handling, check output HTML structure, test all existing attributes work (show_author, show_source, etc).
+  - ✅ **Status:** COMPLETED - 17 tests created (2 passing: shortcode registration, 15 failing: functional tests)
+    - Created tests/shortcodes/test-stray-random-shortcode.php
+    - Test Coverage:
+      * Shortcode registration and function existence (2 tests - PASSING)
+      * Basic output for single quote (1 test)
+      * Category filtering: single, multiple, "all", empty, nonexistent (5 tests)
+      * Multi parameter for multiple quotes (1 test)
+      * Sequence parameter (sequential vs random) (1 test)
+      * Other parameters: disableaspect, noajax, timer, offset (4 tests)
+      * Edge cases: draft exclusion, empty database, combined attributes (3 tests)
+    - TDD red phase confirmed: 15 tests failing (errors from legacy database table dependency)
 
-- [ ] **Task 26:** Refactor [stray-random] Shortcode to Use WP_Query
+- [x] **Task 26:** Refactor [stray-random] Shortcode to Use WP_Query
   - Update stray_random_shortcode() function to use new WP_Query helpers instead of raw SQL. Maintain all existing attributes and functionality. Make tests pass.
+  - ✅ **Status:** COMPLETED - All 17 tests passing
+    - Created stray_random_shortcode() in src/legacy/shortcodes.php using QuoteQueries class
+    - Supports both single and multi-quote output
+    - Handles category filtering via get_quotes_by_categories()
+    - Random ordering by default, sequential if sequence=true
+    - Thin wrapper maintained in inc/stray_functions.php for backward compatibility
+    - All parameters functional: categories, sequence, multi, offset, disableaspect
 
-- [ ] **Task 27:** Write Tests for [stray-id] Shortcode
+- [x] **Task 27:** Write Tests for [stray-id] Shortcode
   - Create tests for specific quote shortcode: verify quote retrieval by ID, test legacy_id lookup support, validate output matches expected format, test non-existent ID handling.
+  - ✅ **Status:** COMPLETED - 14 tests created (2 passing: shortcode registration, 12 failing: functional tests)
+    - Created tests/shortcodes/test-stray-id-shortcode.php
+    - Test Coverage:
+      * Shortcode registration and function existence (2 tests - PASSING)
+      * Retrieval by post ID and legacy ID (2 tests)
+      * Default ID parameter handling (1 test)
+      * Nonexistent ID handling (1 test)
+      * Output format validation (1 test)
+      * Parameters: disableaspect, noajax, linkphrase (3 tests)
+      * Edge cases: draft quotes, numeric strings, legacy ID precedence, minimal quotes (4 tests)
+    - TDD red phase confirmed: 12 tests failing (errors from legacy database table dependency)
 
-- [ ] **Task 28:** Refactor [stray-id] Shortcode to Use WP_Query
+- [x] **Task 28:** Refactor [stray-id] Shortcode to Use WP_Query
   - Update stray_id_shortcode() to query by post ID and support legacy_id meta lookup. Maintain backward compatibility. Make tests pass.
+  - ✅ **Status:** COMPLETED - All 14 tests passing
+    - Created stray_id_shortcode() in src/legacy/shortcodes.php using QuoteQueries class
+    - Tries legacy ID first via get_quote_by_legacy_id(), then post ID via get_quote_by_id()
+    - Falls back to first available quote when default ID=1 doesn't exist
+    - Enhanced get_quote_by_id() to check post_status='publish' (filters out drafts)
+    - Thin wrapper maintained in inc/stray_functions.php for backward compatibility
+    - All parameters functional: id, disableaspect, noajax, linkphrase
 
 - [x] **Task 29:** Write Tests for [stray-all] Shortcode
   - Create tests for all quotes shortcode: verify pagination works, test category filtering, validate sorting options, check fullpage parameter, test output structure with multiple quotes.

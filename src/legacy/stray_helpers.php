@@ -227,3 +227,184 @@ function remove_querystring_var($url, $key) {
 	$url = substr($url, 0, -1);
 	return ($url);
 }
+
+/**
+ * Parse and sanitize category slugs from shortcode attribute
+ *
+ * @param string $categories Comma-separated category slugs
+ * @return array Array of sanitized category slugs, empty if 'all' or empty
+ */
+function parse_category_slugs($categories) {
+	$category_slugs = array();
+	
+	if ($categories && $categories !== 'all' && $categories !== '') {
+		if (is_string($categories)) {
+			$category_slugs = array_map('trim', explode(',', $categories));
+			$category_slugs = array_map('sanitize_title', $category_slugs);
+		}
+	}
+	
+	return $category_slugs;
+}
+
+/**
+ * Extract and sanitize shortcode attributes for quote display
+ *
+ * @param array $atts Raw shortcode attributes from user
+ * @param array $defaults Default attribute values
+ * @return array Sanitized attributes with proper types
+ */
+function stray_sanitize_shortcode_attributes($atts, $defaults) {
+	// Extract attributes with defaults
+	$atts = shortcode_atts($defaults, $atts);
+	$sanitized = array();
+	
+	// Handle numeric parameters
+	if (isset($atts['rows'])) {
+		$sanitized['rows'] = absint($atts['rows']);
+		if ($sanitized['rows'] <= 0) $sanitized['rows'] = 10;
+	}
+	
+	if (isset($atts['multi'])) {
+		$sanitized['multi'] = absint($atts['multi']);
+		if ($sanitized['multi'] <= 0) $sanitized['multi'] = 1;
+	}
+	
+	if (isset($atts['offset'])) {
+		$sanitized['offset'] = absint($atts['offset']);
+	}
+	
+	if (isset($atts['id'])) {
+		$sanitized['id'] = absint($atts['id']);
+		if ($sanitized['id'] <= 0) $sanitized['id'] = 1;
+	}
+	
+	// Handle boolean parameters
+	if (isset($atts['sequence'])) {
+		$sanitized['sequence'] = filter_var($atts['sequence'], FILTER_VALIDATE_BOOLEAN);
+	}
+	
+	if (isset($atts['fullpage'])) {
+		$sanitized['fullpage'] = filter_var($atts['fullpage'], FILTER_VALIDATE_BOOLEAN);
+	}
+	
+	if (isset($atts['disableaspect'])) {
+		$sanitized['disableaspect'] = filter_var($atts['disableaspect'], FILTER_VALIDATE_BOOLEAN);
+	}
+	
+	if (isset($atts['noajax'])) {
+		$sanitized['noajax'] = filter_var($atts['noajax'], FILTER_VALIDATE_BOOLEAN);
+	}
+	
+	// Pass through other parameters unchanged
+	$passthrough = array('categories', 'linkphrase', 'widgetid', 'timer', 'user', 'orderby', 'sort');
+	foreach ($passthrough as $key) {
+		if (isset($atts[$key])) {
+			$sanitized[$key] = $atts[$key];
+		}
+	}
+	
+	return $sanitized;
+}
+
+/**
+ * Build query args for ordering quotes
+ *
+ * @param bool $sequence Whether to use sequential ordering
+ * @param string $orderby Legacy orderby value (quoteID, author, source, etc)
+ * @param string $sort Sort direction (ASC or DESC)
+ * @return array Query args with orderby and order set
+ */
+function stray_build_order_args($sequence, $orderby = 'quoteID', $sort = 'ASC') {
+	$args = array();
+	
+	if (!$sequence) {
+		// Random order
+		$args['orderby'] = 'rand';
+	} else {
+		// Sequential order - map legacy orderby values to CPT fields
+		switch ($orderby) {
+			case 'quoteID':
+				$args['orderby'] = 'ID';
+				break;
+			case 'author':
+			case 'Author':
+				$args['orderby'] = 'title'; // Best approximation
+				break;
+			case 'source':
+			case 'Source':
+				$args['orderby'] = 'title';
+				break;
+			default:
+				$args['orderby'] = 'ID';
+		}
+		$args['order'] = strtoupper($sort) === 'DESC' ? 'DESC' : 'ASC';
+	}
+	
+	return $args;
+}
+
+/**
+ * Get quotes with optional category filtering
+ *
+ * @param QuoteQueries $quote_queries QuoteQueries instance
+ * @param array $category_slugs Array of category slugs to filter by
+ * @param array $query_args WP_Query arguments
+ * @return array Array of quote post objects
+ */
+function stray_get_filtered_quotes($quote_queries, $category_slugs, $query_args) {
+	if (!empty($category_slugs)) {
+		return $quote_queries->get_quotes_by_categories($category_slugs, $query_args);
+	} else {
+		return $quote_queries->get_all_quotes($query_args);
+	}
+}
+
+/**
+ * Get before/after wrapper HTML from settings
+ *
+ * @param bool $disableaspect Whether to disable aspect/wrapper HTML
+ * @param string $type Type of wrapper: 'all' or 'loader'
+ * @return array Array with 'before' and 'after' keys
+ */
+function stray_get_wrapper_html($disableaspect, $type = 'all') {
+	$result = array('before' => '', 'after' => '');
+	
+	if ($disableaspect) {
+		return $result;
+	}
+	
+	$quotesoptions = get_option('stray_quotes_options');
+	if (!$quotesoptions) {
+		return $result;
+	}
+	
+	if ($type === 'all') {
+		$result['before'] = isset($quotesoptions['stray_quotes_before_all']) ? utf8_decode($quotesoptions['stray_quotes_before_all']) : '';
+		$result['after'] = isset($quotesoptions['stray_quotes_after_all']) ? utf8_decode($quotesoptions['stray_quotes_after_all']) : '';
+	} elseif ($type === 'loader') {
+		$result['before'] = isset($quotesoptions['stray_before_loader']) ? utf8_decode($quotesoptions['stray_before_loader']) : '';
+		$result['after'] = isset($quotesoptions['stray_after_loader']) ? utf8_decode($quotesoptions['stray_after_loader']) : '';
+	}
+	
+	return $result;
+}
+
+/**
+ * Build HTML output for multiple quotes
+ *
+ * @param array $quotes Array of quote post objects
+ * @param bool $disableaspect Whether to disable aspect/wrapper HTML
+ * @return string HTML output
+ */
+function stray_build_multi_quote_output($quotes, $disableaspect = false) {
+	$wrapper = stray_get_wrapper_html($disableaspect, 'all');
+	
+	$output = $wrapper['before'] . '<ul>';
+	foreach ($quotes as $quote_post) {
+		$output .= '<li>' . stray_output_one_cpt($quote_post, true, $disableaspect) . '</li>';
+	}
+	$output .= '</ul>' . $wrapper['after'];
+	
+	return $output;
+}

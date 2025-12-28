@@ -62,8 +62,8 @@ class QuoteQueries {
 	public function get_quote_by_id( $id ) {
 		$post = get_post( $id );
 
-		// Verify post exists and is the correct post type
-		if ( ! $post || self::POST_TYPE !== $post->post_type ) {
+		// Verify post exists, is the correct post type, and is published
+		if ( ! $post || self::POST_TYPE !== $post->post_type || 'publish' !== $post->post_status ) {
 			return null;
 		}
 

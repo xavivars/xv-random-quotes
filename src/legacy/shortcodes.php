@@ -17,7 +17,8 @@ use XVRandomQuotes\Queries\QuoteQueries;
  * @return string HTML output
  */
 function stray_all_shortcode($atts, $content = NULL) {
-	$atts = shortcode_atts(array(
+	// Extract and sanitize attributes
+	$atts = stray_sanitize_shortcode_attributes($atts, array(
 		'categories' => 'all',
 		'sequence' => true,
 		'linkphrase' => '',
@@ -31,96 +32,38 @@ function stray_all_shortcode($atts, $content = NULL) {
 		'sort' => 'ASC',
 		'disableaspect' => false,
 		'user' => ''
-	), $atts);
+	));
 
 	// Initialize QuoteQueries
 	$quote_queries = new QuoteQueries();
-
-	// Sanitize and normalize parameters
-	$rows = absint($atts['rows']);
-	if ($rows <= 0) $rows = 10;
-	
-	$offset = absint($atts['offset']);
-	$sequence = filter_var($atts['sequence'], FILTER_VALIDATE_BOOLEAN);
-	$fullpage = filter_var($atts['fullpage'], FILTER_VALIDATE_BOOLEAN);
-	$disableaspect = filter_var($atts['disableaspect'], FILTER_VALIDATE_BOOLEAN);
 	
 	// Build WP_Query args
 	$query_args = array(
-		'posts_per_page' => $rows,
-		'offset' => $offset,
+		'posts_per_page' => $atts['rows'],
+		'offset' => $atts['offset'],
 	);
 
-	// Handle ordering
-	if (!$sequence) {
-		// Random order
-		$query_args['orderby'] = 'rand';
-	} else {
-		// Sequential order - map legacy orderby values to CPT fields
-		switch ($atts['orderby']) {
-			case 'quoteID':
-				$query_args['orderby'] = 'ID';
-				break;
-			case 'author':
-			case 'Author':
-				$query_args['orderby'] = 'title'; // Best approximation
-				break;
-			case 'source':
-			case 'Source':
-				$query_args['orderby'] = 'title';
-				break;
-			default:
-				$query_args['orderby'] = 'ID';
-		}
-		$query_args['order'] = strtoupper($atts['sort']) === 'DESC' ? 'DESC' : 'ASC';
-	}
+	// Add ordering
+	$query_args = array_merge($query_args, stray_build_order_args(
+		$atts['sequence'],
+		$atts['orderby'],
+		$atts['sort']
+	));
 
-	// Handle category filtering
-	$categories = $atts['categories'];
-	$category_slugs = array();
-	
-	if ($categories && $categories !== 'all' && $categories !== '') {
-		if (is_string($categories)) {
-			$category_slugs = array_map('trim', explode(',', $categories));
-			$category_slugs = array_map('sanitize_title', $category_slugs);
-		}
-	}
+	// Get quotes with optional category filtering
+	$category_slugs = parse_category_slugs($atts['categories']);
+	$quotes = stray_get_filtered_quotes($quote_queries, $category_slugs, $query_args);
 
-	// Get quotes using QuoteQueries
-	if (!empty($category_slugs)) {
-		$quotes = $quote_queries->get_quotes_by_categories($category_slugs, $query_args);
-	} else {
-		$quotes = $quote_queries->get_all_quotes($query_args);
-	}
-
-	// If no quotes found, return empty
 	if (empty($quotes)) {
 		return '';
 	}
 
-	// Build output
-	$output = '';
-	
-	// Get settings for output formatting
-	$quotesoptions = get_option('stray_quotes_options');
-	if (!$disableaspect && $quotesoptions) {
-		$beforeAll = isset($quotesoptions['stray_quotes_before_all']) ? utf8_decode($quotesoptions['stray_quotes_before_all']) : '';
-		$afterAll = isset($quotesoptions['stray_quotes_after_all']) ? utf8_decode($quotesoptions['stray_quotes_after_all']) : '';
-	} else {
-		$beforeAll = '';
-		$afterAll = '';
-	}
-
-	// Output multiple quotes
-	$output .= $beforeAll . '<ul>';
-	foreach ($quotes as $quote_post) {
-		$output .= '<li>' . stray_output_one_cpt($quote_post, true, $disableaspect) . '</li>';
-	}
-	$output .= '</ul>' . $afterAll;
+	// Build multi-quote output
+	$output = stray_build_multi_quote_output($quotes, $atts['disableaspect']);
 
 	// Add pagination if needed
-	if ($fullpage || !filter_var($atts['noajax'], FILTER_VALIDATE_BOOLEAN)) {
-		// Calculate pagination
+	if ($atts['fullpage'] || !$atts['noajax']) {
+		// Calculate total quotes
 		$total_query = new \WP_Query(array(
 			'post_type' => 'xv_quote',
 			'post_status' => 'publish',
@@ -130,23 +73,108 @@ function stray_all_shortcode($atts, $content = NULL) {
 		));
 		$total_quotes = $total_query->found_posts;
 		
-		if ($total_quotes > $rows) {
+		if ($total_quotes > $atts['rows']) {
 			$current_page = max(1, isset($_GET['qp']) ? absint($_GET['qp']) : 1);
-			$max_pages = ceil($total_quotes / $rows);
+			$max_pages = ceil($total_quotes / $atts['rows']);
 			
-			$pagination = stray_build_pagination($current_page, $max_pages, $rows, $fullpage);
+			$pagination = stray_build_pagination($current_page, $max_pages, $atts['rows'], $atts['fullpage']);
+			$wrapper = stray_get_wrapper_html($atts['disableaspect'], 'loader');
 			
-			if ($quotesoptions && !$disableaspect) {
-				$beforeloader = isset($quotesoptions['stray_before_loader']) ? utf8_decode($quotesoptions['stray_before_loader']) : '';
-				$afterloader = isset($quotesoptions['stray_after_loader']) ? utf8_decode($quotesoptions['stray_after_loader']) : '';
-			} else {
-				$beforeloader = '';
-				$afterloader = '';
-			}
-			
-			$output .= $beforeloader . $pagination . $afterloader;
+			$output .= $wrapper['before'] . $pagination . $wrapper['after'];
 		}
 	}
 
 	return $output;
+}
+
+/**
+ * Shortcode [stray-random] - Display random quote(s)
+ *
+ * @param array $atts Shortcode attributes
+ * @param string|null $content Shortcode content
+ * @return string HTML output
+ */
+function stray_random_shortcode($atts, $content = NULL) {
+	// Extract and sanitize attributes
+	$atts = stray_sanitize_shortcode_attributes($atts, array(
+		'categories' => 'all',
+		'sequence' => false,
+		'linkphrase' => '',
+		'widgetid' => '',
+		'noajax' => '',
+		'multi' => 1,
+		'timer' => '',
+		'offset' => 0,
+		'fullpage' => '',
+		'disableaspect' => false,
+		'user' => ''
+	));
+
+	// Initialize QuoteQueries
+	$quote_queries = new QuoteQueries();
+	
+	// Build WP_Query args
+	$query_args = array(
+		'posts_per_page' => $atts['multi'],
+		'offset' => $atts['offset'],
+	);
+
+	// Add ordering (random by default, sequential if specified)
+	$query_args = array_merge($query_args, stray_build_order_args($atts['sequence']));
+
+	// Get quotes with optional category filtering
+	$category_slugs = parse_category_slugs($atts['categories']);
+	$quotes = stray_get_filtered_quotes($quote_queries, $category_slugs, $query_args);
+
+	if (empty($quotes)) {
+		return '';
+	}
+
+	// Handle multi-quote vs single quote output
+	if ($atts['multi'] > 1) {
+		return stray_build_multi_quote_output($quotes, $atts['disableaspect']);
+	} else {
+		return stray_output_one_cpt($quotes[0], false, $atts['disableaspect']);
+	}
+}
+
+/**
+ * Shortcode [stray-id] - Display specific quote by ID
+ *
+ * @param array $atts Shortcode attributes
+ * @param string|null $content Shortcode content
+ * @return string HTML output
+ */
+function stray_id_shortcode($atts, $content = NULL) {
+	// Extract and sanitize attributes
+	$atts = stray_sanitize_shortcode_attributes($atts, array(
+		'id' => '1',
+		'linkphrase' => '',
+		'noajax' => true,
+		'disableaspect' => false
+	));
+
+	// Initialize QuoteQueries
+	$quote_queries = new QuoteQueries();
+
+	// Try to get quote by legacy ID first, then by post ID
+	$quote_post = $quote_queries->get_quote_by_legacy_id($atts['id']);
+	
+	if (!$quote_post) {
+		$quote_post = $quote_queries->get_quote_by_id($atts['id']);
+	}
+	
+	// If still not found and ID is default (1), get first available quote
+	if (!$quote_post && $atts['id'] === 1) {
+		$quotes = $quote_queries->get_all_quotes(array('posts_per_page' => 1));
+		if (!empty($quotes)) {
+			$quote_post = $quotes[0];
+		}
+	}
+
+	if (!$quote_post) {
+		return '';
+	}
+
+	return stray_output_one_cpt($quote_post, false, $atts['disableaspect']);
 }
