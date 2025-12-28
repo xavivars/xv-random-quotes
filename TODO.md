@@ -22,6 +22,45 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 - [x] **Task 5:** Implement Taxonomy Registration
   - Create src/Taxonomies/QuoteTaxonomies.php. Implement register_taxonomy() for both quote_category and quote_author with all specifications. Add term meta registration for author URLs. Make tests pass.
+  - ✅ **Status:** COMPLETED
+    - Term meta registration already implemented in QuoteTaxonomies.php (line 124):
+      * register_term_meta('quote_author', 'author_url') with type 'string', sanitize_callback 'esc_url_raw'
+      * Optional URL link for author (Wikipedia, author website, etc.)
+      * Stored per-author, not per-quote - update once, affects all quotes by that author
+    - Migration updated to extract author URLs from legacy data:
+      * Legacy format: `<a href="URL">Author Name</a>` or just `Author Name`
+      * Modified assign_term() in QuoteMigrator.php to extract URLs from author field HTML
+      * Regex pattern extracts URL from <a href="..."> tag if present
+      * wp_strip_all_tags() creates clean author name for term
+      * update_term_meta() saves URL to author_url term meta (only if not already set)
+      * Handles authors without URLs (plain text)
+      * Does NOT overwrite existing term meta (preserves manual edits)
+    - Created 9 comprehensive tests in tests/migration/test-author-url-migration.php:
+      * test_author_url_extracted_from_anchor_tag() - basic URL extraction
+      * test_author_url_extraction_with_complex_attributes() - handles target, class attributes
+      * test_author_without_url_plain_text() - authors without links work correctly
+      * test_author_with_html_formatting_no_link() - strips HTML from author names
+      * test_existing_author_url_not_overwritten() - preserves manual edits
+      * test_author_url_sanitization() - esc_url_raw prevents XSS
+      * test_multiple_quotes_same_author_with_url() - URL saved only once per author
+      * test_category_terms_not_processed_for_urls() - only author taxonomy processed
+      * test_author_url_with_single_quotes() - handles both quote styles in href
+    - Updated shortcode rendering to display author URLs:
+      * Modified stray_output_one_cpt() in src/legacy/stray_helpers.php
+      * Priority 1: Use author_url from term meta (migrated data or manually set)
+      * Priority 2: Fall back to settings-based link pattern (stray_quotes_linkto)
+      * Security: esc_url() and esc_html() prevent XSS attacks
+      * Works in all shortcodes: [stray-id], [stray-random], [stray-all]
+    - Created 7 rendering tests in tests/shortcodes/test-author-url-rendering.php:
+      * test_author_url_rendered_in_stray_id_shortcode() - link appears in output
+      * test_author_url_rendered_in_stray_random_shortcode() - works in random quotes
+      * test_author_url_rendered_in_stray_all_shortcode() - works in listings
+      * test_author_without_url_renders_plain() - no link when URL not set
+      * test_author_url_priority_over_settings() - term meta takes priority
+      * test_author_url_xss_protection() - javascript: URLs sanitized
+      * test_author_name_escaped() - special characters in names escaped
+    - All 232 tests passing (9 migration + 7 rendering = 16 new tests)
+
 
 - [x] **Task 6:** Write Tests for Post Meta Registration
   - Create tests for _quote_source, _quote_legacy_id, and _quote_display_order post meta fields. Verify meta is registered, check sanitization callbacks (wp_kses_post for source), validate show_in_rest, test single property.

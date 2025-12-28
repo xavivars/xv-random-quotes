@@ -27,6 +27,12 @@ function stray_output_one_cpt($post, $multi = NULL, $disableaspect = NULL) {
 	// Get author from taxonomy
 	$author_terms = wp_get_post_terms($post->ID, 'quote_author');
 	$author = !empty($author_terms) && !is_wp_error($author_terms) ? $author_terms[0]->name : '';
+	
+	// Get author URL from term meta (if author exists)
+	$author_url = '';
+	if (!empty($author_terms) && !is_wp_error($author_terms)) {
+		$author_url = get_term_meta($author_terms[0]->term_id, 'author_url', true);
+	}
 
 	// Get settings
 	$quotesoptions = get_option('stray_quotes_options');
@@ -69,14 +75,21 @@ function stray_output_one_cpt($post, $multi = NULL, $disableaspect = NULL) {
 
 	// Format author with link if needed
 	$Author = $author;
-	if ($author && $linkto && !preg_match("/^[a-zA-Z]+[:\/\/]+[A-Za-z0-9\-_]+\\.+[A-Za-z0-9\.\/%&=\?\-_]+$/i", $author)) {
-		if ($authorspaces) {
-			$Author = str_replace(" ", $authorspaces, $author);
+	if ($author) {
+		// Priority 1: Use author URL from term meta (migrated from legacy data or manually set)
+		if (!empty($author_url)) {
+			$Author = '<a href="' . esc_url($author_url) . '">' . esc_html($author) . '</a>';
 		}
-		$search = array('"', '&', '%AUTHOR%');
-		$replace = array('%22', '&amp;', $Author);
-		$author_linkto = str_replace($search, $replace, $linkto);
-		$Author = '<a href="' . $author_linkto . '">' . $author . '</a>';
+		// Priority 2: Use settings-based link pattern (if author doesn't already contain a link)
+		elseif ($linkto && !preg_match("/^[a-zA-Z]+[:\/\/]+[A-Za-z0-9\-_]+\\.+[A-Za-z0-9\.\/%&=\?\-_]+$/i", $author)) {
+			if ($authorspaces) {
+				$Author = str_replace(" ", $authorspaces, $author);
+			}
+			$search = array('"', '&', '%AUTHOR%');
+			$replace = array('%22', '&amp;', $Author);
+			$author_linkto = str_replace($search, $replace, $linkto);
+			$Author = '<a href="' . $author_linkto . '">' . $author . '</a>';
+		}
 	}
 
 	// Format source with link if needed

@@ -414,18 +414,35 @@ class QuoteMigrator {
 	 * Assign a taxonomy term to a post
 	 *
 	 * Creates the term if it doesn't exist, reuses if it does.
+	 * For author taxonomy, extracts and saves author URL from HTML if present.
 	 *
 	 * @param int    $post_id Post ID.
-	 * @param string $term_name Term name.
+	 * @param string $term_name Term name (may contain HTML for author links).
 	 * @param string $taxonomy Taxonomy slug.
 	 */
 	private function assign_term( $post_id, $term_name, $taxonomy ) {
+		// For author taxonomy, extract URL and clean name
+		$author_url = '';
+		$clean_name = $term_name;
+
+		if ( self::AUTHOR_TAXONOMY === $taxonomy ) {
+			// Extract URL from <a href="URL">Author Name</a> format
+			if ( preg_match( '/<a\s+[^>]*href=["\']([^"\']+)["\'][^>]*>(.*?)<\/a>/i', $term_name, $matches ) ) {
+				$author_url = esc_url_raw( $matches[1] );
+				$clean_name = wp_strip_all_tags( $matches[2] );
+			} else {
+				// No link found, just strip any HTML tags
+				$clean_name = wp_strip_all_tags( $term_name );
+			}
+		}
+		// For non-author taxonomies, use the term name as-is (keep any HTML)
+
 		// Check if term exists
-		$term = term_exists( $term_name, $taxonomy );
+		$term = term_exists( $clean_name, $taxonomy );
 
 		if ( ! $term ) {
 			// Create new term
-			$term = wp_insert_term( $term_name, $taxonomy );
+			$term = wp_insert_term( $clean_name, $taxonomy );
 
 			if ( is_wp_error( $term ) ) {
 				return;
@@ -434,7 +451,16 @@ class QuoteMigrator {
 
 		// Get the term_id (term_exists returns int, wp_insert_term returns array)
 		$term_id = is_array( $term ) ? $term['term_id'] : $term;
-		
+
+		// Save author URL as term meta if extracted and not already set
+		if ( self::AUTHOR_TAXONOMY === $taxonomy && ! empty( $author_url ) ) {
+			// Only save if term meta doesn't already exist (don't overwrite)
+			$existing_url = get_term_meta( $term_id, 'author_url', true );
+			if ( empty( $existing_url ) ) {
+				update_term_meta( $term_id, 'author_url', $author_url );
+			}
+		}
+
 		// Assign term to post - wp_set_post_terms expects array of term IDs
 		wp_set_post_terms( $post_id, array( intval( $term_id ) ), $taxonomy, false );
 	}
