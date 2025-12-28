@@ -459,16 +459,6 @@ function get_stray_quotes($categories=NULL,$sequence=NULL,$linkphrase=NULL,$mult
 	}
 }
 
-//this is a TEMPLATE TAG. It ECHOES one or more random quotes.
-function stray_random_quote($categories='all',$sequence=false,$linkphrase='',$noajax=false,$multi=1,$timer=0,$orderby='quoteID',$sort='ASC',$disableaspect=NULL, $contributor=NULL) {
-	echo get_stray_quotes($categories,$sequence,$linkphrase,$multi,$timer,$noajax,0,'',false,$orderby,$sort,'',$disableaspect, $contributor);
-}
-
-//this is a TEMPLATE TAG. It ECHOES a specific quote.
-function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
-	echo get_stray_quotes('',true,$linkphrase,'','',$noajax,'','','','','',$id,$disableaspect);
-}
-
 //this FORMATS a given quote according to the settings
 function stray_output_one($get_one,$multi=NULL,$disableaspect=NULL) {
 

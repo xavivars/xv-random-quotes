@@ -18,6 +18,7 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	
 	// Load legacy helper functions and shortcodes
 	require_once __DIR__ . '/src/legacy/stray_helpers.php';
+	require_once __DIR__ . '/src/legacy/core.php';
 	require_once __DIR__ . '/src/legacy/shortcodes.php';
 	
 	// Load backward compatibility wrappers

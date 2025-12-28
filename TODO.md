@@ -261,11 +261,49 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 ## Phase 7: Template Tags & Widgets
 
-- [ ] **Task 31:** Write Tests for Template Tags
+- [x] **Task 31:** Write Tests for Template Tags
   - Create tests for template tag functions: stray_random_quote(), stray_a_quote(), verify backward compatibility, test parameter passing, validate output format matches original.
+  - ✅ **Status:** COMPLETED - 21 tests created (all passing)
+    - Created tests/template-tags/test-stray-template-tags.php
+    - Test Coverage:
+      * Function existence for both template tags (2 tests)
+      * stray_random_quote() output and parameters (10 tests)
+        - Basic output, category filtering (single/multiple)
+        - Sequential display, multi-quote output
+        - Orderby parameter, disableaspect parameter
+        - Parameter order compatibility, partial parameters
+        - Metadata inclusion (author/source)
+      * stray_a_quote() output and parameters (5 tests)
+        - Specific quote by ID, disableaspect parameter
+        - Non-existent ID handling, legacy ID support
+        - Metadata inclusion (author/source)
+      * Integration tests (4 tests)
+        - Output format matching shortcodes
+        - Backward compatibility pattern
+        - function_exists() pattern for theme compatibility
+    - All tests passing: 21/21 tests, 45 assertions
 
-- [ ] **Task 32:** Refactor Template Tags to Use WP_Query
+- [x] **Task 32:** Refactor Template Tags to Use WP_Query
   - Update all template tag functions in stray_functions.php to use new query helpers. Maintain exact same function signatures and behavior. Make tests pass.
+  - ✅ **Status:** COMPLETED - All 21 tests passing
+    - Refactored stray_random_quote() in inc/stray_functions.php
+      * Now a thin wrapper around stray_random_shortcode()
+      * Maps all 10 parameters to shortcode attributes
+      * Maps 'contributor' parameter to 'user' attribute
+      * Note: orderby/sort parameters documented but sequential/random is primary ordering
+    - Refactored stray_a_quote() in inc/stray_functions.php
+      * Now a thin wrapper around stray_id_shortcode()
+      * Maps all 4 parameters to shortcode attributes
+      * Supports both post IDs and legacy IDs
+    - Fixed stray_sanitize_shortcode_attributes() in src/legacy/stray_helpers.php
+      * Added fallback to ensure all default keys present in output
+      * Prevents "Undefined index" errors when template tags pass NULL defaults
+    - Implementation approach:
+      * Both functions now echo shortcode output (maintaining backward compatibility)
+      * Parameter signatures unchanged (exact API match)
+      * Leverages existing shortcode logic (DRY principle)
+      * Full backward compatibility with legacy code
+    - Test results: 263 total tests, 663 assertions, 21 template tag tests passing
 
 - [ ] **Task 33:** Write Tests for Widget Data Retrieval
   - Create tests for widget quote retrieval: verify category filtering works with new taxonomies, test multi-quote display, validate AJAX refresh parameters, check contributor filtering.
@@ -278,6 +316,7 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 - [ ] **Task 36:** Refactor AJAX Handlers to Use WP_Query
   - Update stray_ajax.php AJAX handlers to use new query system. Ensure AJAX refresh works with CPT/taxonomies. Make tests pass.
+
 
 ## Phase 8: Gutenberg Blocks
 

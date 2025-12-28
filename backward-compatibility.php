@@ -50,6 +50,60 @@ function stray_id_shortcode($atts, $content = NULL) {
 }
 
 // ==============================================================================
+// TEMPLATE TAG WRAPPERS (Refactored to use CPT architecture)
+// ==============================================================================
+
+/**
+ * Template tag: Display one or more random quotes
+ * Echoes output - actual implementation in src/legacy/core.php
+ *
+ * @param string $categories Category slugs (comma-separated or 'all')
+ * @param bool $sequence Whether to use sequential ordering
+ * @param string $linkphrase Legacy parameter (not used in refactored version)
+ * @param bool $noajax Legacy parameter (not used in refactored version)
+ * @param int $multi Number of quotes to retrieve
+ * @param int $timer Legacy parameter (not used in refactored version)
+ * @param string $orderby Legacy parameter (not used in refactored version)
+ * @param string $sort Legacy parameter (not used in refactored version)
+ * @param bool|null $disableaspect Whether to disable formatting
+ * @param string|null $contributor Filter by user/contributor
+ */
+function stray_random_quote($categories='all',$sequence=false,$linkphrase='',$noajax=false,$multi=1,$timer=0,$orderby='quoteID',$sort='ASC',$disableaspect=NULL, $contributor=NULL) {
+	// Note: linkphrase, noajax, timer, orderby, and sort parameters are not used in the refactored version
+	// The new implementation uses WP_Query with random or sequential ordering
+	
+	// Normalize disableaspect to boolean
+	if ($disableaspect === NULL) {
+		$disableaspect = false;
+	}
+	
+	// Call core implementation and echo result
+	echo \XVRandomQuotes\Legacy\stray_get_random_quotes_output($categories, $sequence, $multi, 0, $disableaspect, $contributor);
+}
+
+/**
+ * Template tag: Display a specific quote by ID
+ * Echoes output - actual implementation in src/legacy/core.php
+ *
+ * @param int $id Quote ID (post ID or legacy ID)
+ * @param string $linkphrase Legacy parameter (not used in refactored version)
+ * @param bool $noajax Legacy parameter (not used in refactored version)
+ * @param bool|null $disableaspect Whether to disable formatting
+ */
+function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
+	// Note: linkphrase and noajax parameters are not used in the refactored version
+	// The new implementation uses WP_Query to retrieve quotes
+	
+	// Normalize disableaspect to boolean
+	if ($disableaspect === NULL) {
+		$disableaspect = false;
+	}
+	
+	// Call core implementation and echo result
+	echo \XVRandomQuotes\Legacy\stray_get_quote_by_id_output($id, $disableaspect);
+}
+
+// ==============================================================================
 // HELPER FUNCTION WRAPPERS
 // ==============================================================================
 

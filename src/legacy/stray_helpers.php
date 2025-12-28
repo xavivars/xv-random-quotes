@@ -317,6 +317,13 @@ function stray_sanitize_shortcode_attributes($atts, $defaults) {
 		}
 	}
 	
+	// Ensure all default keys are present in the output
+	foreach ($defaults as $key => $default_value) {
+		if (!isset($sanitized[$key])) {
+			$sanitized[$key] = $default_value;
+		}
+	}
+	
 	return $sanitized;
 }
 
