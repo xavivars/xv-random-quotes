@@ -101,28 +101,35 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 
 		// Verify meta box is registered
 		$this->assertArrayHasKey( 'xv_quote', $wp_meta_boxes, 'Meta box should be registered for xv_quote post type' );
-		$this->assertArrayHasKey( 'side', $wp_meta_boxes['xv_quote'], 'Meta box should be in side context' );
-		$this->assertArrayHasKey( 'default', $wp_meta_boxes['xv_quote']['side'], 'Meta box should have default priority' );
-		$this->assertArrayHasKey( 'xv_quote_source', $wp_meta_boxes['xv_quote']['side']['default'], 'Meta box should have ID xv_quote_source' );
+		$this->assertArrayHasKey( 'normal', $wp_meta_boxes['xv_quote'], 'Meta box should be in normal context' );
+		$this->assertArrayHasKey( 'default', $wp_meta_boxes['xv_quote']['normal'], 'Meta box should have default priority' );
+		$this->assertArrayHasKey( 'xv_quote_source', $wp_meta_boxes['xv_quote']['normal']['default'], 'Meta box should have ID xv_quote_source' );
 
 		// Verify meta box details
-		$metabox = $wp_meta_boxes['xv_quote']['side']['default']['xv_quote_source'];
+		$metabox = $wp_meta_boxes['xv_quote']['normal']['default']['xv_quote_source'];
 		$this->assertEquals( 'Quote Source', $metabox['title'], 'Meta box should have title "Quote Source"' );
 	}
 
 	/**
-	 * Test 2: Meta box NOT registered when Block Editor is active
+	 * Test 2: Meta box registered for both Classic and Block editors
 	 */
-	public function test_meta_box_not_registered_for_block_editor() {
-		// This test verifies the conditional logic exists
-		// In real usage, use_block_editor_for_post_type() would return true for Block Editor
-		// For now, we just verify the meta box can be conditionally registered
-		
-		// We'll test this by checking that the class has the is_classic_editor_active method
-		$this->assertTrue(
-			method_exists( $this->metaboxes, 'is_classic_editor_active' ),
-			'MetaBoxes class should have is_classic_editor_active method for conditional registration'
-		);
+	public function test_meta_box_registered_for_both_editors() {
+		global $wp_meta_boxes;
+
+		// Remove Classic Editor filter to test Block Editor mode
+		remove_filter( 'use_block_editor_for_post_type', '__return_false', 100 );
+
+		// Re-register meta boxes without Classic Editor filter
+		$wp_meta_boxes = array(); // Clear existing
+		do_action( 'add_meta_boxes', 'xv_quote', get_post( $this->post_id ) );
+
+		// Verify source meta box is still registered (works in both editors now)
+		$this->assertArrayHasKey( 'xv_quote', $wp_meta_boxes, 'Meta box should be registered for xv_quote post type' );
+		$this->assertArrayHasKey( 'normal', $wp_meta_boxes['xv_quote'], 'Meta box should be in normal context' );
+		$this->assertArrayHasKey( 'xv_quote_source', $wp_meta_boxes['xv_quote']['normal']['default'], 'Source meta box should be registered for Block Editor too' );
+
+		// Restore Classic Editor filter
+		add_filter( 'use_block_editor_for_post_type', '__return_false', 100 );
 	}
 
 	/**
@@ -130,7 +137,7 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 	 */
 	public function test_save_with_valid_nonce() {
 		// Set up nonce
-		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source' );
+		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source_save' );
 		$_POST['quote_source']           = 'Test Source';
 
 		// Trigger save
@@ -205,7 +212,7 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 		}
 
 		// Set up valid nonce and data
-		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source' );
+		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source_save' );
 		$_POST['quote_source']           = 'Test Source';
 
 		// Trigger save
@@ -225,7 +232,7 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 		wp_set_current_user( $subscriber_id );
 
 		// Set up valid nonce and data
-		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source' );
+		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source_save' );
 		$_POST['quote_source']           = 'Test Source';
 
 		// Trigger save
@@ -244,11 +251,11 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 	 */
 	public function test_source_html_sanitization() {
 		// Set up nonce and source with HTML
-		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source' );
+		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source_save' );
 		$_POST['quote_source']           = '<a href="http://example.com">Source Link</a>';
 
 		// Trigger save
-		$this->metaboxes->save_meta_box( $this->post_id, get_post( $this->post_id ) );
+		$this->metaboxes->save_all_meta_boxes( $this->post_id, get_post( $this->post_id ) );
 
 		// Verify source was saved with HTML preserved
 		$source = get_post_meta( $this->post_id, '_quote_source', true );
@@ -260,11 +267,11 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 	 */
 	public function test_source_removes_dangerous_html() {
 		// Set up nonce and source with dangerous HTML
-		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source' );
+		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source_save' );
 		$_POST['quote_source']           = '<script>alert("xss")</script><a href="http://example.com">Link</a>';
 
 		// Trigger save
-		$this->metaboxes->save_meta_box( $this->post_id, get_post( $this->post_id ) );
+		$this->metaboxes->save_all_meta_boxes( $this->post_id, get_post( $this->post_id ) );
 
 		// Verify dangerous HTML was removed
 		$source = get_post_meta( $this->post_id, '_quote_source', true );
@@ -284,11 +291,11 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 		$this->assertEquals( 'Initial Source', $source );
 
 		// Now save with empty source
-		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source' );
+		$_POST['xv_quote_source_nonce'] = wp_create_nonce( 'xv_quote_source_save' );
 		$_POST['quote_source']           = '';
 
 		// Trigger save
-		$this->metaboxes->save_meta_box( $this->post_id, get_post( $this->post_id ) );
+		$this->metaboxes->save_all_meta_boxes( $this->post_id, get_post( $this->post_id ) );
 
 		// Verify source was updated to empty string
 		$source = get_post_meta( $this->post_id, '_quote_source', true );
@@ -296,7 +303,7 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test 11: Meta box renders form field
+	 * Test 11: Meta box renders wp_editor field
 	 */
 	public function test_metabox_renders_form_field() {
 		// Set some initial data
@@ -307,8 +314,8 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 		do_action( 'add_meta_boxes', 'xv_quote', get_post( $this->post_id ) );
 		
 		global $wp_meta_boxes;
-		if ( isset( $wp_meta_boxes['xv_quote']['side']['default']['xv_quote_source'] ) ) {
-			$metabox = $wp_meta_boxes['xv_quote']['side']['default']['xv_quote_source'];
+		if ( isset( $wp_meta_boxes['xv_quote']['normal']['default']['xv_quote_source'] ) ) {
+			$metabox = $wp_meta_boxes['xv_quote']['normal']['default']['xv_quote_source'];
 			call_user_func( $metabox['callback'], get_post( $this->post_id ), $metabox );
 		}
 		$output = ob_get_clean();
@@ -316,8 +323,9 @@ class Test_Classic_MetaBox extends WP_UnitTestCase {
 		// Verify nonce field is present
 		$this->assertStringContainsString( 'xv_quote_source_nonce', $output, 'Metabox should include nonce field' );
 
-		// Verify source field is present with value
-		$this->assertStringContainsString( 'quote_source', $output, 'Metabox should include source field' );
+		// Verify wp_editor field is present
+		$this->assertStringContainsString( 'quote_source', $output, 'Metabox should include wp_editor with ID quote_source' );
+		$this->assertStringContainsString( 'xv-quote-source-editor', $output, 'Metabox should have wrapper class' );
 		$this->assertStringContainsString( 'Test Source', $output, 'Metabox should display current source' );
 	}
 }

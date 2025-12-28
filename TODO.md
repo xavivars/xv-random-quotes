@@ -368,4 +368,137 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 ---
 
-**Last Updated:** December 27, 2025
+## Phase Extra 1: Simplified Admin Editor (Meta Box Approach)
+
+**Context:** Instead of maintaining separate implementations for Classic Editor (meta boxes) and Block Editor (React sidebar), use a unified meta box approach that works in both editors. This simplifies the codebase and provides better content control.
+
+**Strategy:**
+- Remove 'editor' support from CPT (keep only 'title')
+- Create two meta boxes that work in both Classic and Block editors
+- Use `wp_editor()` with strict toolbar configuration (bold, italic, link only)
+- Save quote text to `post_content` and source to `_quote_source` meta
+- Prevents users from adding unwanted HTML, images, or blocks
+
+- [x] **Task Extra 1:** Update CPT Registration to Remove Editor Support
+  - Modify src/PostTypes/QuotePostType.php to remove 'editor' from supports array (keep only 'title')
+  - Update existing tests in tests/post-types/test-quote-post-type.php to verify editor support is NOT present
+  - Verify CPT registration still works correctly without editor
+  - Make tests pass
+  - ✅ **Status:** COMPLETED
+    - Modified src/PostTypes/QuotePostType.php line 81: removed 'editor' from supports array
+    - Now supports: array('title', 'author', 'revisions', 'custom-fields')
+    - Created tests/post-types/test-cpt-registration.php with 7 comprehensive tests:
+      * test_post_type_exists() - verifies xv_quote registered
+      * test_post_type_configuration() - checks public=false, show_ui=true, show_in_rest=true
+      * test_post_type_supports_only_title() - KEY TEST: verifies editor NOT supported
+      * test_post_type_supports_other_features() - verifies author, revisions, custom-fields
+      * test_post_type_labels() - checks labels configuration
+      * test_can_create_quote_post() - creates test post
+      * test_quote_content_saved_to_post_content() - verifies post_content still writable
+    - All 7 tests passing, total suite: 204 tests, 493 assertions
+
+- [x] **Task Extra 2:** Write Tests for Quote Content Meta Box
+  - Create tests/admin/test-quote-content-metabox.php for quote text meta box
+  - Test Cases:
+    * Verify meta box is registered for xv_quote post type
+    * Check meta box appears in both Classic and Block editors
+    * Validate nonce verification on save
+    * Test autosave protection
+    * Verify capability check (edit_post)
+    * Test quote text sanitization (wp_kses_post - allows <strong>, <em>, <a>)
+    * Verify quote text saves to post_content column (not post_meta)
+    * Test empty quote text handling
+    * Validate HTML stripping (no <img>, <script>, <div>, etc.)
+    * Test that allowed tags are preserved (<strong>, <em>, <a>)
+  - ✅ **Status:** COMPLETED
+    - Created tests/admin/test-quote-content-metabox.php with 12 comprehensive tests:
+      * test_quote_content_metabox_is_registered() - verifies registration
+      * test_quote_content_metabox_title() - checks title "Quote Text"
+      * test_quote_content_metabox_includes_nonce() - verifies nonce field
+      * test_saves_quote_content_to_post_content_with_valid_nonce() - happy path
+      * test_does_not_save_with_invalid_nonce() - security check
+      * test_does_not_save_without_nonce() - security check
+      * test_does_not_save_on_autosave() - DOING_AUTOSAVE protection
+      * test_does_not_save_without_edit_capability() - capability check
+      * test_sanitizes_quote_text_with_wp_kses_post() - sanitization verification
+      * test_saves_empty_quote_text() - edge case handling
+      * test_preserves_allowed_html_tags() - verifies 12 inline tags preserved: <strong>, <em>, <a>, <code>, <abbr>, <cite>, <q>, <mark>, <sub>, <sup>, <b>, <i>
+      * test_strips_block_level_and_disallowed_tags() - verifies dangerous tags stripped: <script>, <iframe>, <style>, <object>
+    - All 12 tests passing with @runInSeparateProcess for proper test isolation
+
+
+- [x] **Task Extra 3:** Implement Quote Content Meta Box
+  - Create or update src/Admin/MetaBoxes.php with quote content meta box
+  - Register meta box for both 'normal' context (main editor area)
+  - Implement wp_editor() with strict configuration:
+    * media_buttons => false (no "Add Media")
+    * quicktags => false (no HTML/Text tab)
+    * toolbar1 => 'bold,italic,link,unlink' (only these buttons)
+    * teeny => true (minimal editor)
+  - Hook into save_post_xv_quote to save quote text to post_content
+  - Use wpdb->update() directly to update post_content (avoids infinite loops)
+  - Apply wp_kses() with custom allowed tags (only inline formatting tags)
+  - Implement nonce verification, autosave check, capability check
+  - Load existing post_content into editor on edit
+  - Make all tests pass
+  - ✅ **Status:** COMPLETED
+    - Updated src/Admin/MetaBoxes.php with quote content meta box functionality
+    - Registered meta box in 'normal' context (works in both Classic and Block editors)
+    - Implemented wp_editor() with strict settings: media_buttons=false, quicktags=false, teeny=true, toolbar1='bold,italic,link,unlink'
+    - Created save_quote_content() method with:
+      * Nonce verification (xv_quote_content_nonce)
+      * Autosave protection (DOING_AUTOSAVE check)
+      * Capability check (edit_post)
+      * wp_kses() sanitization with custom allowed tags array (12 inline formatting tags only)
+      * wpdb->update() direct database update to post_content (prevents infinite loops)
+      * clean_post_cache() to ensure fresh data retrieval
+    - Allowed HTML tags: strong, em, b, i, code, abbr (with title), cite, q, mark, sub, sup, a (with href/title/target/rel)
+    - Security: Strips all dangerous tags (<script>, <iframe>, <style>, <object>) and block-level tags
+    - All 12 tests passing (216 total tests, 522 assertions in full suite)
+
+
+- [x] **Task Extra 4:** Update Source Meta Box for Consistent UX
+  - Update existing source meta box (from Task 19) for consistency
+  - Replace simple input field with wp_editor() in 'teeny' mode for HTML formatting support
+  - Ensure both meta boxes have similar styling and placement
+  - Update tests for editor configuration changes
+  - ✅ **Status:** COMPLETED
+    - Updated src/Admin/MetaBoxes.php to use wp_editor() for source field
+    - Renamed render_meta_box() to render_quote_source_meta_box() for clarity
+    - Changed meta box context from 'side' to 'normal' (main editor area, below quote content)
+    - Implemented same wp_editor() configuration as quote content but smaller (3 rows vs 8)
+    - Editor settings: media_buttons=false, quicktags=false, teeny=true, toolbar1='bold,italic,link,unlink'
+    - Updated save_meta_box() to use stricter wp_kses() sanitization (same allowed tags as quote content)
+    - Allowed HTML tags: strong, em, b, i, code, abbr (with title), cite, q, mark, sub, sup, a (with href/title/target/rel)
+    - Updated nonce action from 'xv_quote_source' to 'xv_quote_source_save' for consistency
+    - Updated all 11 tests in tests/admin/test-classic-metabox.php:
+      * Changed assertions from 'side' to 'normal' context
+      * Updated all nonce actions to 'xv_quote_source_save'
+      * Updated test_meta_box_not_registered_for_block_editor to test_meta_box_registered_for_both_editors
+      * Updated rendering test to check for wp_editor wrapper class
+    - All 11 tests passing (216 total tests, 525 assertions in full suite)
+    - Supports formatted sources like: `Vist al <a href="http://twitter.com/eulez/status/220510283825823744">twitter d'Eulez</a>`
+
+
+- [ ] **Task Extra 5:** Remove/Archive Block Editor React Code
+  - Archive or remove src/blocks/quote-details/ directory (React sidebar code no longer needed)
+  - Archive or remove src/Admin/BlockEditorAssets.php (asset enqueuing no longer needed)
+  - Remove Block Editor asset enqueuing from src/Plugin.php initialization
+  - Archive or remove tests/admin/test-block-editor-assets.php
+  - Update package.json to mark @wordpress/scripts as devDependency (still useful for potential future blocks)
+  - Document in comments why Block Editor approach was replaced with meta box approach
+  - Verify all remaining tests still pass after removal
+
+- [ ] **Task Extra 6:** Integration Testing - Meta Box Editor
+  - Create integration tests verifying:
+    * Quote creation in Classic Editor saves correctly to post_content
+    * Quote creation in Block Editor saves correctly to post_content
+    * Existing quotes (migrated data) load correctly in editor
+    * HTML sanitization works as expected (strips <img>, preserves <strong>)
+    * Both meta boxes are visible and functional in both editor types
+    * Saved quotes display correctly on frontend using existing shortcodes/template tags
+  - Test with WordPress 6.0+ to ensure compatibility
+
+---
+
+**Last Updated:** December 28, 2025

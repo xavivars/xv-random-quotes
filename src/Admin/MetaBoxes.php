@@ -1,9 +1,9 @@
 <?php
 /**
- * Meta Boxes for Classic Editor
+ * Meta Boxes for Quote Post Type
  *
- * Provides custom meta boxes for the Quote post type when using the Classic Editor.
- * The Block Editor uses the native sidebar for meta fields via register_post_meta.
+ * Provides custom meta boxes for the Quote post type.
+ * Uses meta boxes with wp_editor() for strict HTML control instead of the standard editor.
  *
  * @package    XVRandomQuotes
  * @subpackage Admin
@@ -15,8 +15,8 @@ namespace XVRandomQuotes\Admin;
 /**
  * Meta Boxes Class
  *
- * Handles registration and saving of meta boxes for the xv_quote post type
- * in the Classic Editor. Only registers when Classic Editor is active.
+ * Handles registration and saving of meta boxes for the xv_quote post type.
+ * Provides a custom editor for quote content with strict HTML restrictions.
  *
  * @since 2.0.0
  */
@@ -29,82 +29,147 @@ class MetaBoxes {
 	 */
 	public function init() {
 		add_action( 'add_meta_boxes', array( $this, 'register_meta_boxes' ) );
-		add_action( 'save_post_xv_quote', array( $this, 'save_meta_box' ), 10, 2 );
+		add_action( 'save_post_xv_quote', array( $this, 'save_all_meta_boxes' ), 10, 2 );
 	}
 
 	/**
-	 * Check if Classic Editor is active for the quote post type
+	 * Get allowed HTML tags for quote content sanitization
+	 *
+	 * Returns array of allowed inline formatting tags only.
 	 *
 	 * @since 2.0.0
-	 * @return bool True if Classic Editor is active, false otherwise
+	 * @return array Allowed HTML tags and their attributes
 	 */
-	public function is_classic_editor_active() {
-		// Check if the Block Editor is disabled for this post type
-		if ( function_exists( 'use_block_editor_for_post_type' ) ) {
-			return ! use_block_editor_for_post_type( 'xv_quote' );
-		}
+	private function get_allowed_html_tags() {
+		return array(
+			'strong' => array(),
+			'em'     => array(),
+			'b'      => array(),
+			'i'      => array(),
+			'code'   => array(),
+			'abbr'   => array( 'title' => true ),
+			'cite'   => array(),
+			'q'      => array(),
+			'mark'   => array(),
+			'sub'    => array(),
+			'sup'    => array(),
+			'a'      => array(
+				'href'   => true,
+				'title'  => true,
+				'target' => true,
+				'rel'    => true,
+			),
+		);
+	}
 
-		// If function doesn't exist, assume Classic Editor
-		return true;
+	/**
+	 * Get wp_editor settings
+	 *
+	 * Returns standard editor settings with optional row count.
+	 *
+	 * @since 2.0.0
+	 * @param int $rows Number of textarea rows. Default 8.
+	 * @return array Editor settings
+	 */
+	private function get_editor_settings( $rows = 8 ) {
+		return array(
+			'media_buttons' => false,          // No "Add Media" button
+			'quicktags'     => false,          // No HTML/Text tab
+			'teeny'         => true,           // Minimal editor
+			'textarea_rows' => $rows,
+			'tinymce'       => array(
+				'toolbar1' => 'bold,italic,link,unlink',  // Only these buttons
+				'toolbar2' => '',                          // No second toolbar
+				'toolbar3' => '',                          // No third toolbar
+			),
+		);
 	}
 
 	/**
 	 * Register meta boxes for the quote post type
 	 *
-	 * Only registers if Classic Editor is active. The Block Editor
-	 * uses the native sidebar for meta fields.
+	 * Registers both the quote content meta box (main editor area) and
+	 * the quote source meta box. Works with both Classic and Block editors.
 	 *
 	 * @since 2.0.0
 	 */
 	public function register_meta_boxes() {
-		// Only register for Classic Editor
-		if ( ! $this->is_classic_editor_active() ) {
-			return;
-		}
+		// Remove the default Custom Fields meta box
+		remove_meta_box( 'postcustom', 'xv_quote', 'normal' );
 
+		// Quote content meta box - main editor area (replaces standard editor)
+		add_meta_box(
+			'xv_quote_text',
+			__( 'Quote Text', 'stray-quotes' ),
+			array( $this, 'render_quote_content_meta_box' ),
+			'xv_quote',
+			'normal',
+			'high'
+		);
+
+		// Quote source meta box - below quote content (both editors)
 		add_meta_box(
 			'xv_quote_source',
 			__( 'Quote Source', 'stray-quotes' ),
-			array( $this, 'render_meta_box' ),
+			array( $this, 'render_quote_source_meta_box' ),
 			'xv_quote',
-			'side',
+			'normal',
 			'default'
 		);
 	}
 
 	/**
-	 * Render the meta box content
+	 * Render the quote content meta box
+	 *
+	 * Provides a custom editor for quote text with strict HTML restrictions.
+	 * Only allows inline formatting tags (bold, italic, link).
 	 *
 	 * @since 2.0.0
 	 * @param \WP_Post $post The post object.
 	 */
-	public function render_meta_box( $post ) {
-		// Add nonce for security
-		wp_nonce_field( 'xv_quote_source', 'xv_quote_source_nonce' );
+	public function render_quote_content_meta_box( $post ) {
+		wp_nonce_field( 'xv_quote_content_save', 'xv_quote_content_nonce' );
 
-		// Get current source value
-		$source = get_post_meta( $post->ID, '_quote_source', true );
-		?>
-		<p>
-			<label for="quote_source"><?php esc_html_e( 'Source', 'stray-quotes' ); ?></label>
-			<input type="text" id="quote_source" name="quote_source" value="<?php echo esc_attr( $source ); ?>" class="widefat" />
-		</p>
-		<?php
+		echo '<div class="xv-quote-content-editor">';
+		wp_editor( $post->post_content, 'xv_quote_content', $this->get_editor_settings( 8 ) );
+		echo '</div>';
+		echo '<p class="description">';
+		echo esc_html__( 'Enter the quote text. Only basic formatting (bold, italic, links) is allowed.', 'stray-quotes' );
+		echo '</p>';
 	}
 
 	/**
-	 * Save meta box data
+	 * Render the quote source meta box
+	 *
+	 * Provides a custom editor for quote source with strict HTML restrictions.
+	 * Only allows inline formatting tags (bold, italic, link).
+	 *
+	 * @since 2.0.0
+	 * @param \WP_Post $post The post object.
+	 */
+	public function render_quote_source_meta_box( $post ) {
+		wp_nonce_field( 'xv_quote_source_save', 'xv_quote_source_nonce' );
+
+		$source = get_post_meta( $post->ID, '_quote_source', true );
+
+		echo '<div class="xv-quote-source-editor">';
+		wp_editor( $source, 'quote_source', $this->get_editor_settings( 1 ) );
+		echo '</div>';
+		echo '<p class="description">';
+		echo esc_html__( 'Enter the quote source. Only basic formatting (bold, italic, links) is allowed.', 'stray-quotes' );
+		echo '</p>';
+	}
+
+	/**
+	 * Save all meta boxes
+	 *
+	 * Unified save handler for both quote content and source meta boxes.
 	 *
 	 * @since 2.0.0
 	 * @param int      $post_id The post ID.
 	 * @param \WP_Post $post    The post object.
 	 */
-	public function save_meta_box( $post_id, $post ) {
-		// Verify nonce
-		if ( ! isset( $_POST['xv_quote_source_nonce'] ) || ! wp_verify_nonce( $_POST['xv_quote_source_nonce'], 'xv_quote_source' ) ) {
-			return;
-		}
-
+	public function save_all_meta_boxes( $post_id, $post ) {
 		// Check autosave
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
@@ -115,9 +180,32 @@ class MetaBoxes {
 			return;
 		}
 
-		// Save source meta with HTML sanitization
-		if ( isset( $_POST['quote_source'] ) ) {
-			$source = wp_kses_post( $_POST['quote_source'] );
+		// Save quote content to post_content
+		if ( isset( $_POST['xv_quote_content_nonce'] ) && 
+		     wp_verify_nonce( $_POST['xv_quote_content_nonce'], 'xv_quote_content_save' ) &&
+		     isset( $_POST['xv_quote_content'] ) ) {
+			
+			$content = wp_kses( $_POST['xv_quote_content'], $this->get_allowed_html_tags() );
+			
+			// Unhook this function to prevent infinite loop
+			remove_action( 'save_post_xv_quote', array( $this, 'save_all_meta_boxes' ), 10 );
+			
+			// Update post using wp_update_post
+			wp_update_post( array(
+				'ID'           => $post_id,
+				'post_content' => $content,
+			) );
+			
+			// Re-hook this function
+			add_action( 'save_post_xv_quote', array( $this, 'save_all_meta_boxes' ), 10, 2 );
+		}
+
+		// Save quote source to post meta
+		if ( isset( $_POST['xv_quote_source_nonce'] ) && 
+		     wp_verify_nonce( $_POST['xv_quote_source_nonce'], 'xv_quote_source_save' ) &&
+		     isset( $_POST['quote_source'] ) ) {
+			
+			$source = wp_kses( $_POST['quote_source'], $this->get_allowed_html_tags() );
 			update_post_meta( $post_id, '_quote_source', $source );
 		}
 	}
