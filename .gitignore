@@ -1,1 +1,30 @@
+# IDE
 .idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Dependencies
+vendor/
+node_modules/
+composer.lock
+
+# Build artifacts
+build/
+dist/
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+data/
+
+# Test artifacts
+.phpunit.result.cache
+tests/_output/
+
+# WordPress
+wp-config.php

@@ -1,0 +1,9 @@
+vendor/
+node_modules/
+coverage/
+.git/
+.gitignore
+*.md
+*.txt
+.travis.yml
+screenshot-*.png

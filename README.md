@@ -22,6 +22,40 @@ I'm actively working on this plugin, and I'll try to fix as many bugs as I can
 
 If you find an issue, [let me know here](https://github.com/xavivars/xv-random-quotes/issues/new)! 
 
+## Development
+
+This plugin uses Docker with a single `docker-compose.yml` providing two isolated environments:
+
+### Manual Development & Testing (web + db)
+
+```bash
+# Start WordPress site
+docker-compose up -d
+
+# Access at http://localhost:8080
+# Database is persistent - data survives restarts
+
+# Stop (keeps data)
+docker-compose down
+
+# Fresh start (wipes database)
+docker-compose down -v
+docker-compose up -d
+```
+
+### Automated Testing (cli + testdb)
+
+```bash
+# Run tests
+docker-compose run --rm cli vendor/bin/phpunit
+
+# Database resets automatically - clean slate for each test run
+```
+
+**Key Point:** Both environments can run simultaneously without interfering - they use separate databases (`db` vs `testdb`).
+
+See [DOCKER_USAGE.md](DOCKER_USAGE.md) for detailed usage.
+
 Contributions
 -------------
 Anyone is welcome to contribute to XV Random Quotes plugin. 

@@ -12,6 +12,56 @@ License: http://www.gnu.org/copyleft/gpl.html GNU General Public License
 
 include('lib/class.constants.php');
 
+// Load Composer autoloader for v2.0 architecture
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
+	
+	// Initialize v2.0 architecture (CPT, Taxonomies, Post Meta)
+	add_action( 'plugins_loaded', function() {
+		\XVRandomQuotes\Plugin::get_instance();
+	}, 5 );
+	
+	// Initialize migration admin notices
+	add_action( 'plugins_loaded', function() {
+		if ( class_exists( '\XVRandomQuotes\Admin\MigrationNotices' ) ) {
+			\XVRandomQuotes\Admin\MigrationNotices::init();
+		}
+	}, 10 );
+	
+	// Handle deferred migration after CPT and taxonomies are registered
+	add_action( 'init', function() {
+		if ( get_option( 'xv_quotes_needs_migration' ) ) {
+			delete_option( 'xv_quotes_needs_migration' );
+			
+			if ( class_exists( '\XVRandomQuotes\Migration\QuoteMigrator' ) ) {
+				\XVRandomQuotes\Migration\QuoteMigrator::run_migration();
+			}
+		}
+		
+		// Flush rewrite rules if needed (after CPT registration)
+		if ( get_option( 'xv_quotes_flush_rewrite_rules' ) ) {
+			delete_option( 'xv_quotes_flush_rewrite_rules' );
+			flush_rewrite_rules();
+		}
+	}, 20 ); // Priority 20 to run after CPT/taxonomy registration at priority 10
+}
+
+/**
+ * Activation hook for v2.0 migration
+ * 
+ * Sets a flag to trigger migration on next 'init' hook.
+ * This ensures CPT and taxonomies are registered before migration runs.
+ */
+function xv_quotes_activation_migration() {
+	if ( class_exists( '\XVRandomQuotes\Migration\QuoteMigrator' ) ) {
+		// Set flag to trigger migration on next init
+		update_option( 'xv_quotes_needs_migration', true );
+		
+		// Set flag to flush rewrite rules on next init
+		update_option( 'xv_quotes_flush_rewrite_rules', true );
+	}
+}
+
 global $wpdb, $wp_version;
 
 //few definitions
@@ -671,6 +721,7 @@ if (function_exists('add_shortcode')) { /* zL: added: missing quotes around 'add
 }
 
 register_activation_hook(__FILE__, 'quotes_activation');
+register_activation_hook(__FILE__, 'xv_quotes_activation_migration');
 register_deactivation_hook(__FILE__, 'quotes_deactivation');
 
 $quotesoptions = get_option('stray_quotes_options');
