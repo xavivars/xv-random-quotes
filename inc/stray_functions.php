@@ -469,21 +469,6 @@ function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
 	echo get_stray_quotes('',true,$linkphrase,'','',$noajax,'','','','','',$id,$disableaspect);
 }
 
-//this is a SHORTCODE [stray-random] - Wrapper for backwards compatibility
-function stray_random_shortcode($atts, $content = NULL) {
-	return \XVRandomQuotes\Legacy\stray_random_shortcode($atts, $content);
-}
-
-//this is a SHORTCODE [stray-all] - Wrapper for backwards compatibility
-function stray_all_shortcode($atts, $content = NULL) {
-	return \XVRandomQuotes\Legacy\stray_all_shortcode($atts, $content);
-}
-
-//this is a SHORTCODE [stray-id] - Wrapper for backwards compatibility
-function stray_id_shortcode($atts, $content = NULL) {
-	return \XVRandomQuotes\Legacy\stray_id_shortcode($atts, $content);
-}
-
 //this FORMATS a given quote according to the settings
 function stray_output_one($get_one,$multi=NULL,$disableaspect=NULL) {
 
@@ -834,21 +819,4 @@ function mostused($field) {
 		return $maxvalue;
 	} else return false;
 }
-
-//this adds or REPLACES A VARIABLE into a querystring - Wrapper for backwards compatibility
-//Thanks to http://www.addedbytes.com/php/querystring-functions/
-function querystrings($url, $key, $value) {
-	return \XVRandomQuotes\Legacy\querystrings($url, $key, $value);
-}
-
-//this REMOVES A VARIABLE from a querystring - Wrapper for backwards compatibility
-//Thanks to http://www.addedbytes.com/php/querystring-functions/
-function remove_querystring_var($url, $key) {
-	return \XVRandomQuotes\Legacy\remove_querystring_var($url, $key);
-}
-
-//this is for compatibility with 2.3 function names
-function wp_quotes_random() {return stray_random_quote();}
-function wp_quotes($id) {return stray_a_quote($id);}
-function wp_quotes_page($data) {return stray_all_shortcode();}
 
