@@ -14,6 +14,7 @@ use XVRandomQuotes\Taxonomies\QuoteTaxonomies;
 use XVRandomQuotes\PostMeta\QuoteMetaFields;
 use XVRandomQuotes\Admin\MetaBoxes;
 use XVRandomQuotes\Admin\BlockEditorAssets;
+use XVRandomQuotes\Widgets\QuoteWidget;
 
 /**
  * Class Plugin
@@ -77,5 +78,15 @@ class Plugin {
 
 		// Enqueue Block Editor assets
 		new BlockEditorAssets();
+
+		// Register widgets
+		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+	}
+
+	/**
+	 * Register widgets
+	 */
+	public function register_widgets() {
+		register_widget( QuoteWidget::class );
 	}
 }

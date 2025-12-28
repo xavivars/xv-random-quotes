@@ -68,6 +68,11 @@ function xv_quotes_activation_migration() {
 		// Set flag to flush rewrite rules on next init
 		update_option( 'xv_quotes_flush_rewrite_rules', true );
 	}
+	
+	// Migrate widget settings immediately (doesn't need CPT/taxonomies)
+	if ( class_exists( '\XVRandomQuotes\Migration\WidgetMigrator' ) ) {
+		\XVRandomQuotes\Migration\WidgetMigrator::migrate_widgets();
+	}
 }
 
 global $wpdb, $wp_version;

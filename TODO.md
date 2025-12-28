@@ -2,7 +2,7 @@
 
 This document tracks the complete roadmap for refactoring XV Random Quotes from v1.40 to v2.0, migrating from a custom database table to WordPress Custom Post Types.
 
-**Progress:** 24/74 tasks completed (32.4%)
+**Progress:** 27/76 tasks completed (35.5%)
 
 ## Phase 1: Foundation & Setup
 
@@ -304,12 +304,104 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
       * Leverages existing shortcode logic (DRY principle)
       * Full backward compatibility with legacy code
     - Test results: 263 total tests, 663 assertions, 21 template tag tests passing
+    - **REFACTORED ARCHITECTURE:**
+      * Created src/legacy/core.php - Pure implementation functions (returns HTML)
+      * Updated src/legacy/shortcodes.php - Thin wrappers calling core functions
+      * Moved template tags to backward-compatibility.php - Echo core function results
+      * Clean separation: core logic → shortcodes (return) → template tags (echo)
+      * No forced parameter conversions, natural API for both shortcodes and template tags
 
-- [ ] **Task 33:** Write Tests for Widget Data Retrieval
+- [x] **Task 33:** Write Tests for Widget Data Retrieval
   - Create tests for widget quote retrieval: verify category filtering works with new taxonomies, test multi-quote display, validate AJAX refresh parameters, check contributor filtering.
+  - ✅ **Status:** COMPLETED - 17 tests created (2 passing: basic checks, 15 failing: functional tests)
+    - Created tests/widgets/test-widget-data-retrieval.php
+    - Test Coverage:
+      * Widget class existence and instantiation (2 tests - PASSING)
+      * Single category filtering (1 test)
+      * Multiple category filtering (1 test)
+      * Multi-quote display with list structure (1 test)
+      * Random vs sequential ordering (2 tests)
+      * Disabled aspect settings (1 test)
+      * AJAX enabled/disabled (2 tests)
+      * Timer for auto-refresh (1 test)
+      * Contributor filtering (1 test)
+      * All categories handling (1 test)
+      * Nonexistent category handling (1 test)
+      * Widget HTML wrapper structure (1 test)
+      * Empty title handling (1 test)
+      * Category taxonomy integration check (1 test)
+    - TDD red phase confirmed: 15/17 tests failing due to legacy database dependency
+    - Errors: "Trying to access array offset on value of type bool" from get_stray_quotes()
+    - Ready for Task 34 refactoring
 
-- [ ] **Task 34:** Refactor Widget to Use WP_Query
+- [x] **Task 34:** Refactor Widget to Use WP_Query
   - Update stray_widgets class to use WP_Query for quote retrieval. Maintain all existing widget options and UI. Update category dropdown to use get_terms(). Make tests pass.
+  - ✅ **Status:** COMPLETED - Modern widget implementation created, all 17 tests passing
+    - Created src/Widgets/QuoteWidget.php - Modern WP_Widget implementation (277 lines)
+      * Extends WP_Widget with id_base 'xv_random_quotes_widget'
+      * widget() method uses Legacy\stray_get_random_quotes_output() from core.php
+      * form() method with modern UI using get_terms('quote_category') for taxonomy-based categories
+      * update() method with proper sanitization and validation
+      * Settings: title, categories (comma-separated slugs), sequence, multi, disableaspect, contributor
+    - Updated src/Plugin.php for widget registration:
+      * Added use XVRandomQuotes\Widgets\QuoteWidget
+      * Created register_widgets() method
+      * Registered via add_action('widgets_init')
+    - Updated all 17 tests in tests/widgets/test-widget-data-retrieval.php:
+      * Changed from legacy stray_widgets class to XVRandomQuotes\Widgets\QuoteWidget
+      * Updated from options array format to WP_Widget instance format
+      * Removed update_option() calls, now pass instance array directly to widget()
+      * Added TODO comments for AJAX/timer tests (features deferred to Tasks 35-36)
+    - Implementation strategy:
+      * Complete replacement of legacy widget (not modification)
+      * Maximizes reuse of existing core.php functions
+      * AJAX and timer features temporarily disabled (documented for Tasks 35-36)
+      * TODO comment in QuoteWidget.php lines 70-72
+    - Test results: 280 total tests, 17/17 widget tests passing
+    - Next steps: Remove legacy inc/stray_widgets.php in cleanup phase, AJAX restoration in Tasks 35-36
+
+- [x] **Task 34.1:** Write Tests for Widget Settings Migration
+  - Create tests for automatic widget settings migration on activation: verify legacy widget_stray_quotes option detected, test conversion of widget instances from old to new format, validate field mapping (groups→categories, sequence Y/N→boolean, noajax Y/N→removed, etc.), check migration status flag (xv_quotes_widgets_migrated), test multiple widget instances migration, verify migration runs only once, test empty/missing legacy widgets handling.
+  - ✅ **Status:** COMPLETED - 17 tests created (1 passing baseline, 16 errors - expected TDD red phase)
+    - Created tests/widgets/test-widget-settings-migration.php
+    - Test Coverage:
+      * Legacy option detection (1 test)
+      * Single widget conversion (1 test)
+      * Multiple widget instances (1 test)
+      * Field mappings: groups→categories, sequence Y/N→boolean, disableaspect Y/N→boolean, contributor preserved (4 tests)
+      * AJAX fields removed (1 test)
+      * Migration flag set (1 test)
+      * Idempotency - runs only once (1 test)
+      * Edge cases: empty widgets, missing option, already migrated check (3 tests)
+      * Special values: 'all', 'default' → empty string (2 tests)
+      * _multiwidget flag set (1 test)
+      * Missing optional fields handling (1 test)
+    - TDD red phase confirmed: 16/17 tests erroring with "Class not found"
+
+- [x] **Task 34.2:** Implement Widget Settings Migration on Activation
+  - Create migration function in src/Migration/WidgetMigrator.php (or add to existing QuoteMigrator). Implement activation hook logic to check migration status flag, detect legacy widget_stray_quotes option, convert each widget instance to new format for widget_xv_random_quotes_widget option. Field mappings: title (unchanged), groups→categories (rename), sequence Y/N→boolean, multi (unchanged), disableaspect Y/N→boolean, contributor (unchanged), remove noajax/linkphrase/timer (deferred to Tasks 35-36). Set xv_quotes_widgets_migrated flag after successful migration. Make tests pass.
+  - ✅ **Status:** COMPLETED - All 17 tests passing
+    - Created src/Migration/WidgetMigrator.php (133 lines)
+      * Static migrate_widgets() method
+      * Migration flag: xv_quotes_widgets_migrated
+      * Detects legacy widget_stray_quotes option
+      * Converts to widget_xv_random_quotes_widget format
+      * Private convert_widget_instance() method for field mapping
+    - Field mappings implemented:
+      * title → preserved
+      * groups → categories (renamed)
+      * sequence Y/N → boolean (Y=true=random, N=false=sequential)
+      * multi → preserved (cast to int)
+      * disableaspect Y/N → boolean
+      * contributor → preserved (optional)
+      * Special handling: 'all', 'default' → empty string
+      * AJAX fields (noajax, linkphrase, timer) intentionally removed
+    - Updated xv-random-quotes.php activation hook:
+      * Added WidgetMigrator::migrate_widgets() call
+      * Runs immediately (doesn't need CPT/taxonomies)
+      * After quote migration flag setting
+    - Test results: 297 total tests (280 + 17 widget migration), 17/17 migration tests passing
+    - Migration is idempotent: runs only once per installation
 
 - [ ] **Task 35:** Write Tests for AJAX Quote Refresh
   - Create tests for AJAX endpoint: verify xv_random_quotes_new_quote action, test parameter sanitization, validate response format, check category filtering via AJAX works with taxonomies.
