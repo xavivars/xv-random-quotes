@@ -2,7 +2,7 @@
 
 This document tracks the complete roadmap for refactoring XV Random Quotes from v1.40 to v2.0, migrating from a custom database table to WordPress Custom Post Types.
 
-**Progress:** 16/74 tasks completed (21.6%)
+**Progress:** 18/74 tasks completed (24.3%)
 
 ## Phase 1: Foundation & Setup
 
@@ -131,11 +131,13 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 ## Phase 5: Query System Refactor
 
-- [ ] **Task 23:** Write Tests for WP_Query Helper Functions
+- [x] **Task 23:** Write Tests for WP_Query Helper Functions
   - Create tests for new query helper functions: test get_random_quote(), get_quote_by_id(), get_quotes_by_category(), verify proper WP_Query args, validate post type filtering, check taxonomy queries.
+  - ✅ **Status:** COMPLETED - 17 tests created, all failing as expected (TDD red phase - QuoteQueries class not found)
 
-- [ ] **Task 24:** Implement WP_Query Helper Functions
+- [x] **Task 24:** Implement WP_Query Helper Functions
   - Create src/Queries/QuoteQueries.php with helper functions wrapping WP_Query. Replace raw SQL patterns with WP_Query calls. Make tests pass.
+  - ✅ **Status:** COMPLETED - QuoteQueries class implemented with 5 methods (get_random_quote, get_quote_by_id, get_quotes_by_author, get_quotes_by_category, get_all_quotes). All 17 tests passing, 135 total tests, 341 assertions.
 
 ## Phase 6: Shortcodes Refactor
 
