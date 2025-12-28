@@ -83,17 +83,47 @@ rm -rf $SVNPATH/trunk/*
 echo "Exporting the HEAD of master from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
+echo "Moving assets to SVN root"
 mv $SVNPATH/trunk/assets/* $SVNPATH/assets
 rmdir $SVNPATH/trunk/assets
 
-#echo "Ignoring github specific files and deployment script"
-svn propset svn:ignore "bin
-tests
-phpunit.xml
-.travis.yml
-README.md
-.git
-.gitignore" "$SVNPATH/trunk/"
+echo "Removing development files from SVN export"
+
+# Remove development and build configuration
+rm -rf $SVNPATH/trunk/node_modules
+rm -f $SVNPATH/trunk/package.json
+rm -f $SVNPATH/trunk/package-lock.json
+rm -f $SVNPATH/trunk/webpack.config.js
+
+# Remove test and development files
+rm -rf $SVNPATH/trunk/tests
+rm -rf $SVNPATH/trunk/bin
+rm -f $SVNPATH/trunk/phpunit.xml
+rm -f $SVNPATH/trunk/.travis.yml
+
+# Remove Docker and development documentation
+rm -f $SVNPATH/trunk/Dockerfile.cli
+rm -f $SVNPATH/trunk/docker-compose.yml
+rm -f $SVNPATH/trunk/Makefile
+rm -f $SVNPATH/trunk/setup.sh
+rm -f $SVNPATH/trunk/.dockerignore
+rm -f $SVNPATH/trunk/composer.json
+rm -f $SVNPATH/trunk/composer.lock
+rm -rf $SVNPATH/trunk/data
+
+# Remove development documentation (keep readme.txt)
+rm -f $SVNPATH/trunk/BUILD.md
+rm -f $SVNPATH/trunk/DOCKER_USAGE.md
+rm -f $SVNPATH/trunk/QUICKSTART.md
+rm -f $SVNPATH/trunk/README-TESTING.md
+rm -f $SVNPATH/trunk/README.md
+rm -f $SVNPATH/trunk/TASK-1-COMPLETE.md
+rm -f $SVNPATH/trunk/TASKS-2-7-COMPLETE.md
+rm -f $SVNPATH/trunk/TODO.md
+rm -f $SVNPATH/trunk/NEW_ARCHITECTURE.md
+
+# Remove git files
+rm -f $SVNPATH/trunk/.gitignore
 
 echo "Changing directory to SVN and committing to trunk"
 cd $SVNPATH/trunk/

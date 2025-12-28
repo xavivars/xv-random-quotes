@@ -12,6 +12,8 @@ namespace XVRandomQuotes;
 use XVRandomQuotes\PostTypes\QuotePostType;
 use XVRandomQuotes\Taxonomies\QuoteTaxonomies;
 use XVRandomQuotes\PostMeta\QuoteMetaFields;
+use XVRandomQuotes\Admin\MetaBoxes;
+use XVRandomQuotes\Admin\BlockEditorAssets;
 
 /**
  * Class Plugin
@@ -68,5 +70,12 @@ class Plugin {
 		// Register post meta fields
 		$meta_fields = new QuoteMetaFields();
 		$meta_fields->init();
+
+		// Register meta boxes for Classic Editor
+		$meta_boxes = new MetaBoxes();
+		$meta_boxes->init();
+
+		// Enqueue Block Editor assets
+		new BlockEditorAssets();
 	}
 }

@@ -2,7 +2,7 @@
 
 This document tracks the complete roadmap for refactoring XV Random Quotes from v1.40 to v2.0, migrating from a custom database table to WordPress Custom Post Types.
 
-**Progress:** 9/72 tasks completed (12.5%)
+**Progress:** 16/74 tasks completed (21.6%)
 
 ## Phase 1: Foundation & Setup
 
@@ -69,20 +69,65 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 ## Phase 4: Admin Interface
 
-- [ ] **Task 18:** Write Tests for Classic Meta Box
-  - Create tests for quote details meta box: verify box is registered for xv_quote post type, test nonce verification, validate author taxonomy assignment, check source meta save with wp_kses_post sanitization.
+- [x] **Task 18:** Write Tests for Classic Meta Box
+  - Create tests for quote source meta box (Classic Editor only): verify box is registered for xv_quote post type with ID xv_quote_source, context side, priority default; test conditional registration (is_classic_editor_active method); validate nonce verification; check autosave protection; verify user capability check; test source meta save with wp_kses_post sanitization; validate empty source handling.
 
-- [ ] **Task 19:** Implement Classic Meta Box
-  - Create src/Admin/MetaBoxes.php with quote details meta box. Implement add_meta_box callback, create save_post hook with proper sanitization, handle author taxonomy and source meta. Make tests pass.
+- [x] **Task 19:** Implement Classic Meta Box
+  - Create src/Admin/MetaBoxes.php with quote source meta box for Classic Editor. Implement is_classic_editor_active() method checking use_block_editor_for_post_type('xv_quote'). Add add_meta_boxes hook with conditional registration. Implement save_post_xv_quote hook with nonce verification, autosave check, capability check, and wp_kses_post sanitization for _quote_source. Initialize in Plugin class.
 
-- [ ] **Task 20:** Setup Block Editor Build Environment
+
+- [x] **Task 20:** Register Post Meta for Block Editor
+  - Add register_post_meta() call for _quote_source with show_in_rest => true (enables REST API access), type => 'string', single => true, sanitize_callback => 'wp_kses_post'. Register in QuoteMetaFields class.
+  - **Note:** show_in_rest only exposes meta via REST API - it does NOT create automatic UI
+  - ✅ **Status:** COMPLETED
+    - _quote_source registered with show_in_rest => true in Task 7 (src/PostMeta/QuoteMetaFields.php)
+    - Added 'custom-fields' support to xv_quote post type (REQUIRED for REST API meta exposure)
+    - Created 12 REST API integration tests - all passing (tests/integration/test-post-meta-rest.php)
+    - Block Editor UI requires either: Classic meta box (Task 19), custom meta block, or PluginDocumentSettingPanel (Tasks 21-22)
+
+- [x] **Task 21:** Setup Block Editor Build Environment
   - Install @wordpress/scripts, configure package.json with build scripts, create src/blocks directory structure, setup webpack config (or use default from @wordpress/scripts), test build process works.
+  - ✅ **Status:** COMPLETED
+    - Created package.json with @wordpress/scripts v28.0.0
+    - Configured build scripts: build, start (dev), format, lint:js, lint:pkg-json
+    - Created src/blocks/quote-details/ directory with placeholder index.js
+    - Created custom webpack.config.js extending @wordpress/scripts defaults
+    - Installed dependencies including @babel/runtime
+    - Verified build process works - outputs to src/generated/quote-details.js and src/generated/quote-details.asset.php
+    - Created BUILD.md documentation for developers
+    - .gitignore already configured for node_modules/ and build/
 
-- [ ] **Task 21:** Write Tests for Block Editor Sidebar Panel
-  - Create integration tests for Gutenberg sidebar panel: verify panel registration, test meta field updates via REST API, validate panel appears only for xv_quote post type, check field synchronization.
+- [x] **Task 22:** Write Tests for Block Editor Asset Enqueuing
+  - Create tests/admin/test-block-editor-assets.php to verify:
+    - Asset enqueuing class exists (BlockEditorAssets)
+    - Scripts enqueued only on Block Editor screens for xv_quote post type
+    - Correct script handle, src path (src/generated/quote-details.js), dependencies loaded from .asset.php
+    - Script localized with REST API data (nonce, post ID, endpoints)
+    - Only enqueued when is_block_editor_active() returns true
+    - Not enqueued in Classic Editor mode
+  - **Note:** JavaScript/React code itself is tested via browser/E2E tests, not PHPUnit. This task tests the PHP integration.
+  - ✅ **Status:** COMPLETED - 15 tests created, 12 failing as expected (TDD red phase), 3 passing (asset file validation)
 
-- [ ] **Task 22:** Implement Block Editor Sidebar Panel
-  - Create src/blocks/quote-details/index.js with PluginDocumentSettingPanel. Implement TextControl components for author and source, add useEntityProp hooks, register plugin. Make tests pass.
+- [x] **Task 22.1:** Implement Block Editor Asset Enqueuing
+  - Create src/Admin/BlockEditorAssets.php class
+  - Hook into enqueue_block_editor_assets action
+  - Check post type is xv_quote before enqueuing
+  - Load dependencies from src/generated/quote-details.asset.php
+  - Enqueue src/generated/quote-details.js with proper dependencies
+  - Localize script with xvQuoteData (nonce, postId, restUrl, etc.)
+  - Initialize in Plugin class
+  - Make all tests pass
+  - ✅ **Status:** COMPLETED - All 15 tests passing, BlockEditorAssets class fully functional
+
+- [x] **Task 22.2:** Implement Block Editor Sidebar Panel (React/JavaScript)
+  - Create src/blocks/quote-details/index.js with PluginDocumentSettingPanel
+  - Import @wordpress/plugins, @wordpress/edit-post, @wordpress/components, @wordpress/core-data
+  - Implement TextControl for quote source using useEntityProp hook
+  - Register plugin with registerPlugin
+  - Build with npm run build
+  - Test manually in Block Editor (no automated tests - requires browser)
+  - **Note:** React/JSX code validation done via ESLint (npm run lint:js), not PHPUnit
+  - ✅ **Status:** COMPLETED - All code written, ESLint passing, build successful (790 bytes minified)
 
 ## Phase 5: Query System Refactor
 

@@ -8,10 +8,10 @@
 # Dependencies
 vendor/
 node_modules/
-composer.lock
 
-# Build artifacts
-build/
+# Build artifacts - DO NOT ignore src/generated/ (needed for plugin distribution)
+# The src/generated/ directory contains compiled JavaScript for the Block Editor
+# and must be committed to Git for WordPress.org deployment
 dist/
 coverage/
 

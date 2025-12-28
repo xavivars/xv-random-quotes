@@ -72,7 +72,7 @@ class QuotePostType {
 			'hierarchical'       => false,
 			'menu_position'      => 20,
 			'menu_icon'          => 'dashicons-format-quote',
-			'supports'           => array( 'title', 'editor', 'author', 'revisions' ),
+			'supports'           => array( 'title', 'editor', 'author', 'revisions', 'custom-fields' ),
 			'show_in_rest'       => true,
 			'rest_base'          => 'quotes',
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
