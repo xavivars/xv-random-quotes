@@ -16,6 +16,10 @@ include('lib/class.constants.php');
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 	
+	// Load legacy helper functions and shortcodes
+	require_once __DIR__ . '/src/legacy/stray_helpers.php';
+	require_once __DIR__ . '/src/legacy/shortcodes.php';
+	
 	// Initialize v2.0 architecture (CPT, Taxonomies, Post Meta)
 	add_action( 'plugins_loaded', function() {
 		\XVRandomQuotes\Plugin::get_instance();

@@ -2,7 +2,7 @@
 
 This document tracks the complete roadmap for refactoring XV Random Quotes from v1.40 to v2.0, migrating from a custom database table to WordPress Custom Post Types.
 
-**Progress:** 18/74 tasks completed (24.3%)
+**Progress:** 20/74 tasks completed (27.0%)
 
 ## Phase 1: Foundation & Setup
 
@@ -153,11 +153,36 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 - [ ] **Task 28:** Refactor [stray-id] Shortcode to Use WP_Query
   - Update stray_id_shortcode() to query by post ID and support legacy_id meta lookup. Maintain backward compatibility. Make tests pass.
 
-- [ ] **Task 29:** Write Tests for [stray-all] Shortcode
+- [x] **Task 29:** Write Tests for [stray-all] Shortcode
   - Create tests for all quotes shortcode: verify pagination works, test category filtering, validate sorting options, check fullpage parameter, test output structure with multiple quotes.
+  - ✅ **Status:** COMPLETED - 24 tests created (2 passing: shortcode registration, 22 failing: functional tests)
+    - Created tests/shortcodes/test-stray-all-shortcode.php
+    - Test Coverage:
+      * Shortcode registration and function existence (2 tests - PASSING)
+      * Basic output and rows parameter (2 tests)
+      * Category filtering: single, multiple, "all", empty, nonexistent (5 tests)
+      * Ordering: sequence, orderby, sort parameters (5 tests)
+      * Pagination: fullpage, offset parameters (3 tests)
+      * Other parameters: noajax, disableaspect, linkphrase, timer (4 tests)
+      * Edge cases: draft exclusion, no quotes, combined attributes (3 tests)
+    - TDD red phase confirmed: 22 tests failing (errors from legacy database table dependency)
 
-- [ ] **Task 30:** Refactor [stray-all] Shortcode to Use WP_Query
+- [x] **Task 30:** Refactor [stray-all] Shortcode to Use WP_Query
   - Update stray_all_shortcode() to use WP_Query with pagination args. Maintain all filtering and sorting functionality. Make tests pass.
+  - ✅ **Status:** COMPLETED - All 24 tests passing
+    - Refactored stray_all_shortcode() to use QuoteQueries class
+    - Added get_quotes_by_categories() method to QuoteQueries for multiple category filtering
+    - Created stray_output_one_cpt() for CPT-compatible output formatting
+    - Created stray_build_pagination() helper for pagination links
+    - Implementation details:
+      * Uses QuoteQueries::get_quotes_by_categories() or get_all_quotes()
+      * Handles category filtering (single, multiple, all, empty)
+      * Supports pagination with fullpage/simple modes
+      * Maps legacy orderby values (quoteID→ID, author→title, etc.)
+      * Random vs sequential ordering via sequence parameter
+      * Extracts author from quote_author taxonomy, source from _quote_source meta
+      * Respects all display settings from options (beforeAll, afterAll, etc.)
+    - Test results: 24/24 tests passing, 166 total tests, 400 assertions
 
 ## Phase 7: Template Tags & Widgets
 

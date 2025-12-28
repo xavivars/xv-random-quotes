@@ -323,4 +323,49 @@ class Test_Quote_Queries extends WP_UnitTestCase {
 		$this->assertInstanceOf( 'WP_Post', $quote_by_id );
 		$this->assertContainsOnlyInstancesOf( 'WP_Post', $quotes_by_author );
 	}
+
+	/**
+	 * Test get_quotes_by_categories() with multiple categories
+	 */
+	public function test_get_quotes_by_categories_multiple() {
+		$quotes = $this->queries->get_quotes_by_categories( array( 'science', 'philosophy' ) );
+
+		$this->assertIsArray( $quotes );
+		$this->assertCount( 2, $quotes, 'Should return quotes from both categories' );
+	}
+
+	/**
+	 * Test get_quotes_by_categories() with single category
+	 */
+	public function test_get_quotes_by_categories_single() {
+		$quotes = $this->queries->get_quotes_by_categories( array( 'science' ) );
+
+		$this->assertIsArray( $quotes );
+		$this->assertCount( 1, $quotes, 'Should return one quote from science category' );
+		$this->assertEquals( 'Test Quote 1', $quotes[0]->post_title );
+	}
+
+	/**
+	 * Test get_quotes_by_categories() with empty array returns all
+	 */
+	public function test_get_quotes_by_categories_empty_returns_all() {
+		$quotes = $this->queries->get_quotes_by_categories( array() );
+
+		$this->assertIsArray( $quotes );
+		$this->assertCount( 3, $quotes, 'Should return all quotes when categories is empty' );
+	}
+
+	/**
+	 * Test get_quotes_by_categories() with custom args
+	 */
+	public function test_get_quotes_by_categories_with_custom_args() {
+		$quotes = $this->queries->get_quotes_by_categories(
+			array( 'science', 'philosophy' ),
+			array( 'posts_per_page' => 1 )
+		);
+
+		$this->assertIsArray( $quotes );
+		$this->assertCount( 1, $quotes, 'Should respect custom posts_per_page' );
+	}
 }
+

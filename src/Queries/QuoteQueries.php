@@ -187,4 +187,47 @@ class QuoteQueries {
 
 		return $query->posts;
 	}
+
+	/**
+	 * Get quotes filtered by multiple categories
+	 *
+	 * @param array $category_slugs Array of category term slugs.
+	 * @param array $args Optional WP_Query arguments to override defaults.
+	 * @return array Array of quote post objects.
+	 */
+	public function get_quotes_by_categories( $category_slugs, $args = array() ) {
+		// If empty array or single category, use existing method
+		if ( empty( $category_slugs ) ) {
+			return $this->get_all_quotes( $args );
+		}
+
+		if ( count( $category_slugs ) === 1 ) {
+			return $this->get_quotes_by_category( $category_slugs[0], $args );
+		}
+
+		$defaults = array(
+			'post_type'      => self::POST_TYPE,
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'tax_query'      => array(
+				array(
+					'taxonomy' => 'quote_category',
+					'field'    => 'slug',
+					'terms'    => $category_slugs,
+					'operator' => 'IN',
+				),
+			),
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		// Merge tax_query if custom args provided
+		if ( isset( $args['tax_query'] ) && is_array( $args['tax_query'] ) ) {
+			$args['tax_query'] = array_merge( $defaults['tax_query'], $args['tax_query'] );
+		}
+
+		$query = new WP_Query( $args );
+
+		return $query->posts;
+	}
 }
