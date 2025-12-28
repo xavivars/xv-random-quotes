@@ -2,7 +2,7 @@
 
 This document tracks the complete roadmap for refactoring XV Random Quotes from v1.40 to v2.0, migrating from a custom database table to WordPress Custom Post Types.
 
-**Progress:** 27/76 tasks completed (35.5%)
+**Progress:** 29/76 tasks completed (38.2%)
 
 ## Phase 1: Foundation & Setup
 
@@ -403,11 +403,53 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
     - Test results: 297 total tests (280 + 17 widget migration), 17/17 migration tests passing
     - Migration is idempotent: runs only once per installation
 
-- [ ] **Task 35:** Write Tests for AJAX Quote Refresh
-  - Create tests for AJAX endpoint: verify xv_random_quotes_new_quote action, test parameter sanitization, validate response format, check category filtering via AJAX works with taxonomies.
+- [x] **Task 35:** Write Tests for REST API Quote Endpoint
+  - Create tests for REST API endpoint: verify route registration (/wp-json/xv-random-quotes/v1/quote/random), test GET request accessibility (public, no auth), validate parameter schema (categories, sequence, multi, disableaspect, contributor), check response format (WP_REST_Response with quote HTML + metadata), test error handling (invalid categories, no quotes found), verify category filtering works with taxonomies, test multi-quote responses, validate JSON structure.
+  - ✅ **Status:** COMPLETED - 22 tests created (7 errors, 12 failures, 3 passing - expected TDD red phase)
+    - Created tests/rest-api/test-quote-endpoint.php
+    - Test Coverage:
+      * Route registration and namespace (2 tests)
+      * GET request acceptance and public accessibility (2 tests)
+      * Response structure and format (3 tests)
+      * Category filtering: single, multiple, empty, invalid (4 tests)
+      * Parameters: sequence, multi, disableaspect, contributor (4 tests)
+      * Error handling: no quotes found, invalid category (2 tests)
+      * Parameter validation schema (3 tests)
+      * Combined parameters test (1 test)
+      * Randomness verification (1 test)
+    - TDD red phase confirmed:
+      * 7 errors: Route not registered, response structure missing
+      * 12 failures: 404 responses, missing fields
+      * 3 passing: Public accessibility check, no quotes handling, one validation
+    - Ready for Task 36 implementation
 
-- [ ] **Task 36:** Refactor AJAX Handlers to Use WP_Query
-  - Update stray_ajax.php AJAX handlers to use new query system. Ensure AJAX refresh works with CPT/taxonomies. Make tests pass.
+- [x] **Task 36:** Implement REST API Quote Endpoint
+  - Create src/RestAPI/QuoteEndpoint.php with route registration and handler. Register REST route in Plugin.php on rest_api_init hook. Implement GET endpoint using QuoteQueries class (reuse existing query logic). Define parameter schema with validation. Return WP_REST_Response with proper structure. Handle errors with appropriate HTTP status codes. Make tests pass.
+  - ✅ **Status:** COMPLETED - All 22 tests passing (319 total tests)
+    - Created src/RestAPI/QuoteEndpoint.php with:
+      * register_routes() - Registers /xv-random-quotes/v1/quote/random endpoint
+      * get_endpoint_args() - Parameter schema for categories, sequence, multi, disableaspect, contributor
+      * get_random_quote() - Request handler using Legacy\stray_get_random_quotes_output()
+    - Registered in src/Plugin.php:
+      * Added register_rest_routes() method
+      * Hooked to rest_api_init action
+    - Implementation Details:
+      * Uses WP_REST_Server::READABLE (GET method)
+      * Public endpoint (permission_callback: __return_true)
+      * Converts category string to array for QuoteQueries
+      * Returns WP_REST_Response with html + metadata (quote_id, quote_text, author, source, categories)
+      * WP_Error handling for query failures and no quotes found
+    - All 22 REST API tests passing:
+      * Route registration (2 tests)
+      * GET methods and public access (2 tests)
+      * Response structure (3 tests)
+      * Category filtering (4 tests)
+      * Parameter handling (4 tests)
+      * Error handling (2 tests)
+      * Parameter validation (3 tests)
+      * Combined parameters (1 test)
+      * Randomness (1 test)
+    - Full test suite: 319 tests, 782 assertions (1 pre-existing error in help test)
 
 
 ## Phase 8: Gutenberg Blocks

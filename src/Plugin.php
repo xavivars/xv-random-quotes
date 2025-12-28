@@ -15,6 +15,7 @@ use XVRandomQuotes\PostMeta\QuoteMetaFields;
 use XVRandomQuotes\Admin\MetaBoxes;
 use XVRandomQuotes\Admin\BlockEditorAssets;
 use XVRandomQuotes\Widgets\QuoteWidget;
+use XVRandomQuotes\RestAPI\QuoteEndpoint;
 
 /**
  * Class Plugin
@@ -81,6 +82,9 @@ class Plugin {
 
 		// Register widgets
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
+
+		// Register REST API endpoints
+		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 
 	/**
@@ -88,5 +92,12 @@ class Plugin {
 	 */
 	public function register_widgets() {
 		register_widget( QuoteWidget::class );
+	}
+
+	/**
+	 * Register REST API routes
+	 */
+	public function register_rest_routes() {
+		QuoteEndpoint::register_routes();
 	}
 }
