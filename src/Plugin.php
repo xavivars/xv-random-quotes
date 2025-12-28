@@ -85,6 +85,9 @@ class Plugin {
 
 		// Register REST API endpoints
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
+
+		// Register Gutenberg blocks
+		add_action( 'init', array( $this, 'register_blocks' ) );
 	}
 
 	/**
@@ -99,5 +102,40 @@ class Plugin {
 	 */
 	public function register_rest_routes() {
 		QuoteEndpoint::register_routes();
+	}
+
+	/**
+	 * Register Gutenberg blocks
+	 */
+	public function register_blocks() {
+		// Register Random Quote block
+		if ( ! \WP_Block_Type_Registry::get_instance()->is_registered( 'xv-random-quotes/random-quote' ) ) {
+			register_block_type(
+				dirname( __DIR__ ) . '/src/Blocks/RandomQuote/block.json',
+				array(
+					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_random_quote_block',
+				)
+			);
+		}
+
+		// Register Specific Quote block
+		if ( ! \WP_Block_Type_Registry::get_instance()->is_registered( 'xv-random-quotes/specific-quote' ) ) {
+			register_block_type(
+				dirname( __DIR__ ) . '/src/Blocks/SpecificQuote/block.json',
+				array(
+					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_specific_quote_block',
+				)
+			);
+		}
+
+		// Register List Quotes block
+		if ( ! \WP_Block_Type_Registry::get_instance()->is_registered( 'xv-random-quotes/list-quotes' ) ) {
+			register_block_type(
+				dirname( __DIR__ ) . '/src/Blocks/ListQuotes/block.json',
+				array(
+					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_list_quotes_block',
+				)
+			);
+		}
 	}
 }

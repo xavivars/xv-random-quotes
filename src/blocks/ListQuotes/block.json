@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "xv-random-quotes/list-quotes",
+    "title": "List Quotes",
+    "category": "widgets",
+    "icon": "list-view",
+    "description": "Display a list of quotes with pagination",
+    "keywords": [
+        "quote",
+        "list",
+        "all"
+    ],
+    "textdomain": "stray-quotes",
+    "attributes": {
+        "categories": {
+            "type": "string",
+            "default": ""
+        },
+        "rows": {
+            "type": "number",
+            "default": 10
+        },
+        "orderby": {
+            "type": "string",
+            "default": "date"
+        },
+        "sort": {
+            "type": "string",
+            "default": "DESC"
+        },
+        "disableaspect": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": true
+    },
+    "editorScript": "file:./index.js"
+}

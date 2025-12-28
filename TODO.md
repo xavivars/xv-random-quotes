@@ -500,11 +500,78 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 ## Phase 8: Gutenberg Blocks
 
-- [ ] **Task 37:** Write Tests for Random Quote Gutenberg Block
-  - Create tests for server-rendered random quote block: verify block registration, test block attributes (category, showAuthor, showSource, enableAjax), validate server-side render callback, check block preview.
+- [x] **Task 37:** Write Tests for Gutenberg Blocks (Three Separate Blocks)
+  - Create tests for three separate server-rendered blocks: Random Quote (dice icon), Specific Quote (quote icon), and List Quotes. Test block registration, attributes schema, render callbacks, and block-specific functionality.
+  - ✅ **Status:** COMPLETED - 49 tests written (red phase)
+    - Created tests/blocks/test-random-quote-block.php (16 tests)
+      * Block registration and attributes (categories, multi, sequence, disableaspect, enableAjax, timer)
+      * Single and multiple quote rendering
+      * Category filtering (single, multiple, all, nonexistent)
+      * Sequence ordering
+      * AJAX functionality (enabled, disabled, manual refresh)
+      * Edge cases (empty database, draft exclusion)
+    - Created tests/blocks/test-specific-quote-block.php (16 tests)
+      * Block registration and attributes (quoteId, disableaspect)
+      * Rendering by post ID and legacy ID
+      * Invalid/missing ID handling
+      * Quote components (content, author, source)
+      * Draft exclusion, quotes without author
+      * Wrapper/aspect control
+    - Created tests/blocks/test-list-quotes-block.php (17 tests)
+      * Block registration and attributes (categories, rows, orderby, sort, disableaspect)
+      * Multiple quote rendering with pagination
+      * Category filtering (single, multiple, all, nonexistent)
+      * Ordering (date ASC/DESC, title)
+      * Rows limit and edge cases
+      * Complete quote rendering
+      * Draft exclusion, empty database
+    - TDD red phase confirmed:
+      * 49 tests total
+      * 9 failures: Blocks not registered (3 blocks × 3 registration tests)
+      * 40 errors: render_callback property of non-object (expected with missing blocks)
+    - Block structure planned:
+      * xv-random-quotes/random-quote (dice icon)
+      * xv-random-quotes/specific-quote (quote icon)
+      * xv-random-quotes/list-quotes (list icon)
+    - Ready for Task 38 implementation
 
-- [ ] **Task 38:** Implement Random Quote Gutenberg Block
-  - Create src/blocks/random-quote/ with block.json and render.php. Implement server-side rendering using query helpers. Add block editor controls for attributes. Make tests pass.
+- [x] **Task 38:** Implement Three Gutenberg Blocks
+  - Create src/Blocks/ directory with three subdirectories (RandomQuote, SpecificQuote, ListQuotes). Each block has block.json with icon and render.php. Implement server-side rendering using existing query helpers. Register blocks in Plugin.php. Make all 49 tests pass.
+  - ✅ **Status:** COMPLETED - All 49 block tests passing (386 total tests)
+    - Created src/Blocks/RandomQuote/
+      * block.json - Block metadata with attributes (categories, multi, sequence, disableaspect, enableAjax, timer)
+      * render.php - Server-side render callback with xv- CSS classes
+      * index.js - Placeholder for future editor enhancements
+      * Implements render_single_quote() helper for HTML output
+      * AJAX wrapper support with data attributes and refresh link
+    - Created src/Blocks/SpecificQuote/
+      * block.json - Block metadata with attributes (quoteId, disableaspect)
+      * render.php - Renders by post ID or legacy ID (_legacy_quote_id meta)
+      * index.js - Placeholder
+      * Handles draft exclusion, invalid IDs
+    - Created src/Blocks/ListQuotes/
+      * block.json - Block metadata with attributes (categories, rows, orderby, sort, disableaspect)
+      * render.php - Paginated list with render_list_quote() helper
+      * index.js - Placeholder
+      * Supports pagination, ordering, category filtering
+    - Updated src/Plugin.php:
+      * Added register_blocks() method hooked to 'init'
+      * Checks if blocks already registered (prevents test errors)
+      * Uses register_block_type() with render callbacks
+    - Updated xv-random-quotes.php:
+      * Loaded render.php files for all three blocks
+    - CSS Class Structure (New):
+      * xv-quote-wrapper - Main container (when disableaspect=false)
+      * xv-quote - Quote text div
+      * xv-quote-author - Author div
+      * xv-quote-source - Source div
+      * xv-quote-ajax-wrapper - AJAX container
+      * xv-quote-refresh - Refresh link class
+    - All 49 tests passing:
+      * Random Quote Block: 16 tests
+      * Specific Quote Block: 16 tests
+      * List Quotes Block: 17 tests
+    - Full test suite: 386 tests, 946 assertions (1 pre-existing error in help test)
 
 ## Phase 9: Settings & Admin UI
 

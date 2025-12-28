@@ -23,6 +23,11 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	// Load shortcode handlers
 	require_once __DIR__ . '/src/Shortcodes/ShortcodeHandlers.php';
 	
+	// Load block render callbacks
+	require_once __DIR__ . '/src/Blocks/RandomQuote/render.php';
+	require_once __DIR__ . '/src/Blocks/SpecificQuote/render.php';
+	require_once __DIR__ . '/src/Blocks/ListQuotes/render.php';
+	
 	// Load backward compatibility wrappers
 	require_once __DIR__ . '/backward-compatibility.php';
 	

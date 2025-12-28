@@ -1,0 +1,46 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "xv-random-quotes/random-quote",
+    "title": "Random Quote",
+    "category": "widgets",
+    "icon": "tickets-alt",
+    "description": "Display one or more random quotes",
+    "keywords": [
+        "quote",
+        "random",
+        "inspiration"
+    ],
+    "textdomain": "stray-quotes",
+    "attributes": {
+        "categories": {
+            "type": "string",
+            "default": ""
+        },
+        "multi": {
+            "type": "number",
+            "default": 1
+        },
+        "sequence": {
+            "type": "boolean",
+            "default": false
+        },
+        "disableaspect": {
+            "type": "boolean",
+            "default": false
+        },
+        "enableAjax": {
+            "type": "boolean",
+            "default": false
+        },
+        "timer": {
+            "type": "number",
+            "default": 0
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": true
+    },
+    "editorScript": "file:./index.js"
+}
