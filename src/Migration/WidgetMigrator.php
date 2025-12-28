@@ -131,8 +131,15 @@ class WidgetMigrator {
 			$new_instance['contributor'] = $legacy['contributor'];
 		}
 
-		// AJAX-related fields (noajax, linkphrase, timer) are intentionally
-		// NOT migrated - they will be reimplemented in Tasks 35-36
+		// Enable AJAX - inverted from noajax (noajax='Y' means AJAX disabled)
+		$noajax = isset( $legacy['noajax'] ) ? $legacy['noajax'] : 'Y';
+		$new_instance['enable_ajax'] = ( $noajax !== 'Y' );
+
+		// Timer - preserved as integer (0 = manual refresh, >0 = auto-refresh seconds)
+		$new_instance['timer'] = isset( $legacy['timer'] ) ? absint( $legacy['timer'] ) : 0;
+
+		// Note: The following legacy fields are intentionally NOT migrated:
+		// - linkphrase (no longer used in the new widget implementation)
 
 		return $new_instance;
 	}

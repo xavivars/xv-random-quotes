@@ -51,6 +51,7 @@ class QuoteWidget extends \WP_Widget {
 		$after_widget  = isset( $args['after_widget'] ) ? $args['after_widget'] : '';
 		$before_title  = isset( $args['before_title'] ) ? $args['before_title'] : '';
 		$after_title   = isset( $args['after_title'] ) ? $args['after_title'] : '';
+		$widget_id     = isset( $args['widget_id'] ) ? $args['widget_id'] : 'xv_quote_widget-' . uniqid();
 
 		// Get widget settings with defaults
 		$title         = ! empty( $instance['title'] ) ? $instance['title'] : '';
@@ -59,16 +60,36 @@ class QuoteWidget extends \WP_Widget {
 		$multi         = ! empty( $instance['multi'] ) ? absint( $instance['multi'] ) : 1;
 		$disableaspect = ! empty( $instance['disableaspect'] ) ? (bool) $instance['disableaspect'] : false;
 		$contributor   = ! empty( $instance['contributor'] ) ? sanitize_text_field( $instance['contributor'] ) : '';
+		$enable_ajax   = ! empty( $instance['enable_ajax'] ) ? (bool) $instance['enable_ajax'] : false;
+		$timer         = ! empty( $instance['timer'] ) ? absint( $instance['timer'] ) : 0;
 
-		// TODO: AJAX and timer features temporarily disabled
-		// Will be reimplemented in Tasks 35-36 (AJAX refactoring)
-		// Legacy parameters: linkphrase, noajax, timer, widgetid
+		// Enqueue AJAX script if enabled
+		if ( $enable_ajax ) {
+			$this->enqueue_refresh_script();
+		}
 		
 		// Output widget
 		echo $before_widget;
 		
 		if ( ! empty( $title ) ) {
 			echo $before_title . esc_html( $title ) . $after_title;
+		}
+		
+		// Generate unique container ID
+		$container_id = 'xv-quote-container-' . sanitize_html_class( $widget_id );
+		
+		// Start quote container with data attributes if AJAX enabled
+		if ( $enable_ajax ) {
+			echo '<div id="' . esc_attr( $container_id ) . '" class="xv-quote-container"';
+			echo ' data-categories="' . esc_attr( $categories ) . '"';
+			echo ' data-sequence="' . esc_attr( $sequence ? '1' : '0' ) . '"';
+			echo ' data-multi="' . esc_attr( $multi ) . '"';
+			echo ' data-disableaspect="' . esc_attr( $disableaspect ? '1' : '0' ) . '"';
+			if ( ! empty( $contributor ) ) {
+				echo ' data-contributor="' . esc_attr( $contributor ) . '"';
+			}
+			echo ' data-timer="' . esc_attr( $timer ) . '"';
+			echo '>';
 		}
 		
 		// Use core implementation for quote retrieval and display
@@ -81,7 +102,52 @@ class QuoteWidget extends \WP_Widget {
 			$contributor
 		);
 		
+		// Add refresh link if AJAX enabled
+		if ( $enable_ajax ) {
+			echo '<div class="xv-quote-refresh-wrapper">';
+			echo '<a href="#" class="xv-quote-refresh" data-container="' . esc_attr( $container_id ) . '">';
+			echo esc_html__( 'Get another quote', 'stray-quotes' );
+			echo '</a>';
+			echo '</div>';
+			echo '</div>'; // Close container
+		}
+		
 		echo $after_widget;
+	}
+
+	/**
+	 * Enqueue the quote refresh JavaScript
+	 */
+	private function enqueue_refresh_script() {
+		// WordPress will handle deduplication if this is called multiple times
+		// Get plugin root directory (go up from src/Widgets/)
+		$plugin_dir = dirname( dirname( __DIR__ ) );
+		$script_path = $plugin_dir . '/assets/js/quote-refresh.js';
+		$script_url  = plugins_url( 'assets/js/quote-refresh.js', dirname( dirname( __FILE__ ) ) );
+		
+		// Use file modification time for cache busting, fall back to version if file doesn't exist
+		$version = file_exists( $script_path ) ? filemtime( $script_path ) : '1.0.0';
+		
+		// Only enqueue if not already enqueued
+		if ( ! wp_script_is( 'xv-quote-refresh', 'enqueued' ) ) {
+			wp_enqueue_script(
+				'xv-quote-refresh',
+				$script_url,
+				array(), // No dependencies - vanilla JavaScript
+				$version,
+				true // In footer
+			);
+			
+			// Localize script with REST API URL
+			wp_localize_script(
+				'xv-quote-refresh',
+				'xvQuoteRefresh',
+				array(
+					'restUrl'   => esc_url_raw( rest_url( 'xv-random-quotes/v1/quote/random' ) ),
+					'restNonce' => wp_create_nonce( 'wp_rest' ),
+				)
+			);
+		}
 	}
 
 	/**
@@ -98,6 +164,8 @@ class QuoteWidget extends \WP_Widget {
 		$multi         = isset( $instance['multi'] ) ? absint( $instance['multi'] ) : 1;
 		$disableaspect = isset( $instance['disableaspect'] ) ? (bool) $instance['disableaspect'] : false;
 		$contributor   = isset( $instance['contributor'] ) ? esc_attr( $instance['contributor'] ) : '';
+		$enable_ajax   = isset( $instance['enable_ajax'] ) ? (bool) $instance['enable_ajax'] : false;
+		$timer         = isset( $instance['timer'] ) ? absint( $instance['timer'] ) : 0;
 
 		// Get available categories from taxonomy
 		$category_terms = get_terms(
@@ -209,10 +277,33 @@ class QuoteWidget extends \WP_Widget {
 		<?php endif; ?>
 
 		<p style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 15px;">
-			<small style="color: #666;">
-				<strong><?php esc_html_e( 'Note:', 'stray-quotes' ); ?></strong>
-				<?php esc_html_e( 'AJAX refresh and timer features are temporarily disabled and will be restored in a future update.', 'stray-quotes' ); ?>
-			</small>
+			<input 
+				id="<?php echo esc_attr( $this->get_field_id( 'enable_ajax' ) ); ?>" 
+				name="<?php echo esc_attr( $this->get_field_name( 'enable_ajax' ) ); ?>" 
+				type="checkbox" 
+				value="1"
+				<?php checked( $enable_ajax, true ); ?>
+			/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'enable_ajax' ) ); ?>">
+				<strong><?php esc_html_e( 'Enable AJAX refresh', 'stray-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Allow users to get new quotes without reloading the page', 'stray-quotes' ); ?></small>
+			</label>
+		</p>
+
+		<p>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'timer' ) ); ?>">
+				<strong><?php esc_html_e( 'Auto-refresh timer (seconds):', 'stray-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Set to 0 for manual refresh only, or enter seconds for automatic refresh', 'stray-quotes' ); ?></small>
+			</label>
+			<input 
+				class="widefat" 
+				id="<?php echo esc_attr( $this->get_field_id( 'timer' ) ); ?>" 
+				name="<?php echo esc_attr( $this->get_field_name( 'timer' ) ); ?>" 
+				type="number" 
+				min="0"
+				step="1"
+				value="<?php echo esc_attr( $timer ); ?>"
+			/>
 		</p>
 		<?php
 	}
@@ -233,6 +324,8 @@ class QuoteWidget extends \WP_Widget {
 		$instance['multi']         = ! empty( $new_instance['multi'] ) ? absint( $new_instance['multi'] ) : 1;
 		$instance['disableaspect'] = ! empty( $new_instance['disableaspect'] ) ? true : false;
 		$instance['contributor']   = ! empty( $new_instance['contributor'] ) ? sanitize_text_field( $new_instance['contributor'] ) : '';
+		$instance['enable_ajax']   = ! empty( $new_instance['enable_ajax'] ) ? true : false;
+		$instance['timer']         = ! empty( $new_instance['timer'] ) ? absint( $new_instance['timer'] ) : 0;
 		
 		return $instance;
 	}

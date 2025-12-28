@@ -81,10 +81,11 @@ class Test_Widget_Settings_Migration extends WP_UnitTestCase {
 		$this->assertEquals(1, $widget['multi']);
 		$this->assertFalse($widget['disableaspect']); // 'N' → false
 		
-		// AJAX fields should not be present (deferred to Tasks 35-36)
-		$this->assertArrayNotHasKey('noajax', $widget);
-		$this->assertArrayNotHasKey('linkphrase', $widget);
-		$this->assertArrayNotHasKey('timer', $widget);
+		// AJAX fields should be migrated
+		$this->assertArrayNotHasKey('noajax', $widget, 'Legacy noajax should be removed');
+		$this->assertArrayNotHasKey('linkphrase', $widget, 'Legacy linkphrase should be removed');
+		$this->assertFalse($widget['enable_ajax'], 'noajax=Y should become enable_ajax=false');
+		$this->assertEquals(0, $widget['timer'], 'Timer should be migrated');
 	}
 
 	/**
@@ -271,19 +272,62 @@ class Test_Widget_Settings_Migration extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test AJAX-related fields removed
+	 * Test AJAX fields migrated correctly
 	 */
-	public function test_ajax_fields_removed_from_migration() {
+	public function test_ajax_fields_migrated_correctly() {
 		$legacy_widgets = array(
 			1 => array(
-				'title'        => 'Test',
+				'title'        => 'Test with AJAX enabled',
 				'groups'       => 'all',
 				'sequence'     => 'Y',
 				'multi'        => 1,
-				'noajax'       => 'N', // Will be removed
+				'noajax'       => 'N', // AJAX enabled
 				'disableaspect' => 'N',
 				'linkphrase'   => 'Click for new quote', // Will be removed
-				'timer'        => 10, // Will be removed
+				'timer'        => 10,
+			),
+			2 => array(
+				'title'        => 'Test with AJAX disabled',
+				'groups'       => 'all',
+				'sequence'     => 'Y',
+				'multi'        => 1,
+				'noajax'       => 'Y', // AJAX disabled
+				'disableaspect' => 'N',
+				'timer'        => 0,
+			)
+		);
+		update_option('widget_stray_quotes', $legacy_widgets);
+
+		\XVRandomQuotes\Migration\WidgetMigrator::migrate_widgets();
+
+		$new_widgets = get_option('widget_xv_random_quotes_widget');
+		
+		// Widget 1: noajax='N' should become enable_ajax=true
+		$widget1 = $new_widgets[2];
+		$this->assertTrue($widget1['enable_ajax'], 'noajax=N should convert to enable_ajax=true');
+		$this->assertEquals(10, $widget1['timer'], 'Timer should be preserved');
+		$this->assertArrayNotHasKey('noajax', $widget1, 'Legacy noajax field should be removed');
+		$this->assertArrayNotHasKey('linkphrase', $widget1, 'Legacy linkphrase field should be removed');
+		
+		// Widget 2: noajax='Y' should become enable_ajax=false
+		$widget2 = $new_widgets[3];
+		$this->assertFalse($widget2['enable_ajax'], 'noajax=Y should convert to enable_ajax=false');
+		$this->assertEquals(0, $widget2['timer'], 'Timer should be preserved');
+	}
+
+	/**
+	 * Test AJAX fields default values when not present
+	 */
+	public function test_ajax_fields_default_when_missing() {
+		$legacy_widgets = array(
+			1 => array(
+				'title'        => 'Test without AJAX fields',
+				'groups'       => 'all',
+				'sequence'     => 'N',
+				'multi'        => 1,
+				// No noajax field
+				// No timer field
+				'disableaspect' => 'N',
 			)
 		);
 		update_option('widget_stray_quotes', $legacy_widgets);
@@ -293,10 +337,11 @@ class Test_Widget_Settings_Migration extends WP_UnitTestCase {
 		$new_widgets = get_option('widget_xv_random_quotes_widget');
 		$widget = $new_widgets[2];
 		
-		// These fields should not exist in new format
-		$this->assertArrayNotHasKey('noajax', $widget);
-		$this->assertArrayNotHasKey('linkphrase', $widget);
-		$this->assertArrayNotHasKey('timer', $widget);
+		// When noajax is missing, default to AJAX disabled (enable_ajax=false)
+		$this->assertFalse($widget['enable_ajax'], 'Missing noajax should default to enable_ajax=false');
+		
+		// When timer is missing, default to 0
+		$this->assertEquals(0, $widget['timer'], 'Missing timer should default to 0');
 	}
 
 	/**
