@@ -7,7 +7,7 @@
  * for existing users while the actual implementation lives in the src/ directory.
  *
  * ORGANIZATION:
- * - Refactored code lives in: src/legacy/ (shortcodes.php, stray_helpers.php)
+ * - Refactored code lives in: src/Shortcodes/ and src/legacy/
  * - Backward compatibility wrappers live here (this file)
  * - Legacy code still to be migrated lives in: inc/stray_functions.php
  *
@@ -27,26 +27,26 @@ if (!defined('ABSPATH')) {
 
 /**
  * Shortcode [stray-random] - Display random quote(s)
- * Wrapper for backwards compatibility - actual implementation in src/legacy/shortcodes.php
+ * Wrapper for backwards compatibility - actual implementation in src/Shortcodes/ShortcodeHandlers.php
  */
 function stray_random_shortcode($atts, $content = NULL) {
-	return \XVRandomQuotes\Legacy\stray_random_shortcode($atts, $content);
+	return \XVRandomQuotes\Shortcodes\stray_random_shortcode($atts, $content);
 }
 
 /**
  * Shortcode [stray-all] - Display all quotes with pagination
- * Wrapper for backwards compatibility - actual implementation in src/legacy/shortcodes.php
+ * Wrapper for backwards compatibility - actual implementation in src/Shortcodes/ShortcodeHandlers.php
  */
 function stray_all_shortcode($atts, $content = NULL) {
-	return \XVRandomQuotes\Legacy\stray_all_shortcode($atts, $content);
+	return \XVRandomQuotes\Shortcodes\stray_all_shortcode($atts, $content);
 }
 
 /**
  * Shortcode [stray-id] - Display specific quote by ID
- * Wrapper for backwards compatibility - actual implementation in src/legacy/shortcodes.php
+ * Wrapper for backwards compatibility - actual implementation in src/Shortcodes/ShortcodeHandlers.php
  */
 function stray_id_shortcode($atts, $content = NULL) {
-	return \XVRandomQuotes\Legacy\stray_id_shortcode($atts, $content);
+	return \XVRandomQuotes\Shortcodes\stray_id_shortcode($atts, $content);
 }
 
 // ==============================================================================

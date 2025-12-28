@@ -16,10 +16,12 @@ include('lib/class.constants.php');
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 	
-	// Load legacy helper functions and shortcodes
+	// Load legacy helper functions
 	require_once __DIR__ . '/src/legacy/stray_helpers.php';
 	require_once __DIR__ . '/src/legacy/core.php';
-	require_once __DIR__ . '/src/legacy/shortcodes.php';
+	
+	// Load shortcode handlers
+	require_once __DIR__ . '/src/Shortcodes/ShortcodeHandlers.php';
 	
 	// Load backward compatibility wrappers
 	require_once __DIR__ . '/backward-compatibility.php';

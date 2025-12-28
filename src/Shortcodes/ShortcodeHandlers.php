@@ -1,13 +1,24 @@
 <?php
 /**
- * Legacy shortcode functions (refactored to use CPT architecture)
+ * Shortcode handlers for displaying quotes
  *
  * @package XVRandomQuotes
  */
 
-namespace XVRandomQuotes\Legacy;
+namespace XVRandomQuotes\Shortcodes;
 
 use XVRandomQuotes\Queries\QuoteQueries;
+
+// Import legacy helper functions until they're refactored
+use function XVRandomQuotes\Legacy\stray_sanitize_shortcode_attributes;
+use function XVRandomQuotes\Legacy\stray_build_order_args;
+use function XVRandomQuotes\Legacy\parse_category_slugs;
+use function XVRandomQuotes\Legacy\stray_get_filtered_quotes;
+use function XVRandomQuotes\Legacy\stray_build_multi_quote_output;
+use function XVRandomQuotes\Legacy\stray_build_pagination;
+use function XVRandomQuotes\Legacy\stray_get_wrapper_html;
+use function XVRandomQuotes\Legacy\stray_get_random_quotes_output;
+use function XVRandomQuotes\Legacy\stray_get_quote_by_id_output;
 
 /**
  * Shortcode [stray-all] - Display all quotes with pagination
