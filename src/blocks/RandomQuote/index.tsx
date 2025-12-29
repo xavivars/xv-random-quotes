@@ -44,18 +44,18 @@ registerBlockType('xv-random-quotes/random-quote', {
 					onChange={(value) => setAttributes({ disableaspect: value })}
 				/>
 				<ToggleControl
-					label={__('Enable AJAX refresh', 'stray-quotes')}
+					label={__('Enable AJAX refresh', 'xv-random-quotes')}
 					checked={attributes.enableAjax}
 					onChange={(value) => setAttributes({ enableAjax: value })}
 				/>
 				{attributes.enableAjax && (
 					<RangeControl
-						label={__('Auto-refresh timer (seconds)', 'stray-quotes')}
+						label={__('Auto-refresh timer (seconds)', 'xv-random-quotes')}
 						value={attributes.timer}
 						onChange={(value) => setAttributes({ timer: value })}
 						min={0}
 						max={300}
-						help={__('0 = no auto-refresh', 'stray-quotes')}
+						help={__('0 = no auto-refresh', 'xv-random-quotes')}
 					/>
 				)}
 			</BlockEditor>

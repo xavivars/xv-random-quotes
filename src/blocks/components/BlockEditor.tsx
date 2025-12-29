@@ -28,7 +28,7 @@ export const BlockEditor = ({
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Quote Settings', 'stray-quotes')}>
+				<PanelBody title={__('Quote Settings', 'xv-random-quotes')}>
 					{children}
 				</PanelBody>
 			</InspectorControls>

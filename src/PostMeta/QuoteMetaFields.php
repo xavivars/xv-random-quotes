@@ -38,7 +38,7 @@ class QuoteMetaFields {
 			'_quote_source',
 			array(
 				'type'              => 'string',
-				'description'       => __( 'Source or citation for the quote', 'stray-quotes' ),
+				'description'       => __( 'Source or citation for the quote', 'xv-random-quotes' ),
 				'single'            => true,
 				'show_in_rest'      => true,
 				'sanitize_callback' => 'wp_kses_post',
@@ -54,7 +54,7 @@ class QuoteMetaFields {
 			'_quote_legacy_id',
 			array(
 				'type'              => 'integer',
-				'description'       => __( 'Original quote ID from pre-v2.0 database table', 'stray-quotes' ),
+				'description'       => __( 'Original quote ID from pre-v2.0 database table', 'xv-random-quotes' ),
 				'single'            => true,
 				'show_in_rest'      => true,
 				'sanitize_callback' => 'absint',
@@ -70,7 +70,7 @@ class QuoteMetaFields {
 			'_quote_display_order',
 			array(
 				'type'              => 'integer',
-				'description'       => __( 'Custom display order for the quote', 'stray-quotes' ),
+				'description'       => __( 'Custom display order for the quote', 'xv-random-quotes' ),
 				'single'            => true,
 				'show_in_rest'      => true,
 				'sanitize_callback' => 'absint',

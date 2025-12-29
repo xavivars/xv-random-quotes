@@ -36,34 +36,34 @@ registerBlockType('xv-random-quotes/list-quotes', {
 					onChange={(value) => setAttributes({ categories: value })}
 				/>
 				<TextControl
-					label={__('Quotes per page', 'stray-quotes')}
+					label={__('Quotes per page', 'xv-random-quotes')}
 					value={attributes.rows}
 					onChange={(value) => setAttributes({ rows: parseInt(value) || 5 })}
 					type="number"
 					min={1}
-					help={__('Number of quotes to display per page', 'stray-quotes')}
+					help={__('Number of quotes to display per page', 'xv-random-quotes')}
 				/>
 				<SelectControl
-					label={__('Order by', 'stray-quotes')}
+					label={__('Order by', 'xv-random-quotes')}
 					value={attributes.orderby}
 					onChange={(value) => setAttributes({ orderby: value })}
 					options={[
-						{ label: __('Date', 'stray-quotes'), value: 'date' },
-						{ label: __('Title', 'stray-quotes'), value: 'title' },
-						{ label: __('Random', 'stray-quotes'), value: 'rand' },
+						{ label: __('Date', 'xv-random-quotes'), value: 'date' },
+						{ label: __('Title', 'xv-random-quotes'), value: 'title' },
+						{ label: __('Random', 'xv-random-quotes'), value: 'rand' },
 					]}
 				/>
 				<SelectControl
-					label={__('Order', 'stray-quotes')}
+					label={__('Order', 'xv-random-quotes')}
 					value={attributes.order}
 					onChange={(value) => setAttributes({ order: value })}
 					options={[
-						{ label: __('Ascending', 'stray-quotes'), value: 'ASC' },
-						{ label: __('Descending', 'stray-quotes'), value: 'DESC' },
+						{ label: __('Ascending', 'xv-random-quotes'), value: 'ASC' },
+						{ label: __('Descending', 'xv-random-quotes'), value: 'DESC' },
 					]}
 				/>
 				<ToggleControl
-					label={__('Show pagination', 'stray-quotes')}
+					label={__('Show pagination', 'xv-random-quotes')}
 					checked={attributes.showPagination}
 					onChange={(value) => setAttributes({ showPagination: value })}
 				/>

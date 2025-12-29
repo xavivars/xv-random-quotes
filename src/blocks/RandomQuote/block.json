@@ -11,7 +11,7 @@
         "random",
         "inspiration"
     ],
-    "textdomain": "stray-quotes",
+    "textdomain": "xv-random-quotes",
     "attributes": {
         "categories": {
             "type": "string",

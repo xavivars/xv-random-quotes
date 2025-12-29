@@ -107,8 +107,8 @@ class Settings {
 	public function add_settings_page() {
 		add_submenu_page(
 			'edit.php?post_type=xv_quote',
-			__( 'Quote Settings', 'stray-quotes' ),
-			__( 'Settings', 'stray-quotes' ),
+			__( 'Quote Settings', 'xv-random-quotes' ),
+			__( 'Settings', 'xv-random-quotes' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			array( $this, 'render_settings_page' )
@@ -262,21 +262,21 @@ class Settings {
 		// Add settings sections
 		add_settings_section(
 			'xv_quotes_native_styling',
-			__( 'Quote Display Mode', 'stray-quotes' ),
+			__( 'Quote Display Mode', 'xv-random-quotes' ),
 			array( $this, 'render_native_styling_section' ),
 			self::PAGE_SLUG
 		);
 
 		add_settings_section(
 			'xv_quotes_display',
-			__( 'Custom HTML Wrappers', 'stray-quotes' ),
+			__( 'Custom HTML Wrappers', 'xv-random-quotes' ),
 			array( $this, 'render_display_section' ),
 			self::PAGE_SLUG
 		);
 
 		add_settings_section(
 			'xv_quotes_links',
-			__( 'Author & Source Links', 'stray-quotes' ),
+			__( 'Author & Source Links', 'xv-random-quotes' ),
 			array( $this, 'render_links_section' ),
 			self::PAGE_SLUG
 		);
@@ -289,7 +289,7 @@ class Settings {
 		// Add AJAX section
 		add_settings_section(
 			'xv_quotes_ajax',
-			__( 'AJAX Settings', 'stray-quotes' ),
+			__( 'AJAX Settings', 'xv-random-quotes' ),
 			array( $this, 'render_ajax_section' ),
 			self::PAGE_SLUG
 		);
@@ -302,14 +302,14 @@ class Settings {
 	private function add_native_styling_fields() {
 		add_settings_field(
 			self::OPTION_USE_NATIVE_STYLING,
-			__( 'Use Native WordPress Quote Styling', 'stray-quotes' ),
+			__( 'Use Native WordPress Quote Styling', 'xv-random-quotes' ),
 			array( $this, 'render_checkbox_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_native_styling',
 			array(
 				'label_for'   => self::OPTION_USE_NATIVE_STYLING,
 				'option_name' => self::OPTION_USE_NATIVE_STYLING,
-				'description' => __( 'Enable to use WordPress native quote block styling. When enabled, quotes will be displayed using the standard WordPress quote block format with <code>&lt;blockquote class="wp-block-quote"&gt;</code>. Disable to use custom HTML wrappers below.', 'stray-quotes' ),
+				'description' => __( 'Enable to use WordPress native quote block styling. When enabled, quotes will be displayed using the standard WordPress quote block format with <code>&lt;blockquote class="wp-block-quote"&gt;</code>. Disable to use custom HTML wrappers below.', 'xv-random-quotes' ),
 			)
 		);
 	}
@@ -321,28 +321,28 @@ class Settings {
 		// Quote Area
 		add_settings_field(
 			self::OPTION_BEFORE_ALL,
-			__( 'Before Quote Area', 'stray-quotes' ),
+			__( 'Before Quote Area', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_BEFORE_ALL,
 				'option_name' => self::OPTION_BEFORE_ALL,
-				'description' => __( 'HTML or other elements before the quote area. Example: <code>&lt;div class="quote-wrapper"&gt;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements before the quote area. Example: <code>&lt;div class="quote-wrapper"&gt;</code>', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_AFTER_ALL,
-			__( 'After Quote Area', 'stray-quotes' ),
+			__( 'After Quote Area', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_AFTER_ALL,
 				'option_name' => self::OPTION_AFTER_ALL,
-				'description' => __( 'HTML or other elements after the quote area. Example: <code>&lt;/div&gt;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements after the quote area. Example: <code>&lt;/div&gt;</code>', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
@@ -350,28 +350,28 @@ class Settings {
 		// Quote Text
 		add_settings_field(
 			self::OPTION_BEFORE_QUOTE,
-			__( 'Before Quote Text', 'stray-quotes' ),
+			__( 'Before Quote Text', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_BEFORE_QUOTE,
 				'option_name' => self::OPTION_BEFORE_QUOTE,
-				'description' => __( 'HTML or other elements before the quote text. Example: <code>&amp;#8220;</code> (opening quote)', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements before the quote text. Example: <code>&amp;#8220;</code> (opening quote)', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_AFTER_QUOTE,
-			__( 'After Quote Text', 'stray-quotes' ),
+			__( 'After Quote Text', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_AFTER_QUOTE,
 				'option_name' => self::OPTION_AFTER_QUOTE,
-				'description' => __( 'HTML or other elements after the quote text. Example: <code>&amp;#8221;</code> (closing quote)', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements after the quote text. Example: <code>&amp;#8221;</code> (closing quote)', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
@@ -379,28 +379,28 @@ class Settings {
 		// Author
 		add_settings_field(
 			self::OPTION_BEFORE_AUTHOR,
-			__( 'Before Author', 'stray-quotes' ),
+			__( 'Before Author', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_BEFORE_AUTHOR,
 				'option_name' => self::OPTION_BEFORE_AUTHOR,
-				'description' => __( 'HTML or other elements before the author. Example: <code>&lt;br/&gt;by&amp;nbsp;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements before the author. Example: <code>&lt;br/&gt;by&amp;nbsp;</code>', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_AFTER_AUTHOR,
-			__( 'After Author', 'stray-quotes' ),
+			__( 'After Author', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_AFTER_AUTHOR,
 				'option_name' => self::OPTION_AFTER_AUTHOR,
-				'description' => __( 'HTML or other elements after the author.', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements after the author.', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
@@ -408,42 +408,42 @@ class Settings {
 		// Source
 		add_settings_field(
 			self::OPTION_BEFORE_SOURCE,
-			__( 'Before Source', 'stray-quotes' ),
+			__( 'Before Source', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_BEFORE_SOURCE,
 				'option_name' => self::OPTION_BEFORE_SOURCE,
-				'description' => __( 'HTML or other elements before the source. Example: <code>,&lt;em&gt;&amp;nbsp;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements before the source. Example: <code>,&lt;em&gt;&amp;nbsp;</code>', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_AFTER_SOURCE,
-			__( 'After Source', 'stray-quotes' ),
+			__( 'After Source', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_AFTER_SOURCE,
 				'option_name' => self::OPTION_AFTER_SOURCE,
-				'description' => __( 'HTML or other elements after the source. Example: <code>&lt;/em&gt;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements after the source. Example: <code>&lt;/em&gt;</code>', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_IF_NO_AUTHOR,
-			__( 'Before Source (No Author)', 'stray-quotes' ),
+			__( 'Before Source (No Author)', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_IF_NO_AUTHOR,
 				'option_name' => self::OPTION_IF_NO_AUTHOR,
-				'description' => __( 'HTML or other elements before the source when there is no author. Overrides "Before Source" field. Example: <code>&lt;br/&gt;source:&amp;nbsp;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements before the source when there is no author. Overrides "Before Source" field. Example: <code>&lt;br/&gt;source:&amp;nbsp;</code>', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
@@ -451,14 +451,14 @@ class Settings {
 		// Put Quotes First
 		add_settings_field(
 			self::OPTION_PUT_QUOTES_FIRST,
-			__( 'Quote Before Author/Source', 'stray-quotes' ),
+			__( 'Quote Before Author/Source', 'xv-random-quotes' ),
 			array( $this, 'render_checkbox_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_display',
 			array(
 				'label_for'   => self::OPTION_PUT_QUOTES_FIRST,
 				'option_name' => self::OPTION_PUT_QUOTES_FIRST,
-				'description' => __( 'Display the quote text before author and source.', 'stray-quotes' ),
+				'description' => __( 'Display the quote text before author and source.', 'xv-random-quotes' ),
 				'class'       => 'xv-quotes-legacy-setting',
 			)
 		);
@@ -470,53 +470,53 @@ class Settings {
 	private function add_link_fields() {
 		add_settings_field(
 			self::OPTION_LINKTO,
-			__( 'Author Link Template', 'stray-quotes' ),
+			__( 'Author Link Template', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_links',
 			array(
 				'label_for'   => self::OPTION_LINKTO,
 				'option_name' => self::OPTION_LINKTO,
-				'description' => __( 'Link the author to a URL of your choice. Use <code>%AUTHOR%</code> as a variable. Example: <code>http://www.google.com/search?q="%AUTHOR%"</code> or <code>http://en.wikipedia.org/wiki/%AUTHOR%</code>', 'stray-quotes' ),
+				'description' => __( 'Link the author to a URL of your choice. Use <code>%AUTHOR%</code> as a variable. Example: <code>http://www.google.com/search?q="%AUTHOR%"</code> or <code>http://en.wikipedia.org/wiki/%AUTHOR%</code>', 'xv-random-quotes' ),
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_AUTHORSPACES,
-			__( 'Author URL Space Replacement', 'stray-quotes' ),
+			__( 'Author URL Space Replacement', 'xv-random-quotes' ),
 			array( $this, 'render_small_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_links',
 			array(
 				'label_for'   => self::OPTION_AUTHORSPACES,
 				'option_name' => self::OPTION_AUTHORSPACES,
-				'description' => __( 'Replace spaces in author name with this character for URLs (e.g., <code>_</code> or <code>+</code>).', 'stray-quotes' ),
+				'description' => __( 'Replace spaces in author name with this character for URLs (e.g., <code>_</code> or <code>+</code>).', 'xv-random-quotes' ),
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_SOURCELINKTO,
-			__( 'Source Link Template', 'stray-quotes' ),
+			__( 'Source Link Template', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_links',
 			array(
 				'label_for'   => self::OPTION_SOURCELINKTO,
 				'option_name' => self::OPTION_SOURCELINKTO,
-				'description' => __( 'Link the source to a URL of your choice. Use <code>%SOURCE%</code> as a variable. Example: <code>http://www.google.com/search?q="%SOURCE%"</code> or <code>http://en.wikipedia.org/wiki/%SOURCE%</code>', 'stray-quotes' ),
+				'description' => __( 'Link the source to a URL of your choice. Use <code>%SOURCE%</code> as a variable. Example: <code>http://www.google.com/search?q="%SOURCE%"</code> or <code>http://en.wikipedia.org/wiki/%SOURCE%</code>', 'xv-random-quotes' ),
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_SOURCESPACES,
-			__( 'Source URL Space Replacement', 'stray-quotes' ),
+			__( 'Source URL Space Replacement', 'xv-random-quotes' ),
 			array( $this, 'render_small_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_links',
 			array(
 				'label_for'   => self::OPTION_SOURCESPACES,
 				'option_name' => self::OPTION_SOURCESPACES,
-				'description' => __( 'Replace spaces in source name with this character for URLs (e.g., <code>_</code> or <code>+</code>).', 'stray-quotes' ),
+				'description' => __( 'Replace spaces in source name with this character for URLs (e.g., <code>_</code> or <code>+</code>).', 'xv-random-quotes' ),
 			)
 		);
 	}
@@ -527,66 +527,66 @@ class Settings {
 	private function add_ajax_fields() {
 		add_settings_field(
 			self::OPTION_AJAX,
-			__( 'Disable AJAX', 'stray-quotes' ),
+			__( 'Disable AJAX', 'xv-random-quotes' ),
 			array( $this, 'render_checkbox_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_ajax',
 			array(
 				'label_for'   => self::OPTION_AJAX,
 				'option_name' => self::OPTION_AJAX,
-				'description' => __( 'Check to disable AJAX dynamic loading entirely. When unchecked, AJAX can still be disabled from widgets, shortcodes, or template tags.', 'stray-quotes' ),
+				'description' => __( 'Check to disable AJAX dynamic loading entirely. When unchecked, AJAX can still be disabled from widgets, shortcodes, or template tags.', 'xv-random-quotes' ),
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_LOADER,
-			__( 'Loader Link Text', 'stray-quotes' ),
+			__( 'Loader Link Text', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_ajax',
 			array(
 				'label_for'   => self::OPTION_LOADER,
 				'option_name' => self::OPTION_LOADER,
-				'description' => __( 'The link text used to dynamically load another quote. HTML not allowed. If empty, clicking the quote itself will reload it. Example: <code>New quote &amp;raquo;</code>', 'stray-quotes' ),
+				'description' => __( 'The link text used to dynamically load another quote. HTML not allowed. If empty, clicking the quote itself will reload it. Example: <code>New quote &amp;raquo;</code>', 'xv-random-quotes' ),
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_BEFORE_LOADER,
-			__( 'Before Loader', 'stray-quotes' ),
+			__( 'Before Loader', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_ajax',
 			array(
 				'label_for'   => self::OPTION_BEFORE_LOADER,
 				'option_name' => self::OPTION_BEFORE_LOADER,
-				'description' => __( 'HTML or other elements before the quote loader. Example: <code>&lt;p align="left"&gt;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements before the quote loader. Example: <code>&lt;p align="left"&gt;</code>', 'xv-random-quotes' ),
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_AFTER_LOADER,
-			__( 'After Loader', 'stray-quotes' ),
+			__( 'After Loader', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_ajax',
 			array(
 				'label_for'   => self::OPTION_AFTER_LOADER,
 				'option_name' => self::OPTION_AFTER_LOADER,
-				'description' => __( 'HTML or other elements after the quote loader. Example: <code>&lt;/p&gt;</code>', 'stray-quotes' ),
+				'description' => __( 'HTML or other elements after the quote loader. Example: <code>&lt;/p&gt;</code>', 'xv-random-quotes' ),
 			)
 		);
 
 		add_settings_field(
 			self::OPTION_LOADING,
-			__( 'Loading Message', 'stray-quotes' ),
+			__( 'Loading Message', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
 			self::PAGE_SLUG,
 			'xv_quotes_ajax',
 			array(
 				'label_for'   => self::OPTION_LOADING,
 				'option_name' => self::OPTION_LOADING,
-				'description' => __( 'The message displayed while a new quote is being loaded. Example: <code>loading...</code>', 'stray-quotes' ),
+				'description' => __( 'The message displayed while a new quote is being loaded. Example: <code>loading...</code>', 'xv-random-quotes' ),
 			)
 		);
 	}
@@ -595,28 +595,28 @@ class Settings {
 	 * Render native styling section description
 	 */
 	public function render_native_styling_section() {
-		echo '<p>' . esc_html__( 'Choose how quotes should be displayed on your site.', 'stray-quotes' ) . '</p>';
+		echo '<p>' . esc_html__( 'Choose how quotes should be displayed on your site.', 'xv-random-quotes' ) . '</p>';
 	}
 
 	/**
 	 * Render display settings section description
 	 */
 	public function render_display_section() {
-		echo '<p>' . esc_html__( 'Customize HTML wrappers for quote display. These settings only apply when native styling is disabled.', 'stray-quotes' ) . '</p>';
+		echo '<p>' . esc_html__( 'Customize HTML wrappers for quote display. These settings only apply when native styling is disabled.', 'xv-random-quotes' ) . '</p>';
 	}
 
 	/**
 	 * Render links section description
 	 */
 	public function render_links_section() {
-		echo '<p>' . esc_html__( 'Configure automatic linking for authors and sources.', 'stray-quotes' ) . '</p>';
+		echo '<p>' . esc_html__( 'Configure automatic linking for authors and sources.', 'xv-random-quotes' ) . '</p>';
 	}
 
 	/**
 	 * Render AJAX section description
 	 */
 	public function render_ajax_section() {
-		echo '<p>' . esc_html__( 'Default settings for the dynamic quote loader.', 'stray-quotes' ) . '</p>';
+		echo '<p>' . esc_html__( 'Default settings for the dynamic quote loader.', 'xv-random-quotes' ) . '</p>';
 	}
 
 	/**
@@ -746,7 +746,7 @@ class Settings {
 			add_settings_error(
 				'xv_quotes_messages',
 				'xv_quotes_message',
-				__( 'Settings saved successfully.', 'stray-quotes' ),
+				__( 'Settings saved successfully.', 'xv-random-quotes' ),
 				'updated'
 			);
 		}
@@ -759,7 +759,7 @@ class Settings {
 				<?php
 				settings_fields( self::SETTINGS_GROUP );
 				do_settings_sections( self::PAGE_SLUG );
-				submit_button( __( 'Save Settings', 'stray-quotes' ) );
+				submit_button( __( 'Save Settings', 'xv-random-quotes' ) );
 				?>
 			</form>
 		</div>

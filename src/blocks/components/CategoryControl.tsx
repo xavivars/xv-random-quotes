@@ -12,9 +12,9 @@ interface CategoryControlProps {
 
 export const CategoryControl = ({ value, onChange }: CategoryControlProps) => (
 	<TextControl
-		label={__('Categories (comma-separated slugs)', 'stray-quotes')}
+		label={__('Categories (comma-separated slugs)', 'xv-random-quotes')}
 		value={value}
 		onChange={onChange}
-		help={__('Leave empty for all categories', 'stray-quotes')}
+		help={__('Leave empty for all categories', 'xv-random-quotes')}
 	/>
 );

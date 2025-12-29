@@ -27,21 +27,21 @@ registerBlockType('xv-random-quotes/specific-quote', {
 				blockName="xv-random-quotes/specific-quote"
 				attributes={attributes}
 				renderCondition={attributes.postId > 0 || attributes.legacyId > 0}
-				placeholderMessage={__('Please enter a Quote ID or Legacy ID in the block settings.', 'stray-quotes')}
+				placeholderMessage={__('Please enter a Quote ID or Legacy ID in the block settings.', 'xv-random-quotes')}
 			>
 				<TextControl
-					label={__('Quote ID', 'stray-quotes')}
+					label={__('Quote ID', 'xv-random-quotes')}
 					value={attributes.postId || ''}
 					onChange={(value) => setAttributes({ postId: value ? parseInt(value) : 0 })}
 					type="number"
-					help={__('Enter the post ID of the quote to display', 'stray-quotes')}
+					help={__('Enter the post ID of the quote to display', 'xv-random-quotes')}
 				/>
 				<TextControl
-					label={__('Legacy ID (optional)', 'stray-quotes')}
+					label={__('Legacy ID (optional)', 'xv-random-quotes')}
 					value={attributes.legacyId || ''}
 					onChange={(value) => setAttributes({ legacyId: value ? parseInt(value) : 0 })}
 					type="number"
-					help={__('For quotes migrated from old version', 'stray-quotes')}
+					help={__('For quotes migrated from old version', 'xv-random-quotes')}
 				/>
 				<DisableStylingControl
 					checked={attributes.disableaspect}

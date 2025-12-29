@@ -100,7 +100,7 @@ class MetaBoxes {
 		// Quote content meta box - main editor area (replaces standard editor)
 		add_meta_box(
 			'xv_quote_text',
-			__( 'Quote Text', 'stray-quotes' ),
+			__( 'Quote Text', 'xv-random-quotes' ),
 			array( $this, 'render_quote_content_meta_box' ),
 			'xv_quote',
 			'normal',
@@ -110,7 +110,7 @@ class MetaBoxes {
 		// Quote source meta box - below quote content (both editors)
 		add_meta_box(
 			'xv_quote_source',
-			__( 'Quote Source', 'stray-quotes' ),
+			__( 'Quote Source', 'xv-random-quotes' ),
 			array( $this, 'render_quote_source_meta_box' ),
 			'xv_quote',
 			'normal',
@@ -134,7 +134,7 @@ class MetaBoxes {
 		wp_editor( $post->post_content, 'xv_quote_content', $this->get_editor_settings( 8 ) );
 		echo '</div>';
 		echo '<p class="description">';
-		echo esc_html__( 'Enter the quote text. Only basic formatting (bold, italic, links) is allowed.', 'stray-quotes' );
+		echo esc_html__( 'Enter the quote text. Only basic formatting (bold, italic, links) is allowed.', 'xv-random-quotes' );
 		echo '</p>';
 	}
 
@@ -156,7 +156,7 @@ class MetaBoxes {
 		wp_editor( $source, 'quote_source', $this->get_editor_settings( 1 ) );
 		echo '</div>';
 		echo '<p class="description">';
-		echo esc_html__( 'Enter the quote source. Only basic formatting (bold, italic, links) is allowed.', 'stray-quotes' );
+		echo esc_html__( 'Enter the quote source. Only basic formatting (bold, italic, links) is allowed.', 'xv-random-quotes' );
 		echo '</p>';
 	}
 

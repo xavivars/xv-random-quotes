@@ -122,6 +122,7 @@ class Plugin {
 					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_random_quote_block',
 				)
 			);
+			wp_set_script_translations( 'xv-random-quotes-random-quote-editor-script', 'xv-random-quotes');
 		}
 
 		// Register Specific Quote block
@@ -132,6 +133,7 @@ class Plugin {
 					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_specific_quote_block',
 				)
 			);
+			wp_set_script_translations( 'xv-random-quotes-specific-quote-editor-script', 'xv-random-quotes');
 		}
 
 		// Register List Quotes block
@@ -142,6 +144,7 @@ class Plugin {
 					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_list_quotes_block',
 				)
 			);
+			wp_set_script_translations( 'xv-random-quotes-list-quotes-editor-script', 'xv-random-quotes');
 		}
 	}
 

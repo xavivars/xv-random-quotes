@@ -37,30 +37,30 @@ class QuotePostType {
 	 */
 	public function register() {
 		$labels = array(
-			'name'                  => _x( 'Quotes', 'Post type general name', 'stray-quotes' ),
-			'singular_name'         => _x( 'Quote', 'Post type singular name', 'stray-quotes' ),
-			'menu_name'             => _x( 'Quotes', 'Admin Menu text', 'stray-quotes' ),
-			'name_admin_bar'        => _x( 'Quote', 'Add New on Toolbar', 'stray-quotes' ),
-			'add_new'               => __( 'Add New', 'stray-quotes' ),
-			'add_new_item'          => __( 'Add New Quote', 'stray-quotes' ),
-			'new_item'              => __( 'New Quote', 'stray-quotes' ),
-			'edit_item'             => __( 'Edit Quote', 'stray-quotes' ),
-			'view_item'             => __( 'View Quote', 'stray-quotes' ),
-			'all_items'             => __( 'All Quotes', 'stray-quotes' ),
-			'search_items'          => __( 'Search Quotes', 'stray-quotes' ),
-			'parent_item_colon'     => __( 'Parent Quotes:', 'stray-quotes' ),
-			'not_found'             => __( 'No quotes found.', 'stray-quotes' ),
-			'not_found_in_trash'    => __( 'No quotes found in Trash.', 'stray-quotes' ),
-			'featured_image'        => _x( 'Quote Cover Image', 'Overrides the "Featured Image" phrase', 'stray-quotes' ),
-			'set_featured_image'    => _x( 'Set cover image', 'Overrides the "Set featured image" phrase', 'stray-quotes' ),
-			'remove_featured_image' => _x( 'Remove cover image', 'Overrides the "Remove featured image" phrase', 'stray-quotes' ),
-			'use_featured_image'    => _x( 'Use as cover image', 'Overrides the "Use as featured image" phrase', 'stray-quotes' ),
-			'archives'              => _x( 'Quote archives', 'The post type archive label used in nav menus', 'stray-quotes' ),
-			'insert_into_item'      => _x( 'Insert into quote', 'Overrides the "Insert into post" phrase', 'stray-quotes' ),
-			'uploaded_to_this_item' => _x( 'Uploaded to this quote', 'Overrides the "Uploaded to this post" phrase', 'stray-quotes' ),
-			'filter_items_list'     => _x( 'Filter quotes list', 'Screen reader text for the filter links', 'stray-quotes' ),
-			'items_list_navigation' => _x( 'Quotes list navigation', 'Screen reader text for the pagination', 'stray-quotes' ),
-			'items_list'            => _x( 'Quotes list', 'Screen reader text for the items list', 'stray-quotes' ),
+			'name'                  => _x( 'Quotes', 'Post type general name', 'xv-random-quotes' ),
+			'singular_name'         => _x( 'Quote', 'Post type singular name', 'xv-random-quotes' ),
+			'menu_name'             => _x( 'Quotes', 'Admin Menu text', 'xv-random-quotes' ),
+			'name_admin_bar'        => _x( 'Quote', 'Add New on Toolbar', 'xv-random-quotes' ),
+			'add_new'               => __( 'Add New', 'xv-random-quotes' ),
+			'add_new_item'          => __( 'Add New Quote', 'xv-random-quotes' ),
+			'new_item'              => __( 'New Quote', 'xv-random-quotes' ),
+			'edit_item'             => __( 'Edit Quote', 'xv-random-quotes' ),
+			'view_item'             => __( 'View Quote', 'xv-random-quotes' ),
+			'all_items'             => __( 'All Quotes', 'xv-random-quotes' ),
+			'search_items'          => __( 'Search Quotes', 'xv-random-quotes' ),
+			'parent_item_colon'     => __( 'Parent Quotes:', 'xv-random-quotes' ),
+			'not_found'             => __( 'No quotes found.', 'xv-random-quotes' ),
+			'not_found_in_trash'    => __( 'No quotes found in Trash.', 'xv-random-quotes' ),
+			'featured_image'        => _x( 'Quote Cover Image', 'Overrides the "Featured Image" phrase', 'xv-random-quotes' ),
+			'set_featured_image'    => _x( 'Set cover image', 'Overrides the "Set featured image" phrase', 'xv-random-quotes' ),
+			'remove_featured_image' => _x( 'Remove cover image', 'Overrides the "Remove featured image" phrase', 'xv-random-quotes' ),
+			'use_featured_image'    => _x( 'Use as cover image', 'Overrides the "Use as featured image" phrase', 'xv-random-quotes' ),
+			'archives'              => _x( 'Quote archives', 'The post type archive label used in nav menus', 'xv-random-quotes' ),
+			'insert_into_item'      => _x( 'Insert into quote', 'Overrides the "Insert into post" phrase', 'xv-random-quotes' ),
+			'uploaded_to_this_item' => _x( 'Uploaded to this quote', 'Overrides the "Uploaded to this post" phrase', 'xv-random-quotes' ),
+			'filter_items_list'     => _x( 'Filter quotes list', 'Screen reader text for the filter links', 'xv-random-quotes' ),
+			'items_list_navigation' => _x( 'Quotes list navigation', 'Screen reader text for the pagination', 'xv-random-quotes' ),
+			'items_list'            => _x( 'Quotes list', 'Screen reader text for the items list', 'xv-random-quotes' ),
 		);
 
 		$args = array(
@@ -97,7 +97,7 @@ class QuotePostType {
 		foreach ( $columns as $key => $value ) {
 			$new_columns[ $key ] = $value;
 			if ( 'taxonomy-quote_author' === $key ) {
-				$new_columns['quote_source'] = __( 'Quote Source', 'stray-quotes' );
+				$new_columns['quote_source'] = __( 'Quote Source', 'xv-random-quotes' );
 			}
 		}
 		return $new_columns;

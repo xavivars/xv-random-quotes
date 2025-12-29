@@ -12,9 +12,9 @@ interface DisableStylingControlProps {
 
 export const DisableStylingControl = ({ checked, onChange }: DisableStylingControlProps) => (
 	<ToggleControl
-		label={__('Disable styling', 'stray-quotes')}
+		label={__('Disable styling', 'xv-random-quotes')}
 		checked={checked}
 		onChange={onChange}
-		help={__('Remove default HTML wrappers', 'stray-quotes')}
+		help={__('Remove default HTML wrappers', 'xv-random-quotes')}
 	/>
 );

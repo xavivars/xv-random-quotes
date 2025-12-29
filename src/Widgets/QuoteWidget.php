@@ -22,7 +22,7 @@ class QuoteWidget extends \WP_Widget {
 	public function __construct() {
 		$widget_ops = array(
 			'classname'   => 'widget_xv_quotes',
-			'description' => __( 'Display random quotes from your collection', 'stray-quotes' ),
+			'description' => __( 'Display random quotes from your collection', 'xv-random-quotes' ),
 		);
 		
 		$control_ops = array(
@@ -33,7 +33,7 @@ class QuoteWidget extends \WP_Widget {
 		
 		parent::__construct(
 			'xv_quote_widget',
-			__( 'Random Quotes', 'stray-quotes' ),
+			__( 'Random Quotes', 'xv-random-quotes' ),
 			$widget_ops,
 			$control_ops
 		);
@@ -107,7 +107,7 @@ class QuoteWidget extends \WP_Widget {
 		if ( $enable_ajax ) {
 			echo '<div class="xv-quote-refresh-wrapper">';
 			echo '<a href="#" class="xv-quote-refresh" data-container="' . esc_attr( $container_id ) . '">';
-			echo esc_html__( 'Get another quote', 'stray-quotes' );
+			echo esc_html__( 'Get another quote', 'xv-random-quotes' );
 			echo '</a>';
 			echo '</div>';
 			echo '</div>'; // Close container
@@ -179,7 +179,7 @@ class QuoteWidget extends \WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>">
-				<strong><?php esc_html_e( 'Title:', 'stray-quotes' ); ?></strong>
+				<strong><?php esc_html_e( 'Title:', 'xv-random-quotes' ); ?></strong>
 			</label>
 			<input 
 				class="widefat" 
@@ -192,8 +192,8 @@ class QuoteWidget extends \WP_Widget {
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'categories' ) ); ?>">
-				<strong><?php esc_html_e( 'Categories:', 'stray-quotes' ); ?></strong><br/>
-				<small><?php esc_html_e( 'Comma-separated category slugs, or "all" for all categories', 'stray-quotes' ); ?></small>
+				<strong><?php esc_html_e( 'Categories:', 'xv-random-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Comma-separated category slugs, or "all" for all categories', 'xv-random-quotes' ); ?></small>
 			</label>
 			<input 
 				class="widefat" 
@@ -204,7 +204,7 @@ class QuoteWidget extends \WP_Widget {
 			/>
 			<?php if ( ! empty( $category_terms ) && ! is_wp_error( $category_terms ) ) : ?>
 				<small>
-					<?php esc_html_e( 'Available categories:', 'stray-quotes' ); ?>
+					<?php esc_html_e( 'Available categories:', 'xv-random-quotes' ); ?>
 					<?php
 					$slugs = array_map( function( $term ) {
 						return $term->slug;
@@ -217,7 +217,7 @@ class QuoteWidget extends \WP_Widget {
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'multi' ) ); ?>">
-				<strong><?php esc_html_e( 'Number of quotes:', 'stray-quotes' ); ?></strong>
+				<strong><?php esc_html_e( 'Number of quotes:', 'xv-random-quotes' ); ?></strong>
 			</label>
 			<input 
 				class="widefat" 
@@ -238,8 +238,8 @@ class QuoteWidget extends \WP_Widget {
 				<?php checked( $sequence, true ); ?>
 			/>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'sequence' ) ); ?>">
-				<strong><?php esc_html_e( 'Sequential order', 'stray-quotes' ); ?></strong><br/>
-				<small><?php esc_html_e( 'Leave unchecked for random order', 'stray-quotes' ); ?></small>
+				<strong><?php esc_html_e( 'Sequential order', 'xv-random-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Leave unchecked for random order', 'xv-random-quotes' ); ?></small>
 			</label>
 		</p>
 
@@ -252,8 +252,8 @@ class QuoteWidget extends \WP_Widget {
 				<?php checked( $disableaspect, true ); ?>
 			/>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'disableaspect' ) ); ?>">
-				<strong><?php esc_html_e( 'Disable aspect settings', 'stray-quotes' ); ?></strong><br/>
-				<small><?php esc_html_e( 'Disable HTML formatting from settings page', 'stray-quotes' ); ?></small>
+				<strong><?php esc_html_e( 'Disable aspect settings', 'xv-random-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Disable HTML formatting from settings page', 'xv-random-quotes' ); ?></small>
 			</label>
 		</p>
 
@@ -264,8 +264,8 @@ class QuoteWidget extends \WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'contributor' ) ); ?>">
-				<strong><?php esc_html_e( 'Only from this contributor:', 'stray-quotes' ); ?></strong><br/>
-				<small><?php esc_html_e( 'Leave empty for all contributors', 'stray-quotes' ); ?></small>
+				<strong><?php esc_html_e( 'Only from this contributor:', 'xv-random-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Leave empty for all contributors', 'xv-random-quotes' ); ?></small>
 			</label>
 			<input 
 				class="widefat" 
@@ -286,15 +286,15 @@ class QuoteWidget extends \WP_Widget {
 				<?php checked( $enable_ajax, true ); ?>
 			/>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'enable_ajax' ) ); ?>">
-				<strong><?php esc_html_e( 'Enable AJAX refresh', 'stray-quotes' ); ?></strong><br/>
-				<small><?php esc_html_e( 'Allow users to get new quotes without reloading the page', 'stray-quotes' ); ?></small>
+				<strong><?php esc_html_e( 'Enable AJAX refresh', 'xv-random-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Allow users to get new quotes without reloading the page', 'xv-random-quotes' ); ?></small>
 			</label>
 		</p>
 
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'timer' ) ); ?>">
-				<strong><?php esc_html_e( 'Auto-refresh timer (seconds):', 'stray-quotes' ); ?></strong><br/>
-				<small><?php esc_html_e( 'Set to 0 for manual refresh only, or enter seconds for automatic refresh', 'stray-quotes' ); ?></small>
+				<strong><?php esc_html_e( 'Auto-refresh timer (seconds):', 'xv-random-quotes' ); ?></strong><br/>
+				<small><?php esc_html_e( 'Set to 0 for manual refresh only, or enter seconds for automatic refresh', 'xv-random-quotes' ); ?></small>
 			</label>
 			<input 
 				class="widefat" 

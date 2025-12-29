@@ -83,20 +83,20 @@ class MigrationNotices {
 		?>
 		<div class="notice notice-warning">
 			<p>
-				<strong><?php esc_html_e( 'XV Random Quotes Migration Required', 'stray-quotes' ); ?></strong>
+				<strong><?php esc_html_e( 'XV Random Quotes Migration Required', 'xv-random-quotes' ); ?></strong>
 			</p>
 			<p>
 				<?php
 				printf(
 					/* translators: %d: number of quotes to migrate */
-					esc_html__( 'XV Random Quotes needs to migrate %d quotes to the new system.', 'stray-quotes' ),
+					esc_html__( 'XV Random Quotes needs to migrate %d quotes to the new system.', 'xv-random-quotes' ),
 					(int) $total
 				);
 				?>
 			</p>
 			<p>
 				<button type="button" class="button button-primary xv-start-migration" data-nonce="<?php echo esc_attr( $nonce ); ?>">
-					<?php esc_html_e( 'Start Migration', 'stray-quotes' ); ?>
+					<?php esc_html_e( 'Start Migration', 'xv-random-quotes' ); ?>
 				</button>
 			</p>
 		</div>
@@ -115,13 +115,13 @@ class MigrationNotices {
 		?>
 		<div class="notice notice-info">
 			<p>
-				<strong><?php esc_html_e( 'Migration in Progress', 'stray-quotes' ); ?></strong>
+				<strong><?php esc_html_e( 'Migration in Progress', 'xv-random-quotes' ); ?></strong>
 			</p>
 			<p>
 				<?php
 				printf(
 					/* translators: 1: migrated count, 2: total count, 3: percentage */
-					esc_html__( 'Migrated %1$d of %2$d quotes (%3$d%%)', 'stray-quotes' ),
+					esc_html__( 'Migrated %1$d of %2$d quotes (%3$d%%)', 'xv-random-quotes' ),
 					(int) $progress,
 					(int) $total,
 					(int) $percentage
@@ -144,13 +144,13 @@ class MigrationNotices {
 		?>
 		<div class="notice notice-success is-dismissible">
 			<p>
-				<strong><?php esc_html_e( 'Migration Complete!', 'stray-quotes' ); ?></strong>
+				<strong><?php esc_html_e( 'Migration Complete!', 'xv-random-quotes' ); ?></strong>
 			</p>
 			<p>
 				<?php
 				printf(
 					/* translators: %d: number of quotes migrated */
-					esc_html__( 'Successfully migrated %d quotes to the new system.', 'stray-quotes' ),
+					esc_html__( 'Successfully migrated %d quotes to the new system.', 'xv-random-quotes' ),
 					(int) $count
 				);
 				?>
@@ -168,7 +168,7 @@ class MigrationNotices {
 		?>
 		<div class="notice notice-error">
 			<p>
-				<strong><?php esc_html_e( 'Migration Error', 'stray-quotes' ); ?></strong>
+				<strong><?php esc_html_e( 'Migration Error', 'xv-random-quotes' ); ?></strong>
 			</p>
 			<p>
 				<?php echo esc_html( $error ); ?>
