@@ -1,4 +1,8 @@
 == XV Random Quotes ==
+
+= 2.0.1 =
+Bugfix: move quote-refresh javascript file to root folder
+
 = 2.0.0 =
 Major release - Complete modernization and refactor to WordPress Custom Post Types
 
