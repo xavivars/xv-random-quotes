@@ -9,7 +9,7 @@
 
 namespace XVRandomQuotes\Widgets;
 
-use XVRandomQuotes\Legacy;
+use XVRandomQuotes\Output\QuoteOutput;
 
 /**
  * Quote Widget Class
@@ -92,8 +92,9 @@ class QuoteWidget extends \WP_Widget {
 			echo '>';
 		}
 		
-		// Use core implementation for quote retrieval and display
-		echo Legacy\stray_get_random_quotes_output(
+		// Use QuoteOutput class for quote retrieval and display
+		$quote_output = new QuoteOutput();
+		echo $quote_output->get_random_quotes(
 			$categories,
 			$sequence,
 			$multi,

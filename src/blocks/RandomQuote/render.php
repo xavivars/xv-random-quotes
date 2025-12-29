@@ -8,11 +8,8 @@
 namespace XVRandomQuotes\Blocks;
 
 use XVRandomQuotes\Queries\QuoteQueries;
-
-// Import legacy helper functions
-use function XVRandomQuotes\Legacy\parse_category_slugs;
-use function XVRandomQuotes\Legacy\stray_get_filtered_quotes;
-use function XVRandomQuotes\Legacy\stray_output_one_cpt;
+use XVRandomQuotes\Rendering\QuoteRenderer;
+use XVRandomQuotes\Utils\QueryHelpers;
 
 /**
  * Render callback for Random Quote block
@@ -31,23 +28,19 @@ function render_random_quote_block( $attributes ) {
 
 	// Initialize QuoteQueries
 	$quote_queries = new QuoteQueries();
+	$renderer = new QuoteRenderer();
 
 	// Build WP_Query args
 	$query_args = array(
 		'posts_per_page' => $multi,
 	);
 
-	// Set ordering (random vs sequential)
-	if ( $sequence ) {
-		$query_args['orderby'] = 'ID';
-		$query_args['order']   = 'ASC';
-	} else {
-		$query_args['orderby'] = 'rand';
-	}
+	// Add ordering using QueryHelpers
+	$query_args = array_merge( $query_args, QueryHelpers::build_order_args( $sequence ) );
 
 	// Get quotes with optional category filtering
-	$category_slugs = parse_category_slugs( $categories );
-	$quotes         = stray_get_filtered_quotes( $quote_queries, $category_slugs, $query_args );
+	$category_slugs = QueryHelpers::parse_category_slugs( $categories );
+	$quotes = QueryHelpers::get_filtered_quotes( $quote_queries, $category_slugs, $query_args );
 
 	if ( empty( $quotes ) ) {
 		return '';
@@ -58,15 +51,10 @@ function render_random_quote_block( $attributes ) {
 	
 	// For single quote
 	if ( 1 === $multi ) {
-		$quote_post = $quotes[0];
-		$output .= stray_output_one_cpt( $quote_post, false, $disableaspect );
+		$output .= $renderer->render_quote( $quotes[0], false, $disableaspect );
 	} else {
 		// Multiple quotes
-		$output .= '<ul>';
-		foreach ( $quotes as $quote_post ) {
-			$output .= '<li>' . stray_output_one_cpt( $quote_post, true, $disableaspect ) . '</li>';
-		}
-		$output .= '</ul>';
+		$output .= $renderer->render_multiple_quotes( $quotes, $disableaspect );
 	}
 
 	// Wrap in AJAX container if enabled

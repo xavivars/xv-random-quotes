@@ -7,8 +7,7 @@
 
 namespace XVRandomQuotes\Blocks;
 
-// Import legacy helper function
-use function XVRandomQuotes\Legacy\stray_output_one_cpt;
+use XVRandomQuotes\Rendering\QuoteRenderer;
 
 /**
  * Render callback for Specific Quote block
@@ -65,8 +64,9 @@ function render_specific_quote_block( $attributes ) {
 		return '';
 	}
 
-	// Build output using settings-based rendering
-	$output = stray_output_one_cpt( $post, false, $disableaspect );
+	// Build output using QuoteRenderer
+	$renderer = new QuoteRenderer();
+	$output = $renderer->render_quote( $post, false, $disableaspect );
 	
 	return $output;
 }

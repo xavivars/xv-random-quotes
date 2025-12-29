@@ -579,13 +579,13 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
   - Create tests for settings persistence: verify HTML wrapper settings save correctly, test default category setting, validate sanitization with wp_kses_post, check option retrieval.
 
 - [ ] **Task 40:** Update Settings Page for CPT Compatibility
-  - Review and update stray_settings.php to work with new architecture. Ensure all display settings still apply to CPT-based quotes. Make tests pass.
+  - Review and update stray_settings.php to work with new architecture. Ensure all display settings still apply to CPT-based quotes.
 
-- [ ] **Task 41:** Write Tests for Admin List Table Customization
+- [x] **Task 41:** Write Tests for Admin List Table Customization
   - Create tests for custom columns in admin: verify quote text column, test author taxonomy column, check source meta column, validate category filter dropdown.
 
-- [ ] **Task 42:** Implement Admin List Table Customizations
-  - Add filters for manage_{post_type}_posts_columns and manage_{post_type}_posts_custom_column. Customize admin list view to show quote, author, source, category. Make tests pass.
+- [x] **Task 42:** Implement Admin List Table Customizations
+  - Add filters for manage_{post_type}_posts_columns and manage_{post_type}_posts_custom_column. Customize admin list view to show quote, author, source, category.
 
 ## Phase 10: Backward Compatibility
 

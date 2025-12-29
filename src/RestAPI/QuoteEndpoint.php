@@ -12,6 +12,7 @@
 namespace XVRandomQuotes\RestAPI;
 
 use XVRandomQuotes\Queries\QuoteQueries;
+use XVRandomQuotes\Output\QuoteOutput;
 
 /**
  * Quote REST API endpoint handler
@@ -95,8 +96,9 @@ class QuoteEndpoint {
 		$disableaspect = $request->get_param( 'disableaspect' );
 		$contributor   = $request->get_param( 'contributor' );
 
-		// Use the same core function as shortcodes/widgets
-		$html = \XVRandomQuotes\Legacy\stray_get_random_quotes_output(
+		// Use QuoteOutput class
+		$quote_output = new QuoteOutput();
+		$html = $quote_output->get_random_quotes(
 			$categories,
 			$sequence,
 			$multi,

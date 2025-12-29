@@ -8,17 +8,11 @@
 namespace XVRandomQuotes\Shortcodes;
 
 use XVRandomQuotes\Queries\QuoteQueries;
-
-// Import legacy helper functions until they're refactored
-use function XVRandomQuotes\Legacy\stray_sanitize_shortcode_attributes;
-use function XVRandomQuotes\Legacy\stray_build_order_args;
-use function XVRandomQuotes\Legacy\parse_category_slugs;
-use function XVRandomQuotes\Legacy\stray_get_filtered_quotes;
-use function XVRandomQuotes\Legacy\stray_build_multi_quote_output;
-use function XVRandomQuotes\Legacy\stray_build_pagination;
-use function XVRandomQuotes\Legacy\stray_get_wrapper_html;
-use function XVRandomQuotes\Legacy\stray_get_random_quotes_output;
-use function XVRandomQuotes\Legacy\stray_get_quote_by_id_output;
+use XVRandomQuotes\Output\QuoteOutput;
+use XVRandomQuotes\Rendering\QuoteRenderer;
+use XVRandomQuotes\Utils\QueryHelpers;
+use XVRandomQuotes\Utils\PaginationHelper;
+use XVRandomQuotes\Utils\ShortcodeHelpers;
 
 /**
  * Shortcode [stray-all] - Display all quotes with pagination
@@ -29,7 +23,7 @@ use function XVRandomQuotes\Legacy\stray_get_quote_by_id_output;
  */
 function stray_all_shortcode($atts, $content = NULL) {
 	// Extract and sanitize attributes
-	$atts = stray_sanitize_shortcode_attributes($atts, array(
+	$atts = ShortcodeHelpers::sanitize_attributes($atts, array(
 		'categories' => 'all',
 		'sequence' => true,
 		'linkphrase' => '',
@@ -45,8 +39,9 @@ function stray_all_shortcode($atts, $content = NULL) {
 		'user' => ''
 	));
 
-	// Initialize QuoteQueries
+	// Initialize dependencies
 	$quote_queries = new QuoteQueries();
+	$renderer = new QuoteRenderer();
 	
 	// Build WP_Query args
 	$query_args = array(
@@ -55,22 +50,22 @@ function stray_all_shortcode($atts, $content = NULL) {
 	);
 
 	// Add ordering
-	$query_args = array_merge($query_args, stray_build_order_args(
+	$query_args = array_merge($query_args, QueryHelpers::build_order_args(
 		$atts['sequence'],
 		$atts['orderby'],
 		$atts['sort']
 	));
 
 	// Get quotes with optional category filtering
-	$category_slugs = parse_category_slugs($atts['categories']);
-	$quotes = stray_get_filtered_quotes($quote_queries, $category_slugs, $query_args);
+	$category_slugs = QueryHelpers::parse_category_slugs($atts['categories']);
+	$quotes = QueryHelpers::get_filtered_quotes($quote_queries, $category_slugs, $query_args);
 
 	if (empty($quotes)) {
 		return '';
 	}
 
 	// Build multi-quote output
-	$output = stray_build_multi_quote_output($quotes, $atts['disableaspect']);
+	$output = $renderer->render_multiple_quotes($quotes, $atts['disableaspect']);
 
 	// Add pagination if needed
 	if ($atts['fullpage'] || !$atts['noajax']) {
@@ -88,9 +83,10 @@ function stray_all_shortcode($atts, $content = NULL) {
 			$current_page = max(1, isset($_GET['qp']) ? absint($_GET['qp']) : 1);
 			$max_pages = ceil($total_quotes / $atts['rows']);
 			
-			$pagination = stray_build_pagination($current_page, $max_pages, $atts['rows'], $atts['fullpage']);
-			$wrapper = stray_get_wrapper_html($atts['disableaspect'], 'loader');
+			$pagination = PaginationHelper::build_pagination($current_page, $max_pages, $atts['rows'], $atts['fullpage']);
 			
+			// Get loader wrapper from renderer
+			$wrapper = $renderer->get_loader_wrapper($atts['disableaspect']);
 			$output .= $wrapper['before'] . $pagination . $wrapper['after'];
 		}
 	}
@@ -107,7 +103,7 @@ function stray_all_shortcode($atts, $content = NULL) {
  */
 function stray_random_shortcode($atts, $content = NULL) {
 	// Extract and sanitize attributes
-	$atts = stray_sanitize_shortcode_attributes($atts, array(
+	$atts = ShortcodeHelpers::sanitize_attributes($atts, array(
 		'categories' => 'all',
 		'sequence' => false,
 		'linkphrase' => '',
@@ -121,8 +117,9 @@ function stray_random_shortcode($atts, $content = NULL) {
 		'user' => ''
 	));
 
-	// Call core implementation
-	return stray_get_random_quotes_output(
+	// Use QuoteOutput class
+	$quote_output = new QuoteOutput();
+	return $quote_output->get_random_quotes(
 		$atts['categories'],
 		$atts['sequence'],
 		$atts['multi'],
@@ -141,13 +138,14 @@ function stray_random_shortcode($atts, $content = NULL) {
  */
 function stray_id_shortcode($atts, $content = NULL) {
 	// Extract and sanitize attributes
-	$atts = stray_sanitize_shortcode_attributes($atts, array(
+	$atts = ShortcodeHelpers::sanitize_attributes($atts, array(
 		'id' => '1',
 		'linkphrase' => '',
 		'noajax' => true,
 		'disableaspect' => false
 	));
 
-	// Call core implementation
-	return stray_get_quote_by_id_output($atts['id'], $atts['disableaspect']);
+	// Use QuoteOutput class
+	$quote_output = new QuoteOutput();
+	return $quote_output->get_quote_by_id($atts['id'], $atts['disableaspect']);
 }

@@ -55,7 +55,7 @@ function stray_id_shortcode($atts, $content = NULL) {
 
 /**
  * Template tag: Display one or more random quotes
- * Echoes output - actual implementation in src/legacy/core.php
+ * Echoes output - uses QuoteOutput class
  *
  * @param string $categories Category slugs (comma-separated or 'all')
  * @param bool $sequence Whether to use sequential ordering
@@ -77,13 +77,14 @@ function stray_random_quote($categories='all',$sequence=false,$linkphrase='',$no
 		$disableaspect = false;
 	}
 	
-	// Call core implementation and echo result
-	echo \XVRandomQuotes\Legacy\stray_get_random_quotes_output($categories, $sequence, $multi, 0, $disableaspect, $contributor);
+	// Use QuoteOutput class and echo result
+	$quote_output = new \XVRandomQuotes\Output\QuoteOutput();
+	echo $quote_output->get_random_quotes($categories, $sequence, $multi, 0, $disableaspect, $contributor);
 }
 
 /**
  * Template tag: Display a specific quote by ID
- * Echoes output - actual implementation in src/legacy/core.php
+ * Echoes output - uses QuoteOutput class
  *
  * @param int $id Quote ID (post ID or legacy ID)
  * @param string $linkphrase Legacy parameter (not used in refactored version)
@@ -99,8 +100,9 @@ function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
 		$disableaspect = false;
 	}
 	
-	// Call core implementation and echo result
-	echo \XVRandomQuotes\Legacy\stray_get_quote_by_id_output($id, $disableaspect);
+	// Use QuoteOutput class and echo result
+	$quote_output = new \XVRandomQuotes\Output\QuoteOutput();
+	echo $quote_output->get_quote_by_id($id, $disableaspect);
 }
 
 // ==============================================================================
@@ -109,22 +111,22 @@ function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
 
 /**
  * Add or replace a variable in a querystring
- * Wrapper for backwards compatibility - actual implementation in src/legacy/stray_helpers.php
+ * Wrapper for backwards compatibility - uses PaginationHelper class
  * 
  * Thanks to http://www.addedbytes.com/php/querystring-functions/
  */
 function querystrings($url, $key, $value) {
-	return \XVRandomQuotes\Legacy\querystrings($url, $key, $value);
+	return \XVRandomQuotes\Utils\PaginationHelper::add_querystring_var($url, $key, $value);
 }
 
 /**
  * Remove a variable from a querystring
- * Wrapper for backwards compatibility - actual implementation in src/legacy/stray_helpers.php
+ * Wrapper for backwards compatibility - uses PaginationHelper class
  * 
  * Thanks to http://www.addedbytes.com/php/querystring-functions/
  */
 function remove_querystring_var($url, $key) {
-	return \XVRandomQuotes\Legacy\remove_querystring_var($url, $key);
+	return \XVRandomQuotes\Utils\PaginationHelper::remove_querystring_var($url, $key);
 }
 
 /**

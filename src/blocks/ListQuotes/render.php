@@ -8,14 +8,9 @@
 namespace XVRandomQuotes\Blocks;
 
 use XVRandomQuotes\Queries\QuoteQueries;
-
-// Import legacy helper functions
-use function XVRandomQuotes\Legacy\parse_category_slugs;
-use function XVRandomQuotes\Legacy\stray_get_filtered_quotes;
-use function XVRandomQuotes\Legacy\stray_build_pagination;
-use function XVRandomQuotes\Legacy\stray_get_wrapper_html;
-use function XVRandomQuotes\Legacy\stray_build_order_args;
-use function XVRandomQuotes\Legacy\stray_output_one_cpt;
+use XVRandomQuotes\Rendering\QuoteRenderer;
+use XVRandomQuotes\Utils\QueryHelpers;
+use XVRandomQuotes\Utils\PaginationHelper;
 
 /**
  * Render callback for List Quotes block
@@ -33,6 +28,7 @@ function render_list_quotes_block( $attributes ) {
 
 	// Initialize QuoteQueries
 	$quote_queries = new QuoteQueries();
+	$renderer = new QuoteRenderer();
 
 	// Build WP_Query args
 	$query_args = array(
@@ -42,23 +38,19 @@ function render_list_quotes_block( $attributes ) {
 	// Add ordering
 	$query_args = array_merge(
 		$query_args,
-		stray_build_order_args( true, $orderby, $sort )
+		QueryHelpers::build_order_args( true, $orderby, $sort )
 	);
 
 	// Get quotes with optional category filtering
-	$category_slugs = parse_category_slugs( $categories );
-	$quotes         = stray_get_filtered_quotes( $quote_queries, $category_slugs, $query_args );
+	$category_slugs = QueryHelpers::parse_category_slugs( $categories );
+	$quotes = QueryHelpers::get_filtered_quotes( $quote_queries, $category_slugs, $query_args );
 
 	if ( empty( $quotes ) ) {
 		return '';
 	}
 
 	// Build output
-	$output = '<ul>';
-	foreach ( $quotes as $quote_post ) {
-		$output .= '<li>' . stray_output_one_cpt( $quote_post, true, $disableaspect ) . '</li>';
-	}
-	$output .= '</ul>';
+	$output = $renderer->render_multiple_quotes( $quotes, $disableaspect );
 
 	// Add pagination if needed
 	$total_query = new \WP_Query(
@@ -77,9 +69,10 @@ function render_list_quotes_block( $attributes ) {
 		$current_page = max( 1, isset( $_GET['qp'] ) ? absint( $_GET['qp'] ) : 1 );
 		$max_pages    = ceil( $total_quotes / $rows );
 
-		$pagination = stray_build_pagination( $current_page, $max_pages, $rows, true );
-		$wrapper    = stray_get_wrapper_html( $disableaspect, 'loader' );
-
+		$pagination = PaginationHelper::build_pagination( $current_page, $max_pages, $rows, true );
+		
+		// Get loader wrapper from renderer
+		$wrapper = $renderer->get_loader_wrapper( $disableaspect );
 		$output .= $wrapper['before'] . $pagination . $wrapper['after'];
 	}
 

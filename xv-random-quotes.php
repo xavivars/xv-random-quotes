@@ -16,10 +16,6 @@ include('lib/class.constants.php');
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 	
-	// Load legacy helper functions
-	require_once __DIR__ . '/src/legacy/stray_helpers.php';
-	require_once __DIR__ . '/src/legacy/core.php';
-	
 	// Load shortcode handlers
 	require_once __DIR__ . '/src/Shortcodes/ShortcodeHandlers.php';
 	
@@ -68,6 +64,11 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  * This ensures CPT and taxonomies are registered before migration runs.
  */
 function xv_quotes_activation_migration() {
+	// Migrate settings from legacy format to new structure
+	if ( class_exists( '\XVRandomQuotes\Migration\SettingsMigrator' ) ) {
+		\XVRandomQuotes\Migration\SettingsMigrator::migrate();
+	}
+
 	if ( class_exists( '\XVRandomQuotes\Migration\QuoteMigrator' ) ) {
 		// Set flag to trigger migration on next init
 		update_option( 'xv_quotes_needs_migration', true );
