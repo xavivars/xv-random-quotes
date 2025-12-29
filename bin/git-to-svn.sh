@@ -70,8 +70,8 @@ echo "Tagging new version in git"
 git tag -a "$NEWVERSION1" -m "Tagging version $NEWVERSION1"
 
 echo "Pushing latest commit to origin, with tags"
-git push origin master
-git push origin master --tags
+git push origin main
+git push origin main --tags
 
 echo 
 echo "Creating local copy of SVN repo ..."
@@ -80,7 +80,7 @@ svn co $SVNURL $SVNPATH
 echo "Clearing svn repo so we can overwrite it"
 rm -rf $SVNPATH/trunk/*
 
-echo "Exporting the HEAD of master from git to the trunk of SVN"
+echo "Exporting the HEAD of main from git to the trunk of SVN"
 git checkout-index -a -f --prefix=$SVNPATH/trunk/
 
 echo "Moving assets to SVN root"
