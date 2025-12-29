@@ -160,8 +160,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 
 		// Check for expected attributes
 		$this->assertArrayHasKey( 'categories', $block->attributes );
-		$this->assertArrayHasKey( 'multi', $block->attributes );
-		$this->assertArrayHasKey( 'sequence', $block->attributes );
 		$this->assertArrayHasKey( 'disableaspect', $block->attributes );
 		$this->assertArrayHasKey( 'enableAjax', $block->attributes );
 		$this->assertArrayHasKey( 'timer', $block->attributes );
@@ -193,19 +191,17 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test renders multiple random quotes
+	 * Test renders a single random quote
 	 */
-	public function test_renders_multiple_quotes() {
-		$attributes = array(
-			'multi' => 3,
-		);
+	public function test_renders_single_quote() {
+		$attributes = array();
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/random-quote' );
 		$content = call_user_func( $block->render_callback, $attributes );
 
 		$this->assertNotEmpty( $content );
-		// Should contain multiple quote divs (check for new class name)
-		$this->assertGreaterThanOrEqual( 2, substr_count( $content, 'class="xv-quote"' ) );
+		// Should contain exactly one quote
+		$this->assertEquals( 1, substr_count( $content, 'class="xv-quote"' ) );
 	}
 
 	/**
@@ -214,7 +210,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 	public function test_category_filter_single() {
 		$attributes = array(
 			'categories' => 'science',
-			'multi'      => 1,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/random-quote' );
@@ -230,7 +225,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 	public function test_category_filter_multiple() {
 		$attributes = array(
 			'categories' => 'science,philosophy',
-			'multi'      => 2,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/random-quote' );
@@ -246,7 +240,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 	public function test_category_all() {
 		$attributes = array(
 			'categories' => 'all',
-			'multi'      => 3,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/random-quote' );
@@ -262,7 +255,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 	public function test_sequence_ordering() {
 		$attributes = array(
 			'sequence' => true,
-			'multi'    => 2,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/random-quote' );
@@ -297,7 +289,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 			'enableAjax' => true,
 			'timer'      => 10,
 			'categories' => 'science',
-			'multi'      => 2,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/random-quote' );
@@ -307,7 +298,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'xv-quote-ajax-wrapper', $content );
 		$this->assertStringContainsString( 'data-categories="science"', $content );
 		$this->assertStringContainsString( 'data-timer="10"', $content );
-		$this->assertStringContainsString( 'data-multi="2"', $content );
 	}
 
 	/**
@@ -375,7 +365,6 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 		);
 
 		$attributes = array(
-			'multi' => 10,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/random-quote' );

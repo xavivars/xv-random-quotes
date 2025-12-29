@@ -1,6 +1,6 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
+    "apiVersion": 2,
     "name": "xv-random-quotes/list-quotes",
     "title": "List Quotes",
     "category": "widgets",
@@ -38,5 +38,5 @@
         "html": false,
         "align": true
     },
-    "editorScript": "file:./index.js"
+    "editorScript": "file:../../../src/generated/list-quotes-block.js"
 }

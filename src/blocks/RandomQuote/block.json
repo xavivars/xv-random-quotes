@@ -1,6 +1,6 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
-    "apiVersion": 3,
+    "apiVersion": 2,
     "name": "xv-random-quotes/random-quote",
     "title": "Random Quote",
     "category": "widgets",
@@ -16,14 +16,6 @@
         "categories": {
             "type": "string",
             "default": ""
-        },
-        "multi": {
-            "type": "number",
-            "default": 1
-        },
-        "sequence": {
-            "type": "boolean",
-            "default": false
         },
         "disableaspect": {
             "type": "boolean",
@@ -42,5 +34,5 @@
         "html": false,
         "align": true
     },
-    "editorScript": "file:./index.js"
+    "editorScript": "file:../../../src/generated/random-quote-block.js"
 }

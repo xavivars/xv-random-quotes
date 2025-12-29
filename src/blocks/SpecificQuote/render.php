@@ -18,42 +18,50 @@ use function XVRandomQuotes\Legacy\stray_output_one_cpt;
  */
 function render_specific_quote_block( $attributes ) {
 	// Extract attributes with defaults
-	$quote_id      = $attributes['quoteId'] ?? 0;
+	$post_id       = $attributes['postId'] ?? 0;
+	$legacy_id     = $attributes['legacyId'] ?? 0;
 	$disableaspect = $attributes['disableaspect'] ?? false;
 
-	if ( empty( $quote_id ) ) {
-		return '';
-	}
+	$post = null;
 
 	// Try to get quote by post ID first
-	$post = get_post( $quote_id );
+	if ( ! empty( $post_id ) ) {
+		$post = get_post( $post_id );
+		if ( $post && 'xv_quote' !== $post->post_type ) {
+			$post = null;
+		}
+	}
 
 	// If not found by post ID, try legacy ID
-	if ( ! $post || 'xv_quote' !== $post->post_type ) {
+	if ( ! $post && ! empty( $legacy_id ) ) {
 		$query = new \WP_Query(
 			array(
 				'post_type'      => 'xv_quote',
-				'post_status'    => 'publish',
+				'post_status'    => 'any',
 				'posts_per_page' => 1,
 				'meta_query'     => array(
 					array(
-						'key'   => '_legacy_quote_id',
-						'value' => $quote_id,
+						'key'   => '_quote_legacy_id',
+						'value' => $legacy_id,
 						'type'  => 'NUMERIC',
 					),
 				),
 			)
 		);
 
-		if ( ! $query->have_posts() ) {
-			return '';
+		if ( $query->have_posts() ) {
+			$post = $query->posts[0];
 		}
-
-		$post = $query->posts[0];
 	}
 
-	// Check if post is published
-	if ( 'publish' !== $post->post_status ) {
+	// If no post found, return empty
+	if ( ! $post ) {
+		return '';
+	}
+
+	// In the editor context, show any status; on frontend, only published
+	$is_editor = defined( 'REST_REQUEST' ) && REST_REQUEST;
+	if ( ! $is_editor && 'publish' !== $post->post_status ) {
 		return '';
 	}
 

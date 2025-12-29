@@ -16,10 +16,15 @@ const path = require( 'path' );
 module.exports = {
 	...defaultConfig,
 	entry: {
-		'quote-details': './src/blocks/quote-details/index.tsx',
+		'random-quote-block': './src/Blocks/RandomQuote/index.tsx',
+		'specific-quote-block': './src/Blocks/SpecificQuote/index.tsx',
+		'list-quotes-block': './src/Blocks/ListQuotes/index.tsx',
 	},
 	output: {
 		path: path.resolve( process.cwd(), 'src/generated' ),
 		filename: '[name].js',
 	},
+	plugins: defaultConfig.plugins.filter(
+		( plugin ) => plugin.constructor.name !== 'CopyPlugin'
+	),
 };

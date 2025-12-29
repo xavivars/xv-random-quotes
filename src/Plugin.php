@@ -13,7 +13,6 @@ use XVRandomQuotes\PostTypes\QuotePostType;
 use XVRandomQuotes\Taxonomies\QuoteTaxonomies;
 use XVRandomQuotes\PostMeta\QuoteMetaFields;
 use XVRandomQuotes\Admin\MetaBoxes;
-use XVRandomQuotes\Admin\BlockEditorAssets;
 use XVRandomQuotes\Widgets\QuoteWidget;
 use XVRandomQuotes\RestAPI\QuoteEndpoint;
 
@@ -77,9 +76,6 @@ class Plugin {
 		$meta_boxes = new MetaBoxes();
 		$meta_boxes->init();
 
-		// Enqueue Block Editor assets
-		new BlockEditorAssets();
-
 		// Register widgets
 		add_action( 'widgets_init', array( $this, 'register_widgets' ) );
 
@@ -108,10 +104,12 @@ class Plugin {
 	 * Register Gutenberg blocks
 	 */
 	public function register_blocks() {
+		$plugin_dir = dirname( __DIR__ );
+		
 		// Register Random Quote block
 		if ( ! \WP_Block_Type_Registry::get_instance()->is_registered( 'xv-random-quotes/random-quote' ) ) {
 			register_block_type(
-				dirname( __DIR__ ) . '/src/Blocks/RandomQuote/block.json',
+				$plugin_dir . '/src/Blocks/RandomQuote',
 				array(
 					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_random_quote_block',
 				)
@@ -121,7 +119,7 @@ class Plugin {
 		// Register Specific Quote block
 		if ( ! \WP_Block_Type_Registry::get_instance()->is_registered( 'xv-random-quotes/specific-quote' ) ) {
 			register_block_type(
-				dirname( __DIR__ ) . '/src/Blocks/SpecificQuote/block.json',
+				$plugin_dir . '/src/Blocks/SpecificQuote',
 				array(
 					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_specific_quote_block',
 				)
@@ -131,7 +129,7 @@ class Plugin {
 		// Register List Quotes block
 		if ( ! \WP_Block_Type_Registry::get_instance()->is_registered( 'xv-random-quotes/list-quotes' ) ) {
 			register_block_type(
-				dirname( __DIR__ ) . '/src/Blocks/ListQuotes/block.json',
+				$plugin_dir . '/src/Blocks/ListQuotes',
 				array(
 					'render_callback' => __NAMESPACE__ . '\\Blocks\\render_list_quotes_block',
 				)

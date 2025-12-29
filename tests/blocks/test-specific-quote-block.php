@@ -124,7 +124,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 		$this->assertIsArray( $block->attributes );
 
 		// Check for expected attributes
-		$this->assertArrayHasKey( 'quoteId', $block->attributes );
+		$this->assertArrayHasKey( 'postId', $block->attributes );
 		$this->assertArrayHasKey( 'disableaspect', $block->attributes );
 	}
 
@@ -144,7 +144,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_renders_by_post_id() {
 		$attributes = array(
-			'quoteId' => $this->quote_ids[0],
+			'postId' => $this->quote_ids[0],
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -160,10 +160,10 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_renders_by_legacy_id() {
 		// Add legacy ID to a quote
-		update_post_meta( $this->quote_ids[1], '_legacy_quote_id', 42 );
+		update_post_meta( $this->quote_ids[1], '_quote_legacy_id', 42 );
 
 		$attributes = array(
-			'quoteId' => 42,
+			'legacyId' => 42,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -179,7 +179,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_invalid_id() {
 		$attributes = array(
-			'quoteId' => 999999,
+			'postId' => 999999,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -208,7 +208,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_renders_with_wrapper_default() {
 		$attributes = array(
-			'quoteId' => $this->quote_ids[0],
+			'postId' => $this->quote_ids[0],
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -223,7 +223,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_disable_aspect() {
 		$attributes = array(
-			'quoteId'       => $this->quote_ids[0],
+			'postId'       => $this->quote_ids[0],
 			'disableaspect' => true,
 		);
 
@@ -240,7 +240,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_renders_quote_content() {
 		$attributes = array(
-			'quoteId' => $this->quote_ids[0],
+			'postId' => $this->quote_ids[0],
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -256,7 +256,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_renders_author() {
 		$attributes = array(
-			'quoteId' => $this->quote_ids[0],
+			'postId' => $this->quote_ids[0],
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -271,7 +271,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_renders_source() {
 		$attributes = array(
-			'quoteId' => $this->quote_ids[0],
+			'postId' => $this->quote_ids[0],
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -296,7 +296,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 		);
 
 		$attributes = array(
-			'quoteId' => $draft_id,
+			'postId' => $draft_id,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -322,7 +322,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 		);
 
 		$attributes = array(
-			'quoteId' => $post_id,
+			'postId' => $post_id,
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
@@ -339,7 +339,7 @@ class Test_Specific_Quote_Block extends WP_UnitTestCase {
 	 */
 	public function test_numeric_string_id() {
 		$attributes = array(
-			'quoteId' => (string) $this->quote_ids[0],
+			'postId' => (string) $this->quote_ids[0],
 		);
 
 		$block   = WP_Block_Type_Registry::get_instance()->get_registered( 'xv-random-quotes/specific-quote' );
