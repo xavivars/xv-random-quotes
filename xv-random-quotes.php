@@ -3,12 +3,12 @@
 Plugin Name: XV Random Quotes
 Description: Display and rotate quotes anywhere on your WordPress site. Fully integrated with WordPress Custom Post Types, Gutenberg blocks, and REST API.
 Author: Xavi Ivars
-Author URI: http://xavi.ivars.me/
+Author URI: https://xavi.ivars.me/
 Version: 2.0.0
 Requires at least: 6.0
 Requires PHP: 7.4
 License: GPL-2.0-or-later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://spdx.org/licenses/GPL-2.0-or-later.html
 Text Domain: xv-random-quotes
 */
 

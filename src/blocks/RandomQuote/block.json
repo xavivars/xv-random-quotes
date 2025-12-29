@@ -4,7 +4,7 @@
     "name": "xv-random-quotes/random-quote",
     "title": "Random Quote",
     "category": "widgets",
-    "icon": "tickets-alt",
+    "icon": "editor-quote",
     "description": "Display one or more random quotes",
     "keywords": [
         "quote",

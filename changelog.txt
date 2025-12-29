@@ -1,5 +1,120 @@
 == XV Random Quotes ==
+= 2.0.0 =
+Major release - Complete modernization and refactor to WordPress Custom Post Types
+
+**🎉 New Features:**
+* **Gutenberg Block Editor Support:**
+  - Random Quote Block - Display one or more random quotes with category filtering
+  - Specific Quote Block - Display a specific quote by ID
+  - List Quotes Block - Display paginated list of quotes with filtering and sorting
+  - All blocks support native WordPress styling or custom HTML wrappers
+  - Full i18n support with proper localization
+
+* **WordPress Custom Post Type Integration:**
+  - Quotes are now native WordPress posts (xv_quote post type)
+  - Full integration with WordPress admin interface
+  - Support for revisions, custom fields, and post meta
+  - Custom taxonomies for categories (quote_category) and authors (quote_author)
+  - Author URLs stored as term meta for Wikipedia/website links
+
+* **REST API Integration:**
+  - New REST endpoint: /wp-json/xv-quotes/v1/random
+  - Support for category filtering, multiple quotes, sequential ordering
+  - Proper parameter validation and error handling
+  - Powers AJAX refresh functionality in widgets and blocks
+
+* **Modern Widget with AJAX:**
+  - Rebuilt widget using WordPress Widgets API
+  - AJAX refresh support with manual or auto-refresh timer
+  - Modern vanilla JavaScript (no jQuery dependency)
+  - Fetch API for REST endpoint integration
+  - Smooth fade animations
+
+* **Simplified Admin Interface:**
+  - Custom meta boxes for Quote Text, Author, and Source
+  - Rich text editing with wp_editor() in teeny mode
+  - Safe HTML support (formatting tags only, no scripts/iframes)
+  - Clean, focused editing experience without Block Editor complexity
+  - Author URL management in taxonomy interface
+
+* **Settings Page Modernization:**
+  - Rebuilt using WordPress Settings API
+  - Individual options (xv_quotes_*) for better performance
+  - Support for native WordPress blockquote styling
+  - HTML wrapper customization for quotes, authors, and sources
+  - AJAX loader customization
+
+**🔄 Migration & Compatibility:**
+* **Automatic Migration System:**
+  - Seamless migration from v1.x custom database table to CPT
+  - Small databases (≤500 quotes): automatic migration on activation
+  - Large databases (>500 quotes): AJAX batch migration with progress bar
+  - Preserves all quote data, categories, authors, and sources
+  - Legacy ID support for backward compatibility
+  - Widget settings automatically migrated
+
+* **Zero Breaking Changes:**
+  - All shortcodes work exactly as before: [stray-random], [stray-all], [stray-id]
+  - All template tags preserved: stray_random_quote(), stray_a_quote(), etc.
+  - Legacy widget automatically migrated to new format
+  - Old function names maintained as wrappers
+  - Settings preserved during migration
+
+**🏗️ Architecture Improvements:**
+* **Modern PHP Architecture:**
+  - PSR-4 autoloading via Composer
+  - Namespaced classes (XVRandomQuotes\*)
+  - Object-oriented design with single responsibility
+  - Separation of concerns: Queries, Rendering, Output
+  - WP_Query instead of raw SQL for better performance
+
+* **Code Organization:**
+  - src/PostTypes/ - Custom post type registration
+  - src/Taxonomies/ - Category and author taxonomies
+  - src/PostMeta/ - Post meta field registration
+  - src/Admin/ - Meta boxes and settings pages
+  - src/Queries/ - WP_Query helper classes
+  - src/Rendering/ - Quote rendering logic
+  - src/Output/ - Output formatting
+  - src/Blocks/ - Gutenberg block implementations
+  - src/RestAPI/ - REST API endpoints
+  - src/Widgets/ - Widget implementation
+  - src/Migration/ - Database migration logic
+
+**🔒 Security & Performance:**
+* Enhanced input sanitization with wp_kses() for HTML fields
+* Proper escaping for all output (esc_html, esc_url, esc_attr)
+* Nonce verification for all form submissions
+* Capability checks for admin operations
+* Author URL sanitization with esc_url_raw()
+* Optimized database queries using WP_Query
+* Conditional script loading (only when needed)
+
+**📋 Requirements:**
+* WordPress 6.0 or higher (was 2.0+)
+* PHP 7.4 or higher (was 5.2+)
+* Modern browser for Block Editor features
+
+**⚠️ Important Upgrade Notes:**
+* **Backup your database before upgrading**
+* First activation will trigger automatic migration
+* Large databases may require AJAX batch migration (follow on-screen prompts)
+* Test on staging environment first
+* No breaking changes expected, but verify custom integrations
+
+**🧪 Testing:**
+* 385 automated tests with 995 assertions
+* Comprehensive test coverage for all features
+* Integration tests for complete user workflows
+* Migration tests for various database scenarios
+
+**🙏 Credits:**
+* Built with ❤️ by Xavi Ivars
+* Tested by the XV Random Quotes community
+* Special thanks to all contributors and users
+
 = 1.41 =
+
 Some bugfixes
 
 = 1.40 =
