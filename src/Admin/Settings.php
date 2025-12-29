@@ -44,11 +44,18 @@ class Settings {
 	const OPTION_PUT_QUOTES_FIRST = 'xv_quotes_put_quotes_first';
 	const OPTION_LINKTO = 'xv_quotes_linkto';
 	const OPTION_SOURCELINKTO = 'xv_quotes_sourcelinkto';
-	const OPTION_AUTHORSPACES = 'xv_quotes_authorspaces';
-	const OPTION_SOURCESPACES = 'xv_quotes_sourcespaces';
+	const OPTION_AUTHORSPACES   = 'xv_quotes_authorspaces';
+	const OPTION_SOURCESPACES   = 'xv_quotes_sourcespaces';
+
+	// AJAX Settings
+	const OPTION_AJAX           = 'xv_quotes_ajax';
+	const OPTION_LOADER         = 'xv_quotes_loader';
+	const OPTION_BEFORE_LOADER  = 'xv_quotes_before_loader';
+	const OPTION_AFTER_LOADER   = 'xv_quotes_after_loader';
+	const OPTION_LOADING        = 'xv_quotes_loading';
 
 	/**
-	 * Initialize the settings
+	 * Initialize settings
 	 */
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
@@ -162,6 +169,57 @@ class Settings {
 			)
 		);
 
+		// Register AJAX Settings
+		register_setting(
+			self::SETTINGS_GROUP,
+			self::OPTION_AJAX,
+			array(
+				'type'              => 'boolean',
+				'default'           => false,
+				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
+			)
+		);
+
+		register_setting(
+			self::SETTINGS_GROUP,
+			self::OPTION_LOADER,
+			array(
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => 'sanitize_text_field',
+			)
+		);
+
+		register_setting(
+			self::SETTINGS_GROUP,
+			self::OPTION_BEFORE_LOADER,
+			array(
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => 'sanitize_text_field',
+			)
+		);
+
+		register_setting(
+			self::SETTINGS_GROUP,
+			self::OPTION_AFTER_LOADER,
+			array(
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => 'sanitize_text_field',
+			)
+		);
+
+		register_setting(
+			self::SETTINGS_GROUP,
+			self::OPTION_LOADING,
+			array(
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => 'sanitize_text_field',
+			)
+		);
+
 		// Add settings sections
 		add_settings_section(
 			'xv_quotes_native_styling',
@@ -188,6 +246,15 @@ class Settings {
 		$this->add_native_styling_fields();
 		$this->add_display_fields();
 		$this->add_link_fields();
+
+		// Add AJAX section
+		add_settings_section(
+			'xv_quotes_ajax',
+			__( 'AJAX Settings', 'stray-quotes' ),
+			array( $this, 'render_ajax_section' ),
+			self::PAGE_SLUG
+		);
+		$this->add_ajax_fields();
 	}
 
 	/**
@@ -416,6 +483,76 @@ class Settings {
 	}
 
 	/**
+	 * Add AJAX settings fields
+	 */
+	private function add_ajax_fields() {
+		add_settings_field(
+			self::OPTION_AJAX,
+			__( 'Disable AJAX', 'stray-quotes' ),
+			array( $this, 'render_checkbox_field' ),
+			self::PAGE_SLUG,
+			'xv_quotes_ajax',
+			array(
+				'label_for'   => self::OPTION_AJAX,
+				'option_name' => self::OPTION_AJAX,
+				'description' => __( 'Check to disable AJAX dynamic loading entirely. When unchecked, AJAX can still be disabled from widgets, shortcodes, or template tags.', 'stray-quotes' ),
+			)
+		);
+
+		add_settings_field(
+			self::OPTION_LOADER,
+			__( 'Loader Link Text', 'stray-quotes' ),
+			array( $this, 'render_text_field' ),
+			self::PAGE_SLUG,
+			'xv_quotes_ajax',
+			array(
+				'label_for'   => self::OPTION_LOADER,
+				'option_name' => self::OPTION_LOADER,
+				'description' => __( 'The link text used to dynamically load another quote. HTML not allowed. If empty, clicking the quote itself will reload it. Example: <code>New quote &amp;raquo;</code>', 'stray-quotes' ),
+			)
+		);
+
+		add_settings_field(
+			self::OPTION_BEFORE_LOADER,
+			__( 'Before Loader', 'stray-quotes' ),
+			array( $this, 'render_text_field' ),
+			self::PAGE_SLUG,
+			'xv_quotes_ajax',
+			array(
+				'label_for'   => self::OPTION_BEFORE_LOADER,
+				'option_name' => self::OPTION_BEFORE_LOADER,
+				'description' => __( 'HTML or other elements before the quote loader. Example: <code>&lt;p align="left"&gt;</code>', 'stray-quotes' ),
+			)
+		);
+
+		add_settings_field(
+			self::OPTION_AFTER_LOADER,
+			__( 'After Loader', 'stray-quotes' ),
+			array( $this, 'render_text_field' ),
+			self::PAGE_SLUG,
+			'xv_quotes_ajax',
+			array(
+				'label_for'   => self::OPTION_AFTER_LOADER,
+				'option_name' => self::OPTION_AFTER_LOADER,
+				'description' => __( 'HTML or other elements after the quote loader. Example: <code>&lt;/p&gt;</code>', 'stray-quotes' ),
+			)
+		);
+
+		add_settings_field(
+			self::OPTION_LOADING,
+			__( 'Loading Message', 'stray-quotes' ),
+			array( $this, 'render_text_field' ),
+			self::PAGE_SLUG,
+			'xv_quotes_ajax',
+			array(
+				'label_for'   => self::OPTION_LOADING,
+				'option_name' => self::OPTION_LOADING,
+				'description' => __( 'The message displayed while a new quote is being loaded. Example: <code>loading...</code>', 'stray-quotes' ),
+			)
+		);
+	}
+
+	/**
 	 * Render native styling section description
 	 */
 	public function render_native_styling_section() {
@@ -434,6 +571,13 @@ class Settings {
 	 */
 	public function render_links_section() {
 		echo '<p>' . esc_html__( 'Configure automatic linking for authors and sources.', 'stray-quotes' ) . '</p>';
+	}
+
+	/**
+	 * Render AJAX section description
+	 */
+	public function render_ajax_section() {
+		echo '<p>' . esc_html__( 'Default settings for the dynamic quote loader.', 'stray-quotes' ) . '</p>';
 	}
 
 	/**

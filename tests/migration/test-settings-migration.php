@@ -27,7 +27,7 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 		delete_option( '_xv_quotes_migrated' );
 		delete_option( 'stray_quotes_options' );
 		
-		// Delete all new settings
+		// Delete all new settings - Display section
 		delete_option( Settings::OPTION_USE_NATIVE_STYLING );
 		delete_option( Settings::OPTION_BEFORE_ALL );
 		delete_option( Settings::OPTION_AFTER_ALL );
@@ -43,6 +43,13 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 		delete_option( Settings::OPTION_SOURCELINKTO );
 		delete_option( Settings::OPTION_AUTHORSPACES );
 		delete_option( Settings::OPTION_SOURCESPACES );
+
+		// Delete AJAX settings
+		delete_option( Settings::OPTION_AJAX );
+		delete_option( Settings::OPTION_LOADER );
+		delete_option( Settings::OPTION_BEFORE_LOADER );
+		delete_option( Settings::OPTION_AFTER_LOADER );
+		delete_option( Settings::OPTION_LOADING );
 	}
 
 	/**
@@ -311,5 +318,122 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 
 		SettingsMigrator::migrate();
 		$this->assertFalse( (bool) get_option( Settings::OPTION_PUT_QUOTES_FIRST ) );
+	}
+
+	/**
+	 * Test new installation gets default AJAX settings
+	 */
+	public function test_new_installation_gets_default_ajax_settings() {
+		// Run migration with no old settings (new install)
+		SettingsMigrator::migrate();
+
+		// Check default AJAX settings
+		$this->assertFalse( (bool) get_option( Settings::OPTION_AJAX ) );
+		$this->assertEquals( '', get_option( Settings::OPTION_LOADER ) );
+		$this->assertEquals( '', get_option( Settings::OPTION_BEFORE_LOADER ) );
+		$this->assertEquals( '', get_option( Settings::OPTION_AFTER_LOADER ) );
+		$this->assertEquals( '', get_option( Settings::OPTION_LOADING ) );
+	}
+
+	/**
+	 * Test migration of AJAX settings
+	 */
+	public function test_migration_of_ajax_settings() {
+		// Set up old settings with AJAX configurations
+		update_option( 'stray_quotes_options', array(
+			'stray_ajax'          => 'Y',
+			'stray_loader'        => 'New quote &raquo;',
+			'stray_before_loader' => '<p>',
+			'stray_after_loader'  => '</p>',
+			'stray_loading'       => 'Loading...',
+		) );
+
+		// Run migration
+		SettingsMigrator::migrate();
+
+		// Check all AJAX settings were migrated
+		$this->assertTrue( (bool) get_option( Settings::OPTION_AJAX ) );
+		$this->assertEquals( 'New quote &raquo;', get_option( Settings::OPTION_LOADER ) );
+		$this->assertEquals( '<p>', get_option( Settings::OPTION_BEFORE_LOADER ) );
+		$this->assertEquals( '</p>', get_option( Settings::OPTION_AFTER_LOADER ) );
+		$this->assertEquals( 'Loading...', get_option( Settings::OPTION_LOADING ) );
+	}
+
+	/**
+	 * Test migration of Y/N checkboxes to boolean
+	 */
+	public function test_migration_handles_yn_checkboxes() {
+		// Set up old settings with Y/N values
+		update_option( 'stray_quotes_options', array(
+			'stray_quotes_put_quotes_first' => 'Y',
+			'stray_ajax'                    => 'Y',
+		) );
+
+		// Run migration
+		SettingsMigrator::migrate();
+
+		// Check all Y values converted to true
+		$this->assertTrue( (bool) get_option( Settings::OPTION_PUT_QUOTES_FIRST ) );
+		$this->assertTrue( (bool) get_option( Settings::OPTION_AJAX ) );
+	}
+
+	/**
+	 * Test comprehensive migration of all settings
+	 */
+	public function test_comprehensive_migration_all_settings() {
+		// Set up old settings with all possible values
+		update_option( 'stray_quotes_options', array(
+			// Display settings
+			'stray_quotes_before_all'       => '<div class="all">',
+			'stray_quotes_after_all'        => '</div>',
+			'stray_quotes_before_quote'     => '<div class="quote">',
+			'stray_quotes_after_quote'      => '</div>',
+			'stray_quotes_before_author'    => '<span class="author">',
+			'stray_quotes_after_author'     => '</span>',
+			'stray_quotes_before_source'    => '<span class="source">',
+			'stray_quotes_after_source'     => '</span>',
+			'stray_if_no_author'            => '<span class="no-author">',
+			'stray_quotes_put_quotes_first' => 'Y',
+			'stray_quotes_linkto'           => 'https://example.com/%AUTHOR%',
+			'stray_quotes_sourcelinkto'     => 'https://example.com/%SOURCE%',
+			'stray_quotes_authorspaces'     => '_',
+			'stray_quotes_sourcespaces'     => '-',
+			// AJAX settings
+			'stray_ajax'                    => 'Y',
+			'stray_loader'                  => 'New quote',
+			'stray_before_loader'           => '<p class="loader">',
+			'stray_after_loader'            => '</p>',
+			'stray_loading'                 => 'Loading...',
+		) );
+
+		// Run migration
+		SettingsMigrator::migrate();
+
+		// Verify all settings were migrated correctly
+		// Display settings
+		$this->assertEquals( '<div class="all">', get_option( Settings::OPTION_BEFORE_ALL ) );
+		$this->assertEquals( '</div>', get_option( Settings::OPTION_AFTER_ALL ) );
+		$this->assertEquals( '<div class="quote">', get_option( Settings::OPTION_BEFORE_QUOTE ) );
+		$this->assertEquals( '</div>', get_option( Settings::OPTION_AFTER_QUOTE ) );
+		$this->assertEquals( '<span class="author">', get_option( Settings::OPTION_BEFORE_AUTHOR ) );
+		$this->assertEquals( '</span>', get_option( Settings::OPTION_AFTER_AUTHOR ) );
+		$this->assertEquals( '<span class="source">', get_option( Settings::OPTION_BEFORE_SOURCE ) );
+		$this->assertEquals( '</span>', get_option( Settings::OPTION_AFTER_SOURCE ) );
+		$this->assertEquals( '<span class="no-author">', get_option( Settings::OPTION_IF_NO_AUTHOR ) );
+		$this->assertTrue( (bool) get_option( Settings::OPTION_PUT_QUOTES_FIRST ) );
+		$this->assertEquals( 'https://example.com/%AUTHOR%', get_option( Settings::OPTION_LINKTO ) );
+		$this->assertEquals( 'https://example.com/%SOURCE%', get_option( Settings::OPTION_SOURCELINKTO ) );
+		$this->assertEquals( '_', get_option( Settings::OPTION_AUTHORSPACES ) );
+		$this->assertEquals( '-', get_option( Settings::OPTION_SOURCESPACES ) );
+
+		// AJAX settings
+		$this->assertTrue( (bool) get_option( Settings::OPTION_AJAX ) );
+		$this->assertEquals( 'New quote', get_option( Settings::OPTION_LOADER ) );
+		$this->assertEquals( '<p class="loader">', get_option( Settings::OPTION_BEFORE_LOADER ) );
+		$this->assertEquals( '</p>', get_option( Settings::OPTION_AFTER_LOADER ) );
+		$this->assertEquals( 'Loading...', get_option( Settings::OPTION_LOADING ) );
+
+		// Verify legacy mode is used for existing installation
+		$this->assertFalse( (bool) get_option( Settings::OPTION_USE_NATIVE_STYLING ) );
 	}
 }

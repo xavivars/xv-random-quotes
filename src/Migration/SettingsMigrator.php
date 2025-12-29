@@ -66,6 +66,13 @@ class SettingsMigrator {
 		update_option( Settings::OPTION_SOURCELINKTO, '' );
 		update_option( Settings::OPTION_AUTHORSPACES, '' );
 		update_option( Settings::OPTION_SOURCESPACES, '' );
+
+		// AJAX settings defaults
+		update_option( Settings::OPTION_AJAX, false );
+		update_option( Settings::OPTION_LOADER, '' );
+		update_option( Settings::OPTION_BEFORE_LOADER, '' );
+		update_option( Settings::OPTION_AFTER_LOADER, '' );
+		update_option( Settings::OPTION_LOADING, '' );
 	}
 
 	/**
@@ -79,20 +86,28 @@ class SettingsMigrator {
 
 		// Map old option keys to new option keys
 		$mapping = array(
-			'stray_quotes_before_all'      => Settings::OPTION_BEFORE_ALL,
-			'stray_quotes_after_all'       => Settings::OPTION_AFTER_ALL,
-			'stray_quotes_before_quote'    => Settings::OPTION_BEFORE_QUOTE,
-			'stray_quotes_after_quote'     => Settings::OPTION_AFTER_QUOTE,
-			'stray_quotes_before_author'   => Settings::OPTION_BEFORE_AUTHOR,
-			'stray_quotes_after_author'    => Settings::OPTION_AFTER_AUTHOR,
-			'stray_quotes_before_source'   => Settings::OPTION_BEFORE_SOURCE,
-			'stray_quotes_after_source'    => Settings::OPTION_AFTER_SOURCE,
-			'stray_if_no_author'           => Settings::OPTION_IF_NO_AUTHOR,
+			// Display settings
+			'stray_quotes_before_all'       => Settings::OPTION_BEFORE_ALL,
+			'stray_quotes_after_all'        => Settings::OPTION_AFTER_ALL,
+			'stray_quotes_before_quote'     => Settings::OPTION_BEFORE_QUOTE,
+			'stray_quotes_after_quote'      => Settings::OPTION_AFTER_QUOTE,
+			'stray_quotes_before_author'    => Settings::OPTION_BEFORE_AUTHOR,
+			'stray_quotes_after_author'     => Settings::OPTION_AFTER_AUTHOR,
+			'stray_quotes_before_source'    => Settings::OPTION_BEFORE_SOURCE,
+			'stray_quotes_after_source'     => Settings::OPTION_AFTER_SOURCE,
+			'stray_if_no_author'            => Settings::OPTION_IF_NO_AUTHOR,
 			'stray_quotes_put_quotes_first' => Settings::OPTION_PUT_QUOTES_FIRST,
-			'stray_quotes_linkto'          => Settings::OPTION_LINKTO,
-			'stray_quotes_sourcelinkto'    => Settings::OPTION_SOURCELINKTO,
-			'stray_quotes_authorspaces'    => Settings::OPTION_AUTHORSPACES,
-			'stray_quotes_sourcespaces'    => Settings::OPTION_SOURCESPACES,
+			'stray_quotes_linkto'           => Settings::OPTION_LINKTO,
+			'stray_quotes_sourcelinkto'     => Settings::OPTION_SOURCELINKTO,
+			'stray_quotes_authorspaces'     => Settings::OPTION_AUTHORSPACES,
+			'stray_quotes_sourcespaces'     => Settings::OPTION_SOURCESPACES,
+
+			// AJAX settings
+			'stray_ajax'          => Settings::OPTION_AJAX,
+			'stray_loader'        => Settings::OPTION_LOADER,
+			'stray_before_loader' => Settings::OPTION_BEFORE_LOADER,
+			'stray_after_loader'  => Settings::OPTION_AFTER_LOADER,
+			'stray_loading'       => Settings::OPTION_LOADING,
 		);
 
 		// Migrate each setting
@@ -111,8 +126,19 @@ class SettingsMigrator {
 					'stray_quotes_before_source',
 					'stray_quotes_after_source',
 					'stray_if_no_author',
+					'stray_before_loader',
+					'stray_after_loader',
 				), true ) ) {
 					$value = utf8_decode( $value );
+				}
+
+				// Convert Y/N checkboxes to boolean
+				if ( in_array( $old_key, array(
+					'stray_quotes_put_quotes_first',
+					'stray_ajax',
+				), true ) ) {
+					// Handle both 'Y' string and boolean true
+					$value = ( $value === 'Y' || $value === true );
 				}
 
 				update_option( $new_key, $value );

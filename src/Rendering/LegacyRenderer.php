@@ -198,15 +198,9 @@ class LegacyRenderer {
 			return array( 'before' => '', 'after' => '' );
 		}
 
-		// Get from old stray_quotes_options for backward compatibility
-		$quotesoptions = get_option( 'stray_quotes_options' );
-		if ( ! $quotesoptions ) {
-			return array( 'before' => '', 'after' => '' );
-		}
-
 		return array(
-			'before' => isset( $quotesoptions['stray_before_loader'] ) ? utf8_decode( $quotesoptions['stray_before_loader'] ) : '',
-			'after'  => isset( $quotesoptions['stray_after_loader'] ) ? utf8_decode( $quotesoptions['stray_after_loader'] ) : '',
+			'before' => get_option( Settings::OPTION_BEFORE_LOADER, '' ),
+			'after'  => get_option( Settings::OPTION_AFTER_LOADER, '' ),
 		);
 	}
 }

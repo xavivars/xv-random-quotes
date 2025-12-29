@@ -575,11 +575,29 @@ This document tracks the complete roadmap for refactoring XV Random Quotes from 
 
 ## Phase 9: Settings & Admin UI
 
-- [ ] **Task 39:** Write Tests for Settings Page - Display Options
+- [x] **Task 39:** Write Tests for Settings Page - Display Options
   - Create tests for settings persistence: verify HTML wrapper settings save correctly, test default category setting, validate sanitization with wp_kses_post, check option retrieval.
+  - ✅ **Status:** COMPLETED
+    - Settings page completely rewritten using WordPress Settings API
+    - 20 essential settings (Display + AJAX only)
+    - Removed settings that duplicate WordPress native features (categories, visibility, management, multiuser)
+    - All settings use individual options (xv_quotes_*) instead of array
+    - Comprehensive test coverage in tests/admin/test-settings-page.php
 
-- [ ] **Task 40:** Update Settings Page for CPT Compatibility
+- [x] **Task 40:** Update Settings Page for CPT Compatibility
   - Review and update stray_settings.php to work with new architecture. Ensure all display settings still apply to CPT-based quotes.
+  - ✅ **Status:** COMPLETED
+    - Created src/Admin/Settings.php (822 lines) with WordPress Settings API
+    - Migration system handles new vs. existing installations (src/Migration/SettingsMigrator.php)
+    - 20 settings total:
+      * Native Styling Toggle (1 setting)
+      * Custom HTML Wrappers (14 settings): before/after all quotes, quote, author, source, etc.
+      * Author & Source Links (4 settings): link templates, space replacement
+      * AJAX Settings (5 settings): enable/disable, loader wrappers, loading message
+    - All modern code paths updated to use new settings
+    - LegacyRenderer updated to use Settings constants instead of old array
+    - All 385 tests passing with 995 assertions
+    - Leverages WordPress-native features: taxonomy for categories, post status for visibility, roles for permissions, list tables for management
 
 - [x] **Task 41:** Write Tests for Admin List Table Customization
   - Create tests for custom columns in admin: verify quote text column, test author taxonomy column, check source meta column, validate category filter dropdown.
