@@ -125,8 +125,8 @@ class QuoteWidget extends \WP_Widget {
 		// WordPress will handle deduplication if this is called multiple times
 		// Get plugin root directory (go up from src/Widgets/)
 		$plugin_dir = dirname( dirname( __DIR__ ) );
-		$script_path = $plugin_dir . '/assets/js/quote-refresh.js';
-		$script_url  = plugins_url( 'assets/js/quote-refresh.js', dirname( dirname( __FILE__ ) ) );
+		$script_path = $plugin_dir . '/js/quote-refresh.js';
+		$script_url  = plugins_url( 'js/quote-refresh.js', dirname( dirname( __FILE__ ) ) );
 		
 		// Use file modification time for cache busting, fall back to version if file doesn't exist
 		$version = file_exists( $script_path ) ? filemtime( $script_path ) : '1.0.0';
