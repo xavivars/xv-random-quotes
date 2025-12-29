@@ -3,7 +3,7 @@ Contributors: xavivars
 Old contributors: ico@italyisfalling.com, Sergey Sirotkin, 
 Tags: quotes, random, widget, sidebar, random quotes, random words, quotations, words, randomness, shortcodes
 Requires at least: 2.3
-Tested up to: 6.7
+Tested up to: 6.9
 Stable tag: 1.41
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
