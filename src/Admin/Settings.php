@@ -60,6 +60,45 @@ class Settings {
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
+		add_action( 'admin_init', array( $this, 'handle_checkbox_options' ) );
+	}
+
+	/**
+	 * Handle checkbox options that aren't submitted when unchecked
+	 */
+	public function handle_checkbox_options() {
+		// Only process on settings page save
+		if ( ! isset( $_POST['option_page'] ) || $_POST['option_page'] !== self::SETTINGS_GROUP ) {
+			return;
+		}
+
+		// Check nonce
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], self::SETTINGS_GROUP . '-options' ) ) {
+			error_log( 'XV Quotes Settings: Nonce verification failed' );
+			return;
+		}
+
+		error_log( 'XV Quotes Settings: Processing checkbox options' );
+		error_log( 'POST data: ' . print_r( $_POST, true ) );
+
+		// List of checkbox options
+		$checkbox_options = array(
+			self::OPTION_USE_NATIVE_STYLING,
+			self::OPTION_PUT_QUOTES_FIRST,
+			self::OPTION_AJAX,
+		);
+
+		// For each checkbox, if not present in POST, set to '0'
+		foreach ( $checkbox_options as $option ) {
+			$is_set = isset( $_POST[ $option ] );
+			$value = $is_set ? $_POST[ $option ] : 'not set';
+			error_log( "XV Quotes Settings: Option {$option} - isset: " . ( $is_set ? 'YES' : 'NO' ) . ", value: {$value}" );
+			
+			if ( ! isset( $_POST[ $option ] ) ) {
+				update_option( $option, '0' );
+				error_log( "XV Quotes Settings: Set {$option} to '0' (unchecked)" );
+			}
+		}
 	}
 
 	/**
@@ -589,6 +628,8 @@ class Settings {
 		$option_name = $args['option_name'];
 		$value       = get_option( $option_name, false );
 		$class       = isset( $args['class'] ) ? $args['class'] : '';
+		
+		error_log( "XV Quotes Settings: Rendering checkbox {$option_name}, current value: " . print_r( $value, true ) );
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>">
 			<label>
@@ -596,7 +637,7 @@ class Settings {
 					   id="<?php echo esc_attr( $args['label_for'] ); ?>" 
 					   name="<?php echo esc_attr( $option_name ); ?>" 
 					   value="1" 
-					   <?php checked( $value, true ); ?> />
+					   <?php checked( '1', $value ); ?> />
 				<?php if ( isset( $args['description'] ) ) : ?>
 					<span class="description"><?php echo wp_kses_post( $args['description'] ); ?></span>
 				<?php endif; ?>
@@ -650,13 +691,24 @@ class Settings {
 	}
 
 	/**
-	 * Sanitize checkbox value
+	 * Sanitize checkbox input
 	 *
 	 * @param mixed $value Input value.
-	 * @return bool Sanitized value.
+	 * @return string Sanitized value as string ('1' or '0').
 	 */
 	public function sanitize_checkbox( $value ) {
-		return (bool) $value;
+		error_log( 'XV Quotes Settings: sanitize_checkbox called with value: ' . print_r( $value, true ) );
+		
+		// WordPress doesn't send unchecked checkboxes, so null/empty means unchecked
+		if ( empty( $value ) ) {
+			error_log( 'XV Quotes Settings: sanitize_checkbox returning 0 (empty value)' );
+			return '0';
+		}
+		
+		// Return string '1' for checked, '0' for unchecked
+		$result = ( '1' === $value || 1 === $value || true === $value ) ? '1' : '0';
+		error_log( 'XV Quotes Settings: sanitize_checkbox returning ' . $result );
+		return $result;
 	}
 
 	/**

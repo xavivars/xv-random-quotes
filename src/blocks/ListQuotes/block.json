@@ -32,6 +32,10 @@
         "disableaspect": {
             "type": "boolean",
             "default": false
+        },
+        "showPagination": {
+            "type": "boolean",
+            "default": true
         }
     },
     "supports": {

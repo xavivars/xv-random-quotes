@@ -13,7 +13,7 @@ interface ListQuotesAttributes {
 	rows: number;
 	orderby: string;
 	order: string;
-	pagination: boolean;
+	showPagination: boolean;
 	disableaspect: boolean;
 }
 
@@ -64,8 +64,8 @@ registerBlockType('xv-random-quotes/list-quotes', {
 				/>
 				<ToggleControl
 					label={__('Show pagination', 'stray-quotes')}
-					checked={attributes.pagination}
-					onChange={(value) => setAttributes({ pagination: value })}
+					checked={attributes.showPagination}
+					onChange={(value) => setAttributes({ showPagination: value })}
 				/>
 				<DisableStylingControl
 					checked={attributes.disableaspect}

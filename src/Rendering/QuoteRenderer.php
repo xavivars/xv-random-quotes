@@ -65,11 +65,16 @@ class QuoteRenderer {
 			$author_url = get_term_meta( $author_terms[0]->term_id, 'author_url', true );
 		}
 
-		// Check if native styling is enabled
-		$use_native_styling = get_option( Settings::OPTION_USE_NATIVE_STYLING, true );
+		// If formatting is explicitly disabled, skip all wrappers
+		if ( $disable_aspect ) {
+			return $this->legacy_renderer->render( $post, $quote_text, $author, $source, $author_url, $is_multi, $disable_aspect );
+		}
 
-		// If native styling is enabled and formatting is not disabled, use native output
-		if ( $use_native_styling && ! $disable_aspect ) {
+		// Check if native styling is enabled (checkbox values are stored as '1' or '0')
+		$use_native_styling = get_option( Settings::OPTION_USE_NATIVE_STYLING, '0' );
+
+		// If native styling is enabled, use native output
+		if ( '1' === $use_native_styling ) {
 			return $this->native_renderer->render( $quote_text, $author, $source, $author_url );
 		}
 
@@ -89,6 +94,19 @@ class QuoteRenderer {
 			return '';
 		}
 
+		// Check if we should use native styling
+		$use_native_styling = get_option( Settings::OPTION_USE_NATIVE_STYLING, '0' );
+
+		// For native styling, render each quote separately without list wrapper
+		if ( '1' === $use_native_styling && ! $disable_aspect ) {
+			$output = '';
+			foreach ( $quotes as $quote_post ) {
+				$output .= $this->render_quote( $quote_post, true, $disable_aspect );
+			}
+			return $output;
+		}
+
+		// For legacy mode or disabled aspect, use list wrapper
 		$output = '<ul>';
 		foreach ( $quotes as $quote_post ) {
 			$output .= '<li>' . $this->render_quote( $quote_post, true, $disable_aspect ) . '</li>';
@@ -105,9 +123,9 @@ class QuoteRenderer {
 	 * @return array Array with 'before' and 'after' keys.
 	 */
 	public function get_loader_wrapper( $disable_aspect ) {
-		$use_native = get_option( Settings::OPTION_USE_NATIVE_STYLING, true );
+		$use_native = get_option( Settings::OPTION_USE_NATIVE_STYLING, '0' );
 
-		if ( $use_native ) {
+		if ( '1' === $use_native ) {
 			// Native mode doesn't use custom wrappers for pagination
 			return array( 'before' => '', 'after' => '' );
 		}

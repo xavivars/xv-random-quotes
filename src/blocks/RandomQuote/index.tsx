@@ -7,7 +7,6 @@ import { __ } from '@wordpress/i18n';
 import { BlockEditor } from '../components/BlockEditor';
 import { CategoryControl } from '../components/CategoryControl';
 import { DisableStylingControl } from '../components/DisableStylingControl';
-
 interface RandomQuoteAttributes {
 	categories: string;
 	disableaspect: boolean;
@@ -20,7 +19,14 @@ interface RandomQuoteProps {
 	setAttributes: (attributes: Partial<RandomQuoteAttributes>) => void;
 }
 
+const CustomIcon = (
+    <svg width="20" height="20" viewBox="0 0 20 20">
+        <circle cx="10" cy="10" r="8" fill="currentColor" />
+    </svg>
+);
+
 registerBlockType('xv-random-quotes/random-quote', {
+	icon: CustomIcon,
 	edit: (props: RandomQuoteProps) => {
 		const { attributes, setAttributes } = props;
 		

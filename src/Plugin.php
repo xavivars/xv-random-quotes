@@ -89,6 +89,9 @@ class Plugin {
 
 		// Register Gutenberg blocks
 		add_action( 'init', array( $this, 'register_blocks' ) );
+
+		// Register shortcodes
+		add_action( 'init', array( $this, 'register_shortcodes' ) );
 	}
 
 	/**
@@ -140,5 +143,15 @@ class Plugin {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Register shortcodes
+	 */
+	public function register_shortcodes() {
+		// Register shortcodes - functions are in backward-compatibility.php
+		add_shortcode( 'stray-random', 'stray_random_shortcode' );
+		add_shortcode( 'stray-all', 'stray_all_shortcode' );
+		add_shortcode( 'stray-id', 'stray_id_shortcode' );
 	}
 }
