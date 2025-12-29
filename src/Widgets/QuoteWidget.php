@@ -69,10 +69,10 @@ class QuoteWidget extends \WP_Widget {
 		}
 		
 		// Output widget
-		echo $before_widget;
+		$out =  $before_widget;
 		
 		if ( ! empty( $title ) ) {
-			echo $before_title . esc_html( $title ) . $after_title;
+			$out .=  $before_title . esc_html( $title ) . $after_title;
 		}
 		
 		// Generate unique container ID
@@ -80,21 +80,21 @@ class QuoteWidget extends \WP_Widget {
 		
 		// Start quote container with data attributes if AJAX enabled
 		if ( $enable_ajax ) {
-			echo '<div id="' . esc_attr( $container_id ) . '" class="xv-quote-container"';
-			echo ' data-categories="' . esc_attr( $categories ) . '"';
-			echo ' data-sequence="' . esc_attr( $sequence ? '1' : '0' ) . '"';
-			echo ' data-multi="' . esc_attr( $multi ) . '"';
-			echo ' data-disableaspect="' . esc_attr( $disableaspect ? '1' : '0' ) . '"';
+			$out .=  '<div id="' . esc_attr( $container_id ) . '" class="xv-quote-container"';
+			$out .=  ' data-categories="' . esc_attr( $categories ) . '"';
+			$out .=  ' data-sequence="' . esc_attr( $sequence ? '1' : '0' ) . '"';
+			$out .=  ' data-multi="' . esc_attr( $multi ) . '"';
+			$out .=  ' data-disableaspect="' . esc_attr( $disableaspect ? '1' : '0' ) . '"';
 			if ( ! empty( $contributor ) ) {
-				echo ' data-contributor="' . esc_attr( $contributor ) . '"';
+				$out .=  ' data-contributor="' . esc_attr( $contributor ) . '"';
 			}
-			echo ' data-timer="' . esc_attr( $timer ) . '"';
-			echo '>';
+			$out .=  ' data-timer="' . esc_attr( $timer ) . '"';
+			$out .=  '>';
 		}
 		
 		// Use QuoteOutput class for quote retrieval and display
 		$quote_output = new QuoteOutput();
-		echo $quote_output->get_random_quotes(
+		$out .=  $quote_output->get_random_quotes(
 			$categories,
 			$sequence,
 			$multi,
@@ -105,15 +105,17 @@ class QuoteWidget extends \WP_Widget {
 		
 		// Add refresh link if AJAX enabled
 		if ( $enable_ajax ) {
-			echo '<div class="xv-quote-refresh-wrapper">';
-			echo '<a href="#" class="xv-quote-refresh" data-container="' . esc_attr( $container_id ) . '">';
-			echo esc_html__( 'Get another quote', 'xv-random-quotes' );
-			echo '</a>';
-			echo '</div>';
-			echo '</div>'; // Close container
+			$out .=  '<div class="xv-quote-refresh-wrapper">';
+			$out .=  '<a href="#" class="xv-quote-refresh" data-container="' . esc_attr( $container_id ) . '">';
+			$out .=  esc_html__( 'Get another quote', 'xv-random-quotes' );
+			$out .=  '</a>';
+			$out .=  '</div>';
+			$out .=  '</div>'; // Close container
 		}
 		
-		echo $after_widget;
+		$out .=  $after_widget;
+
+        echo wp_kses( $out );
 	}
 
 	/**

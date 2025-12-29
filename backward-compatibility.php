@@ -79,7 +79,8 @@ function stray_random_quote($categories='all',$sequence=false,$linkphrase='',$no
 	
 	// Use QuoteOutput class and echo result
 	$quote_output = new \XVRandomQuotes\Output\QuoteOutput();
-	echo $quote_output->get_random_quotes($categories, $sequence, $multi, 0, $disableaspect, $contributor);
+	$output = $quote_output->get_random_quotes($categories, $sequence, $multi, 0, $disableaspect, $contributor);
+	echo wp_kses($output);
 }
 
 /**
@@ -102,7 +103,8 @@ function stray_a_quote($id=1,$linkphrase='',$noajax=false,$disableaspect=NULL) {
 	
 	// Use QuoteOutput class and echo result
 	$quote_output = new \XVRandomQuotes\Output\QuoteOutput();
-	echo $quote_output->get_quote_by_id($id, $disableaspect);
+	$output = $quote_output->get_quote_by_id($id, $disableaspect);
+	echo wp_kses($output);
 }
 
 // ==============================================================================

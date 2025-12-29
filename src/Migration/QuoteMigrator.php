@@ -126,7 +126,10 @@ class QuoteMigrator {
 
 		// Get total count for date calculation
 		$total_quotes = (int) $this->wpdb->get_var(
-			"SELECT COUNT(*) FROM {$this->old_table}"
+            $this->wpdb->prepare(
+                "SELECT COUNT(*) FROM %s",
+                $this->old_table
+            )
 		);
 
 		// Prepare post data
@@ -191,7 +194,10 @@ class QuoteMigrator {
 			// First batch - get total from database
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$total_quotes = $this->wpdb->get_var(
-				"SELECT COUNT(*) FROM {$this->old_table}"
+                $this->wpdb->prepare(
+                    "SELECT COUNT(*) FROM %s",
+                    $this->old_table
+                )
 			);
 
 			// If query returned NULL, table doesn't exist
@@ -245,7 +251,8 @@ class QuoteMigrator {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$old_quotes = $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT quoteID FROM {$this->old_table} ORDER BY quoteID LIMIT %d OFFSET %d",
+				"SELECT quoteID FROM %s ORDER BY quoteID LIMIT %d OFFSET %d",
+                $this->old_table,
 				$to_migrate,
 				$offset
 			)
@@ -334,12 +341,11 @@ class QuoteMigrator {
 	 * @return object|false Quote data or false if not found.
 	 */
 	private function get_old_quote( $quote_id ) {
-		$sql = $this->wpdb->prepare(
-			"SELECT * FROM {$this->old_table} WHERE quoteID = %d LIMIT 1",
+		return $this->wpdb->get_row( $$this->wpdb->prepare(
+			"SELECT * FROM %s WHERE quoteID = %d LIMIT 1",
+            $this->old_table,
 			$quote_id
-		);
-
-		return $this->wpdb->get_row( $sql );
+		) );
 	}
 
 	/**
