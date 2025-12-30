@@ -1,5 +1,10 @@
 == XV Random Quotes ==
 
+= 2.0.2 =
+Bugfixes:
+- Add vendor folder to bundled files
+- Renamed Blocks folder
+
 = 2.0.1 =
 Bugfix: move quote-refresh javascript file to root folder
 

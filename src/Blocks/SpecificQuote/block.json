@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "xv-random-quotes/specific-quote",
+    "title": "Specific Quote",
+    "category": "widgets",
+    "icon": "format-quote",
+    "description": "Display a specific quote by ID",
+    "keywords": [
+        "quote",
+        "specific",
+        "id"
+    ],
+    "textdomain": "xv-random-quotes",
+    "attributes": {
+        "postId": {
+            "type": "number",
+            "default": 0
+        },
+        "legacyId": {
+            "type": "number",
+            "default": 0
+        },
+        "disableaspect": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": true
+    },
+    "editorScript": "file:../../../src/generated/specific-quote-block.js"
+}

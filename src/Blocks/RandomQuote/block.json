@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "xv-random-quotes/random-quote",
+    "title": "Random Quote",
+    "category": "widgets",
+    "icon": "editor-quote",
+    "description": "Display one or more random quotes",
+    "keywords": [
+        "quote",
+        "random",
+        "inspiration"
+    ],
+    "textdomain": "xv-random-quotes",
+    "attributes": {
+        "categories": {
+            "type": "string",
+            "default": ""
+        },
+        "disableaspect": {
+            "type": "boolean",
+            "default": false
+        },
+        "enableAjax": {
+            "type": "boolean",
+            "default": false
+        },
+        "timer": {
+            "type": "number",
+            "default": 0
+        }
+    },
+    "supports": {
+        "html": false,
+        "align": true
+    },
+    "editorScript": "file:../../../src/generated/random-quote-block.js"
+}

@@ -15,6 +15,6 @@
 		"isolatedModules": true,
 		"forceConsistentCasingInFileNames": true
 	},
-	"include": [ "src/blocks/**/*" ],
+	"include": [ "src/Blocks/**/*" ],
 	"exclude": [ "node_modules", "src/generated" ]
 }

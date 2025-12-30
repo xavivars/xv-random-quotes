@@ -6,7 +6,6 @@
 *~
 
 # Dependencies
-vendor/
 node_modules/
 
 # Build artifacts - DO NOT ignore src/generated/ (needed for plugin distribution)

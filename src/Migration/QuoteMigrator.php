@@ -127,7 +127,7 @@ class QuoteMigrator {
 		// Get total count for date calculation
 		$total_quotes = (int) $this->wpdb->get_var(
             $this->wpdb->prepare(
-                "SELECT COUNT(*) FROM %s",
+                "SELECT COUNT(*) FROM %i",
                 $this->old_table
             )
 		);
@@ -195,7 +195,7 @@ class QuoteMigrator {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 			$total_quotes = $this->wpdb->get_var(
                 $this->wpdb->prepare(
-                    "SELECT COUNT(*) FROM %s",
+                    "SELECT COUNT(*) FROM %i",
                     $this->old_table
                 )
 			);
