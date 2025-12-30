@@ -1,5 +1,9 @@
 == XV Random Quotes ==
 
+= 2.0.3 =
+Bugfix: mysql table escaping
+Improvement: removed dev composer dependencies
+
 = 2.0.2 =
 Bugfixes:
 - Add vendor folder to bundled files

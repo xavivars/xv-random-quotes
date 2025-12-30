@@ -251,7 +251,7 @@ class QuoteMigrator {
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$old_quotes = $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"SELECT quoteID FROM %s ORDER BY quoteID LIMIT %d OFFSET %d",
+				"SELECT quoteID FROM %i ORDER BY quoteID LIMIT %d OFFSET %d",
                 $this->old_table,
 				$to_migrate,
 				$offset
@@ -342,7 +342,7 @@ class QuoteMigrator {
 	 */
 	private function get_old_quote( $quote_id ) {
 		return $this->wpdb->get_row( $$this->wpdb->prepare(
-			"SELECT * FROM %s WHERE quoteID = %d LIMIT 1",
+			"SELECT * FROM %i WHERE quoteID = %d LIMIT 1",
             $this->old_table,
 			$quote_id
 		) );
