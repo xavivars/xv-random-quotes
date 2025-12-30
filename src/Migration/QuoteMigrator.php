@@ -341,7 +341,7 @@ class QuoteMigrator {
 	 * @return object|false Quote data or false if not found.
 	 */
 	private function get_old_quote( $quote_id ) {
-		return $this->wpdb->get_row( $$this->wpdb->prepare(
+		return $this->wpdb->get_row( $this->wpdb->prepare(
 			"SELECT * FROM %i WHERE quoteID = %d LIMIT 1",
             $this->old_table,
 			$quote_id
