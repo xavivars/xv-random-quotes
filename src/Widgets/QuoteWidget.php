@@ -115,7 +115,7 @@ class QuoteWidget extends \WP_Widget {
 		
 		$out .=  $after_widget;
 
-        echo wp_kses( $out );
+        echo wp_kses_post( $out );
 	}
 
 	/**

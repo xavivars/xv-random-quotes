@@ -56,9 +56,9 @@ class QuoteEndpoint {
 				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'sequence'       => array(
-				'description' => 'Whether to use random ordering (true) or sequential (false)',
+				'description' => 'Whether to use random ordering (false) or sequential (true)',
 				'type'        => 'boolean',
-				'default'     => true,
+				'default'     => false,
 			),
 			'multi'          => array(
 				'description'       => 'Number of quotes to return',
