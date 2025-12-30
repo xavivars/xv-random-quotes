@@ -1,5 +1,8 @@
 == XV Random Quotes ==
 
+= 2..0.5 =
+Bugfix: migrate even if the extension is not deactivated/activated again
+
 = 2.0.4 =
 Bugfix: properly escape table names in migration queries
 

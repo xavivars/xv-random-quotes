@@ -85,4 +85,13 @@ function xv_quotes_activation_migration() {
 	}
 }
 
-register_activation_hook(__FILE__, 'xv_quotes_activation_migration');
+/**
+ * Check if migration is needed on admin dashboard load.
+ */
+function xv_quotes_check_migration() {
+    // If the 'migrated' option doesn't exist (returns false), run the migration
+    if ( ! get_option( 'xv_quotes_migrated_v2' ) ) {
+        xv_quotes_activation_migration();
+    }
+}
+add_action( 'admin_init', 'xv_quotes_check_migration' );
