@@ -24,6 +24,8 @@ class MigrationNotices {
 	 */
 	public static function init() {
 		add_action( 'admin_notices', array( __CLASS__, 'display_migration_notices' ) );
+		add_action( 'wp_ajax_xv_quote_migration_batch', array( __CLASS__, 'handle_migration_batch_ajax' ) );
+		add_action( 'wp_ajax_xv_migration_complete', array( __CLASS__, 'handle_migration_complete_ajax' ) );
 	}
 
 	/**
@@ -77,6 +79,20 @@ class MigrationNotices {
 			self::display_progress_notice( $total, $progress );
 			return;
 		}
+
+		// Enqueue migration script
+		wp_enqueue_script(
+			'xv-migration',
+			plugins_url( '/../../js/migration.js', __FILE__ ),
+			array(),
+			'1.0.0',
+			true
+		);
+
+		// Localize script with AJAX URL
+		wp_localize_script( 'xv-migration', 'xvMigration', array(
+			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+		) );
 
 		// Show initial pending notice with start button
 		$nonce = wp_create_nonce( 'xv_migration_nonce' );
@@ -175,5 +191,60 @@ class MigrationNotices {
 			</p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Handle AJAX migration batch request
+	 *
+	 * Processes one batch of quotes and returns progress information.
+	 */
+	public static function handle_migration_batch_ajax() {
+		// Verify nonce
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'xv_migration_nonce' ) ) {
+			wp_send_json_error( array( 'message' => 'Invalid nonce' ) );
+		}
+
+		// Check user capabilities
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => 'Insufficient permissions' ) );
+		}
+
+		try {
+			// Run migration batch
+			$migrator = new \XVRandomQuotes\Migration\QuoteMigrator();
+			$result = $migrator->migrate_batch();
+
+			// Return result to AJAX caller
+			wp_send_json_success( $result );
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
+		}
+	}
+
+	/**
+	 * Handle AJAX migration completion request
+	 *
+	 * Clears the pending migration flag when migration completes.
+	 */
+	public static function handle_migration_complete_ajax() {
+		// Verify nonce
+		if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'xv_migration_nonce' ) ) {
+			wp_send_json_error( array( 'message' => 'Invalid nonce' ) );
+		}
+
+		// Check user capabilities
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => 'Insufficient permissions' ) );
+		}
+
+		// Clear the pending flag so notice doesn't show again
+		delete_option( 'xv_migration_pending' );
+
+		// Clean up transients
+		delete_transient( 'xv_migration_progress' );
+		delete_transient( 'xv_migration_total' );
+		delete_transient( 'xv_migration_offset' );
+
+		wp_send_json_success( array( 'message' => 'Migration completed' ) );
 	}
 }
