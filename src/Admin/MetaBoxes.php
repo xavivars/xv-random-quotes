@@ -63,25 +63,45 @@ class MetaBoxes {
 	}
 
 	/**
-	 * Get wp_editor settings
+	 * Get content editor settings
 	 *
-	 * Returns standard editor settings with optional row count.
+	 * Returns wp_editor settings for the quote content meta box.
 	 *
 	 * @since 2.0.0
-	 * @param int $rows Number of textarea rows. Default 8.
 	 * @return array Editor settings
 	 */
-	private function get_editor_settings( $rows = 8 ) {
-		return array(
-			'media_buttons' => false,          // No "Add Media" button
-			'quicktags'     => false,          // No HTML/Text tab
-			'teeny'         => true,           // Minimal editor
-			'textarea_rows' => $rows,
-			'tinymce'       => array(
-				'toolbar1' => 'bold,italic,link,unlink',  // Only these buttons
-				'toolbar2' => '',                          // No second toolbar
-				'toolbar3' => '',                          // No third toolbar
+	private function get_content_editor_settings() {
+		return $this->get_editor_settings( array(
+			'teeny'         => false,
+			'rows'			=> 8,
+			'media_buttons' => true,
+			'quicktags'     => true,
+		) );
+	}
+
+	/**
+	 * Get wp_editor settings
+	 *
+	 * Returns standard editor settings with optional configuration.
+	 *
+	 * @since 2.0.0
+	 * @param array $options Number of textarea rows. Default 8.
+	 * @return array Editor settings
+	 */
+	private function get_editor_settings( $options = array() ) {
+		return array_merge(
+			array(
+				'media_buttons' => false,          // No "Add Media" button
+				'quicktags'     => false,          // No HTML/Text tab
+				'teeny'         => true,           // Minimal editor
+				'textarea_rows' => 1,	 		   // Single line textarea
+				'tinymce'       => array(
+					'toolbar1' => 'bold,italic,link,unlink',  // Only these buttons
+					'toolbar2' => '',                         // No second toolbar
+					'toolbar3' => '',                         // No third toolbar
+				),
 			),
+			$options
 		);
 	}
 
@@ -131,7 +151,7 @@ class MetaBoxes {
 		wp_nonce_field( 'xv_quote_content_save', 'xv_quote_content_nonce' );
 
 		echo '<div class="xv-quote-content-editor">';
-		wp_editor( $post->post_content, 'xv_quote_content', $this->get_editor_settings( 8 ) );
+		wp_editor( $post->post_content, 'xv_quote_content', $this->get_content_editor_settings() );
 		echo '</div>';
 		echo '<p class="description">';
 		echo esc_html__( 'Enter the quote text. Only basic formatting (bold, italic, links) is allowed.', 'xv-random-quotes' );
@@ -153,7 +173,7 @@ class MetaBoxes {
 		$source = get_post_meta( $post->ID, '_quote_source', true );
 
 		echo '<div class="xv-quote-source-editor">';
-		wp_editor( $source, 'quote_source', $this->get_editor_settings( 1 ) );
+		wp_editor( $source, 'quote_source', $this->get_editor_settings( ) );
 		echo '</div>';
 		echo '<p class="description">';
 		echo esc_html__( 'Enter the quote source. Only basic formatting (bold, italic, links) is allowed.', 'xv-random-quotes' );
