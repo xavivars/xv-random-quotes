@@ -185,7 +185,7 @@ class MetaBoxes {
 		     wp_verify_nonce( $_POST['xv_quote_content_nonce'], 'xv_quote_content_save' ) &&
 		     isset( $_POST['xv_quote_content'] ) ) {
 			
-			$content = wp_kses( $_POST['xv_quote_content'], $this->get_allowed_html_tags() );
+			$content = wp_kses_post( $_POST['xv_quote_content'] );
 			
 			// Unhook this function to prevent infinite loop
 			remove_action( 'save_post_xv_quote', array( $this, 'save_all_meta_boxes' ), 10 );
