@@ -10,6 +10,7 @@
 namespace XVRandomQuotes\Widgets;
 
 use XVRandomQuotes\Output\QuoteOutput;
+use XVRandomQuotes\Admin\Settings;
 
 /**
  * Quote Widget Class
@@ -105,9 +106,15 @@ class QuoteWidget extends \WP_Widget {
 		
 		// Add refresh link if AJAX enabled
 		if ( $enable_ajax ) {
+			// Get loader text from settings, fallback to localized default
+			$loader_text = get_option( Settings::OPTION_LOADER, '' );
+			if ( empty( $loader_text ) ) {
+				$loader_text = __( 'Get another quote', 'xv-random-quotes' );
+			}
+			
 			$out .=  '<div class="xv-quote-refresh-wrapper">';
 			$out .=  '<a href="#" class="xv-quote-refresh" data-container="' . esc_attr( $container_id ) . '">';
-			$out .=  esc_html__( 'Get another quote', 'xv-random-quotes' );
+			$out .=  esc_html( $loader_text );
 			$out .=  '</a>';
 			$out .=  '</div>';
 			$out .=  '</div>'; // Close container
