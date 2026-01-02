@@ -196,9 +196,6 @@ class OverviewPage {
                     max-width: 100%;
                     margin-bottom: 20px;
                 }
-                .wrap .card h2 {
-                    margin-top: 0;
-                }
                 .wrap .card h3 {
                     margin-top: 20px;
                     margin-bottom: 10px;

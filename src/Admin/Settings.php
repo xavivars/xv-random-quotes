@@ -753,16 +753,84 @@ class Settings {
 
 		settings_errors( 'xv_quotes_messages' );
 		?>
-		<div class="wrap">
+		<div class="wrap xv-quotes-settings">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<form action="options.php" method="post">
-				<?php
-				settings_fields( self::SETTINGS_GROUP );
-				do_settings_sections( self::PAGE_SLUG );
-				submit_button( __( 'Save Settings', 'xv-random-quotes' ) );
-				?>
+				<?php settings_fields( self::SETTINGS_GROUP ); ?>
+
+				<!-- Native Styling Section -->
+				<div class="card">
+					<h2><?php _e( 'Quote Display Mode', 'xv-random-quotes' ); ?></h2>
+					<p><?php _e( 'Choose how quotes should be displayed on your site.', 'xv-random-quotes' ); ?></p>
+					<table class="form-table" role="presentation">
+						<?php do_settings_fields( self::PAGE_SLUG, 'xv_quotes_native_styling' ); ?>
+					</table>
+				</div>
+
+				<!-- Custom HTML Wrappers Section -->
+				<div class="card">
+					<h2><?php _e( 'Custom HTML Wrappers', 'xv-random-quotes' ); ?></h2>
+					<p><?php _e( 'Customize the HTML markup around quotes, authors, and sources. These settings are only used when "Use Native Styling" is disabled.', 'xv-random-quotes' ); ?></p>
+					<table class="form-table" role="presentation">
+						<?php do_settings_fields( self::PAGE_SLUG, 'xv_quotes_display' ); ?>
+					</table>
+				</div>
+
+				<!-- Author & Source Links Section -->
+				<div class="card">
+					<h2><?php _e( 'Author & Source Links', 'xv-random-quotes' ); ?></h2>
+					<p><?php _e( 'Configure automatic linking for authors and sources. Use <code>%AUTHOR%</code> or <code>%SOURCE%</code> as placeholders in your link templates.', 'xv-random-quotes' ); ?></p>
+					<table class="form-table" role="presentation">
+						<?php do_settings_fields( self::PAGE_SLUG, 'xv_quotes_links' ); ?>
+					</table>
+				</div>
+
+				<!-- AJAX Settings Section -->
+				<div class="card">
+					<h2><?php _e( 'AJAX Settings', 'xv-random-quotes' ); ?></h2>
+					<p><?php _e( 'Configure dynamic quote loading with AJAX. Enable AJAX in widgets or blocks for automatic quote rotation.', 'xv-random-quotes' ); ?></p>
+					<table class="form-table" role="presentation">
+						<?php do_settings_fields( self::PAGE_SLUG, 'xv_quotes_ajax' ); ?>
+					</table>
+				</div>
+
+				<?php submit_button( __( 'Save Settings', 'xv-random-quotes' ) ); ?>
 			</form>
 		</div>
+
+		<style>
+			.xv-quotes-settings .card {
+				max-width: 100%;
+				margin-bottom: 20px;
+			}
+			.xv-quotes-settings .card h2 {
+				margin-bottom: 10px;
+			}
+			.xv-quotes-settings .card > p {
+				margin-top: 0;
+				margin-bottom: 15px;
+				color: #646970;
+			}
+			.xv-quotes-settings .card code {
+				background: #f0f0f1;
+				padding: 2px 6px;
+				border-radius: 3px;
+				font-family: monospace;
+			}
+			.xv-quotes-settings .form-table {
+				margin-top: 0;
+			}
+			.xv-quotes-settings .form-table th {
+				padding-top: 15px;
+			}
+			.xv-quotes-settings .form-table td {
+				padding-top: 15px;
+			}
+			.xv-quotes-settings .form-table tr:first-child th,
+			.xv-quotes-settings .form-table tr:first-child td {
+				padding-top: 0;
+			}
+		</style>
 
 		<script type="text/javascript">
 		(function($) {
