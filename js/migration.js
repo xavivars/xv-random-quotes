@@ -123,7 +123,7 @@
 			// Update text
 			const $text = $progressNotice.querySelector('.xv-migration-progress-text');
 			if ($text) {
-				$text.textContent = `Migrated ${result.migrated} of ${result.total} quotes (${percentage}%)`;
+				$text.textContent = `Migrated ${result.offset} of ${result.total} quotes (${percentage}%)`;
 			}
 		}
 	}
