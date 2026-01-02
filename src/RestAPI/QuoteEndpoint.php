@@ -99,12 +99,14 @@ class QuoteEndpoint {
 		// Use QuoteOutput class
 		$quote_output = new QuoteOutput();
 		$html = $quote_output->get_random_quotes(
-			$categories,
-			$sequence,
-			$multi,
-			0, // offset
-			$disableaspect,
-			$contributor
+			array(
+				'categories'    => $categories,
+				'sequence'      => $sequence,
+				'multi'         => $multi,
+				'offset'        => 0,
+				'disableaspect' => $disableaspect,
+				'contributor'   => $contributor,
+			)
 		);
 
 		// Check if we got any quotes

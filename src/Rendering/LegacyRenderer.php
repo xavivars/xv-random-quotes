@@ -188,7 +188,7 @@ class LegacyRenderer {
 	}
 
 	/**
-	 * Get loader/pagination wrapper HTML
+	 * Render loader/pagination wrapper HTML
 	 *
 	 * @param bool $disable_aspect Whether wrappers are disabled.
 	 * @return array Array with 'before' and 'after' keys.
@@ -202,5 +202,34 @@ class LegacyRenderer {
 			'before' => get_option( Settings::OPTION_BEFORE_LOADER, '' ),
 			'after'  => get_option( Settings::OPTION_AFTER_LOADER, '' ),
 		);
+	}
+
+	/**
+	 * Render loader link for AJAX refresh
+	 *
+	 * @param bool $disable_ajax Whether AJAX is disabled.
+	 * @param string $link_text Custom link text (uses settings default if empty).
+	 * @param bool $disable_aspect Whether wrappers are disabled.
+	 * @return string Loader link HTML or empty string if AJAX disabled.
+	 */
+	public function render_loader_link( $disable_ajax = false, $link_text = '', $disable_aspect = false ) {
+		// Don't render link if AJAX is disabled
+		if ( $disable_ajax ) {
+			return '';
+		}
+
+		// Use provided link text or fall back to settings
+		if ( empty( $link_text ) ) {
+			$link_text = get_option( Settings::OPTION_LOADER, '' );
+		}
+
+		// Don't render link if no text is available
+		if ( empty( $link_text ) ) {
+			return '';
+		}
+
+		$wrapper = $this->get_loader_wrapper( $disable_aspect );
+
+		return wp_kses_post( $wrapper['before'] ) . '<a href="#" class="xv-quote-refresh">' . wp_kses_post( $link_text ) . '</a>' . wp_kses_post( $wrapper['after'] );
 	}
 }

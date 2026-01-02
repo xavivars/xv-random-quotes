@@ -7,6 +7,8 @@
 
 namespace XVRandomQuotes\Rendering;
 
+use XVRandomQuotes\Admin\Settings;
+
 /**
  * Class NativeRenderer
  *
@@ -49,9 +51,9 @@ class NativeRenderer {
 
 			if ( ! empty( $source ) ) {
 				// Check if source contains a link pattern for sourcelinkto
-				$sourcelinkto = get_option( 'xv_quotes_sourcelinkto', '' );
+				$sourcelinkto = get_option( Settings::OPTION_SOURCELINKTO, '' );
 				if ( $sourcelinkto && ! preg_match( "/^[a-zA-Z]+[:\/\/]+[A-Za-z0-9\-_]+\\.+[A-Za-z0-9\.\/%&=\?\-_]+$/i", $source ) ) {
-					$sourcespaces = get_option( 'xv_quotes_sourcespaces', '' );
+					$sourcespaces = get_option( Settings::OPTION_SOURCESPACES, '' );
 					$processed_source = $source;
 					if ( $sourcespaces ) {
 						$processed_source = str_replace( ' ', $sourcespaces, $source );

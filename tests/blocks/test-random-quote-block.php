@@ -295,7 +295,7 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 		$content = call_user_func( $block->render_callback, $attributes );
 
 		$this->assertNotEmpty( $content );
-		$this->assertStringContainsString( 'xv-quote-ajax-wrapper', $content );
+		$this->assertStringContainsString( 'xv-quote-container', $content );
 		$this->assertStringContainsString( 'data-categories="science"', $content );
 		$this->assertStringContainsString( 'data-timer="10"', $content );
 	}
@@ -312,7 +312,7 @@ class Test_Random_Quote_Block extends WP_UnitTestCase {
 		$content = call_user_func( $block->render_callback, $attributes );
 
 		$this->assertNotEmpty( $content );
-		$this->assertStringNotContainsString( 'class="xv-quote"-ajax-wrapper', $content );
+		$this->assertStringNotContainsString( 'xv-quote-container', $content );
 		$this->assertStringNotContainsString( 'data-timer', $content );
 	}
 

@@ -79,7 +79,16 @@ function stray_random_quote($categories='all',$sequence=false,$linkphrase='',$no
 	
 	// Use QuoteOutput class and echo result
 	$quote_output = new \XVRandomQuotes\Output\QuoteOutput();
-	$output = $quote_output->get_random_quotes($categories, $sequence, $multi, 0, $disableaspect, $contributor);
+	$output = $quote_output->get_random_quotes(
+		array(
+			'categories'    => $categories,
+			'sequence'      => $sequence,
+			'multi'         => $multi,
+			'offset'        => 0,
+			'disableaspect' => $disableaspect,
+			'contributor'   => $contributor,
+		)
+	);
 	echo wp_kses_post( $output );
 }
 

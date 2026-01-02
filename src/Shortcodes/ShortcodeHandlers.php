@@ -117,15 +117,23 @@ function stray_random_shortcode($atts, $content = NULL) {
 		'user' => ''
 	));
 
-	// Use QuoteOutput class
+	// Determine if AJAX is enabled (noajax="" means enabled)
+	$enable_ajax = empty( $atts['noajax'] ) && ! empty( $atts['linkphrase'] );
+
+	// Use QuoteOutput class for complete rendering (including AJAX if enabled)
 	$quote_output = new QuoteOutput();
 	return $quote_output->get_random_quotes(
-		$atts['categories'],
-		$atts['sequence'],
-		$atts['multi'],
-		$atts['offset'],
-		$atts['disableaspect'],
-		$atts['user']
+		array(
+			'categories'    => $atts['categories'],
+			'sequence'      => $atts['sequence'],
+			'multi'         => $atts['multi'],
+			'offset'        => $atts['offset'],
+			'disableaspect' => $atts['disableaspect'],
+			'contributor'   => $atts['user'],
+			'enable_ajax'   => $enable_ajax,
+			'link_phrase'   => $atts['linkphrase'],
+			'timer'         => ! empty( $atts['timer'] ) ? absint( $atts['timer'] ) : 0,
+		)
 	);
 }
 

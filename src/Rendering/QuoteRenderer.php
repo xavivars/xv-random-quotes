@@ -117,7 +117,7 @@ class QuoteRenderer {
 	}
 
 	/**
-	 * Get loader/pagination wrapper HTML based on current rendering mode
+	 * Get loader/pagination wrapper HTML
 	 *
 	 * @param bool $disable_aspect Whether wrappers are disabled.
 	 * @return array Array with 'before' and 'after' keys.
@@ -131,7 +131,18 @@ class QuoteRenderer {
 		}
 
 		// Legacy mode - delegate to LegacyRenderer
-		$legacy_renderer = new LegacyRenderer();
-		return $legacy_renderer->get_loader_wrapper( $disable_aspect );
+		return $this->legacy_renderer->get_loader_wrapper( $disable_aspect );
+	}
+
+	/**
+	 * Render loader link for AJAX refresh
+	 *
+	 * @param bool $disable_ajax Whether AJAX is disabled.
+	 * @param string $link_text Custom link text (uses settings default if empty).
+	 * @param bool $disable_aspect Whether wrappers are disabled.
+	 * @return string Loader link HTML or empty string if AJAX disabled.
+	 */
+	public function render_loader_link( $disable_ajax = false, $link_text = '', $disable_aspect = false ) {
+		return $this->legacy_renderer->render_loader_link( $disable_ajax, $link_text, $disable_aspect );
 	}
 }

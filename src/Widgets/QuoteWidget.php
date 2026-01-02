@@ -64,100 +64,32 @@ class QuoteWidget extends \WP_Widget {
 		$enable_ajax   = ! empty( $instance['enable_ajax'] ) ? (bool) $instance['enable_ajax'] : false;
 		$timer         = ! empty( $instance['timer'] ) ? absint( $instance['timer'] ) : 0;
 
-		// Enqueue AJAX script if enabled
-		if ( $enable_ajax ) {
-			$this->enqueue_refresh_script();
-		}
-		
 		// Output widget
-		$out =  $before_widget;
+		$out = $before_widget;
 		
 		if ( ! empty( $title ) ) {
-			$out .=  $before_title . esc_html( $title ) . $after_title;
+			$out .= $before_title . esc_html( $title ) . $after_title;
 		}
 		
-		// Generate unique container ID
-		$container_id = 'xv-quote-container-' . sanitize_html_class( $widget_id );
-		
-		// Start quote container with data attributes if AJAX enabled
-		if ( $enable_ajax ) {
-			$out .=  '<div id="' . esc_attr( $container_id ) . '" class="xv-quote-container"';
-			$out .=  ' data-categories="' . esc_attr( $categories ) . '"';
-			$out .=  ' data-sequence="' . esc_attr( $sequence ? '1' : '0' ) . '"';
-			$out .=  ' data-multi="' . esc_attr( $multi ) . '"';
-			$out .=  ' data-disableaspect="' . esc_attr( $disableaspect ? '1' : '0' ) . '"';
-			if ( ! empty( $contributor ) ) {
-				$out .=  ' data-contributor="' . esc_attr( $contributor ) . '"';
-			}
-			$out .=  ' data-timer="' . esc_attr( $timer ) . '"';
-			$out .=  '>';
-		}
-		
-		// Use QuoteOutput class for quote retrieval and display
+		// Use QuoteOutput class for complete rendering (including AJAX if enabled)
 		$quote_output = new QuoteOutput();
-		$out .=  $quote_output->get_random_quotes(
-			$categories,
-			$sequence,
-			$multi,
-			0, // offset
-			$disableaspect,
-			$contributor
+		$out .= $quote_output->get_random_quotes(
+			array(
+				'categories'    => $categories,
+				'sequence'      => $sequence,
+				'multi'         => $multi,
+				'offset'        => 0,
+				'disableaspect' => $disableaspect,
+				'contributor'   => $contributor,
+				'enable_ajax'   => $enable_ajax,
+				'timer'         => $timer,
+				'container_id'  => 'xv-quote-container-' . sanitize_html_class( $widget_id ),
+			)
 		);
 		
-		// Add refresh link if AJAX enabled
-		if ( $enable_ajax ) {
-			// Get loader text from settings, fallback to localized default
-			$loader_text = get_option( Settings::OPTION_LOADER, '' );
-			if ( empty( $loader_text ) ) {
-				$loader_text = __( 'Get another quote', 'xv-random-quotes' );
-			}
-			
-			$out .=  '<div class="xv-quote-refresh-wrapper">';
-			$out .=  '<a href="#" class="xv-quote-refresh" data-container="' . esc_attr( $container_id ) . '">';
-			$out .=  esc_html( $loader_text );
-			$out .=  '</a>';
-			$out .=  '</div>';
-			$out .=  '</div>'; // Close container
-		}
-		
-		$out .=  $after_widget;
+		$out .= $after_widget;
 
         echo wp_kses_post( $out );
-	}
-
-	/**
-	 * Enqueue the quote refresh JavaScript
-	 */
-	private function enqueue_refresh_script() {
-		// WordPress will handle deduplication if this is called multiple times
-		// Get plugin root directory (go up from src/Widgets/)
-		$plugin_dir = dirname( dirname( __DIR__ ) );
-		$script_path = $plugin_dir . '/js/quote-refresh.js';
-		$script_url  = plugins_url( 'js/quote-refresh.js', dirname( dirname( __FILE__ ) ) );
-		
-		// Use file modification time for cache busting, fall back to version if file doesn't exist
-		$version = file_exists( $script_path ) ? filemtime( $script_path ) : '1.0.0';
-		
-		// Only enqueue if not already enqueued
-		if ( ! wp_script_is( 'xv-quote-refresh', 'enqueued' ) ) {
-			wp_enqueue_script(
-				'xv-quote-refresh',
-				$script_url,
-				array(), // No dependencies - vanilla JavaScript
-				$version,
-				true // In footer
-			);
-			
-			// Localize script with REST API URL
-			wp_localize_script(
-				'xv-quote-refresh',
-				'xvQuoteRefresh',
-				array(
-					'restUrl'   => esc_url_raw( rest_url( 'xv-random-quotes/v1/quote/random' ) ),
-					'restNonce' => wp_create_nonce( 'wp_rest' ),
-				)
-			);
-		}
 	}
 
 	/**
