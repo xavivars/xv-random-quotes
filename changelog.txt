@@ -1,5 +1,13 @@
 == XV Random Quotes ==
 
+= 2.1.0 =
+Improvement: new overview page
+Improvement: supported media in the quote content
+Improvemnet: settings page UX improvements
+Bugfix: Big installations migrate properly
+Bugfix: loader text is properly used
+Bugfix: refresh link works properly in widgets and shortcodes
+
 = 2.0.6 =
 Bugfix: widgets use random order by default
 Bugfix: proper kses usage in widgets
