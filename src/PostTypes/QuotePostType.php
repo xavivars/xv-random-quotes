@@ -92,10 +92,20 @@ class QuotePostType {
 	 * @return array Modified columns.
 	 */
 	public function add_custom_columns( $columns ) {
-		// Insert source column after author (taxonomy)
+		// Remove the default title column
+		unset( $columns['title'] );
+		
+		// Insert custom quote column at the beginning (after checkbox)
 		$new_columns = array();
 		foreach ( $columns as $key => $value ) {
-			$new_columns[ $key ] = $value;
+			if ( 'cb' === $key ) {
+				$new_columns[ $key ] = $value;
+				$new_columns['quote_preview'] = __( 'Quote', 'xv-random-quotes' );
+			} else {
+				$new_columns[ $key ] = $value;
+			}
+			
+			// Insert source column after author (taxonomy)
 			if ( 'taxonomy-quote_author' === $key ) {
 				$new_columns['quote_source'] = __( 'Quote Source', 'xv-random-quotes' );
 			}
@@ -110,6 +120,40 @@ class QuotePostType {
 	 * @param int    $post_id Post ID.
 	 */
 	public function render_custom_column( $column, $post_id ) {
+		if ( 'quote_preview' === $column ) {
+			$post = get_post( $post_id );
+			$title = $post->post_title;
+			$content = wp_strip_all_tags( $post->post_content );
+			
+			$edit_link = get_edit_post_link( $post_id );
+			
+			// Start the preview link
+			echo '<a class="row-title" href="' . esc_url( $edit_link ) . '" style="display: flex; align-items: center; gap: 10px;">';
+			
+			// Show image if available (featured image or first image in content)
+			if ( has_post_thumbnail( $post_id ) ) {
+				$first_image = get_the_post_thumbnail( $post_id, array( 50, 50 ), array( 'style' => 'display: block; flex-shrink: 0;' ) );
+				echo wp_kses_post( $first_image );
+			} elseif ( $first_image = $this->get_first_image_from_content( $post->post_content ) ) {
+				$first_image = preg_replace( '/(width|height)="\d*"\s*/i', '', $first_image );
+				$first_image = str_replace( '<img', '<img style="width:50px;height:50px;object-fit:cover;flex-shrink:0;"', $first_image );
+				echo wp_kses_post( $first_image );
+			}
+			
+			// Show text (title or content excerpt)
+			if ( ! empty( trim( $title ) ) ) {
+				echo '<strong>' . esc_html( $title ) . '</strong>';
+			} elseif ( ! empty( trim( $content ) ) ) {
+				echo '<span>' . esc_html( wp_trim_words( $content, 10 ) ) . '</span>';
+			} elseif ( $this->get_alt_text( $first_image ) ) {
+				echo '<span>' . esc_html( $this->get_alt_text( $first_image ) ) . '</span>';
+			} else {
+				echo '<span>' . esc_html__( '(no content)', 'xv-random-quotes' ) . '</span>';
+			}
+			
+			echo '</a>';
+		}
+		
 		if ( 'quote_source' === $column ) {
 			$source = get_post_meta( $post_id, '_quote_source', true );
 			if ( $source ) {
@@ -119,6 +163,19 @@ class QuotePostType {
 				echo '<span class="na">—</span>';
 			}
 		}
+	}
+
+	/**
+	 * Get alt text from an image HTML string
+	 * 
+	 * @param string $image_html Image HTML.
+	 * @return string|null Alt text or null if not found.
+	 */
+	private function get_alt_text( $image_html ) {
+		if ( preg_match( '/alt=["\']([^"\']*)["\']/', $image_html, $matches ) ) {
+			return $matches[1];
+		}
+		return null;
 	}
 
 	/**
@@ -154,5 +211,16 @@ class QuotePostType {
 			$query->set( 'meta_key', '_quote_source' );
 			$query->set( 'orderby', 'meta_value' );
 		}
+	}
+
+	/**
+	 * Get the first image tag from post content
+	 *
+	 * @param string $content Post content.
+	 * @return string|null First image HTML or null if none found.
+	 */
+	private function get_first_image_from_content( $content ) {
+		preg_match( '/<img[^>]+>/i', $content, $matches );
+		return ! empty( $matches ) ? $matches[0] : null;
 	}
 }
