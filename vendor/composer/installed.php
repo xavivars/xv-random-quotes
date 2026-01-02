@@ -3,7 +3,7 @@
         'name' => 'xavivars/xv-random-quotes',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '293272311692705870e8856953cb9e5d36a45476',
+        'reference' => '6458b7b024b57cfcfe7728209c7cc038570ed3c3',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'xavivars/xv-random-quotes' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '293272311692705870e8856953cb9e5d36a45476',
+            'reference' => '6458b7b024b57cfcfe7728209c7cc038570ed3c3',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

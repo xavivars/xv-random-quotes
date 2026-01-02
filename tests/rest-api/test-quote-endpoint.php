@@ -47,7 +47,7 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 
 		// Create test categories
-		$categories = array( 'Science', 'Philosophy', 'Literature' );
+		$categories = array( 'Science', 'Philosophy', 'Literature', 'HTMLTest' );
 		foreach ( $categories as $cat_name ) {
 			$term = wp_insert_term( $cat_name, 'quote_category' );
 			if ( ! is_wp_error( $term ) ) {
@@ -62,6 +62,7 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 			array( 'Philosophy', 'I think, therefore I am.' ),
 			array( 'Philosophy', 'The unexamined life is not worth living.' ),
 			array( 'Literature', 'To be or not to be, that is the question.' ),
+			array( 'HTMLTest', '<strong>Bold text</strong> and <em>italic text</em>.' ),
 		);
 
 		foreach ( $quotes_data as $index => $quote_data ) {
@@ -187,6 +188,7 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 		$this->assertArrayHasKey( 'html', $data );
 		$this->assertArrayHasKey( 'quote_id', $data );
 		$this->assertArrayHasKey( 'quote_text', $data );
+		$this->assertArrayHasKey( 'quote_content', $data );
 		$this->assertArrayHasKey( 'author', $data );
 		$this->assertArrayHasKey( 'source', $data );
 		$this->assertArrayHasKey( 'categories', $data );
@@ -218,11 +220,11 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 		
 		$this->assertEquals( 200, $response->get_status() );
 		
-		// Should be from either Science or Philosophy
-		$html_lower = strtolower( $data['html'] );
-		$has_category = strpos( $html_lower, 'science' ) !== false || 
-		                strpos( $html_lower, 'philosophy' ) !== false;
-		$this->assertTrue( $has_category );
+		// Verify the returned quote is from one of the requested categories
+		$this->assertIsArray( $data['categories'] );
+		$has_matching_category = in_array( 'science', $data['categories'], true ) || 
+		                         in_array( 'philosophy', $data['categories'], true );
+		$this->assertTrue( $has_matching_category, 'Quote should be from Science or Philosophy category' );
 	}
 
 	/**
@@ -425,6 +427,7 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 		// Check metadata fields
 		$this->assertIsInt( $data['quote_id'] );
 		$this->assertIsString( $data['quote_text'] );
+		$this->assertIsString( $data['quote_content'] );
 		$this->assertIsString( $data['author'] );
 		$this->assertIsArray( $data['categories'] );
 	}
@@ -434,20 +437,22 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 	 */
 	public function test_endpoint_randomness() {
 		$request = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
-		$request->set_param( 'sequence', true ); // Enable random
+		$request->set_param( 'sequence', false ); // Disable sequential (use random)
 		
 		$quote_ids = array();
 		
-		// Make 10 requests
-		for ( $i = 0; $i < 10; $i++ ) {
+		// Make 20 requests to increase probability of seeing different quotes
+		for ( $i = 0; $i < 20; $i++ ) {
 			$response = $this->server->dispatch( $request );
 			$data     = $response->get_data();
 			$quote_ids[] = $data['quote_id'];
 		}
 		
-		// Should have at least 2 different quotes (very unlikely to get same quote 10 times)
+		// With 6 quotes and 20 requests using random selection,
+		// we should see at least 3 different quotes
 		$unique_quotes = array_unique( $quote_ids );
-		$this->assertGreaterThan( 1, count( $unique_quotes ) );
+		$this->assertGreaterThanOrEqual( 3, count( $unique_quotes ), 
+			'Should get at least 3 different quotes from 20 random requests' );
 	}
 
 	/**
@@ -461,4 +466,26 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 		
 		$this->assertEquals( 200, $response->get_status() );
 	}
+
+	/**
+	 * Test quote_text vs quote_content distinction
+	 */
+	public function test_quote_text_vs_quote_content() {
+		// Request quote from HTMLTest category (created in setUp with HTML content)
+		$request = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request->set_param( 'categories', 'htmltest' );
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		// quote_content should contain HTML tags
+		$this->assertStringContainsString( '<strong>', $data['quote_content'] );
+		$this->assertStringContainsString( '<em>', $data['quote_content'] );
+
+		// quote_text should be plain text (no HTML tags)
+		$this->assertStringNotContainsString( '<strong>', $data['quote_text'] );
+		$this->assertStringNotContainsString( '<em>', $data['quote_text'] );
+		$this->assertStringContainsString( 'Bold text', $data['quote_text'] );
+		$this->assertStringContainsString( 'italic text', $data['quote_text'] );
+	}
 }
+

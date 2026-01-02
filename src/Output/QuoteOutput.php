@@ -42,6 +42,15 @@ class QuoteOutput {
 	}
 
 	/**
+	 * Get renderer instance
+	 *
+	 * @return QuoteRenderer
+	 */
+	public function get_renderer() {
+		return $this->renderer;
+	}
+
+	/**
 	 * Get random quote(s) output with optional AJAX wrapper
 	 *
 	 * @param array $args {

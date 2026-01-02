@@ -96,50 +96,30 @@ class QuoteEndpoint {
 		$disableaspect = $request->get_param( 'disableaspect' );
 		$contributor   = $request->get_param( 'contributor' );
 
-		// Use QuoteOutput class
-		$quote_output = new QuoteOutput();
-		$html = $quote_output->get_random_quotes(
-			array(
-				'categories'    => $categories,
-				'sequence'      => $sequence,
-				'multi'         => $multi,
-				'offset'        => 0,
-				'disableaspect' => $disableaspect,
-				'contributor'   => $contributor,
-			)
-		);
-
-		// Check if we got any quotes
-		if ( empty( $html ) ) {
-			return new \WP_Error(
-				'no_quotes',
-				'No quotes found matching the criteria',
-				array( 'status' => 404 )
-			);
-		}
-
-		// Get quote data for metadata
+		// Get quotes first (before rendering)
 		$quote_queries = new QuoteQueries();
 		
 		// Convert categories string to array if needed
 		$categories_array = ! empty( $categories ) ? explode( ',', $categories ) : array();
 		
-		// Get quotes for metadata
-		if ( ! empty( $categories_array ) ) {
-			$quotes = $quote_queries->get_quotes_by_categories(
-				$categories_array,
-				array(
-					'posts_per_page' => $multi,
-					'orderby'        => $sequence ? 'rand' : 'date',
-				)
-			);
+		// Build query args
+		$query_args = array(
+			'posts_per_page' => $multi,
+		);
+		
+		// Add ordering
+		if ( $sequence ) {
+			$query_args['orderby'] = 'date';
+			$query_args['order'] = 'ASC';
 		} else {
-			$quotes = $quote_queries->get_all_quotes(
-				array(
-					'posts_per_page' => $multi,
-					'orderby'        => $sequence ? 'rand' : 'date',
-				)
-			);
+			$query_args['orderby'] = 'rand';
+		}
+		
+		// Get quotes
+		if ( ! empty( $categories_array ) ) {
+			$quotes = $quote_queries->get_quotes_by_categories( $categories_array, $query_args );
+		} else {
+			$quotes = $quote_queries->get_all_quotes( $query_args );
 		}
 
 		// Handle WP_Error
@@ -149,6 +129,25 @@ class QuoteEndpoint {
 				'Error retrieving quotes',
 				array( 'status' => 500 )
 			);
+		}
+		
+		// Check if we got any quotes
+		if ( empty( $quotes ) ) {
+			return new \WP_Error(
+				'no_quotes',
+				'No quotes found matching the criteria',
+				array( 'status' => 404 )
+			);
+		}
+
+		// Render HTML from the same quotes we'll use for metadata
+		$quote_output = new QuoteOutput();
+		$renderer = $quote_output->get_renderer();
+		
+		if ( $multi > 1 ) {
+			$html = $renderer->render_multiple_quotes( $quotes, $disableaspect );
+		} else {
+			$html = $renderer->render_quote( $quotes[0], false, $disableaspect );
 		}
 
 		// Build response data
@@ -160,8 +159,9 @@ class QuoteEndpoint {
 		if ( $multi === 1 && ! empty( $quotes ) && count( $quotes ) > 0 ) {
 			$quote = $quotes[0];
 			
-			$response_data['quote_id']   = $quote->ID;
-			$response_data['quote_text'] = $quote->post_title;
+			$response_data['quote_id']      = $quote->ID;
+			$response_data['quote_text']    = wp_strip_all_tags( $quote->post_content );
+			$response_data['quote_content'] = $quote->post_content;
 			
 			// Get author
 			$authors = wp_get_post_terms( $quote->ID, 'quote_author' );
@@ -182,11 +182,12 @@ class QuoteEndpoint {
 			}
 		} else {
 			// For multi-quote, provide basic metadata
-			$response_data['quote_id']   = 0;
-			$response_data['quote_text'] = '';
-			$response_data['author']     = '';
-			$response_data['source']     = '';
-			$response_data['categories'] = array();
+			$response_data['quote_id']      = 0;
+			$response_data['quote_text']    = '';
+			$response_data['quote_content'] = '';
+			$response_data['author']        = '';
+			$response_data['source']        = '';
+			$response_data['categories']    = array();
 		}
 
 		return new \WP_REST_Response( $response_data, 200 );
