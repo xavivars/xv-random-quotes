@@ -14,6 +14,7 @@ use XVRandomQuotes\Taxonomies\QuoteTaxonomies;
 use XVRandomQuotes\PostMeta\QuoteMetaFields;
 use XVRandomQuotes\Admin\MetaBoxes;
 use XVRandomQuotes\Admin\Settings;
+use XVRandomQuotes\Admin\OverviewPage;
 use XVRandomQuotes\Widgets\QuoteWidget;
 use XVRandomQuotes\RestAPI\QuoteEndpoint;
 
@@ -76,6 +77,10 @@ class Plugin {
 		// Register meta boxes for Classic Editor
 		$meta_boxes = new MetaBoxes();
 		$meta_boxes->init();
+
+		// Register overview page
+		$overview_page = new OverviewPage();
+		$overview_page->register();
 
 		// Register settings page
 		$settings = new Settings();
