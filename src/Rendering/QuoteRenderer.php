@@ -113,6 +113,12 @@ class QuoteRenderer {
 		}
 		$output .= '</ul>';
 
+		// Wrap with before_all/after_all for legacy mode
+		if ( ! $disable_aspect ) {
+			$wrappers = $this->legacy_renderer->get_wrappers( $disable_aspect );
+			$output = wp_kses_post( $wrappers['before_all'] ) . $output . wp_kses_post( $wrappers['after_all'] );
+		}
+
 		return $output;
 	}
 

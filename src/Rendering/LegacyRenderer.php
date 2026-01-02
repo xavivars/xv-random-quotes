@@ -79,8 +79,9 @@ class LegacyRenderer {
 			}
 		}
 
-		// Wrap in outer container if not disabled
-		if ( ! $disable_aspect ) {
+		// Only wrap with before_all/after_all when rendering a single quote
+		// For multiple quotes, these wrappers are applied in render_multiple_quotes()
+		if ( ! $disable_aspect && ! $is_multi ) {
 			$output = wp_kses_post( $wrappers['before_all'] ) . $output . wp_kses_post( $wrappers['after_all'] );
 		}
 
@@ -93,7 +94,7 @@ class LegacyRenderer {
 	 * @param bool $disable_aspect Whether wrappers are disabled.
 	 * @return array Wrapper settings.
 	 */
-	private function get_wrappers( $disable_aspect ) {
+	public function get_wrappers( $disable_aspect ) {
 		if ( $disable_aspect ) {
 			return array(
 				'before_all'    => '',
