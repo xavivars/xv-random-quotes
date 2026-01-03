@@ -1,5 +1,12 @@
 == XV Random Quotes ==
 
+= 2.2.0 =
+Bugfix: migration progress text shows correct migrated count
+Bugfix: quote content key in REST API response
+Bugfix: after_all/before_all wrappers not used on every quote
+Improvement: Overview page added back
+Improvement: Better quote title/preview in admin list
+
 = 2.1.0 =
 Improvement: new overview page
 Improvement: supported media in the quote content

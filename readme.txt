@@ -5,7 +5,7 @@ Tags: quotes, random, gutenberg, blocks, widget, sidebar, rest-api, custom-post-
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://xavi.ivars.me/codi/xv-random-quotes-wordpress-plugin-english/
