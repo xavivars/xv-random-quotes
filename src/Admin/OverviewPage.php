@@ -19,6 +19,8 @@ class OverviewPage {
      */
     public function register() {
         add_action('admin_menu', array($this, 'add_overview_page'), 100);
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
+        add_action('wp_ajax_xv_reset_migration', array($this, 'ajax_reset_migration'));
     }
 
     /**
@@ -176,6 +178,24 @@ class OverviewPage {
             </div>
 
             <div class="card">
+                <h2><?php _e('Developer Tools', 'xv-random-quotes'); ?></h2>
+                
+                <h3><?php _e('Reset Migration', 'xv-random-quotes'); ?></h3>
+                <p>
+                    <?php _e('This will delete all migrated Custom Post Type quotes and reset migration flags. Use this to re-run the migration from the legacy database table.', 'xv-random-quotes'); ?>
+                </p>
+                <p>
+                    <strong style="color: #d63638;"><?php _e('Warning: This action cannot be undone! All Custom Post Type quotes will be permanently deleted.', 'xv-random-quotes'); ?></strong>
+                </p>
+                <p>
+                    <button type="button" id="xv-reset-migration" class="button button-secondary">
+                        <?php _e('Reset Migration', 'xv-random-quotes'); ?>
+                    </button>
+                    <span id="xv-reset-status" style="margin-left: 10px;"></span>
+                </p>
+            </div>
+
+            <div class="card">
                 <h2><?php _e('Contributing', 'xv-random-quotes'); ?></h2>
                 <p>
                     <?php _e('XV Random Quotes is open source! Contributions are welcome:', 'xv-random-quotes'); ?>
@@ -226,5 +246,85 @@ class OverviewPage {
             </style>
         </div>
         <?php
+    }
+
+    /**
+     * Enqueue scripts for the overview page
+     */
+    public function enqueue_scripts($hook) {
+        // Only load on our overview page
+        if ($hook !== 'xv_quote_page_xv-quotes-overview') {
+            return;
+        }
+
+        wp_enqueue_script(
+            'xv-overview-admin',
+            plugins_url('js/overview-admin.js', dirname(dirname(__FILE__))),
+            array('jquery'),
+            '2.0.0',
+            true
+        );
+
+        wp_localize_script('xv-overview-admin', 'xvOverview', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('xv_reset_migration'),
+            'confirmMessage' => __('Are you sure you want to reset the migration? This will delete all Custom Post Type quotes and cannot be undone!', 'xv-random-quotes'),
+        ));
+    }
+
+    /**
+     * AJAX handler to reset migration
+     */
+    public function ajax_reset_migration() {
+        check_ajax_referer('xv_reset_migration', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => __('Insufficient permissions', 'xv-random-quotes')));
+            return;
+        }
+
+        global $wpdb;
+
+        // Delete all xv_quote posts
+        $posts = get_posts(array(
+            'post_type' => 'xv_quote',
+            'posts_per_page' => -1,
+            'post_status' => 'any',
+            'fields' => 'ids',
+        ));
+
+        $deleted_posts = 0;
+        foreach ($posts as $post_id) {
+            if (wp_delete_post($post_id, true)) {
+                $deleted_posts++;
+            }
+        }
+
+        // Delete all xv_quote% options
+        $options_deleted = $wpdb->query(
+            "DELETE FROM {$wpdb->options} WHERE option_name LIKE '%xv_quote%'"
+        );
+
+        // Delete widget migration flag and settings
+        delete_option('xv_quotes_widgets_migrated');
+        delete_option('widget_xv_random_quotes_widget');
+        
+        // Delete settings migration flag
+        delete_option('_xv_quotes_migrated');
+
+        // Delete migration transients
+        delete_transient('xv_migration_total');
+        delete_transient('xv_migration_progress');
+        delete_transient('xv_migration_offset');
+        delete_transient('xv_migration_error');
+        delete_transient('xv_migration_success');
+
+        wp_send_json_success(array(
+            'message' => sprintf(
+                __('Migration reset complete. Deleted %d posts and %d options. Refresh the page to re-run all migrations.', 'xv-random-quotes'),
+                $deleted_posts,
+                $options_deleted
+            ),
+        ));
     }
 }

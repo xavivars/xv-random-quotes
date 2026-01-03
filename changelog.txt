@@ -1,5 +1,9 @@
 == XV Random Quotes ==
 
+= 2.3.0 =
+Bugfix: Prevent duplicated migrations
+New feature: Button to retrigger migration
+
 = 2.2.0 =
 Bugfix: migration progress text shows correct migrated count
 Bugfix: quote content key in REST API response
