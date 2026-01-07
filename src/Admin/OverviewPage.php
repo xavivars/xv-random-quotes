@@ -130,7 +130,7 @@ class OverviewPage {
                 <h2><?php _e('Frequently Asked Questions', 'xv-random-quotes'); ?></h2>
                 
                 <h3><?php _e('How do I migrate from v1.x?', 'xv-random-quotes'); ?></h3>
-                <p><?php _e('Migration happens automatically when you upgrade. For databases with ≤500 quotes, migration runs during plugin activation. For larger databases, you\'ll see an admin notice with a migration button to process quotes in batches.', 'xv-random-quotes'); ?></p>
+                <p><?php _e('Migration happens when you upgrade to v2.0. You\'ll see an admin notice with a migration button - simply click it to start the migration process. The migration runs in batches via AJAX, so you can track progress in real-time.', 'xv-random-quotes'); ?></p>
 
                 <h3><?php _e('Are my old shortcodes still supported?', 'xv-random-quotes'); ?></h3>
                 <p><?php _e('Yes! All shortcodes, template tags, and widgets from v1.x continue to work without any changes needed.', 'xv-random-quotes'); ?></p>

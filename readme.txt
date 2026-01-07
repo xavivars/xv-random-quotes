@@ -5,7 +5,7 @@ Tags: quotes, random, gutenberg, blocks, widget, sidebar, rest-api, custom-post-
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.3.0
+Stable tag: 2.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: http://xavi.ivars.me/codi/xv-random-quotes-wordpress-plugin-english/
@@ -47,7 +47,8 @@ XV Random Quotes helps you collect and display random quotes everywhere on your 
 
 **🔄 Automatic Migration**
 
-Upgrading from v1.x? The plugin automatically migrates your existing quotes to the new Custom Post Type system. Small databases (≤500 quotes) migrate instantly on activation. Large databases use a batch migration system with progress tracking.
+Upgrading from v1.x? The plugin automatically detects the need of migrating your existing quotes to the new Custom Post Type system. The migration is always manual to prevent race conditions and duplicate imports. When the plugin is activated or updated, an admin notice prompts the user to start the migration via a button. The migration then processes quotes in batches via AJAX.
+
 
 **🎨 Customization**
 

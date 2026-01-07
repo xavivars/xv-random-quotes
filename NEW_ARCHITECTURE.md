@@ -174,9 +174,9 @@ Key features enabled:
 - Post meta is registered for REST API access
 - Both taxonomies are public and REST-enabled
 
-### Automatic Migration on Activation
+### Manual Migration on Activation
 
-The migration runs automatically when the plugin is activated or updated. For small databases (≤500 quotes), migration completes immediately. For larger databases, an admin notice prompts the user to start batch migration.
+The migration is always manual to prevent race conditions and duplicate imports. When the plugin is activated or updated, an admin notice prompts the user to start the migration via a button. The migration then processes quotes in batches via AJAX.
 
 ```php
 function xv_quotes_activation_migration() {
@@ -204,12 +204,7 @@ function xv_quotes_activation_migration() {
         return;
     }
     
-    if ($total_quotes <= 500) {
-        xv_migrate_all_quotes();
-        update_option('xv_quotes_migrated_v2', true);
-        return;
-    }
-    
+    // Always set pending flag - require manual migration
     update_option('xv_migration_pending', true);
     update_option('xv_migration_total', $total_quotes);
 }
@@ -231,8 +226,8 @@ function xv_migrate_all_quotes() {
 The activation hook checks for existing migrations, validates the old table exists, and either migrates immediately or sets up batch processing.
 
 **Migration Features:**
-- **Automatic on activation** for databases ≤500 quotes (instant)
-- **AJAX batch processing** for larger databases (user-initiated from admin notice)
+- **Manual button-initiated** for all database sizes (prevents race conditions)
+- **AJAX batch processing** (user-initiated from admin notice)
 - **Duplicate detection** (checks for existing legacy_id before migrating)
 - **User mapping** (nicename → user ID with fallback to current user)
 - **HTML preservation** (quote text with HTML formatting migrated to post_content)
@@ -242,13 +237,7 @@ The activation hook checks for existing migrations, validates the old table exis
 
 **Migration User Experience:**
 
-**Scenario 1: Small database (≤500 quotes)**
-1. User updates to v2.0
-2. Migration runs automatically during activation
-3. Admin sees success notice: "✓ Successfully migrated X quotes to new system"
-4. Everything works immediately, no action required
-
-**Scenario 2: Large database (>500 quotes)**
+**Scenario 1: Existing database (any size)**
 1. User updates to v2.0
 2. Admin notice appears: "📊 XV Random Quotes needs to migrate X quotes. Click to start migration."
 3. User clicks button, AJAX migration begins
@@ -256,7 +245,7 @@ The activation hook checks for existing migrations, validates the old table exis
 5. Migration completes in background (can close tab and return)
 6. Success notice when complete
 
-**Scenario 3: Fresh install**
+**Scenario 2: Fresh install**
 1. User installs v2.0 on new site
 2. No old table exists, no migration needed
 3. Starts using CPT immediately
@@ -588,8 +577,8 @@ The widget will work in both classic widget areas and the block-based widget edi
 - [ ] Set up `@wordpress/scripts` build process
 
 #### Migration System
-- [ ] Automatic migration on activation (≤500 quotes)
-- [ ] AJAX batch migration UI (>500 quotes)
+- [ ] Manual migration trigger on activation (any database size)
+- [ ] AJAX batch migration UI with progress bar
 - [ ] Admin notice system with progress bar
 - [ ] Duplicate detection
 - [ ] Error logging and handling

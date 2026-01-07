@@ -38,13 +38,6 @@ class QuoteMigrator {
 	const AUTHOR_TAXONOMY = 'quote_author';
 
 	/**
-	 * Threshold for automatic vs. AJAX batch migration
-	 *
-	 * @var int
-	 */
-	const MIGRATION_THRESHOLD = 500;
-
-	/**
 	 * Global database object
 	 *
 	 * @var \wpdb
@@ -70,7 +63,7 @@ class QuoteMigrator {
 	/**
 	 * Run the migration process
 	 *
-	 * Determines whether to migrate immediately (small DB) or defer to AJAX (large DB).
+	 * Always sets the pending flag and requires manual migration via AJAX button.
 	 * Called on first init after plugin activation via the xv_quotes_needs_migration flag.
 	 *
 	 * @return void
@@ -83,23 +76,19 @@ class QuoteMigrator {
 			return;
 		}
 
-		// Quick check: count quotes to determine migration strategy
+		// Count quotes in legacy table
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$total_quotes = $wpdb->get_var(
 			"SELECT COUNT(*) FROM {$wpdb->prefix}stray_quotes"
 		);
 
-		// If NULL (table doesn't exist) or 0, migrate_all_quotes() will handle it
-		// and set the flag appropriately
-		if ( $total_quotes === null || (int) $total_quotes <= self::MIGRATION_THRESHOLD ) {
-			// Small database or no table: migrate immediately
-			// migrate_all_quotes() -> migrate_batch() will set xv_quotes_migrated_v2 flag
-			$migrator = new self();
-			$migrator->migrate_all_quotes();
+		// If NULL (table doesn't exist) or 0 quotes, mark as completed
+		if ( $total_quotes === null || (int) $total_quotes === 0 ) {
+			update_option( 'xv_quotes_migrated_v2', true );
 			return;
 		}
 
-		// Large database: set pending flag for AJAX batch migration
+		// Always set pending flag - require manual migration for any number of quotes
 		update_option( 'xv_migration_pending', true );
 		update_option( 'xv_migration_total', (int) $total_quotes );
 	}

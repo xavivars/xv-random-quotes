@@ -90,57 +90,35 @@ class Test_Activation_Hook extends Migration_Test_Base {
 	}
 
 	/**
-	 * Test that hook migrates all quotes for small database (≤500)
+	 * Test that hook sets pending flag for any database with quotes
 	 */
-	public function test_migrates_small_database_automatically() {
-		// Create table with 50 quotes (well under 500)
+	public function test_sets_pending_flag_for_any_quotes() {
+		// Create table with 50 quotes
 		$this->create_old_table();
 		$old_ids = $this->insert_old_quotes(50);
 
 		// Run deferred migration flow
 		$this->run_deferred_migration();
 
-		// Verify all quotes were migrated
+		// Verify NO quotes were auto-migrated
 		$posts = get_posts(array(
 			'post_type' => 'xv_quote',
 			'numberposts' => -1,
 		));
-		$this->assertCount(50, $posts, 'Should migrate all 50 quotes');
+		$this->assertCount(0, $posts, 'Should not auto-migrate any database');
 
-		// Verify migration flag is set
-		$this->assertTrue(get_option('xv_quotes_migrated_v2'), 'Should set migration completed flag');
+		// Verify pending flag is set
+		$this->assertTrue(get_option('xv_migration_pending'), 'Should set pending flag for any quotes');
 
-		// Verify no pending migration
-		$this->assertFalse(get_option('xv_migration_pending'), 'Should not set pending flag for small database');
+		// Verify total is stored
+		$this->assertEquals(50, get_option('xv_migration_total'), 'Should store total quote count');
+
+		// Verify completed flag is NOT set
+		$this->assertFalse(get_option('xv_quotes_migrated_v2'), 'Should not set completed flag yet');
 	}
 
 	/**
-	 * Test that hook migrates exactly 500 quotes automatically
-	 */
-	public function test_migrates_exactly_500_quotes_automatically() {
-		// Create table with exactly 500 quotes
-		$this->create_old_table();
-		$old_ids = $this->insert_old_quotes(500);
-
-		// Run deferred migration flow
-		$this->run_deferred_migration();
-
-		// Verify all 500 quotes were migrated
-		$posts = get_posts(array(
-			'post_type' => 'xv_quote',
-			'numberposts' => -1,
-		));
-		$this->assertCount(500, $posts, 'Should migrate all 500 quotes');
-
-		// Verify migration flag is set
-		$this->assertTrue(get_option('xv_quotes_migrated_v2'), 'Should set migration completed flag');
-
-		// Verify no pending migration
-		$this->assertFalse(get_option('xv_migration_pending'), 'Should not set pending flag for exactly 500 quotes');
-	}
-
-	/**
-	 * Test that hook sets pending flag for large database (>500)
+	 * Test that hook sets pending flag for large database
 	 */
 	public function test_sets_pending_flag_for_large_database() {
 		// Create table with 501 quotes (just over threshold)
@@ -164,34 +142,6 @@ class Test_Activation_Hook extends Migration_Test_Base {
 		$this->assertEquals(501, get_option('xv_migration_total'), 'Should store total quote count');
 
 		// Verify completed flag is NOT set
-		$this->assertFalse(get_option('xv_quotes_migrated_v2'), 'Should not set completed flag for pending migration');
-	}
-
-	/**
-	 * Test that hook sets pending flag for very large database
-	 */
-	public function test_sets_pending_flag_for_very_large_database() {
-		// Create table with 1000 quotes
-		$this->create_old_table();
-		$old_ids = $this->insert_old_quotes(1000);
-
-		// Run deferred migration flow
-		$this->run_deferred_migration();
-
-		// Verify NO quotes were migrated
-		$posts = get_posts(array(
-			'post_type' => 'xv_quote',
-			'numberposts' => -1,
-		));
-		$this->assertCount(0, $posts, 'Should not auto-migrate very large database');
-
-		// Verify pending flag is set
-		$this->assertTrue(get_option('xv_migration_pending'), 'Should set pending flag');
-
-		// Verify total is stored
-		$this->assertEquals(1000, get_option('xv_migration_total'), 'Should store total quote count');
-
-		// Verify completed flag is NOT set
-		$this->assertFalse(get_option('xv_quotes_migrated_v2'), 'Should not set completed flag');
+		$this->assertFalse(get_option('xv_quotes_migrated_v2'), 'Should not set completed flag yet');
 	}
 }
