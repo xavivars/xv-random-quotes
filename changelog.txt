@@ -1,5 +1,11 @@
 == XV Random Quotes ==
 
+= 2.5.0 =
+Improvement: New reset quotes only button in overview page
+
+= 2.4.0 =
+Improvement: always use manual migration for all database sizes
+
 = 2.3.0 =
 Bugfix: Prevent duplicated migrations
 New feature: Button to retrigger migration
