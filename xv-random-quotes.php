@@ -89,12 +89,22 @@ function xv_quotes_activation_migration() {
  * Check if migration is needed on admin dashboard load.
  */
 function xv_quotes_check_migration() {
-    // If the 'migrated' option doesn't exist (returns false), run the migration
-    // Also check that migration hasn't already been triggered or isn't pending
-    if ( ! get_option( 'xv_quotes_migrated_v2' ) 
-         && ! get_option( 'xv_quotes_needs_migration' )
-         && ! get_option( 'xv_migration_pending' ) ) {
-        xv_quotes_activation_migration();
-    }
+	// Run settings migration (if not yet done)
+	// This handles both v1 settings migration and v2 default category setup
+	if ( class_exists( '\XVRandomQuotes\Migration\SettingsMigrator' ) ) {
+		$current_version = (int) get_option( '_xv_quotes_migrated', 0 );
+		if ( $current_version < \XVRandomQuotes\Migration\SettingsMigrator::MIGRATION_VERSION ) {
+			\XVRandomQuotes\Migration\SettingsMigrator::migrate();
+		}
+	}
+
+	// Check if quote migration is needed
+	// If the 'migrated' option doesn't exist (returns false), run the migration
+	// Also check that migration hasn't already been triggered or isn't pending
+	if ( ! get_option( 'xv_quotes_migrated_v2' ) 
+		 && ! get_option( 'xv_quotes_needs_migration' )
+		 && ! get_option( 'xv_migration_pending' ) ) {
+		xv_quotes_activation_migration();
+	}
 }
 add_action( 'admin_init', 'xv_quotes_check_migration' );
