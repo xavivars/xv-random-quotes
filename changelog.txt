@@ -1,5 +1,8 @@
 == XV Random Quotes ==
 
+= 2.6.0 =
+New feature: Default category migration from legacy settings
+
 = 2.5.0 =
 Improvement: New reset quotes only button in overview page
 

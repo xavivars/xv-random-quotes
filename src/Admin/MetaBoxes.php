@@ -30,6 +30,7 @@ class MetaBoxes {
 	public function init() {
 		add_action( 'add_meta_boxes', array( $this, 'register_meta_boxes' ) );
 		add_action( 'save_post_xv_quote', array( $this, 'save_all_meta_boxes' ), 10, 2 );
+		add_action( 'save_post_xv_quote', array( $this, 'apply_default_category' ), 20, 1 );
 	}
 
 	/**
@@ -73,7 +74,7 @@ class MetaBoxes {
 	private function get_content_editor_settings() {
 		return $this->get_editor_settings( array(
 			'teeny'         => false,
-			'rows'			=> 8,
+			'textarea_rows' => 10,
 			'media_buttons' => true,
 			'quicktags'     => true,
 		) );
@@ -85,24 +86,23 @@ class MetaBoxes {
 	 * Returns standard editor settings with optional configuration.
 	 *
 	 * @since 2.0.0
-	 * @param array $options Number of textarea rows. Default 8.
+	 * @param array $options Editor options to override defaults.
 	 * @return array Editor settings
 	 */
 	private function get_editor_settings( $options = array() ) {
-		return array_merge(
-			array(
-				'media_buttons' => false,          // No "Add Media" button
-				'quicktags'     => false,          // No HTML/Text tab
-				'teeny'         => true,           // Minimal editor
-				'textarea_rows' => 1,	 		   // Single line textarea
-				'tinymce'       => array(
-					'toolbar1' => 'bold,italic,link,unlink',  // Only these buttons
-					'toolbar2' => '',                         // No second toolbar
-					'toolbar3' => '',                         // No third toolbar
-				),
+		$defaults = array(
+			'media_buttons' => false,          // No "Add Media" button
+			'quicktags'     => false,          // No HTML/Text tab
+			'teeny'         => true,           // Minimal editor
+			'textarea_rows' => 1,	 		   // Single line textarea
+			'tinymce'       => array(
+				'toolbar1' => 'bold,italic,link,unlink',  // Only these buttons
+				'toolbar2' => '',                         // No second toolbar
+				'toolbar3' => '',                         // No third toolbar
 			),
-			$options
 		);
+		
+		return array_merge( $defaults, $options );
 	}
 
 	/**
@@ -229,4 +229,36 @@ class MetaBoxes {
 			update_post_meta( $post_id, '_quote_source', $source );
 		}
 	}
+
+	/**
+	 * Apply default category to quotes without any category assigned
+	 *
+	 * Automatically assigns the default category term (from v1.x migration)
+	 * to quotes that don't have any quote_category term assigned.
+	 *
+	 * @since 2.0.0
+	 * @param int $post_id The post ID.
+	 */
+	public function apply_default_category( $post_id ) {
+		// Only apply to xv_quote post type
+		if ( get_post_type( $post_id ) !== 'xv_quote' ) {
+			return;
+		}
+
+		// Check if post has any quote_category terms assigned
+		$terms = wp_get_post_terms( $post_id, 'quote_category', array( 'fields' => 'ids' ) );
+
+		// If no terms assigned, try to assign the default
+		if ( empty( $terms ) ) {
+			$default_term_id = (int) get_option( 'xv_quotes_default_category_id', 0 );
+
+			if ( $default_term_id > 0 ) {
+				// Verify the term exists
+				if ( get_term( $default_term_id, 'quote_category' ) ) {
+					wp_set_post_terms( $post_id, array( $default_term_id ), 'quote_category', false );
+				}
+			}
+		}
+	}
 }
+

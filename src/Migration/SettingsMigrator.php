@@ -14,18 +14,47 @@ use XVRandomQuotes\Admin\Settings;
  *
  * Handles migration of settings from legacy stray_quotes_options
  * to individual xv_quotes_* options.
+ *
+ * Uses version numbers for the _xv_quotes_migrated option:
+ * - 0 or false: Not migrated
+ * - 1: Settings migrated (v1 - initial migration)
+ * - 2: Default category setup (v2 - added later)
+ * - etc.
  */
 class SettingsMigrator {
+
+	/**
+	 * Current migration version
+	 *
+	 * @var int
+	 */
+	const MIGRATION_VERSION = 2;
 
 	/**
 	 * Run the migration
 	 */
 	public static function migrate() {
-		// Check if migration has already been run
-		if ( get_option( '_xv_quotes_migrated', false ) ) {
-			return;
+		// Get current migration version (0 if never migrated, or false for backward compat)
+		$current_version = (int) get_option( '_xv_quotes_migrated', 0 );
+
+		// Run v1 migration if not yet done
+		if ( $current_version < 1 ) {
+			self::migrate_v200();
 		}
 
+		// Run v2 migration if not yet done
+		if ( $current_version < 2 ) {
+			self::migrate_v260();
+		}
+
+		// Update version to current
+		update_option( '_xv_quotes_migrated', self::MIGRATION_VERSION );
+	}
+
+	/**
+	 * V2.0.0 Migration: Settings migration from legacy format
+	 */
+	private static function migrate_v200() {
 		// Get old settings
 		$old_settings = get_option( 'stray_quotes_options', array() );
 
@@ -39,9 +68,18 @@ class SettingsMigrator {
 			// Existing installation - migrate old settings
 			self::migrate_from_legacy_settings( $old_settings );
 		}
+	}
 
-		// Mark migration as complete
-		update_option( '_xv_quotes_migrated', true );
+	/**
+	 * V2.6.0 Migration: Default category setup
+	 */
+	private static function migrate_v260() {
+		// Check if there's a default category to migrate
+		$old_settings = get_option( 'stray_quotes_options', array() );
+
+		if ( isset( $old_settings['stray_default_category'] ) && ! empty( $old_settings['stray_default_category'] ) ) {
+			self::create_default_category_term( $old_settings['stray_default_category'] );
+		}
 	}
 
 	/**
@@ -108,6 +146,9 @@ class SettingsMigrator {
 			'stray_before_loader' => Settings::OPTION_BEFORE_LOADER,
 			'stray_after_loader'  => Settings::OPTION_AFTER_LOADER,
 			'stray_loading'       => Settings::OPTION_LOADING,
+
+			// Default category (for applying to migrated quotes without a category)
+			'stray_default_category' => 'xv_quotes_default_category',
 		);
 
 		// Migrate each setting
@@ -144,5 +185,32 @@ class SettingsMigrator {
 				update_option( $new_key, $value );
 			}
 		}
+	}
+
+	/**
+	 * Create the default category term in the quote_category taxonomy
+	 *
+	 * @param string $category_name The name of the default category.
+	 */
+	private static function create_default_category_term( $category_name ) {
+		$taxonomy = 'quote_category';
+
+		// Check if term already exists
+		$term = term_exists( $category_name, $taxonomy );
+
+		if ( ! $term ) {
+			// Create the term
+			$term = wp_insert_term( $category_name, $taxonomy );
+
+			if ( is_wp_error( $term ) ) {
+				return;
+			}
+		}
+
+		// Get the term ID (term_exists returns int, wp_insert_term returns array)
+		$term_id = is_array( $term ) ? $term['term_id'] : $term;
+
+		// Store the term ID for use as default when creating new quotes
+		update_option( 'xv_quotes_default_category_id', (int) $term_id );
 	}
 }

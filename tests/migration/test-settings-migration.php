@@ -26,6 +26,7 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 		// Clean up all settings
 		delete_option( '_xv_quotes_migrated' );
 		delete_option( 'stray_quotes_options' );
+		delete_option( 'xv_quotes_default_category_id' );
 		
 		// Delete all new settings - Display section
 		delete_option( Settings::OPTION_USE_NATIVE_STYLING );
@@ -50,6 +51,26 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 		delete_option( Settings::OPTION_BEFORE_LOADER );
 		delete_option( Settings::OPTION_AFTER_LOADER );
 		delete_option( Settings::OPTION_LOADING );
+	}
+
+	/**
+	 * Clean up after each test
+	 */
+	public function tearDown(): void {
+		parent::tearDown();
+
+		// Clean up any taxonomy terms created during testing
+		$terms = get_terms( array(
+			'taxonomy'   => 'quote_category',
+			'fields'     => 'ids',
+			'hide_empty' => false,
+		) );
+
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
+			foreach ( $terms as $term_id ) {
+				wp_delete_term( $term_id, 'quote_category' );
+			}
+		}
 	}
 
 	/**
@@ -197,17 +218,87 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test migration flag is set
+	 * Test migration flag is set with correct version
 	 */
-	public function test_migration_flag_is_set() {
+	public function test_migration_flag_is_set_with_version() {
 		// Initially no flag
 		$this->assertFalse( get_option( '_xv_quotes_migrated' ) );
 
 		// Run migration
 		SettingsMigrator::migrate();
 
-		// Flag should be set
-		$this->assertTrue( (bool) get_option( '_xv_quotes_migrated' ) );
+		// Flag should be set to current migration version (2)
+		$this->assertEquals( 2, (int) get_option( '_xv_quotes_migrated' ) );
+	}
+
+	/**
+	 * Test default category term is created when migrating legacy settings
+	 */
+	public function test_default_category_term_created() {
+		// Set up old settings with a default category
+		update_option( 'stray_quotes_options', array(
+			'stray_default_category' => 'Inspiration',
+		) );
+
+		// Run migration
+		SettingsMigrator::migrate();
+
+		// Check that the term was created in quote_category taxonomy
+		$term_result = term_exists( 'Inspiration', 'quote_category' );
+		$this->assertNotFalse( $term_result, 'Default category term should be created' );
+
+		// Extract term ID (term_exists returns int/string or array depending on WordPress version)
+		$term_id = is_array( $term_result ) ? (int) $term_result['term_id'] : (int) $term_result;
+		$this->assertIsInt( $term_id, 'Term ID should be convertible to integer' );
+		$this->assertGreaterThan( 0, $term_id, 'Term ID should be positive' );
+
+		// Check that the term ID was stored
+		$stored_id = (int) get_option( 'xv_quotes_default_category_id', 0 );
+		$this->assertEquals( $term_id, $stored_id, 'Default category ID should be stored' );
+	}
+
+	/**
+	 * Test incremental migration: v1 already done, v2 (default category) runs
+	 */
+	public function test_incremental_migration_v2_runs_when_v1_complete() {
+		// Simulate v1 already migrated
+		update_option( '_xv_quotes_migrated', 1 );
+
+		// Set up old settings with a default category (for v2 migration)
+		update_option( 'stray_quotes_options', array(
+			'stray_default_category' => 'Wisdom',
+		) );
+
+		// Run migration
+		SettingsMigrator::migrate();
+
+		// Check that v2 migration ran (default category was created)
+		$term = term_exists( 'Wisdom', 'quote_category' );
+		$this->assertNotFalse( $term, 'V2 migration should have created the default category' );
+
+		// Check that version is now 2
+		$this->assertEquals( 2, (int) get_option( '_xv_quotes_migrated' ) );
+	}
+
+	/**
+	 * Test that default category is not created if it already exists
+	 */
+	public function test_default_category_not_duplicated() {
+		// Pre-create a category with the same name
+		$term = wp_insert_term( 'Quotes', 'quote_category' );
+		$original_id = $term['term_id'];
+
+		// Set up old settings with the same default category
+		update_option( 'stray_quotes_options', array(
+			'stray_default_category' => 'Quotes',
+		) );
+
+		// Run migration
+		SettingsMigrator::migrate();
+
+		// Check that the term ID is the original one (not a duplicate)
+		$stored_id = (int) get_option( 'xv_quotes_default_category_id', 0 );
+		$this->assertEquals( $original_id, $stored_id, 'Should reuse existing term, not create a duplicate' );
 	}
 
 	/**
