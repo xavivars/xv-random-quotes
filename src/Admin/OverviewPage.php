@@ -21,6 +21,7 @@ class OverviewPage {
         add_action('admin_menu', array($this, 'add_overview_page'), 100);
         add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
         add_action('wp_ajax_xv_reset_migration', array($this, 'ajax_reset_migration'));
+        add_action('wp_ajax_xv_reset_quotes_only', array($this, 'ajax_reset_quotes_only'));
     }
 
     /**
@@ -180,16 +181,30 @@ class OverviewPage {
             <div class="card">
                 <h2><?php _e('Developer Tools', 'xv-random-quotes'); ?></h2>
                 
-                <h3><?php _e('Reset Migration', 'xv-random-quotes'); ?></h3>
+                <h3><?php _e('Reset Quotes Only', 'xv-random-quotes'); ?></h3>
                 <p>
-                    <?php _e('This will delete all migrated Custom Post Type quotes and reset migration flags. Use this to re-run the migration from the legacy database table.', 'xv-random-quotes'); ?>
+                    <?php _e('This will delete all migrated Custom Post Type quotes and reset quote migration flags. Widget settings and other options will be preserved.', 'xv-random-quotes'); ?>
                 </p>
                 <p>
                     <strong style="color: #d63638;"><?php _e('Warning: This action cannot be undone! All Custom Post Type quotes will be permanently deleted.', 'xv-random-quotes'); ?></strong>
                 </p>
                 <p>
+                    <button type="button" id="xv-reset-quotes-only" class="button button-secondary">
+                        <?php _e('Reset Quotes Only', 'xv-random-quotes'); ?>
+                    </button>
+                    <span id="xv-reset-quotes-status" style="margin-left: 10px;"></span>
+                </p>
+
+                <h3><?php _e('Reset All Migrations', 'xv-random-quotes'); ?></h3>
+                <p>
+                    <?php _e('This will delete all migrated data including quotes, widgets, and settings. Use this for a complete reset.', 'xv-random-quotes'); ?>
+                </p>
+                <p>
+                    <strong style="color: #d63638;"><?php _e('Warning: This will reset everything including widget settings!', 'xv-random-quotes'); ?></strong>
+                </p>
+                <p>
                     <button type="button" id="xv-reset-migration" class="button button-secondary">
-                        <?php _e('Reset Migration', 'xv-random-quotes'); ?>
+                        <?php _e('Reset All Migrations', 'xv-random-quotes'); ?>
                     </button>
                     <span id="xv-reset-status" style="margin-left: 10px;"></span>
                 </p>
@@ -268,7 +283,9 @@ class OverviewPage {
         wp_localize_script('xv-overview-admin', 'xvOverview', array(
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('xv_reset_migration'),
+            'quotesNonce' => wp_create_nonce('xv_reset_quotes_only'),
             'confirmMessage' => __('Are you sure you want to reset the migration? This will delete all Custom Post Type quotes and cannot be undone!', 'xv-random-quotes'),
+            'confirmQuotesMessage' => __('Are you sure you want to reset quotes? This will delete all Custom Post Type quotes but preserve widget settings.', 'xv-random-quotes'),
         ));
     }
 
@@ -324,6 +341,53 @@ class OverviewPage {
                 __('Migration reset complete. Deleted %d posts and %d options. Refresh the page to re-run all migrations.', 'xv-random-quotes'),
                 $deleted_posts,
                 $options_deleted
+            ),
+        ));
+    }
+
+    /**
+     * AJAX handler to reset quotes only (preserve widgets and settings)
+     */
+    public function ajax_reset_quotes_only() {
+        check_ajax_referer('xv_reset_quotes_only', 'nonce');
+
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => __('Insufficient permissions', 'xv-random-quotes')));
+            return;
+        }
+
+        // Delete all xv_quote posts
+        $posts = get_posts(array(
+            'post_type' => 'xv_quote',
+            'posts_per_page' => -1,
+            'post_status' => 'any',
+            'fields' => 'ids',
+        ));
+
+        $deleted_posts = 0;
+        foreach ($posts as $post_id) {
+            if (wp_delete_post($post_id, true)) {
+                $deleted_posts++;
+            }
+        }
+
+        // Delete quote migration options only
+        delete_option('xv_quotes_migrated_v2');
+        delete_option('xv_quotes_needs_migration');
+        delete_option('xv_migration_pending');
+        delete_option('xv_migration_total');
+
+        // Delete migration transients
+        delete_transient('xv_migration_total');
+        delete_transient('xv_migration_progress');
+        delete_transient('xv_migration_offset');
+        delete_transient('xv_migration_error');
+        delete_transient('xv_migration_success');
+
+        wp_send_json_success(array(
+            'message' => sprintf(
+                __('Quotes reset complete. Deleted %d posts. Widget and settings migrations preserved. Refresh the page to re-run quote migration.', 'xv-random-quotes'),
+                $deleted_posts
             ),
         ));
     }
