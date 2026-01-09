@@ -5,6 +5,14 @@ XV Random Quotes
 
 Display and rotate quotes anywhere on your WordPress site. Fully integrated with WordPress Custom Post Types, Gutenberg blocks, and REST API.
 
+## 🤖 For AI Assistants
+
+**Start Here**: Read the "Architecture" and "Key Concepts" sections below, then explore relevant folders in `src/` for implementation details. Check `tests/` for usage examples.
+
+**Testing**: `docker-compose run --rm cli vendor/bin/phpunit`
+
+**Important**: Maintain backward compatibility with v1.x (all legacy functions still work). See [NEW_ARCHITECTURE.md](NEW_ARCHITECTURE.md) for v1.x to v2.0 migration details and backward compatibility approach.
+
 ## Features
 
 ### 🎯 Modern WordPress Integration
