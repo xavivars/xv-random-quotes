@@ -109,6 +109,7 @@ function stray_random_shortcode($atts, $content = NULL) {
 		'linkphrase' => '',
 		'widgetid' => '',
 		'noajax' => '',
+		'enable_ajax' => '',
 		'multi' => 1,
 		'timer' => '',
 		'offset' => 0,
@@ -117,8 +118,24 @@ function stray_random_shortcode($atts, $content = NULL) {
 		'user' => ''
 	));
 
-	// Determine if AJAX is enabled (noajax="" means enabled)
-	$enable_ajax = empty( $atts['noajax'] ) && ! empty( $atts['linkphrase'] );
+	// Determine if AJAX is enabled
+	// Priority order:
+	// 1. If enable_ajax is explicitly set, use it (true = enable, false = disable)
+	// 2. Otherwise, use legacy noajax logic (noajax="" or false = enable, noajax="true" = disable)
+	// 3. Check global AJAX setting (if globally disabled, override to false)
+	if ( ! empty( $atts['enable_ajax'] ) ) {
+		// Explicit enable_ajax parameter takes priority
+		$enable_ajax = filter_var( $atts['enable_ajax'], FILTER_VALIDATE_BOOLEAN );
+	} else {
+		// Legacy noajax logic: empty/false = AJAX enabled
+		$enable_ajax = empty( $atts['noajax'] );
+	}
+
+	// Check global AJAX setting (if disabled globally, override to false)
+	$global_ajax_disabled = get_option( \XVRandomQuotes\Admin\Settings::OPTION_AJAX, false );
+	if ( $global_ajax_disabled ) {
+		$enable_ajax = false;
+	}
 
 	// Use QuoteOutput class for complete rendering (including AJAX if enabled)
 	$quote_output = new QuoteOutput();

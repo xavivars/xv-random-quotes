@@ -1,5 +1,10 @@
 == XV Random Quotes ==
 
+= 2.6.1 =
+Fix: Sequential mode now works on shortcodes
+Fix: LinkPhrase not being required for AJAX shortcodes
+Improvement: Added `enable_ajax` as an equivalent (in reverse) to `noajax` for shortcodes.
+
 = 2.6.0 =
 Improvement: Default category migration from legacy settings
 Improvement: Decouple settings migration steps
