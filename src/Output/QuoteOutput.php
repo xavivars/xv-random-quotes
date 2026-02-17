@@ -117,7 +117,7 @@ class QuoteOutput {
 
 		// Wrap with AJAX functionality if enabled
 		if ( $args['enable_ajax'] ) {
-			return $this->wrap_with_ajax( $quote_html, $args );
+			return $this->wrap_with_ajax( $quote_html, $args, $quotes );
 		}
 
 		return $quote_html;
@@ -128,9 +128,10 @@ class QuoteOutput {
 	 *
 	 * @param string $quote_html The rendered quote HTML.
 	 * @param array  $args       Arguments array with AJAX configuration.
+	 * @param array  $quotes     Array of WP_Post quote objects being displayed.
 	 * @return string HTML wrapped with AJAX functionality.
 	 */
-	private function wrap_with_ajax( $quote_html, $args ) {
+	private function wrap_with_ajax( $quote_html, $args, $quotes = array() ) {
 		// Generate or use provided container ID
 		$container_id = ! empty( $args['container_id'] ) ? $args['container_id'] : 'xv-quote-container-' . uniqid();
 
@@ -143,6 +144,20 @@ class QuoteOutput {
 
 		if ( ! empty( $args['contributor'] ) ) {
 			$output .= ' data-contributor="' . esc_attr( $args['contributor'] ) . '"';
+		}
+
+		// Add current quote ID(s) for sequential tracking
+		if ( ! empty( $quotes ) ) {
+			if ( $args['multi'] > 1 ) {
+				// For multiple quotes, store comma-separated IDs
+				$quote_ids = array_map( function( $quote ) {
+					return $quote->ID;
+				}, $quotes );
+				$output .= ' data-current-id="' . esc_attr( implode( ',', $quote_ids ) ) . '"';
+			} else {
+				// For single quote, store just the ID
+				$output .= ' data-current-id="' . esc_attr( $quotes[0]->ID ) . '"';
+			}
 		}
 
 		// Always include timer attribute (even if 0)

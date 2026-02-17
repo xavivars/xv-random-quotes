@@ -55,6 +55,7 @@
 		const multi = parseInt(container.getAttribute('data-multi'), 10) || 1;
 		const disableaspect = container.getAttribute('data-disableaspect') === '1';
 		const contributor = container.getAttribute('data-contributor') || '';
+		const currentId = container.getAttribute('data-current-id') || '';
 
 		// Build query string
 		const params = new URLSearchParams();
@@ -63,6 +64,10 @@
 		}
 		if (sequence) {
 			params.append('sequence', '1');
+			// For sequential mode, send current ID to get next quote
+			if (currentId) {
+				params.append('current_id', currentId);
+			}
 		}
 		if (multi > 1) {
 			params.append('multi', multi.toString());
@@ -104,17 +109,17 @@
 			if (data.html) {
 				// Get the refresh link wrapper to preserve it
 				const refreshWrapper = container.querySelector('.xv-quote-refresh-wrapper');
-				
+
 				// Update the container content
 				// We need to replace everything except the refresh link
 				const tempDiv = document.createElement('div');
 				tempDiv.innerHTML = data.html;
-				
+
 				// Clear container except for refresh wrapper
 				while (container.firstChild && container.firstChild !== refreshWrapper) {
 					container.removeChild(container.firstChild);
 				}
-				
+
 				// Insert new content before refresh wrapper
 				if (refreshWrapper) {
 					while (tempDiv.firstChild) {
@@ -124,7 +129,20 @@
 					// No refresh wrapper (shouldn't happen), just replace all
 					container.innerHTML = data.html;
 				}
-				
+
+				// Update current ID for sequential tracking
+				if (data.quote_id) {
+					container.setAttribute('data-current-id', data.quote_id);
+				}
+
+				// Handle end of sequence
+				if (data.end_of_sequence && refreshWrapper) {
+					const refreshLink = refreshWrapper.querySelector('.xv-quote-refresh');
+					if (refreshLink) {
+						refreshLink.style.display = 'none';
+					}
+				}
+
 				// Fade in
 				container.style.opacity = '1';
 				container.style.minHeight = '';

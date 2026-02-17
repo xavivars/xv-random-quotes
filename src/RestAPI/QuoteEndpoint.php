@@ -79,6 +79,12 @@ class QuoteEndpoint {
 				'default'           => '',
 				'sanitize_callback' => 'sanitize_text_field',
 			),
+			'current_id'     => array(
+				'description'       => 'Current quote ID(s) for sequential progression (comma-separated for multi)',
+				'type'              => 'string',
+				'default'           => '',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
 		);
 	}
 
@@ -95,6 +101,7 @@ class QuoteEndpoint {
 		$multi         = $request->get_param( 'multi' );
 		$disableaspect = $request->get_param( 'disableaspect' );
 		$contributor   = $request->get_param( 'contributor' );
+		$current_id    = $request->get_param( 'current_id' );
 
 		// Get quotes first (before rendering)
 		$quote_queries = new QuoteQueries();
@@ -106,15 +113,34 @@ class QuoteEndpoint {
 		$query_args = array(
 			'posts_per_page' => $multi,
 		);
-		
+
 		// Add ordering
 		if ( $sequence ) {
 			$query_args['orderby'] = 'date';
 			$query_args['order'] = 'ASC';
+
+			// If current_id is provided, get the next quote(s) after it
+			if ( ! empty( $current_id ) ) {
+				// For multi-quote, get the last ID
+				$current_ids = explode( ',', $current_id );
+				$last_id = end( $current_ids );
+
+				// Get the post to find its date
+				$current_post = get_post( absint( $last_id ) );
+				if ( $current_post ) {
+					// Query for quotes published after this date
+					$query_args['date_query'] = array(
+						array(
+							'after'     => $current_post->post_date,
+							'inclusive' => false,
+						),
+					);
+				}
+			}
 		} else {
 			$query_args['orderby'] = 'rand';
 		}
-		
+
 		// Get quotes
 		if ( ! empty( $categories_array ) ) {
 			$quotes = $quote_queries->get_quotes_by_categories( $categories_array, $query_args );
@@ -155,23 +181,55 @@ class QuoteEndpoint {
 			'html' => $html,
 		);
 
+		// Check if we've reached the end of sequence
+		$end_of_sequence = false;
+		if ( $sequence && ! empty( $current_id ) ) {
+			// If we got quotes, check if there are more after these
+			if ( ! empty( $quotes ) ) {
+				$last_quote = end( $quotes );
+				$check_query_args = array(
+					'posts_per_page' => 1,
+					'fields'         => 'ids',
+					'orderby'        => 'date',
+					'order'          => 'ASC',
+					'date_query'     => array(
+						array(
+							'after'     => $last_quote->post_date,
+							'inclusive' => false,
+						),
+					),
+				);
+
+				// Check for more quotes
+				if ( ! empty( $categories_array ) ) {
+					$more_quotes = $quote_queries->get_quotes_by_categories( $categories_array, $check_query_args );
+				} else {
+					$more_quotes = $quote_queries->get_all_quotes( $check_query_args );
+				}
+
+				$end_of_sequence = empty( $more_quotes );
+			}
+		}
+
+		$response_data['end_of_sequence'] = $end_of_sequence;
+
 		// Add metadata for single quote
 		if ( $multi === 1 && ! empty( $quotes ) && count( $quotes ) > 0 ) {
 			$quote = $quotes[0];
-			
+
 			$response_data['quote_id']      = $quote->ID;
 			$response_data['quote_text']    = wp_strip_all_tags( $quote->post_content );
 			$response_data['quote_content'] = $quote->post_content;
-			
+
 			// Get author
 			$authors = wp_get_post_terms( $quote->ID, 'quote_author' );
-			$response_data['author'] = ! empty( $authors ) && ! is_wp_error( $authors ) 
-				? $authors[0]->name 
+			$response_data['author'] = ! empty( $authors ) && ! is_wp_error( $authors )
+				? $authors[0]->name
 				: '';
-			
+
 			// Get source
 			$response_data['source'] = get_post_meta( $quote->ID, '_quote_source', true );
-			
+
 			// Get categories
 			$categories_terms = wp_get_post_terms( $quote->ID, 'quote_category' );
 			$response_data['categories'] = array();

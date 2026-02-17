@@ -487,5 +487,194 @@ class Test_Quote_Endpoint extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'Bold text', $data['quote_text'] );
 		$this->assertStringContainsString( 'italic text', $data['quote_text'] );
 	}
+
+	/**
+	 * Test sequential progression with current_id parameter
+	 */
+	public function test_sequential_progression_with_current_id() {
+		// Create sequential test quotes with known dates
+		$sequential_quotes = array();
+		for ( $i = 1; $i <= 5; $i++ ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'    => 'xv_quote',
+					'post_title'   => 'Sequential Quote ' . $i,
+					'post_content' => 'This is sequential quote number ' . $i,
+					'post_status'  => 'publish',
+					'post_date'    => '2025-01-' . str_pad( $i, 2, '0', STR_PAD_LEFT ) . ' 12:00:00',
+				)
+			);
+			wp_set_object_terms( $post_id, 'science', 'quote_category' );
+			$sequential_quotes[] = $post_id;
+		}
+
+		// Get first quote in sequence
+		$request = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request->set_param( 'sequence', true );
+		$request->set_param( 'categories', 'science' );
+
+		$response = $this->server->dispatch( $request );
+		$data1    = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		$this->assertNotEmpty( $data1['quote_id'] );
+		$first_id = $data1['quote_id'];
+
+		// Get next quote using current_id
+		$request2 = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request2->set_param( 'sequence', true );
+		$request2->set_param( 'categories', 'science' );
+		$request2->set_param( 'current_id', $first_id );
+
+		$response2 = $this->server->dispatch( $request2 );
+		$data2     = $response2->get_data();
+
+		$this->assertEquals( 200, $response2->get_status() );
+		$this->assertNotEmpty( $data2['quote_id'] );
+
+		// Second quote should be different from first
+		$this->assertNotEquals( $first_id, $data2['quote_id'], 'Next quote should be different from current quote' );
+
+		// Clean up
+		foreach ( $sequential_quotes as $post_id ) {
+			wp_delete_post( $post_id, true );
+		}
+	}
+
+	/**
+	 * Test end_of_sequence flag when reaching last quote
+	 */
+	public function test_end_of_sequence_flag() {
+		// Create unique category for this test
+		$term = wp_insert_term( 'EndTest', 'quote_category' );
+		$category_slug = 'endtest';
+
+		// Create exactly 3 sequential quotes
+		$sequential_quotes = array();
+		for ( $i = 1; $i <= 3; $i++ ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'    => 'xv_quote',
+					'post_title'   => 'Limited Quote ' . $i,
+					'post_content' => 'Limited sequence quote ' . $i,
+					'post_status'  => 'publish',
+					'post_date'    => '2025-02-' . str_pad( $i, 2, '0', STR_PAD_LEFT ) . ' 12:00:00',
+				)
+			);
+			wp_set_object_terms( $post_id, $category_slug, 'quote_category' );
+			$sequential_quotes[] = $post_id;
+		}
+
+		// Get first quote
+		$request = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request->set_param( 'sequence', true );
+		$request->set_param( 'categories', $category_slug );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+		$quote_id = $data['quote_id'];
+
+		// end_of_sequence should be false (more quotes available)
+		$this->assertFalse( $data['end_of_sequence'], 'Should not be at end with more quotes available' );
+
+		// Get second quote
+		$request2 = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request2->set_param( 'sequence', true );
+		$request2->set_param( 'categories', $category_slug );
+		$request2->set_param( 'current_id', $quote_id );
+
+		$response2 = $this->server->dispatch( $request2 );
+		$data2     = $response2->get_data();
+		$quote_id2 = $data2['quote_id'];
+
+		// Still not at end
+		$this->assertFalse( $data2['end_of_sequence'], 'Should not be at end yet' );
+
+		// Get third (last) quote
+		$request3 = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request3->set_param( 'sequence', true );
+		$request3->set_param( 'categories', $category_slug );
+		$request3->set_param( 'current_id', $quote_id2 );
+
+		$response3 = $this->server->dispatch( $request3 );
+		$data3     = $response3->get_data();
+
+		// Should now be at end of sequence
+		$this->assertTrue( $data3['end_of_sequence'], 'Should be at end of sequence on last quote' );
+
+		// Clean up
+		foreach ( $sequential_quotes as $post_id ) {
+			wp_delete_post( $post_id, true );
+		}
+	}
+
+	/**
+	 * Test end_of_sequence is false for random mode
+	 */
+	public function test_end_of_sequence_false_for_random_mode() {
+		$request = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request->set_param( 'sequence', false ); // Random mode
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+		// In random mode without current_id, end_of_sequence should be false
+		$this->assertFalse( $data['end_of_sequence'] );
+	}
+
+	/**
+	 * Test current_id with multi-quote (comma-separated IDs)
+	 */
+	public function test_current_id_with_multi_quote() {
+		// Create sequential quotes
+		$sequential_quotes = array();
+		for ( $i = 1; $i <= 6; $i++ ) {
+			$post_id = wp_insert_post(
+				array(
+					'post_type'    => 'xv_quote',
+					'post_title'   => 'Multi Sequential ' . $i,
+					'post_content' => 'Multi sequence quote ' . $i,
+					'post_status'  => 'publish',
+					'post_date'    => '2025-03-' . str_pad( $i, 2, '0', STR_PAD_LEFT ) . ' 12:00:00',
+				)
+			);
+			wp_set_object_terms( $post_id, 'philosophy', 'quote_category' );
+			$sequential_quotes[] = $post_id;
+		}
+
+		// Get first 2 quotes
+		$request = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request->set_param( 'sequence', true );
+		$request->set_param( 'multi', 2 );
+		$request->set_param( 'categories', 'philosophy' );
+
+		$response = $this->server->dispatch( $request );
+		$data     = $response->get_data();
+
+		$this->assertEquals( 200, $response->get_status() );
+
+		// For multi-quote, get the IDs from the response HTML
+		// We'll simulate what JavaScript would do - pass multiple IDs
+		$first_ids = array( $sequential_quotes[0], $sequential_quotes[1] );
+
+		// Get next 2 quotes using comma-separated current_id
+		$request2 = new WP_REST_Request( 'GET', '/xv-random-quotes/v1/quote/random' );
+		$request2->set_param( 'sequence', true );
+		$request2->set_param( 'multi', 2 );
+		$request2->set_param( 'categories', 'philosophy' );
+		$request2->set_param( 'current_id', implode( ',', $first_ids ) );
+
+		$response2 = $this->server->dispatch( $request2 );
+		$data2     = $response2->get_data();
+
+		$this->assertEquals( 200, $response2->get_status() );
+		$this->assertNotEmpty( $data2['html'] );
+
+		// Clean up
+		foreach ( $sequential_quotes as $post_id ) {
+			wp_delete_post( $post_id, true );
+		}
+	}
 }
 
