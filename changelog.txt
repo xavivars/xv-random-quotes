@@ -1,5 +1,8 @@
 == XV Random Quotes ==
 
+= 2.7.0 =
+Improvement: Added sequential and multi to the blocks
+
 = 2.6.1 =
 Fix: Sequential mode now works on shortcodes
 Fix: LinkPhrase not being required for AJAX shortcodes

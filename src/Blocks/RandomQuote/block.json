@@ -17,6 +17,14 @@
             "type": "string",
             "default": ""
         },
+        "sequence": {
+            "type": "boolean",
+            "default": false
+        },
+        "multi": {
+            "type": "number",
+            "default": 1
+        },
         "disableaspect": {
             "type": "boolean",
             "default": false

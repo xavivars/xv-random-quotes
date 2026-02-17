@@ -10,6 +10,8 @@ import { DisableStylingControl } from '../components/DisableStylingControl';
 
 interface RandomQuoteAttributes {
 	categories: string;
+	sequence: boolean;
+	multi: number;
 	disableaspect: boolean;
 	enableAjax: boolean;
 	timer: number;
@@ -32,6 +34,20 @@ registerBlockType('xv-random-quotes/random-quote', {
 				<CategoryControl
 					value={attributes.categories}
 					onChange={(value) => setAttributes({ categories: value })}
+				/>
+				<RangeControl
+					label={__('Number of quotes', 'xv-random-quotes')}
+					value={attributes.multi}
+					onChange={(value) => setAttributes({ multi: value || 1 })}
+					min={1}
+					max={10}
+					help={__('How many quotes to display', 'xv-random-quotes')}
+				/>
+				<ToggleControl
+					label={__('Sequential order', 'xv-random-quotes')}
+					checked={attributes.sequence}
+					onChange={(value) => setAttributes({ sequence: value })}
+					help={__('Show quotes in order instead of random', 'xv-random-quotes')}
 				/>
 				<DisableStylingControl
 					checked={attributes.disableaspect}
