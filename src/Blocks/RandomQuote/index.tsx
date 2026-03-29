@@ -15,6 +15,7 @@ interface RandomQuoteAttributes {
 	disableaspect: boolean;
 	enableAjax: boolean;
 	timer: number;
+	cacheBypass: boolean;
 }
 
 interface RandomQuoteProps {
@@ -59,6 +60,7 @@ registerBlockType('xv-random-quotes/random-quote', {
 					onChange={(value) => setAttributes({ enableAjax: value })}
 				/>
 				{attributes.enableAjax && (
+					<>
 					<RangeControl
 						label={__('Auto-refresh timer (seconds)', 'xv-random-quotes')}
 						value={attributes.timer}
@@ -67,6 +69,13 @@ registerBlockType('xv-random-quotes/random-quote', {
 						max={300}
 						help={__('0 = no auto-refresh', 'xv-random-quotes')}
 					/>
+					<ToggleControl
+						label={__('Bypass page cache', 'xv-random-quotes')}
+						checked={attributes.cacheBypass}
+						onChange={(value) => setAttributes({ cacheBypass: value })}
+						help={__('Fetch a fresh quote on every page load, even when the page is cached', 'xv-random-quotes')}
+					/>
+					</>
 				)}
 			</BlockEditor>
 		);

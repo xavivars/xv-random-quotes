@@ -21,6 +21,7 @@ function render_random_quote_block( $attributes ) {
 	$disableaspect = $attributes['disableaspect'] ?? false;
 	$enableAjax    = $attributes['enableAjax'] ?? false;
 	$timer         = $attributes['timer'] ?? 0;
+	$cacheBypass   = $attributes['cacheBypass'] ?? false;
 
 	// Use QuoteOutput class for complete rendering (including AJAX if enabled)
 	$quote_output = new \XVRandomQuotes\Output\QuoteOutput();
@@ -32,6 +33,7 @@ function render_random_quote_block( $attributes ) {
 			'offset'        => 0,
 			'disableaspect' => $disableaspect,
 			'enable_ajax'   => $enableAjax,
+			'cache_bypass'  => $cacheBypass,
 			'timer'         => $timer,
 		)
 	);

@@ -230,6 +230,7 @@ class OverviewPage {
                 .wrap .card {
                     max-width: 100%;
                     margin-bottom: 20px;
+                    padding: 16px 20px 20px !important;
                 }
                 .wrap .card h3 {
                     margin-top: 20px;

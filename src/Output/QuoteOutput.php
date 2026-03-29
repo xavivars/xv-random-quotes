@@ -81,6 +81,7 @@ class QuoteOutput {
 				'disableaspect' => false,
 				'contributor'   => '',
 				'enable_ajax'   => false,
+				'cache_bypass'  => false,
 				'link_phrase'   => '',
 				'timer'         => 0,
 				'container_id'  => '',
@@ -117,7 +118,12 @@ class QuoteOutput {
 
 		// Wrap with AJAX functionality if enabled
 		if ( $args['enable_ajax'] ) {
-			return $this->wrap_with_ajax( $quote_html, $args, $quotes );
+			// Apply global cache bypass setting if not already enabled per-instance
+			$cache_bypass = $args['cache_bypass'];
+			if ( ! $cache_bypass && get_option( Settings::OPTION_CACHE_BYPASS, false ) === '1' ) {
+				$cache_bypass = true;
+			}
+			return $this->wrap_with_ajax( $quote_html, $args, $quotes, $cache_bypass );
 		}
 
 		return $quote_html;
@@ -126,12 +132,13 @@ class QuoteOutput {
 	/**
 	 * Wrap quote HTML with AJAX container and refresh link
 	 *
-	 * @param string $quote_html The rendered quote HTML.
-	 * @param array  $args       Arguments array with AJAX configuration.
-	 * @param array  $quotes     Array of WP_Post quote objects being displayed.
+	 * @param string $quote_html  The rendered quote HTML.
+	 * @param array  $args        Arguments array with AJAX configuration.
+	 * @param array  $quotes      Array of WP_Post quote objects being displayed.
+	 * @param bool   $cache_bypass When true, renders an empty container so JS fetches a fresh quote on every page load.
 	 * @return string HTML wrapped with AJAX functionality.
 	 */
-	private function wrap_with_ajax( $quote_html, $args, $quotes = array() ) {
+	private function wrap_with_ajax( $quote_html, $args, $quotes = array(), $cache_bypass = false ) {
 		// Generate or use provided container ID
 		$container_id = ! empty( $args['container_id'] ) ? $args['container_id'] : 'xv-quote-container-' . uniqid();
 
@@ -163,8 +170,15 @@ class QuoteOutput {
 		// Always include timer attribute (even if 0)
 		$output .= ' data-timer="' . esc_attr( absint( $args['timer'] ) ) . '"';
 
+		if ( $cache_bypass ) {
+			$output .= ' data-load-on-init="1"';
+		}
+
 		$output .= '>';
-		$output .= $quote_html;
+
+		if ( ! $cache_bypass ) {
+			$output .= $quote_html;
+		}
 
 		// Add refresh link (only if not auto-refresh only)
 		$loader_text = ! empty( $args['link_phrase'] ) ? $args['link_phrase'] : get_option( Settings::OPTION_LOADER, '' );
@@ -210,8 +224,7 @@ class QuoteOutput {
 				'xv-quote-refresh',
 				'xvQuoteRefresh',
 				array(
-					'restUrl'   => esc_url_raw( rest_url( 'xv-random-quotes/v1/quote/random' ) ),
-					'restNonce' => wp_create_nonce( 'wp_rest' ),
+					'restUrl' => esc_url_raw( rest_url( 'xv-random-quotes/v1/quote/random' ) ),
 				)
 			);
 		}

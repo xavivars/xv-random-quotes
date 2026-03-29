@@ -51,6 +51,7 @@ class Settings {
 
 	// AJAX Settings
 	const OPTION_AJAX           = 'xv_quotes_ajax';
+	const OPTION_CACHE_BYPASS   = 'xv_quotes_cache_bypass';
 	const OPTION_LOADER         = 'xv_quotes_loader';
 	const OPTION_BEFORE_LOADER  = 'xv_quotes_before_loader';
 	const OPTION_AFTER_LOADER   = 'xv_quotes_after_loader';
@@ -186,6 +187,16 @@ class Settings {
 		register_setting(
 			self::SETTINGS_GROUP,
 			self::OPTION_AJAX,
+			array(
+				'type'              => 'string',
+				'default'           => '0',
+				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
+			)
+		);
+
+		register_setting(
+			self::SETTINGS_GROUP,
+			self::OPTION_CACHE_BYPASS,
 			array(
 				'type'              => 'string',
 				'default'           => '0',
@@ -526,6 +537,19 @@ class Settings {
 		);
 
 		add_settings_field(
+			self::OPTION_CACHE_BYPASS,
+			__( 'Bypass Page Cache Globally', 'xv-random-quotes' ),
+			array( $this, 'render_checkbox_field' ),
+			self::PAGE_SLUG,
+			'xv_quotes_ajax',
+			array(
+				'label_for'   => self::OPTION_CACHE_BYPASS,
+				'option_name' => self::OPTION_CACHE_BYPASS,
+				'description' => __( 'When enabled, all AJAX-enabled quotes will fetch a fresh quote on every page load, bypassing full-page caches like WP Rocket. Requires AJAX to be enabled on each quote block or shortcode.', 'xv-random-quotes' ),
+			)
+		);
+
+		add_settings_field(
 			self::OPTION_LOADER,
 			__( 'Loader Link Text', 'xv-random-quotes' ),
 			array( $this, 'render_text_field' ),
@@ -797,6 +821,7 @@ class Settings {
 			.xv-quotes-settings .card {
 				max-width: 100%;
 				margin-bottom: 20px;
+				padding: 16px 20px 20px !important;
 			}
 			.xv-quotes-settings .card h2 {
 				margin-bottom: 10px;

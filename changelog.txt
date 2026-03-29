@@ -1,5 +1,13 @@
 == XV Random Quotes ==
 
+= 2.9.0 =
+New feature: Cache bypass mode — AJAX-enabled quotes can now fetch a fresh quote on every page load, bypassing full-page caches like WP Rocket
+New feature: Global "Bypass Page Cache" setting in AJAX Settings
+New feature: Per-block "Bypass page cache" toggle in the Random Quote block editor
+New feature: cache_bypass shortcode attribute for [stray-random]
+Fix: AJAX refresh no longer sends a WP nonce header, preventing failures on pages cached longer than 12-24 hours
+Fix: Admin card padding overridden to restore proper spacing when other plugins (e.g. Subscribe to Comments Reloaded) zero out .card padding
+
 = 2.8.0 =
 New feature: "Quote Text Only" setting — when enabled, hides author and source on the frontend
 Improvement: Debug logging in settings is now gated behind WP_DEBUG

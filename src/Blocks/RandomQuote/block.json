@@ -36,6 +36,10 @@
         "timer": {
             "type": "number",
             "default": 0
+        },
+        "cacheBypass": {
+            "type": "boolean",
+            "default": false
         }
     },
     "supports": {

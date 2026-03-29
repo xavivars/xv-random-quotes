@@ -31,15 +31,22 @@
 
 		// Set up auto-refresh timers
 		const containers = document.querySelectorAll('.xv-quote-container[data-timer]');
-		
+
 		containers.forEach(function(container) {
 			const timer = parseInt(container.getAttribute('data-timer'), 10);
-			
+
 			if (timer > 0) {
 				setInterval(function() {
 					refreshQuote(container);
 				}, timer * 1000); // Convert seconds to milliseconds
 			}
+		});
+
+		// Load-on-init: fetch a fresh quote immediately for cache-bypass containers
+		const initContainers = document.querySelectorAll('.xv-quote-container[data-load-on-init="1"]');
+
+		initContainers.forEach(function(container) {
+			refreshQuote(container);
 		});
 	}
 
@@ -94,10 +101,8 @@
 		fetch(restUrl, {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json',
-				'X-WP-Nonce': xvQuoteRefresh.restNonce
-			},
-			credentials: 'same-origin'
+				'Content-Type': 'application/json'
+			}
 		})
 		.then(function(response) {
 			if (!response.ok) {

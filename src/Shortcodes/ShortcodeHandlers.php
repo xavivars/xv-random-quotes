@@ -110,6 +110,7 @@ function stray_random_shortcode($atts, $content = NULL) {
 		'widgetid' => '',
 		'noajax' => '',
 		'enable_ajax' => '',
+		'cache_bypass' => '',
 		'multi' => 1,
 		'timer' => '',
 		'offset' => 0,
@@ -137,6 +138,8 @@ function stray_random_shortcode($atts, $content = NULL) {
 		$enable_ajax = false;
 	}
 
+	$cache_bypass = ! empty( $atts['cache_bypass'] ) ? filter_var( $atts['cache_bypass'], FILTER_VALIDATE_BOOLEAN ) : false;
+
 	// Use QuoteOutput class for complete rendering (including AJAX if enabled)
 	$quote_output = new QuoteOutput();
 	return $quote_output->get_random_quotes(
@@ -148,6 +151,7 @@ function stray_random_shortcode($atts, $content = NULL) {
 			'disableaspect' => $atts['disableaspect'],
 			'contributor'   => $atts['user'],
 			'enable_ajax'   => $enable_ajax,
+			'cache_bypass'  => $cache_bypass,
 			'link_phrase'   => $atts['linkphrase'],
 			'timer'         => ! empty( $atts['timer'] ) ? absint( $atts['timer'] ) : 0,
 		)
