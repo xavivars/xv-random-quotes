@@ -47,6 +47,8 @@ class Settings {
 	const OPTION_AUTHORSPACES   = 'xv_quotes_authorspaces';
 	const OPTION_SOURCESPACES   = 'xv_quotes_sourcespaces';
 
+	const OPTION_QUOTE_ONLY     = 'xv_quotes_quote_only';
+
 	// AJAX Settings
 	const OPTION_AJAX           = 'xv_quotes_ajax';
 	const OPTION_LOADER         = 'xv_quotes_loader';
@@ -74,16 +76,21 @@ class Settings {
 
 		// Check nonce
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], self::SETTINGS_GROUP . '-options' ) ) {
-			error_log( 'XV Quotes Settings: Nonce verification failed' );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'XV Quotes Settings: Nonce verification failed' );
+			}
 			return;
 		}
 
-		error_log( 'XV Quotes Settings: Processing checkbox options' );
-		error_log( 'POST data: ' . print_r( $_POST, true ) );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'XV Quotes Settings: Processing checkbox options' );
+			error_log( 'POST data: ' . print_r( $_POST, true ) );
+		}
 
 		// List of checkbox options
 		$checkbox_options = array(
 			self::OPTION_USE_NATIVE_STYLING,
+			self::OPTION_QUOTE_ONLY,
 			self::OPTION_PUT_QUOTES_FIRST,
 			self::OPTION_AJAX,
 		);
@@ -91,12 +98,16 @@ class Settings {
 		// For each checkbox, if not present in POST, set to '0'
 		foreach ( $checkbox_options as $option ) {
 			$is_set = isset( $_POST[ $option ] );
-			$value = $is_set ? $_POST[ $option ] : 'not set';
-			error_log( "XV Quotes Settings: Option {$option} - isset: " . ( $is_set ? 'YES' : 'NO' ) . ", value: {$value}" );
-			
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				$value = $is_set ? $_POST[ $option ] : 'not set';
+				error_log( "XV Quotes Settings: Option {$option} - isset: " . ( $is_set ? 'YES' : 'NO' ) . ", value: {$value}" );
+			}
+
 			if ( ! isset( $_POST[ $option ] ) ) {
 				update_option( $option, '0' );
-				error_log( "XV Quotes Settings: Set {$option} to '0' (unchecked)" );
+				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					error_log( "XV Quotes Settings: Set {$option} to '0' (unchecked)" );
+				}
 			}
 		}
 	}
@@ -126,6 +137,17 @@ class Settings {
 			array(
 				'type'              => 'boolean',
 				'default'           => true,
+				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
+			)
+		);
+
+		// Register Quote Only Setting
+		register_setting(
+			self::SETTINGS_GROUP,
+			self::OPTION_QUOTE_ONLY,
+			array(
+				'type'              => 'boolean',
+				'default'           => false,
 				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
 			)
 		);
@@ -310,6 +332,19 @@ class Settings {
 				'label_for'   => self::OPTION_USE_NATIVE_STYLING,
 				'option_name' => self::OPTION_USE_NATIVE_STYLING,
 				'description' => __( 'Enable to use WordPress native quote block styling. When enabled, quotes will be displayed using the standard WordPress quote block format with <code>&lt;blockquote class="wp-block-quote"&gt;</code>. Disable to use custom HTML wrappers below.', 'xv-random-quotes' ),
+			)
+		);
+
+		add_settings_field(
+			self::OPTION_QUOTE_ONLY,
+			__( 'Quote Text Only', 'xv-random-quotes' ),
+			array( $this, 'render_checkbox_field' ),
+			self::PAGE_SLUG,
+			'xv_quotes_native_styling',
+			array(
+				'label_for'   => self::OPTION_QUOTE_ONLY,
+				'option_name' => self::OPTION_QUOTE_ONLY,
+				'description' => __( 'When enabled, only the quote text is displayed. Author and source are hidden.', 'xv-random-quotes' ),
 			)
 		);
 	}

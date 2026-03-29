@@ -33,8 +33,9 @@ class NativeRenderer {
 		$output = '<blockquote class="wp-block-quote has-text-align-right is-style-default">' . "\n";
 		$output .= '  <p class="has-text-align-left">' . wp_kses_post( $quote_text ) . '</p>' . "\n";
 
-		// Build citation
-		if ( ! empty( $author ) || ! empty( $source ) ) {
+		// Build citation (skipped when quote-only mode is enabled)
+		$quote_only = '1' === get_option( Settings::OPTION_QUOTE_ONLY, '0' );
+		if ( ! $quote_only && ( ! empty( $author ) || ! empty( $source ) ) ) {
 			$output .= '  <cite>';
 
 			if ( ! empty( $author ) ) {

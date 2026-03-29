@@ -44,16 +44,17 @@ class LegacyRenderer {
 
 		// Build output based on quote-first setting
 		$put_quotes_first = get_option( Settings::OPTION_PUT_QUOTES_FIRST, false );
+		$quote_only       = '1' === get_option( Settings::OPTION_QUOTE_ONLY, '0' );
 
 		$output = '';
 
 		if ( ! $put_quotes_first ) {
 			// Default order: author, source, then quote
-			if ( ! empty( $formatted_author ) ) {
+			if ( ! $quote_only && ! empty( $formatted_author ) ) {
 				$output .= wp_kses_post( $wrappers['before_author'] ) . $formatted_author . wp_kses_post( $wrappers['after_author'] );
 			}
 
-			if ( ! empty( $formatted_source ) ) {
+			if ( ! $quote_only && ! empty( $formatted_source ) ) {
 				if ( ! empty( $formatted_author ) ) {
 					$output .= wp_kses_post( $wrappers['before_source'] ) . $formatted_source . wp_kses_post( $wrappers['after_source'] );
 				} else {
@@ -66,11 +67,11 @@ class LegacyRenderer {
 			// Alternate order: quote first, then author and source
 			$output .= wp_kses_post( $wrappers['before_quote'] ) . wp_kses_post( $quote_text ) . wp_kses_post( $wrappers['after_quote'] );
 
-			if ( ! empty( $formatted_author ) ) {
+			if ( ! $quote_only && ! empty( $formatted_author ) ) {
 				$output .= wp_kses_post( $wrappers['before_author'] ) . $formatted_author . wp_kses_post( $wrappers['after_author'] );
 			}
 
-			if ( ! empty( $formatted_source ) ) {
+			if ( ! $quote_only && ! empty( $formatted_source ) ) {
 				if ( ! empty( $formatted_author ) ) {
 					$output .= wp_kses_post( $wrappers['before_source'] ) . $formatted_source . wp_kses_post( $wrappers['after_source'] );
 				} else {

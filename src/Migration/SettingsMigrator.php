@@ -99,6 +99,7 @@ class SettingsMigrator {
 		update_option( Settings::OPTION_BEFORE_SOURCE, '<div class="xv-quote-source">' );
 		update_option( Settings::OPTION_AFTER_SOURCE, '</div>' );
 		update_option( Settings::OPTION_IF_NO_AUTHOR, '<div class="xv-quote-source">' );
+		update_option( Settings::OPTION_QUOTE_ONLY, false );
 		update_option( Settings::OPTION_PUT_QUOTES_FIRST, false );
 		update_option( Settings::OPTION_LINKTO, '' );
 		update_option( Settings::OPTION_SOURCELINKTO, '' );
