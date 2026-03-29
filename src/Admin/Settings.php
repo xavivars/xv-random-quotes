@@ -664,7 +664,9 @@ class Settings {
 		$value       = get_option( $option_name, false );
 		$class       = isset( $args['class'] ) ? $args['class'] : '';
 		
-		error_log( "XV Quotes Settings: Rendering checkbox {$option_name}, current value: " . print_r( $value, true ) );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( "XV Quotes Settings: Rendering checkbox {$option_name}, current value: " . print_r( $value, true ) );
+		}
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>">
 			<label>
@@ -732,17 +734,23 @@ class Settings {
 	 * @return string Sanitized value as string ('1' or '0').
 	 */
 	public function sanitize_checkbox( $value ) {
-		error_log( 'XV Quotes Settings: sanitize_checkbox called with value: ' . print_r( $value, true ) );
-		
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'XV Quotes Settings: sanitize_checkbox called with value: ' . print_r( $value, true ) );
+		}
+
 		// WordPress doesn't send unchecked checkboxes, so null/empty means unchecked
 		if ( empty( $value ) ) {
-			error_log( 'XV Quotes Settings: sanitize_checkbox returning 0 (empty value)' );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				error_log( 'XV Quotes Settings: sanitize_checkbox returning 0 (empty value)' );
+			}
 			return '0';
 		}
-		
+
 		// Return string '1' for checked, '0' for unchecked
 		$result = ( '1' === $value || 1 === $value || true === $value ) ? '1' : '0';
-		error_log( 'XV Quotes Settings: sanitize_checkbox returning ' . $result );
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			error_log( 'XV Quotes Settings: sanitize_checkbox returning ' . $result );
+		}
 		return $result;
 	}
 
