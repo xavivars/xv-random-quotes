@@ -62,54 +62,6 @@ class Settings {
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-		add_action( 'admin_init', array( $this, 'handle_checkbox_options' ) );
-	}
-
-	/**
-	 * Handle checkbox options that aren't submitted when unchecked
-	 */
-	public function handle_checkbox_options() {
-		// Only process on settings page save
-		if ( ! isset( $_POST['option_page'] ) || $_POST['option_page'] !== self::SETTINGS_GROUP ) {
-			return;
-		}
-
-		// Check nonce
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], self::SETTINGS_GROUP . '-options' ) ) {
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( 'XV Quotes Settings: Nonce verification failed' );
-			}
-			return;
-		}
-
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( 'XV Quotes Settings: Processing checkbox options' );
-			error_log( 'POST data: ' . print_r( $_POST, true ) );
-		}
-
-		// List of checkbox options
-		$checkbox_options = array(
-			self::OPTION_USE_NATIVE_STYLING,
-			self::OPTION_QUOTE_ONLY,
-			self::OPTION_PUT_QUOTES_FIRST,
-			self::OPTION_AJAX,
-		);
-
-		// For each checkbox, if not present in POST, set to '0'
-		foreach ( $checkbox_options as $option ) {
-			$is_set = isset( $_POST[ $option ] );
-			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				$value = $is_set ? $_POST[ $option ] : 'not set';
-				error_log( "XV Quotes Settings: Option {$option} - isset: " . ( $is_set ? 'YES' : 'NO' ) . ", value: {$value}" );
-			}
-
-			if ( ! isset( $_POST[ $option ] ) ) {
-				update_option( $option, '0' );
-				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-					error_log( "XV Quotes Settings: Set {$option} to '0' (unchecked)" );
-				}
-			}
-		}
 	}
 
 	/**
