@@ -1,5 +1,11 @@
 == XV Random Quotes ==
 
+= 2.8.0 =
+New feature: "Quote Text Only" setting — when enabled, hides author and source on the frontend
+Improvement: Debug logging in settings is now gated behind WP_DEBUG
+Improvement: Removed redundant checkbox handling in favour of the built-in WordPress Settings API behaviour
+Improvement: Normalised checkbox settings storage to consistent '1'/'0' strings across new installs, legacy migration, and the settings save flow
+
 = 2.7.0 =
 Improvement: Added sequential and multi to the blocks
 
