@@ -87,8 +87,8 @@ class Settings {
 			self::SETTINGS_GROUP,
 			self::OPTION_USE_NATIVE_STYLING,
 			array(
-				'type'              => 'boolean',
-				'default'           => true,
+				'type'              => 'string',
+				'default'           => '1',
 				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
 			)
 		);
@@ -98,8 +98,8 @@ class Settings {
 			self::SETTINGS_GROUP,
 			self::OPTION_QUOTE_ONLY,
 			array(
-				'type'              => 'boolean',
-				'default'           => false,
+				'type'              => 'string',
+				'default'           => '0',
 				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
 			)
 		);
@@ -134,8 +134,8 @@ class Settings {
 			self::SETTINGS_GROUP,
 			self::OPTION_PUT_QUOTES_FIRST,
 			array(
-				'type'              => 'boolean',
-				'default'           => false,
+				'type'              => 'string',
+				'default'           => '0',
 				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
 			)
 		);
@@ -187,8 +187,8 @@ class Settings {
 			self::SETTINGS_GROUP,
 			self::OPTION_AJAX,
 			array(
-				'type'              => 'boolean',
-				'default'           => false,
+				'type'              => 'string',
+				'default'           => '0',
 				'sanitize_callback' => array( $this, 'sanitize_checkbox' ),
 			)
 		);

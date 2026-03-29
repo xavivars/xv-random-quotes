@@ -28,7 +28,7 @@ class SettingsMigrator {
 	 *
 	 * @var int
 	 */
-	const MIGRATION_VERSION = 2;
+	const MIGRATION_VERSION = 3;
 
 	/**
 	 * Run the migration
@@ -45,6 +45,11 @@ class SettingsMigrator {
 		// Run v2 migration if not yet done
 		if ( $current_version < 2 ) {
 			self::migrate_v260();
+		}
+
+		// Run v3 migration if not yet done
+		if ( $current_version < 3 ) {
+			self::migrate_v280();
 		}
 
 		// Update version to current
@@ -83,11 +88,30 @@ class SettingsMigrator {
 	}
 
 	/**
+	 * V2.8.0 Migration: Normalise checkbox options to string '1'/'0'
+	 */
+	private static function migrate_v280() {
+		$checkbox_options = array(
+			Settings::OPTION_USE_NATIVE_STYLING,
+			Settings::OPTION_QUOTE_ONLY,
+			Settings::OPTION_PUT_QUOTES_FIRST,
+			Settings::OPTION_AJAX,
+		);
+
+		foreach ( $checkbox_options as $option ) {
+			$value = get_option( $option );
+			if ( false !== $value ) {
+				update_option( $option, ( $value === true || $value === 1 || $value === '1' ) ? '1' : '0' );
+			}
+		}
+	}
+
+	/**
 	 * Set defaults for new installations
 	 */
 	private static function set_new_installation_defaults() {
 		// Use native styling by default for new installations
-		update_option( Settings::OPTION_USE_NATIVE_STYLING, true );
+		update_option( Settings::OPTION_USE_NATIVE_STYLING, '1' );
 
 		// Set sensible default HTML wrappers for legacy mode (matching old plugin defaults)
 		update_option( Settings::OPTION_BEFORE_ALL, '<div class="xv-quote-wrapper">' );
@@ -99,15 +123,15 @@ class SettingsMigrator {
 		update_option( Settings::OPTION_BEFORE_SOURCE, '<div class="xv-quote-source">' );
 		update_option( Settings::OPTION_AFTER_SOURCE, '</div>' );
 		update_option( Settings::OPTION_IF_NO_AUTHOR, '<div class="xv-quote-source">' );
-		update_option( Settings::OPTION_QUOTE_ONLY, false );
-		update_option( Settings::OPTION_PUT_QUOTES_FIRST, false );
+		update_option( Settings::OPTION_QUOTE_ONLY, '0' );
+		update_option( Settings::OPTION_PUT_QUOTES_FIRST, '0' );
 		update_option( Settings::OPTION_LINKTO, '' );
 		update_option( Settings::OPTION_SOURCELINKTO, '' );
 		update_option( Settings::OPTION_AUTHORSPACES, '' );
 		update_option( Settings::OPTION_SOURCESPACES, '' );
 
 		// AJAX settings defaults
-		update_option( Settings::OPTION_AJAX, false );
+		update_option( Settings::OPTION_AJAX, '0' );
 		update_option( Settings::OPTION_LOADER, '' );
 		update_option( Settings::OPTION_BEFORE_LOADER, '' );
 		update_option( Settings::OPTION_AFTER_LOADER, '' );
@@ -174,13 +198,12 @@ class SettingsMigrator {
 					$value = utf8_decode( $value );
 				}
 
-				// Convert Y/N checkboxes to boolean
+				// Convert Y/N checkboxes to '1'/'0' strings
 				if ( in_array( $old_key, array(
 					'stray_quotes_put_quotes_first',
 					'stray_ajax',
 				), true ) ) {
-					// Handle both 'Y' string and boolean true
-					$value = ( $value === 'Y' || $value === true );
+					$value = ( $value === 'Y' || $value === true ) ? '1' : '0';
 				}
 
 				update_option( $new_key, $value );
