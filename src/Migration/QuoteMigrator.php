@@ -85,6 +85,7 @@ class QuoteMigrator {
 		// If NULL (table doesn't exist) or 0 quotes, mark as completed
 		if ( $total_quotes === null || (int) $total_quotes === 0 ) {
 			update_option( 'xv_quotes_migrated_v2', true );
+			delete_option( 'xv_migration_pending' );
 			return;
 		}
 
@@ -193,6 +194,7 @@ class QuoteMigrator {
 			if ( $total_quotes === null ) {
 				// New installation, no migration needed
 				update_option( 'xv_quotes_migrated_v2', true );
+				delete_option( 'xv_migration_pending' );
 				return array(
 					'migrated'   => 0,
 					'total'      => 0,
@@ -215,6 +217,7 @@ class QuoteMigrator {
 		if ( $total_quotes === 0 ) {
 			// Empty table, mark as migrated
 			update_option( 'xv_quotes_migrated_v2', true );
+			delete_option( 'xv_migration_pending' );
 			$this->cleanup_migration_transients();
 			
 			return array(
@@ -273,6 +276,7 @@ class QuoteMigrator {
 		if ( $complete ) {
 			// Set migration flag and cleanup
 			update_option( 'xv_quotes_migrated_v2', true );
+			delete_option( 'xv_migration_pending' );
 			$this->cleanup_migration_transients();
 		}
 

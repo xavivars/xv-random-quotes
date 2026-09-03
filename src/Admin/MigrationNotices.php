@@ -38,6 +38,12 @@ class MigrationNotices {
 	 * - Migration error (error message)
 	 */
 	public static function display_migration_notices() {
+		// Both AJAX handlers require manage_options, so anyone else is shown
+		// a notice they cannot act on.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		// Check for error messages first
 		$error = get_transient( 'xv_migration_error' );
 		if ( $error ) {
@@ -56,8 +62,12 @@ class MigrationNotices {
 		$pending = get_option( 'xv_migration_pending', false );
 		$migrated = get_option( 'xv_quotes_migrated_v2', false );
 
-		// Don't show notice if already migrated
-		if ( $migrated && ! $pending ) {
+		// The pending flag can outlive a finished migration when the
+		// completion AJAX request never reaches the server, so clear it here.
+		if ( $migrated ) {
+			if ( $pending ) {
+				delete_option( 'xv_migration_pending' );
+			}
 			return;
 		}
 

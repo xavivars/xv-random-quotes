@@ -227,8 +227,8 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 		// Run migration
 		SettingsMigrator::migrate();
 
-		// Flag should be set to current migration version (2)
-		$this->assertEquals( 2, (int) get_option( '_xv_quotes_migrated' ) );
+		// Flag should be set to the current migration version
+		$this->assertEquals( SettingsMigrator::MIGRATION_VERSION, (int) get_option( '_xv_quotes_migrated' ) );
 	}
 
 	/**
@@ -276,8 +276,8 @@ class Test_Settings_Migration extends WP_UnitTestCase {
 		$term = term_exists( 'Wisdom', 'quote_category' );
 		$this->assertNotFalse( $term, 'V2 migration should have created the default category' );
 
-		// Check that version is now 2
-		$this->assertEquals( 2, (int) get_option( '_xv_quotes_migrated' ) );
+		// Check that the version is now up to date
+		$this->assertEquals( SettingsMigrator::MIGRATION_VERSION, (int) get_option( '_xv_quotes_migrated' ) );
 	}
 
 	/**

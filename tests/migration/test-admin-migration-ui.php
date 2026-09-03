@@ -237,4 +237,57 @@ class Test_Admin_Migration_UI extends Migration_Test_Base {
 		$has_progress_info = strpos( $notices, '600' ) !== false || strpos( $notices, '400' ) !== false;
 		$this->assertTrue( $has_progress_info, 'Should show progress or remaining count' );
 	}
+	/**
+	 * Test 13: Non-admin users never see the migration notice
+	 *
+	 * They cannot run the migration (both AJAX handlers require
+	 * manage_options), so showing them the notice is pure noise.
+	 */
+	public function test_no_notice_for_users_without_manage_options() {
+		update_option( 'xv_migration_pending', true );
+		update_option( 'xv_migration_total', 1000 );
+
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
+
+		ob_start();
+		do_action( 'admin_notices' );
+		$notices = ob_get_clean();
+
+		$this->assertSame( '', trim( $notices ), 'Subscribers should see no migration notice' );
+	}
+
+	/**
+	 * Test 14: A stale pending flag does not resurrect the notice
+	 *
+	 * The completion AJAX call is fire-and-forget, so xv_migration_pending
+	 * can survive a finished migration. The migrated flag wins, and the
+	 * stale flag is cleaned up.
+	 */
+	public function test_no_notice_when_migrated_with_stale_pending_flag() {
+		update_option( 'xv_quotes_migrated_v2', true );
+		update_option( 'xv_migration_pending', true );
+		update_option( 'xv_migration_total', 1000 );
+
+		ob_start();
+		do_action( 'admin_notices' );
+		$notices = ob_get_clean();
+
+		$this->assertStringNotContainsString( 'migrate', strtolower( $notices ), 'Should not show notice once migrated' );
+		$this->assertFalse( get_option( 'xv_migration_pending' ), 'Stale pending flag should be cleared' );
+	}
+
+	/**
+	 * Test 15: Completing a batch migration clears the pending flag server-side
+	 */
+	public function test_completed_batch_clears_pending_flag() {
+		$this->insert_old_quotes( 3 );
+		update_option( 'xv_migration_pending', true );
+
+		do {
+			$result = $this->migrator->migrate_batch( 10 );
+		} while ( ! $result['complete'] );
+
+		$this->assertTrue( (bool) get_option( 'xv_quotes_migrated_v2' ), 'Migration should be marked complete' );
+		$this->assertFalse( get_option( 'xv_migration_pending' ), 'Pending flag should be cleared server-side' );
+	}
 }

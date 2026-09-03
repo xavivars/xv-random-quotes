@@ -41,6 +41,9 @@ abstract class Migration_Test_Base extends WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 
+		// Migration notices and AJAX handlers require an administrator.
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+
 		global $wpdb;
 		$this->migrator = new QuoteMigrator();
 		$this->old_table = $wpdb->prefix . 'stray_quotes';
@@ -59,6 +62,8 @@ abstract class Migration_Test_Base extends WP_UnitTestCase {
 	 * Child classes can override and call parent::tearDown() last.
 	 */
 	public function tearDown(): void {
+		wp_set_current_user( 0 );
+
 		global $wpdb;
 
 		// Drop old table
