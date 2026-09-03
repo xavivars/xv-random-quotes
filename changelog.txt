@@ -1,5 +1,9 @@
 == XV Random Quotes ==
 
+= 2.9.1 =
+Fix: Migration notice is no longer shown to users who lack the manage_options capability, and therefore cannot run the migration
+Fix: The pending migration flag is now cleared server-side on completion, so a finished migration no longer keeps showing the "migration required" notice
+
 = 2.9.0 =
 New feature: Cache bypass mode — AJAX-enabled quotes can now fetch a fresh quote on every page load, bypassing full-page caches like WP Rocket
 New feature: Global "Bypass Page Cache" setting in AJAX Settings
